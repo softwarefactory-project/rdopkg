@@ -1,0 +1,182 @@
+rdopkg-adv-building(7)
+======================
+:doctype: manpage
+
+
+NAME
+----
+rdopkg-adv-building - rdopkg adventures: building and submitting updates
+
+
+SYNOPSIS
+--------
+
+This is a story about using `rdopkg kojibuild` and `rdopkg coprbuild` to build
+new RDO packages in koji and copr and submitting them to RDO using `rdopkg
+update`.
+
+
+PROLOGUE
+--------
+
+Fedora builds are built in `koji` while EPEL builds are built in
+`copr`.
+
+Run `rdopkg info` to get information about active releases and associated
+build systems/branches.
+
+First, need to **request build permissions** in each copr.
+For Icehouse, following coprs are used (you need to sign in with your FAS):
+
+ * https://copr.fedoraproject.org/coprs/jruzicka/rdo-icehouse-epel-6/permissions/
+ * https://copr.fedoraproject.org/coprs/jruzicka/rdo-icehouse-epel-7/permissions/
+
+Poke an admin (jruzicka, apevec) to grant your requests.
+
+Then, you need to save your **API token** to `~/config/copr` as described here:
+
+https://copr.fedoraproject.org/api/
+
+Due to `copr` limitation, you also need to be able to `scp` to
+`fedorapeople.org` in order to upload SRPMs.
+
+
+CHAPTER 1
+---------
+
+Assume I want to build all RDO Icehouse builds after I modified `f21`
+dist-git branch (possibly by `rdopkg new-version 2.0.3`).
+
+First, let's see what `rdopkg` thinks about `f21` branch:
+
+    $ git checkout f21
+    $ rdopkg pkgenv
+
+    Package: python-swiftclient
+    Version: 2.0.3
+    OS dist: RDO
+
+    Dist-git branch:       f21
+    Local patches branch:  stable/icehouse
+    Remote patches branch: patches/stable/icehouse
+
+    RDO release guess: icehouse
+
+It detected icehouse release properly, we should be good to go.
+
+
+CHAPTER 2
+---------
+
+**build fedora package in koji**
+
+After I'm happy with my changes, I push the disgit and start the koji build.
+
+    $ fedpkg push
+    $ rdopkg kojibuild
+
+This does `fedpkg build` and creates new update file `up.yml`:
+
+    $ cat up.yml
+    ---
+    notes: FILLME
+    builds:
+    - id: python-swiftclient-2.0.3-1.fc21
+      source: koji
+      repo: icehouse
+      dist: fedora-20
+
+Note it's fc21 build for `fedora-20`. `rdopkg info` confirms this:
+
+`fedora-20` built in `koji/f21` from `f21` branch
+
+
+CHAPTER 3
+---------
+
+**build epel-6 and epel-7 packages in copr**
+
+Let's build epel-6 first:
+
+    $ rdopkg coprbuild -d epel-6
+
+This will:
+
+ * create el6 source RPM from current dist-git
+ * upload the source RPM to your `fedorapeople.org:~/public_html/copr`
+   (specify Fedora user with `-u/--fuser`)
+ * submit the source RPM to build in `jruzicka / rdo-$RELEASE-$DIST` copr
+ * watch the build
+ * print `rdopkg update` entry for build and append it to `up.yml`
+
+Let's see the update file now:
+
+    $ cat up.yml
+    ---
+    notes: FILLME
+    builds:
+    - id: python-swiftclient-2.0.3-1.fc21
+      source: koji
+      repo: icehouse
+      dist: fedora-20
+    - id: python-swiftclient-2.0.3-1.el6
+      source: copr-jruzicka
+      repo: icehouse
+      dist: epel-6
+
+OK. Now I need to build `epel-7` from the very same `f21` branch.
+
+    $ rdopkg coprbuild -d epel-7
+
+Let's see the update file again:
+
+    $ cat up.yml
+    ---
+    notes: FILLME
+    builds:
+    - id: python-swiftclient-2.0.3-1.fc21
+      source: koji
+      repo: icehouse
+      dist: fedora-20
+    - id: python-swiftclient-2.0.3-1.el6
+      source: copr-jruzicka
+      repo: icehouse
+      dist: epel-6
+    - id: python-swiftclient-2.0.3-1.el7
+      source: copr-jruzicka
+      repo: icehouse
+      dist: epel-7
+
+
+CHAPTER 4
+---------
+
+**submit builds using rdopkg update**
+
+    $ rdopkg update
+
+This will pick up `up.yml` and:
+
+ * force me to provide an actual update description in `notes` field
+ * validate the update using `rdoinfo`
+ * check for builds availability
+
+and if all is good:
+
+ * submit the update to `rdo-update` repo
+ * delete local `up.yml` so that next `kojibuild`/`coprbuild` starts with
+   fresh `up.yml`
+
+Done and done.
+
+
+EPILOGUE
+--------
+
+See available options
+
+    $ rdopkg coprbuild -h
+    $ rdopkg kojibuild -h
+    $ rdopkg update -h
+
+and link:rdopkg.1.html[rdopkg(1)] manual for more information.

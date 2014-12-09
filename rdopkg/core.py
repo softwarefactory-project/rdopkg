@@ -1,0 +1,186 @@
+# -*- encoding: utf-8 -*-
+
+import json
+import os
+
+import action as _action
+import actions
+import const
+import exception
+import helpers
+
+
+def default_action_manager():
+    action_manager = _action.ActionManager()
+    action_manager.add_actions_module(actions, 'base')
+    return action_manager
+
+
+class ActionRunner(object):
+    persistent_attrs = ('version', 'to_version', 'release')
+
+    def __init__(self, action_manager=None, state_file_path=None):
+        if not action_manager:
+            action_manager = default_action_manager()
+        self.action_manager = action_manager
+        self.action = []
+        self.args = {}
+        self.state_file_path = state_file_path or const.STATE_FILE_FN
+
+    def save_state(self):
+        if self.action and self.action[0].atomic:
+            # don't save state for atomic actions
+            return
+        data = {
+            'action': self.action_manager.action_serialize(self.action),
+            'args': self.args
+        }
+        sf = file(self.state_file_path, 'wt')
+        json.dump(data, sf)
+        sf.close()
+
+    def load_state(self):
+        if not os.path.isfile(self.state_file_path):
+            return
+        sf = file(self.state_file_path, 'rt')
+        data = json.load(sf)
+        self.action = self.action_manager.action_deserialize(data['action'])
+        self.args = data['args']
+        sf.close()
+
+    def load_state_safe(self):
+        try:
+            self.load_state()
+        except Exception as ex:
+            print("Error loading state file '%s':\n    %s" %
+                  (self.state_file_path, ex))
+            cnf = raw_input("Do you want to delete this (likely corrupt) "
+                            "state file? [Yn] ")
+            if cnf == '' or cnf.lower() == 'y':
+                os.remove(self.state_file_path)
+                print("State file removed.")
+            else:
+                raise
+
+    def _new_action_check(self):
+        if self.action:
+            print("An action is in progress:\n")
+            self.info()
+            print
+            cnf = raw_input("Do you want to run a new action anyway? [Yn] ")
+            if cnf != '' and cnf.lower() != 'y':
+                raise exception.UserAbort()
+            print
+            os.remove(self.state_file_path)
+            print("State file removed.")
+
+    def new_action(self, action, args=None):
+        self._new_action_check()
+        if args:
+            self.args = args
+        if isinstance(action, _action.Action):
+            self.action = [action]
+        else:
+            self.action = []
+            for a in self.action_manager.actions:
+                if a.name == action:
+                    self.action = [a]
+                    break
+        if not self.action:
+            raise exception.InvalidAction(action=action)
+        if action.steps:
+            self.save_state()
+
+    def print_progress(self):
+        if not self.action:
+            return
+
+        def _print_steps(steps, current, indent=0, done=True):
+            if current:
+                _current = current[0]
+            else:
+                _current = []
+            found_current = False
+            for step in steps:
+                next_current = []
+                if done and step == _current:
+                    next_current = current[1:]
+                    found_current = True
+                    schar = '*'
+                elif done:
+                    schar = 'x'
+                else:
+                    schar = ' '
+                print("%s[%s] %s" % (indent * "    ", schar, step.name))
+                if step.steps:
+                    _print_steps(step.steps, next_current,
+                                 indent=indent + 1, done=done)
+                if found_current:
+                    done = False
+
+        _print_steps([self.action[0]], self.action)
+
+    def info(self):
+        if self.action:
+            print("Action: %s" %
+                  self.action_manager.action_str(self.action) or "no action")
+            if self.args:
+                print "Arguments:"
+                for key in sorted(self.args, key=self.args.get):
+                    print("  %s: %s" % (key, self.args[key]))
+                print "Progress:"
+                self.print_progress()
+            else:
+                print "No arguments"
+        else:
+            print "No action in progress."
+
+    def _action_finished(self):
+        if os.path.isfile(self.state_file_path):
+            os.remove(self.state_file_path)
+        self.action = []
+        self.args = {}
+
+    def engage(self):
+        if not self.action:
+            raise exception.NoActionInProgress
+        self.action_manager.ensure_leaf_action(self.action,
+                                            on_change_callback=self.save_state)
+        atomic = False
+        if self.action:
+            atomic = self.action[0].atomic
+        abort = False
+        while self.action:
+            new_args = None
+            select_next = True
+            step = self.action[-1]
+            try:
+                new_args = self.action_manager.run_action(step, self.args)
+            except exception.ActionRequired as ex:
+                helpers.action_required(str(ex))
+                new_args = ex.kwargs.get('args', None)
+                select_next = not ex.kwargs.get('rerun', False)
+                abort = True
+            except exception.ActionFinished as ex:
+                self._action_finished()
+                print(ex)
+                return
+            except exception.ActionGoto as ex:
+                # Here be dragons.
+                select_next = False
+                new_args = ex.kwargs.get('args', None)
+                goto = [self.action[0].name] + ex.kwargs['goto']
+                self.action = self.action_manager.action_deserialize(goto)
+            if new_args:
+                self.args.update(new_args)
+            if select_next:
+                self.action = self.action_manager.next_action(self.action)
+            if not self.action:
+                if not atomic:
+                    print("Action finished.")
+                self._action_finished()
+                return
+            self.save_state()
+            if abort:
+                return
+

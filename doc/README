@@ -1,0 +1,12 @@
+This is *the* manual page for rdopkg.
+
+It's written using asciidoc, so you can read it directly or convert it to one
+of many formats asciidoc supports.
+
+Makefile is provided to build man pages
+
+    make man
+
+or HTML manual
+    
+    make html

@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# sign while maintaining modification time
+# you must gpg --import the team key first (ask pbrady for the passphrase)
+# Note you can sign all new rpms like:
+#  find -type f -cnewer repodata -name '*.rpm' | xargs ../../sign-rpms rdo-grizzly
+
+if [ $# = 0 ]; then
+  echo "Usage: $(basename $0) rdo-grizzly|... package..." >&2
+  exit 1
+fi
+
+key=$1; shift
+
+for rpm in "$@"; do
+  touch --ref="$rpm" "$rpm.ts"
+done
+
+#rpm --addsign --define "_gpg_name $key-sign" "$@"
+echo "Enter passphrase to sing with $key: (hint: w)"
+#read signpass
+#if [ "$signpass" != "w" ]; then
+    #echo "Bad passphrase!"
+    #exit 1
+#fi
+#echo "Would sign now"
+echo "Would ask for password and sign with $key now"
+
+for rpm in "$@"; do
+  # Caveat is that this is only possible for file owner
+  test "$rpm" -nt "$rpm.ts" && touch --ref="$rpm.ts" "$rpm"
+  rm "$rpm.ts"
+done

@@ -1,0 +1,5 @@
+blessings
+paramiko
+pyyaml
+git+http://github.com/yac/rdoupdate.git
+# asciidoc

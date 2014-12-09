@@ -1,0 +1,460 @@
+rdopkg(1)
+=========
+:doctype: manpage
+:toc2:
+
+
+NAME
+----
+rdopkg - RDO packaging tool
+
+
+SYNOPSIS
+--------
+
+`rdopkg` <action> <arg>...
+
+`rdopkg` `-c`
+
+`rdopkg` `-h`
+
+
+DESCRIPTION
+-----------
+**rdopkg** is a tool for automating RDO/RHOSP packaging tasks, such as
+introducing patches, updating packages to new versions and submitting
+packages to RDO.
+
+Run `rdopkg -h` to get available actions.
+
+persistence
+~~~~~~~~~~~
+
+`rdopkg` provides multi-step actions where each step is (should be) idempotent
+so if something fails along the way or human interaction is required, rdopkg
+drops to shell, let's you rectify and then continue by running `rdopkg -c`.
+
+The state is stored in `.rdopkg.json` file in current directory. Stored action
+can be inspected (`rdopkg -i`) or continued (`rdopkg -c`). When new action is
+run in such directory, `rdopkg` asks to confirm if you want to abandon the
+previous action.
+
+ACTIONS
+-------
+
+Important actions diagram
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+&nbsp;
+
+                          +---------------------+
+                         /  WHAT DO YOU NEED?  /
+                        +-----+----------+----+
+                              |          |
+                      +-------+          +-------------+
+                      |                                |
+               build new package               submit RDO update
+                      |                                |
+                      v                                |
+               +----------------+                      |
+              /  what change?  /                       |
+             +--+-----+-----+-+                        |
+                |     |     |                          |
+         +------+     |     +--------+                 |
+         |            |              |                 |
+    just update   introduce    update to new           |
+      .spec       patch(es)   upstream version         |
+         |            |              |                 |
+         |            |              |                 |
+         v            v              v                 v
+      +-----+     +-------+    +-------------+    +--------+
+      | fix |     | patch |    | new-version |    | update |
+      +-----+     +-------+    +-------------+    +--------+
+
+ACTION: fix
+~~~~~~~~~~~
+
+Make `.spec` file only changes.
+
+*Flow:*
+
+  * Bump Release, prepare a new %changelog entry header.
+  * Drop to shell, let user edit .spec file.
+  * After running `rdopkg`, ensure description was added to %changelog
+    and commit changes to new commit.
+
+*Example:*
+    
+    cd python-novaclient
+    rdopkg fix
+    vim python-novaclient.spec
+    rdopkg -c
+
+ACTION: patch
+~~~~~~~~~~~~~
+
+Introduce new patches to the package.
+
+This action works with patches branch
+(see <<patches-branch,AUTOMAGIC -> patches branch>>).
+By default, `rdopkg` resets local patches branch to remote patches branch.
+You can skip this this with `--local-patches` to directly use local patches
+branch as is.
+
+Note that `patch` is a high level wrapper of `update-patches` action. If
+you're interested in just updating patches in `.spec` file from local patches
+branch, try using `update-patches` action instead.
+
+Don't forget to `git fetch` before running the action.
+
+After running `rdopkg patch`, new commit will contain the changes.
+
+*Flow:*
+
+  * Unless `-l`/`--local-patches` was used, reset local patches branch to
+    remote patches branch.
+  * Update .spec file: bump Release, create new %changelog entry with new
+    patches' titles and create a commit.
+  * Update patches from local patches branch (`update-patches` action)
+  * Display the diff.
+
+ACTION: new-version
+~~~~~~~~~~~~~~~~~~~
+
+Update package to new upstream version.
+
+This action works with patches branch 
+(see <<patches-branch,AUTOMAGIC -> patches branch>>).
+After successful rebase, `rdopkg` will offer to push the
+rebased patches branch.
+
+Required `new-version` argument is a new version to rebase on, presumably
+a git version tag.
+
+Don't forget to `git fetch --all` before running the action.
+
+After running `rdopkg new-version`, new commit will contain the changes.
+
+*Flow:*
+
+  * Show diff from previous version, especially changes to `requirements.txt`.
+  * Reset local patches branch to remote patches branch
+  * Rebase local patches branch on `$NEW_VERSION` tag.
+  * Update `.spec` file: set `Version`, `Release` and `patches_base` to
+    appropriate values and create new %changelog entry.
+  * Download source tarball.
+  * Run `fedpkg new-sources` (`rhpkg new-sources`).
+  * Update patches from local patches branch (`update-patches` action)
+  * Display the diff.
+
+*Example:*
+
+    cd python-novaclient
+    git fetch --all
+    rdopkg new-version 2.15.0
+    # rebase failed, manually fix using git
+    rdopkg -c
+    
+
+ACTION: update-patches
+~~~~~~~~~~~~~~~~~~~~~~
+
+Update `.spec` file with patches from patches branch.
+
+This is a core low level action used by other actions such as `patch` and
+`new-version` to update dist-git patches from patches branch. 
+See <<patches-branch,AUTOMAGIC -> patches branch>> for explanation.
+
+`update-patches` is a rework of now obsolete `update-patches.sh` script with
+less restrictions and more features such as optional #patches_base, support
+for `git am %{patches}` method of applying patches and smart patches branch
+detection.
+
+*Flow:*
+
+ * Export patches from patches branch using `git format-patch`
+ * Add these patches to dist-git and edit `.spec` file to apply them
+ * Create new commit with the change (or amend previous with `-a`/`--amend`)
+
+*Example:*
+
+    rdopkg update-patches
+
+
+ACTION: kojibuild
+~~~~~~~~~~~~~~~~~
+
+Build the package in `koji`.
+
+See link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)] for complete
+example of building and submitting packages for RDO.
+
+This is esentaially a wrapper over `fedpkg build` with added value of
+generating update entries for `rdopkg update`.
+
+By default, build is appended to `up.yml` update file (new one is created if
+needed) which is then used by `rdopkg update` to submit builds to RDO.
+Use `-f/--update-file` to specify different file or `-F/--no-update-file` to
+disable this.
+
+*Flow:*
+
+ * Run equivalent of `fedpkg build` using disgusting `fedpkg` python module.
+ * Watch the build.
+ * Print `rdopkg update` entry for the build and dump it to `up.yml`.
+
+*Example:*
+
+    rdopkg kojibuild
+
+
+ACTION: coprbuild
+~~~~~~~~~~~~~~~~~
+
+Build the package in `copr-jruzicka`.
+
+See link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)] for complete
+example including instructions how to setup copr, obtain permissions, build,
+submit update, and more.
+
+**Please**, try to do `coprbuild` after successful `kojibuild` to ensure same
+SRPM for both builds. This will be automated further in the future.
+
+`-r/--release` and `-d/--dist` are autodetected from current branch if
+possible. These are used to select right copr to build in.
+
+By default, build is appended to `up.yml` update file (new one is created if
+needed) which is then used by `rdopkg update` to submit builds to RDO.
+Use `-f/--update-file` to specify different file or `-F/--no-update-file` to
+disable this.
+
+*Flow:*
+
+ * Create the source RPM from current dist-git.
+ * Upload the source RPM to your `fedorapeople.org:~/public_html/copr`.
+   (specify Fedora user with `-u/--fuser`)
+ * Submit the source RPM to build in `jruzicka / rdo-$RELEASE-$DIST` copr.
+ * Watch the build.
+ * Print `rdopkg update` entry for the build and dump it to `up.yml`.
+
+*Example:*
+
+    rdopkg coprbuild
+
+
+ACTION: update
+~~~~~~~~~~~~~~
+
+Submit updated packages into RDO.
+
+See link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)] for complete
+example of building and submitting packages for RDO.
+
+This command expects special update file as its optional argument which
+defaults to `up.yml`. `rdopkg kojibuild` and `rdopkg coprbuild` automatically
+generate this file, you only need to provide description of the update in
+`notes:` field.
+
+`rdopkg` validates the update using `rdoinfo`, checks the availability of
+builds in respective build sources, submits the update for review into
+`rdo-update` repository, and *deletes* the local update file (only in case of
+default `up.yml`) so that next `kojibuild`/`coprbuild` start with fresh update
+file. This way, no action parameters or file manipulations are required.
+
+Note that `kojibuild` and `coprbuild` actions support `-s/--skip-build`
+argument which can be used to generate update file without triggering the
+build (i.e. after the builds are done manually).
+
+**Example update file:**
+
+    notes: |-
+      Latest upstream python-swiftclient-1.2.3 for RDO Juno
+      Fixes rhbz#1234567
+    builds:
+    - id: python-swiftclient-1.2.3-1.fc22
+      source: koji
+      repo: juno
+      dist: fedora-21
+    - id: python-swiftclient-1.2.3-1.el7
+      source: copr-jruzicka
+      repo: juno
+      dist: epel-7
+
+**Juno example:**
+
+    rdopkg kojibuild
+    rdopkg coprbuild
+    rdopkg update
+
+**Icehouse example:**
+
+    rdopkg kojibuild
+    rdopkg coprbuild -d epel-6
+    rdopkg coprbuild -d epel-7
+    rdopkg update
+
+ACTION: amend
+~~~~~~~~~~~~~
+
+Amend last git commit with current dist-git changes and (re)generate the commit
+message from %changelog.
+
+This simple atomic action is equivalent to running
+
+    git commit -a --amend -m "$AUTOMAGIC_COMMIT_MESSAGE"
+
+See <<commit-message,AUTOMAGIC -> commit message>>
+for more information about the generated commit message.
+
+
+ACTION: squash
+~~~~~~~~~~~~~~
+
+Squash last git commit into previous one. Commit message of previous commit is
+used.
+
+This simple atomic action is a shortcut for
+
+    git reset --soft HEAD~
+    git commit --amend --no-edit
+
+This is useful for squashing commits created by lower level actions such as
+`update-patches`.
+
+
+ACTION: get-sources
+~~~~~~~~~~~~~~~~~~~
+
+Download package source archive.
+
+Currently, `Source0` from `.spec` file is downloaded.
+
+
+ACTION: push-updates
+~~~~~~~~~~~~~~~~~~~~
+
+Push pending updates to repositories.
+
+This **special** action is to be used on RDO repo box to push updated packages
+to repos including download of built packages, signing and calling
+`createrepo`.
+
+Two positional arguemnts are required:
+
+* `update-repo-path`: path to rdo-update git repo containing updates to push
+* `dest-base`: destination path base
+
+By default, all update files in `$UPDATE_REPO_PATH/ready/` are pushed. You can
+override this by specifying update files to push using `-f`/`--files` argument
+(relative to and residing in `update-repo-path`).
+
+Each build contained in pushed update file is downloaded, signed and copied to
+appropriate directory: `$DEST_BASE$REPO/$DIST/$TAG`
+
+**protips:**
+
+ * If you input incorrect passphrase, run `rdopkg -c` to try again.
+ * You can force overwrite of existing packages by `-w`/`--overwrite`
+
+
+AUTOMAGIC
+---------
+
+Instead of requiring project config files or endless lists of command line
+arguments, `rdopkg` tries to guess all the neccessary variables. 
+
+
+[[patches-branch]]
+patches branch
+~~~~~~~~~~~~~~
+
+`update-patches` is a core lower level action for updating dist-git `.spec`
+file with patches from associated patches branch. `rdopkg` tries hard to
+detect the patches branch automagically, it's usually `$BRANCH-patches` for
+`$BRANCH` dist-git but one patches branch per multiple dist-gits is also
+supported.
+
+Best illustrated by example, following are all valid patches branches for
+`rhos-5.0-rhel-7` dist-git and they're searched in that order:
+
+ * rhos-5.0-rhel-7-patches
+ * rhos-5.0-rhel-patches
+ * **rhos-5.0-patches <--- preferred for RHOSP**
+ * rhos-patches
+
+Use `rdopkg pkgenv` to check detected patches branch.
+
+You can specify remote patches branch by `-p`/`--patches-branch` action
+parameter for actions that use it, such as `patch` and `new-version`.
+
+Previously, now obsolete `update-patches.sh` script required `patches_base`
+comment to be present in spec file which indicated git revision on top of
+which the patches are applied but **this is now optional** with
+`update-patches` action and defaults to .spec Version.
+
+Most common use of `patches_base` is to specify number of patches on top of
+patches base (which defaults to spec Version) to skip:
+
+    # patches_base=+2
+
+You can set an arbitrary git revision as a patches base:
+
+    # patches_base=1.2.3+2
+
+You shouldn't need to modify this by hand expect the number of skipped patches
+as `rdopkg` manages `patches_base` as needed.
+
+
+[[commit-message]]
+commit message
+~~~~~~~~~~~~~~
+
+Actions modifying dist-git generate commit message from %changelog.
+
+First line of commit message is first line from latest %changelog entry.
+
+If there are multiple lines in latest %changelog entry, entire entry is
+listed in the commit message.
+
+For each "(rhbz#XYZ)" mentioned in latest %changelog entry, "Resolves:
+rhbz#XYZ" is appended to commit message as required by RHOSP workflow.
+
+If you need to (re)generate commit message after modifying %changelog, use
+**ACTION: amend**.
+
+For example following %changelog entry:
+
+    %changelog
+    * Tue Feb 11 2014 Jakub Ruzicka <jruzicka@redhat.com> 0.5.1-2
+    - Update to upstream 0.5.1
+    - Fix evil Bug of Doom (rhbz#123456)
+
+will generate following commit message:
+
+    Update to upstream 0.5.1
+
+    Resolves: rhbz#123456
+
+    Changelog:
+    - Update to upstream 0.5.1
+    - Fix evil Bug of Doom (rhbz#123456)
+
+
+SEE ALSO
+--------
+
+link:rdopkg-adv-new-version.7.html[rdopkg-adv-new-version(7)],
+link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)]
+
+CONTACT
+-------
+
+`rdopkg` is maintained by Jakub Ruzicka <jruzicka@redhat.com>.
+
+Bugs are tracked in Red Hat Bugzilla:
+
+https://bugzilla.redhat.com/buglist.cgi?component=rdopkg
+
+To report a new bug:
+
+https://bugzilla.redhat.com/enter_bug.cgi?product=RDO&component=rdopkg

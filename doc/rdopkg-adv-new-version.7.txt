@@ -1,0 +1,221 @@
+rdopkg-adv-new-version(7)
+=========================
+:doctype: manpage
+
+
+NAME
+----
+rdopkg-new-version - rdopkg adventures: new-version
+
+
+SYNOPSIS
+--------
+
+This is a short story about updating RDO `python-swiftclient` package to new
+upstream version using `rdopkg new-version`.
+
+Let's assume update of **Havana** **epel-6** `python-swiftclient-1.8.0-1`
+package to latest upstream version `2.0.2`.
+
+
+PROLOGUE
+--------
+
+**dist-git & remotes**
+
+    $ cd python-swiftclient
+    $ git fetch --all
+    $ git remote -v
+    openstack	git://github.com/openstack/python-swiftclient.git (fetch)
+    openstack	git://github.com/openstack/python-swiftclient.git (push)
+    origin	ssh://jruzicka@pkgs.fedoraproject.org/python-swiftclient (fetch)
+    origin	ssh://jruzicka@pkgs.fedoraproject.org/python-swiftclient (push)
+    patches	git@github.com:redhat-openstack/python-swiftclient.git (fetch)
+    patches	git@github.com:redhat-openstack/python-swiftclient.git (push)
+
+To summarise, above remotes are:
+
+ * **origin**: Fedora dist-git containing .spec & patches +
+   (obtained by `fedpkg clone python-swiftclient`)
+ * **patches**: github remote with RDO patches branches
+ * **openstack**: upstream code repo to cherry-pick backported patch from 
+
+This is a Havana epel-6 fix, so I'm gonna work with:
+
+ * **origin/el6-havana**  dist-git
+ * **patches/stable/havana**  patches branch
+
+See `rdopkg info` output for current branch names. 
+
+Before we proceed, let's inspect the patches branch:
+
+    o [patches/stable/havana] Add SSL certificate verification by default
+    o Remove builtin requirements handling
+    M─┐ [1.8.0] Merge "Make pbr only a build-time dependency."
+    │ o Make pbr only a build-time dependency.
+    o │ assertEquals is deprecated, use assertEqual (H602
+    ...
+
+You can see that there are two commits on top of `1.8.0`. These two patches
+are present in dist-git and applied in `.spec` file: 
+
+    ...
+    Patch0001: 0001-Remove-builtin-requirements-handling.patch
+    Patch0002: 0002-Add-SSL-certificate-verification-by-default.patch
+    ...
+    %patch0001 -p1
+    %patch0002 -p1
+    ...
+
+
+CHAPTER 1
+---------
+
+**rdopkg new-version**
+
+With remotes set up and up to date, it's time to run `rdopkg new-version`.
+
+The only required positional argument specifies a version to update to. This
+is `2.0.2` in this case and it's both new rpm Version and git tag to rebase
+patches branch on. For other packages and versions, version tag and rpm Version
+might differ.
+
+    $ git fetch --all
+    $ git checkout el6-havana
+    $ rdopkg new-version 2.0.2
+
+
+CHAPTER 2
+---------
+
+**diff**
+
+First, `rdopkg` displays summary of changed files and changes to
+`requirements.txt` files:
+
+    --- a/requirements.txt
+    +++ b/requirements.txt
+    @@ -1 +1,2 @@
+    +requests>=1.1
+    simplejson>=2.0.9
+
+I make a mental note I need to add `Requires: python-requests` later and press
+enter to advance.
+
+
+CHAPTER 3
+---------
+
+**rebase of patches branch**
+
+Next, `rdopkg` resets the local `stable/havana` branch to
+`patches/stable/havana`, switches to it, and tries to **rebase** it
+on `2.0.2` git tag.
+
+The rebase failed due to a conflict of downstream patches nuking pbr and
+`rdopkg` exited to shell so I can finish the rebase manually.
+
+I modified the conflicting patch and continued the rebase with 
+
+    git rebase --continue
+
+Then the second patch failed to apply as well. This was a downstream only fix
+and upstream has chosen a different solution which is already included in
+`2.0.2` and thus I skipped this patch entirely with
+
+    git rebase --skip
+
+Now, the patches branch look like this:
+
+    o [stable/havana] Remove builtin requirements handling
+    o [2.0.2] Remove multipart/form-data file upload
+    o Fix --insecure option on auth
+    M─┐ Merge "Port to python-requests"
+
+First patch is on top of `2.0.2`, second obsolete patch is gone.
+
+
+CHAPTER 4
+---------
+
+**the rest is magic**
+
+Once I'm happy with the rebased patches branch, I resume `rdopkg` action with
+
+    rdopkg -c
+
+Now, rdopkg asks if I want to push the shiny rebased patches branch.  I indeed
+do. Note that you need to have force push permission in the patches remote.
+
+    Push stable/havana to patches / stable/havana (with --force)? [Yn]
+
+After this, `rdopkg`:
+
+ * downloads the source tarball
+ * calls `fedpkg new-sources`
+ * updates `.spec` file (Version, Release, patches_base, new changelog entry)
+ * creates new commit with updated `.spec`
+ * updates patches from local patches branch `stable/havana`
+ * shows final diff
+
+pseudo-diff of `.spec` file:
+
+    -Version:    1.8.0
+    +Version:    2.0.2
+     ...
+    -# patches_base=1.8.0
+    +# patches_base=2.0.2
+     ...
+     Patch0001: 0001-Remove-builtin-requirements-handling.patch
+    -Patch0002: 0002-Add-SSL-certificate-verification-by-default.patch
+     ...
+     %patch0001 -p1
+    -%patch0002 -p1
+     ...
+    +* Thu Feb 20 2014 Jakub Ruzicka <jruzicka@redhat.com> 2.0.2-1
+    +- Update to upstream 2.0.2
+    +
+     ...
+ 
+As you can see, obsolete patch I deleted during rebase is gone.
+
+Commit message and changed files:
+
+    Update to upstream 2.0.2
+
+    M	.gitignore
+    M	0001-Remove-builtin-requirements-handling.patch
+    D	0002-Add-SSL-certificate-verification-by-default.patch
+    M	python-swiftclient.spec
+    M	sources
+
+
+CHAPTER 5
+---------
+
+**finishing touches & rdopkg amend**
+
+Finally, I need to tune `.spec` file due to new deps and amend with `rdopkg
+amend` to regenerate commit message from `%changelog`:
+
+    vim python-swiftclient.spec
+    rdopkg amend
+
+Final commit message:
+
+    Update to upstream 2.0.2
+    
+    Changelog:
+    - Update to upstream 2.0.2
+    - Switch from pyOpenSSL to python-requests - update dependencies
+    - Remove unneeded dependency: python-simplejson
+
+
+EPILOGUE
+--------
+
+See available options
+
+    rdopkg new-version -h
+
+and link:rdopkg.1.html[rdopkg(1)] manual for more information.

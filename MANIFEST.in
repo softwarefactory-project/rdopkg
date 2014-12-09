@@ -1,0 +1,5 @@
+include README.md
+include doc/*.txt
+include doc/html/*
+include doc/man/*
+include bsources/*.py
