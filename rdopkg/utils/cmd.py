@@ -235,6 +235,13 @@ class Git(ShellCommand):
         log_out = self('log', '--format=%h', rng, log_cmd=False)
         return self._parse_output(log_out)
 
+    def get_latest_tag(self, branch=None):
+        cmd = ['describe', '--abbrev=0', '--tags']
+        if branch:
+            cmd.append(branch)
+        out = self(*cmd)
+        return out
+
     def get_file_authors(self, path, with_email=True):
         if with_email:
             pf = '%an <%ae>'

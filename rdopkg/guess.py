@@ -107,6 +107,17 @@ def patches_branch(distgit, pkg=None, osdist='RDO'):
     return '%s/%s-patches' % (remotes[0], distgit)
 
 
+def upstream_branch():
+    remotes = ['upstream', 'openstack']
+
+    for remote in remotes:
+        ub = '%s/master' % remote
+        if git.ref_exists('refs/remotes/%s' % ub):
+            return ub
+
+    return '%s/master' % remotes[0]
+
+
 def user():
     user = git('config', 'user.name', log_cmd=False, fatal=False)
     if not user:

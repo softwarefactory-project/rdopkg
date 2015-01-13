@@ -12,6 +12,7 @@ from rdopkg.actionmods import kojibuild
 from rdopkg.actionmods import nightly
 from rdopkg.actionmods import pushupdate
 from rdopkg.actionmods import rdoinfo
+from rdopkg.actionmods import reqs
 from rdopkg.actionmods import reviews
 from rdopkg.actionmods import update as _update
 from utils import log
@@ -50,10 +51,9 @@ ACTIONS = [
                Action('final_spec_diff'),
            ]),
     Action('new_version', help="update package to new upstream version",
-           required_args=[
-               Arg('new_version', help="new version to update to"),
-           ],
            optional_args=[
+               Arg('new_version', positional=True, nargs='?',
+                   help="version (git tag) to update to"),
                Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
                    help="remote git branch containing patches"),
                Arg('local_patches_branch', shortcut='-P', metavar='LOCAL_BRANCH',
@@ -109,6 +109,19 @@ ACTIONS = [
                Action('update_patches', const_args={'amend': True}),
                Action('final_spec_diff'),
            ]),
+    Action('reqdiff', atomic=True, help="show diff of requirements.txt",
+           steps=[
+               Action('get_package_env'),
+               Action('get_diff_range'),
+               Action('reqdiff'),
+           ],
+           optional_args=[
+               Arg('diff_range', positional=True, nargs='*', metavar='VERSION',
+                   help="no args: diff between current and upstream; "
+                        "1 arg: diff between current and supplied revision; "
+                        "2 args: diff between 1st and 2nd supplied revisions"),
+               ],
+           ),
     Action('update', atomic=True, help="submit RDO update",
            optional_args=[
                Arg('update_file', positional=True, nargs='?',
@@ -315,12 +328,24 @@ def conf():
         log.info("%s: %s" % item)
 
 
-def new_version_setup(new_version):
-    changes = ['Update to upstream %s' % new_version]
-    args = {
-        'changes': changes,
-        'new_patches_base': new_version
-    }
+def new_version_setup(new_version=None):
+    args = {}
+    if not new_version:
+        ub = guess.upstream_branch()
+        if not git.ref_exists('refs/remotes/%s' % ub):
+            msg=("Upstream branch not found: %s\n"
+                 "Can't guess latest version.\n\n"
+                 "a) provide new version (git tag) yourself\n"
+                 "   $ rdopkg new-version 1.2.3\n\n"
+                 "b) add upstream git remote:\n"
+                 "   $ git remote add -f upstream GIT_URL\n"
+                 % ub)
+            raise exception.CantGuess(msg=msg)
+        new_version = git.get_latest_tag(ub)
+        args['new_version'] = new_version
+        log.info("Latest version detected from %s: %s" % (ub, new_version))
+    args['changes'] = ['Update to upstream %s' % new_version]
+    args['new_patches_base'] = new_version
     spec = specfile.Spec()
     rpm_version = spec.get_tag('Version')
     new_rpm_version, new_milestone = specfile.version_parts(new_version)
@@ -356,9 +381,50 @@ def diff(version, new_version, bump_only=False):
         return
     git('--no-pager', 'diff', '--stat', '%s..%s' % (version, new_version),
         direct=True)
-    git('--no-pager', 'diff', '%s..%s' % (version, new_version), '--',
-        'requirements.txt', direct=True)
-    raw_input("\nPress <Enter> to continue after you inspected the diff. ")
+    reqdiff(version, new_version)
+    raw_input("Press <Enter> to continue after you inspected the diff. ")
+
+
+def get_diff_range(diff_range=None, patches_branch=None, branch=None):
+    version, new_version = None, None
+    if diff_range:
+        n = len(diff_range)
+        if n > 2:
+            raise exception.InvalidUsage(why="diff only supports one or two "
+                                             "positional parameters.")
+        if n == 2:
+            version, new_version = diff_range
+        else:
+            new_version = diff_range[0]
+    if not version:
+        if not patches_branch:
+            if not branch:
+                branch = guess.current_branch()
+            patches_branch = guess.patches_branch(branch)
+        if not git.ref_exists('refs/remotes/%s' % patches_branch):
+            msg=("Patches branch not found: %s\n"
+                 "Can't guess current version.\n\n"
+                 "a) provide git tags/refs yourself a la:\n"
+                 "   $ rdopkg reqdiff 1.1.1 2.2.2\n\n"
+                 "b) add git remote with expected patches branch"
+                 % patches_branch)
+            raise exception.CantGuess(msg=msg)
+        version = git.get_latest_tag(branch=patches_branch)
+    if not new_version:
+        upstream_branch = guess.upstream_branch()
+        new_version = git.get_latest_tag(branch=upstream_branch)
+    return {
+        'version': version,
+        'new_version': new_version
+    }
+
+
+def reqdiff(version, new_version):
+    fmt = "\n{t.bold}requirements.txt diff{t.normal} between " \
+          "{t.bold}{old}{t.normal} and {t.bold}{new}{t.normal}:"
+    log.info(fmt.format(t=log.term, old=version, new=new_version))
+    rdiff = reqs.reqdiff_from_refs(version, new_version)
+    reqs.print_reqdiff(*rdiff)
 
 
 def _ensure_branch(branch):

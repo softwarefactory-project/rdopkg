@@ -2,7 +2,7 @@ from utils.exception import RdopkgException
 from utils.exception import CommandFailed, SpecFileNotFound, \
     IncompleteChangelog, MultipleSpecFilesFound, SpecFileParseError, \
     InvalidAction, ModuleNotAvailable, RpmModuleNotAvailable, \
-    BuildArchSanityCheckFailed
+    BuildArchSanityCheckFailed, BranchNotFound
 
 
 class UserAbort(RdopkgException):

@@ -59,11 +59,11 @@ def find_files(path, ext=None):
     return paths
 
 
-def print_list(l, nl_before=False, nl_after=False):
+def print_list(l, pre='- ', nl_before=False, nl_after=False):
     if nl_before:
         log.info("")
     for e in l:
-        log.info("- %s" % e)
+        log.info('%s%s' % (pre, e))
     if nl_after:
         log.info("")
 

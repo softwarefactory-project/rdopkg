@@ -21,6 +21,10 @@ class InvalidRemoteBranch(RdopkgException):
     msg_fmt = "Git remote not found for remote branch: %(branch)s"
 
 
+class BranchNotFound(RdopkgException):
+    msg_fmt = "Expected git branch not found: %(branch)s"
+
+
 class SpecFileNotFound(RdopkgException):
     msg_fmt = "No .spec files found."
 

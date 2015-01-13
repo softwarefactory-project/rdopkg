@@ -86,6 +86,7 @@ def main(cargs=None):
         runner.engage()
         code = 0
     except (
+            exception.BranchNotFound,
             exception.BuildArchSanityCheckFailed,
             exception.CantGuess,
             exception.ConfigError,
