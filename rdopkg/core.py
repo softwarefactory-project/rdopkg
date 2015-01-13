@@ -17,8 +17,6 @@ def default_action_manager():
 
 
 class ActionRunner(object):
-    persistent_attrs = ('version', 'to_version', 'release')
-
     def __init__(self, action_manager=None, state_file_path=None):
         if not action_manager:
             action_manager = default_action_manager()
@@ -48,6 +46,14 @@ class ActionRunner(object):
         self.args = data['args']
         sf.close()
 
+    def clear_state(self, state_file=True, verbose=False):
+        self.action = []
+        self.args = {}
+        if state_file and os.path.isfile(self.state_file_path):
+            os.remove(self.state_file_path)
+            if verbose:
+                print("State file removed.")
+
     def load_state_safe(self):
         try:
             self.load_state()
@@ -62,8 +68,8 @@ class ActionRunner(object):
             else:
                 raise
 
-    def _new_action_check(self):
-        if self.action:
+    def _new_action_check(self, new_action):
+        if self.action and not new_action.atomic:
             print("An action is in progress:\n")
             self.info()
             print
@@ -71,11 +77,10 @@ class ActionRunner(object):
             if cnf != '' and cnf.lower() != 'y':
                 raise exception.UserAbort()
             print
-            os.remove(self.state_file_path)
-            print("State file removed.")
+            self.clear_state(verbose=True)
 
     def new_action(self, action, args=None):
-        self._new_action_check()
+        self._new_action_check(action)
         if args:
             self.args = args
         if isinstance(action, _action.Action):
@@ -88,7 +93,7 @@ class ActionRunner(object):
                     break
         if not self.action:
             raise exception.InvalidAction(action=action)
-        if action.steps:
+        if not action.atomic and action.steps:
             self.save_state()
 
     def print_progress(self):
@@ -135,20 +140,17 @@ class ActionRunner(object):
         else:
             print "No action in progress."
 
-    def _action_finished(self):
-        if os.path.isfile(self.state_file_path):
-            os.remove(self.state_file_path)
-        self.action = []
-        self.args = {}
-
     def engage(self):
         if not self.action:
             raise exception.NoActionInProgress
+        atomic = self.action[0].atomic
+
+        def _save_state():
+            if not atomic:
+                self.save_state()
         self.action_manager.ensure_leaf_action(self.action,
-                                            on_change_callback=self.save_state)
-        atomic = False
-        if self.action:
-            atomic = self.action[0].atomic
+                                               on_change_callback=_save_state)
+
         abort = False
         while self.action:
             new_args = None
@@ -162,7 +164,7 @@ class ActionRunner(object):
                 select_next = not ex.kwargs.get('rerun', False)
                 abort = True
             except exception.ActionFinished as ex:
-                self._action_finished()
+                self.clear_state(state_file=not atomic)
                 print(ex)
                 return
             except exception.ActionGoto as ex:
@@ -178,9 +180,10 @@ class ActionRunner(object):
             if not self.action:
                 if not atomic:
                     print("Action finished.")
-                self._action_finished()
+                self.clear_state(state_file=not atomic)
                 return
-            self.save_state()
+            if not atomic:
+                self.save_state()
             if abort:
                 return
 
