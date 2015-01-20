@@ -208,6 +208,16 @@ class Git(ShellCommand):
         # git commit -C HEAD --amend
         self("commit", "--amend", "--no-edit")
 
+    def branch_needs_push(self, branch=None):
+        if not branch:
+            branch = self.current_branch()
+        remote_branch = self.remote_of_local_branch(branch)
+        h1 = self.get_latest_commit_hash(branch)
+        h2 = self.get_latest_commit_hash(remote_branch)
+        return h1 != h2
+
+
+
     def linearize(self, starting_point, branch=None):
         if branch is not None and self.current_branch() != branch:
             self('checkout', branch)
@@ -234,6 +244,13 @@ class Git(ShellCommand):
         rng = self.rev_range(from_revision, to_revision)
         log_out = self('log', '--format=%h', rng, log_cmd=False)
         return self._parse_output(log_out)
+
+    def get_latest_commit_hash(self, ref=None):
+        cmd = ['log', '-n', '1', '--format=%H']
+        if ref:
+            cmd.append(ref)
+        out = self(*cmd, log_cmd=False)
+        return out
 
     def get_latest_tag(self, branch=None):
         cmd = ['describe', '--abbrev=0', '--tags']

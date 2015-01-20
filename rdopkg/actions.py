@@ -62,6 +62,8 @@ ACTIONS = [
                    help="don't reset local patches branch, use it as is"),
                Arg('bump_only', shortcut='-b', action='store_true',
                    help="only bump .spec to new version a la rpmdev-bumpspec"),
+               Arg('no_diff', shortcut='-d', action='store_true',
+                   help="don't show git/requirements diff"),
                Arg('no_new_sources', shortcut='-n', action='store_true',
                    help="don't run `fedpkg new-sources`"),
            ],
@@ -376,8 +378,8 @@ def ensure_patches_branch(patches_branch=None, local_patches=False,
                   patches_branch))
 
 
-def diff(version, new_version, bump_only=False):
-    if bump_only:
+def diff(version, new_version, bump_only=False, no_diff=False):
+    if bump_only or no_diff:
         return
     git('--no-pager', 'diff', '--stat', '%s..%s' % (version, new_version),
         direct=True)
@@ -992,6 +994,10 @@ def koji_build(update_file=None, skip_build=False):
         fcmd = kojibuild.get_fedpkg_commands()
         build_id = fcmd.nvr
     else:
+        if git.branch_needs_push():
+            helpers.confirm("It seems local distgit branch needs push. Push "
+                            "now?")
+        git('push')
         build_id = kojibuild.new_build()
     build = kojibuild.guess_build(build_id)
     _show_update_entry(build)

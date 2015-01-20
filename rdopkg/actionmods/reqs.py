@@ -1,7 +1,7 @@
 import re
 
 
-from rdopkg.utils.cmd import run, git
+from rdopkg.utils.cmd import git
 from rdopkg.utils import log
 from rdopkg import helpers
 
