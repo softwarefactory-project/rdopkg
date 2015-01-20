@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.22
+Version:          0.23
 Release:          1%{?dist}
 Summary:          RDO packaging automation tool
 
@@ -74,5 +74,11 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Tue Jan 20 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.23-1
+- Update to 0.23
+- kojibuild: offer push when needed
+- reqdiff: new action & integrated into new-version
+- core: fix state file handling and atomic actions
+
 * Tue Dec 09 2014 Jakub Ruzicka <jruzicka@redhat.com> 0.22-1
 - Open source rdopkg

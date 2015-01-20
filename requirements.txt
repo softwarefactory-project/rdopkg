@@ -1,5 +1,6 @@
 blessings
 paramiko
 pyyaml
-git+http://github.com/yac/rdoupdate.git
-# asciidoc
+requests
+rdoupdate>=0.13
+# asciidoc for docs/sdist
