@@ -1,12 +1,12 @@
 Name:             rdopkg
-Version:          0.23
+Version:          0.23.1
 Release:          1%{?dist}
 Summary:          RDO packaging automation tool
 
 Group:            Development/Languages
 License:          ASL 2.0
 URL:              https://github.com/redhat-openstack/rdopkg.git
-Source0:          %{name}-%{version}.tar.gz
+Source0:          https://pypi.python.org/packages/source/r/%{name}/%{name}-%{version}.tar.gz
 
 BuildArch:        noarch
 
@@ -51,29 +51,33 @@ This package contains additional rdoupdate build sources used for updating RDO.
 %install
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
-# man page
-install -p -D -m 644 doc/rdopkg.1 %{buildroot}%{_mandir}/man1/rdopkg.1
-install -p -D -m 644 doc/rdopkg-adv-patch.7 %{buildroot}%{_mandir}/man7/rdopkg-adv-patch.7
-install -p -D -m 644 doc/rdopkg-adv-new-version.7 %{buildroot}%{_mandir}/man7/rdopkg-adv-new-version.7
-install -p -D -m 644 doc/rdopkg-adv-coprbuild.7 %{buildroot}%{_mandir}/man7/rdopkg-adv-coprbuild.7
+# man pages
+install -d -m 755 %{buildroot}%{_mandir}/man{1,7}
+install -p -m 644 doc/man/*.1 %{buildroot}%{_mandir}/man1/
+install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 
-# additional build sources
+# additional build sources for rdoupdate
 mkdir -p %{buildroot}%{python_sitelib}/rdoupdate/bsources
 cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 
 %files
 %doc README.md
-%doc doc/rdopkg.1.ronn doc/rdopkg.1.html
+%doc doc/*.txt doc/html
+%license LICENSE
 %{_bindir}/rdopkg
 %{python_sitelib}/rdopkg
 %{python_sitelib}/*.egg-info
-%{_mandir}/man1/rdopkg.1*
-%{_mandir}/man7/rdopkg-adv-*
+%{_mandir}/man1
+%{_mandir}/man7
 
 %files bsources
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Thu Jan 22 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.23.1-1
+- Update to 0.23.1
+- Packaging fixes
+
 * Tue Jan 20 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.23-1
 - Update to 0.23
 - kojibuild: offer push when needed
