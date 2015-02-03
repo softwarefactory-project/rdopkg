@@ -126,6 +126,25 @@ def test_update_git_am_buildarch_fail(tmpdir):
     assert commit_before == commit_after, "New commit created"
 
 
+def test_update_autosetup(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'autosetup')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        common.prep_patches_branch(dist_path)
+        spec_before = spec_path.read()
+        commit_before = git('rev-parse', 'HEAD')
+        common.add_patches(extra=True)
+        actions.update_patches('master',
+                               local_patches_branch='master-patches',
+                               version='1.2.3')
+        spec_after = spec_path.read()
+        commit_after = git('rev-parse', 'HEAD')
+        apply_method = specfile.Spec().patches_apply_method()
+    assert apply_method == 'autosetup'
+    common.assert_distgit(dist_path, 'patched-autosetup')
+    assert commit_before != commit_after, "New commit not created"
+
+
 def test_wipe(tmpdir):
     shutil.copyfile(common.spec_path('some'), str(tmpdir.join('foo.spec')))
     with tmpdir.as_cwd():

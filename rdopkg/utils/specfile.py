@@ -213,8 +213,10 @@ class Spec(object):
             self.buildarch_sanity_check()
 
     def patches_apply_method(self):
-        if re.search(r'^git am %\{patches\}', self.txt, flags=re.M):
+        if '\ngit am %{patches}' in self.txt:
             return 'git-am'
+        if '\n%autosetup' in self.txt:
+            return 'autosetup'
         return 'rpm'
 
     def set_new_patches(self, fns):
