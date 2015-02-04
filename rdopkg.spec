@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.23.1
+Version:          0.24
 Release:          1%{?dist}
 Summary:          RDO packaging automation tool
 
@@ -15,7 +15,7 @@ BuildRequires:    python2-devel
 BuildRequires:    PyYAML
 
 Requires:         rdopkg-bsources >= %{version}
-Requires:         python-rdoupdate >= 0.13
+Requires:         python-rdoupdate >= 0.14
 Requires:         python-paramiko
 Requires:         python-requests
 Requires:         python-setuptools
@@ -35,7 +35,7 @@ submitting of new RDO packages.
 %package bsources
 Summary:         Additional RDO build sources for rdoupdate
 
-Requires:        python-rdoupdate >= 0.13
+Requires:        python-rdoupdate >= 0.14
 Requires:        python-beautifulsoup4
 
 %description bsources
@@ -74,6 +74,11 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Wed Feb 04 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.24-1
+- Update to upstream 0.24
+- update-patches: support %autosetup patch apply method
+- Require rdoupdate with cbs support
+
 * Thu Jan 22 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.23.1-1
 - Update to 0.23.1
 - Packaging fixes
