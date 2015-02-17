@@ -22,8 +22,11 @@ class PlainTerminal(object):
         setattr(self, attr, self.nullstr)
         return self.nullstr
 
+
+COLOR_TERMINAL = False
 try:
     import blessings
+    COLOR_TERMINAL = True
     Terminal = blessings.Terminal
 except ImportError:
     Terminal = PlainTerminal

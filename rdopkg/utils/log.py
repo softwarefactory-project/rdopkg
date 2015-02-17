@@ -1,6 +1,6 @@
 import logging
 
-from terminal import Terminal
+import terminal
 
 
 INFO = logging.INFO
@@ -17,7 +17,7 @@ if len(log.handlers) < 1:
     log.addHandler(handler)
 
 
-class LogTerminal(Terminal):
+class LogTerminal(terminal.Terminal):
     @property
     def warn(self):
         return self.yellow
@@ -40,6 +40,24 @@ class LogTerminal(Terminal):
 
 
 term = LogTerminal()
+
+
+def set_colors(colors):
+    global term
+    if colors == 'yes':
+        if not terminal.COLOR_TERMINAL:
+            return False
+        term = LogTerminal(force_styling=True)
+        return True
+    elif colors == 'no':
+        if not terminal.COLOR_TERMINAL:
+            return True
+        term = LogTerminal(force_styling=None)
+        return True
+    elif colors == 'auto':
+        term = LogTerminal()
+        return True
+    return False
 
 
 def error(*args, **kwargs):
