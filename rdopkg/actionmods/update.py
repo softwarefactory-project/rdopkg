@@ -119,6 +119,19 @@ def update_rdoinfo_check(update):
         helpers.confirm("Submit anyway?")
 
 
+def update_summary(update):
+    u = defaultdict(set)
+    for build in update.builds:
+        u[build.repo].add(build.dist)
+    s = ''
+    for rls in sorted(u.keys()):
+        if s:
+            s += '/'
+        s += rls
+        for dist in u[rls]:
+            s += '_' + dist
+    return s
+
 
 class UpdateInfo(object):
     def __init__(self, upf, update, authors,
@@ -162,7 +175,8 @@ class UpdateRepo(repoman.RepoManager):
         with self.repo_dir():
             if not os.path.isfile(upfile_path):
                 raise exception.UpdateFileNotFound(path=upfile_path)
-            branch = 'update/%s' % id
+            update = rdoupdate.actions.check_file(upfile_path)
+            branch = update_summary(update)
             commit_msg = "New %s" % id
             if msg:
                 commit_msg += "\n\n%s\n" % msg
