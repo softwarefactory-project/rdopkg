@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.24
+Version:          0.25
 Release:          1%{?dist}
 Summary:          RDO packaging automation tool
 
@@ -74,6 +74,11 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Wed Feb 18 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.25-1
+- Update to 0.25
+- update: parsable update summary in gerrit topic
+- Provide set_colors function to control color output
+
 * Wed Feb 04 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.24-1
 - Update to upstream 0.24
 - update-patches: support %autosetup patch apply method
