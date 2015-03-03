@@ -123,6 +123,7 @@ class RdoinfoRepo(repoman.RepoManager):
 def print_pkg(pkg):
     dp = helpers.DictPrinter(
         header='name',
-        first=['conf', 'upstream', 'patches', 'distgit', 'master-distgit'],
+        first=['project', 'conf', 'upstream', 'patches', 'distgit', 'master',
+               'distgit'],
         last=['maintainers'])
     dp(pkg)
