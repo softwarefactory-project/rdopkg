@@ -383,7 +383,10 @@ def diff(version, new_version, bump_only=False, no_diff=False):
         return
     git('--no-pager', 'diff', '--stat', '%s..%s' % (version, new_version),
         direct=True)
-    reqdiff(version, new_version)
+    try:
+        reqdiff(version, new_version)
+    except Exception:
+        pass
     raw_input("Press <Enter> to continue after you inspected the diff. ")
 
 
