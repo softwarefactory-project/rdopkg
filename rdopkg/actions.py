@@ -248,9 +248,6 @@ ACTIONS = [
                    help="show info about packages with ATTR matching REGEX"),
                Arg('force_fetch', shortcut='-f', action='store_true',
                    help="force fetch of info repo"),
-           ],
-           steps=[
-               Action('info', atomic=True),
            ]),
 ]
 
