@@ -26,7 +26,7 @@ def parse_reqs_txt(txt):
         if not line or re.match('\W', line):
             continue
         line = re.sub(r'\s*(?:#.*)$', '', line)
-        m = re.match(r'([\w.]+)(.*)$', line)
+        m = re.match(r'([^<>=\s]+)(.*)$', line)
         if not m:
             log.warn("Failed to parse requirement: %s" % line)
             continue
@@ -53,7 +53,7 @@ def reqdiff(reqs1, reqs2):
                 try:
                     removed.remove(r1)
                 except Exception as ex:
-                    print "---" + str(r1)
+                    pass
                 break
         else:
             added.append(r2)
