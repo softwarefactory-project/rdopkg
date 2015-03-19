@@ -6,6 +6,7 @@ import time
 RPM_AVAILABLE = False
 try:
     import rpm
+    import rpmUtils.miscutils
     RPM_AVAILABLE = True
 except ImportError:
     pass
@@ -45,6 +46,15 @@ def release_parts(release):
 
 def has_macros(s):
     return s.find('%{') != -1
+
+
+def nvrcmp(nvr1, nvr2):
+    if not RPM_AVAILABLE:
+        raise exception.RpmModuleNotAvailable()
+    t1 = rpmUtils.miscutils.stringToVersion(nvr1)
+    t2 = rpmUtils.miscutils.stringToVersion(nvr2)
+    return rpm.labelCompare(t1, t2)
+
 
 class Spec(object):
     """

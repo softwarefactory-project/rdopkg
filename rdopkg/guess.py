@@ -139,7 +139,7 @@ def fuser():
 
 
 def _get_rdoinfo():
-    inforepo = rdoinfo.RdoinfoRepo(cfg['HOME_DIR'], cfg['RDOINFO_REPO'])
+    inforepo = rdoinfo.get_default_inforepo()
     inforepo.init(force_fetch=False)
     return inforepo.get_info()
 

@@ -25,6 +25,10 @@ class InvalidUsage(RdopkgException):
     msg_fmt = "Invalid usage: %(why)s"
 
 
+class InvalidQuery(RdopkgException):
+    msg_fmt = "Invalid query: %(why)s"
+
+
 class InvalidPackageFilter(RdopkgException):
     msg_fmt = "Invalid package filter: %(why)s"
 

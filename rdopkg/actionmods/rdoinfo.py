@@ -6,6 +6,7 @@ from rdopkg import exception
 from rdopkg import helpers
 from rdopkg import repoman
 from rdopkg.utils import log
+from rdopkg.conf import cfg
 
 
 def filter_pkgs(pkgs, rexen):
@@ -42,6 +43,7 @@ class RdoinfoRepo(repoman.RepoManager):
         repoman.RepoManager.__init__(self, *args, **kwargs)
         self.rdoinfo = None
         self.info_file = kwargs.get('info_file', 'rdo.yml')
+        self._info = None
 
     def ensure_rdoinfo(self):
         if self.rdoinfo:
@@ -55,9 +57,44 @@ class RdoinfoRepo(repoman.RepoManager):
             info = self.rdoinfo.parse_info_file(self.info_file)
         return info
 
-    def print_releases(self, info):
+    @property
+    def info(self):
+        if not self._info:
+            self._info = self.get_info()
+        return self._info
+
+    def get_release(self, release):
+        for rls in self.info['releases']:
+            if rls.get('name') == release:
+                return rls
+        return None
+
+    def get_distrepos(self, release, dist=None):
+        # release is required now, but this function can be extended to
+        # return distrepos for multiple releases if needed
+        rls = self.get_release(release)
+        if not rls:
+            why = 'release not defined in rdoinfo: %s' % release
+            raise exception.InvalidQuery(why=why)
+        found_dist = False
+        distrepos = []
+        for repo in rls['repos']:
+            if dist and repo['name'] != dist:
+                continue
+            dr = repo.get('distrepos')
+            if dr:
+                distrepos.append((release, repo['name'], dr))
+            if dist:
+                found_dist = True
+                break
+        if dist and not found_dist:
+            why = 'dist not defined in rdoinfo: %s/%s' % (release, dist)
+            raise exception.InvalidQuery(why=why)
+        return distrepos
+
+    def print_releases(self):
         print "{t.bold}RDO releases & repos:{t.normal}".format(t=log.term)
-        for rls in info['releases']:
+        for rls in self.info['releases']:
             s = "  {t.bold}{rls}{t.normal}".format(t=log.term, rls=rls['name'])
             if 'fedora' in rls:
                 s += '   (Fedora %s)' % rls['fedora']
@@ -78,8 +115,8 @@ class RdoinfoRepo(repoman.RepoManager):
                         bs=repo.get('buildsys', '??'),
                         branch=repo['branch']))
 
-    def print_pkg_summary(self, info):
-        pkgs = info['packages']
+    def print_pkg_summary(self):
+        pkgs = self.info['packages']
         n = len(pkgs)
         print "{t.bold}{n} RDO packages defined:{t.normal}".format(
             t=log.term, n=n)
@@ -97,13 +134,12 @@ class RdoinfoRepo(repoman.RepoManager):
         n = confs.get(None)
         if n:
             print("  {t.bold}{n}{t.normal} configured ad-hoc".format(
-                t=log.term, n=n))
+                  t=log.term, n=n))
 
     def print_summary(self):
-        info = self.get_info()
-        self.print_releases(info)
+        self.print_releases()
         print('')
-        self.print_pkg_summary(info)
+        self.print_pkg_summary()
 
     def print_pkgs(self, filters=None):
         info = self.get_info()
@@ -118,6 +154,10 @@ class RdoinfoRepo(repoman.RepoManager):
         for pkg in pkgs:
             print("")
             print_pkg(pkg)
+
+
+def get_default_inforepo():
+    return RdoinfoRepo(cfg['HOME_DIR'], cfg['RDOINFO_REPO'])
 
 
 def print_pkg(pkg):

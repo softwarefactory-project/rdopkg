@@ -11,6 +11,7 @@ from rdopkg.actionmods import copr as _copr
 from rdopkg.actionmods import kojibuild
 from rdopkg.actionmods import nightly
 from rdopkg.actionmods import pushupdate
+from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import rdoinfo
 from rdopkg.actionmods import reqs
 from rdopkg.actionmods import reviews
@@ -248,6 +249,16 @@ ACTIONS = [
                    help="show info about packages with ATTR matching REGEX"),
                Arg('force_fetch', shortcut='-f', action='store_true',
                    help="force fetch of info repo"),
+               ]),
+    Action('query', atomic=True, help="query RDO and distribution repos for "
+                                      "available package versions",
+           optional_args=[
+               Arg('filter', positional=True, metavar='RELEASE(/DIST)',
+                   help="RDO release(/dist) to query (see `rdopkg info`)"),
+               Arg('package', positional=True, metavar='PACKAGE',
+                   help="package name to query about"),
+               Arg('verbose', shortcut='-v', action='store_true',
+                   help="print status during queries"),
            ]),
 ]
 
@@ -1008,7 +1019,7 @@ def koji_build(update_file=None, skip_build=False):
 def info(pkgs=None, info_repo=None, force_fetch=False, verbose=False):
     if not info_repo:
         info_repo = cfg['RDOINFO_REPO']
-    inforepo = rdoinfo.RdoinfoRepo(cfg['HOME_DIR'], info_repo, verbose=verbose)
+    inforepo = rdoinfo.get_default_inforepo()
     inforepo.init(force_fetch=force_fetch)
     if pkgs:
         filters = {}
@@ -1028,3 +1039,13 @@ def info(pkgs=None, info_repo=None, force_fetch=False, verbose=False):
               "    rdopkg info conf:client maintainers:jruzicka\n"
               "    rdopkg info '.*'"
               "{t.normal}".format(t=log.term))
+
+
+def query(filter, package, verbose=False):
+    r = _query.query_rdo(filter, package, verbose=verbose)
+    if not r:
+        log.warn('No distrepos information in rdoinfo for %s' % filter)
+        return
+    if verbose:
+        print('')
+    _query.pretty_print_query_results(r)

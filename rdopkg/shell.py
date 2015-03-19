@@ -95,6 +95,7 @@ def main(cargs=None):
             exception.FileNotFound,
             exception.IncompleteChangelog,
             exception.InvalidPackageFilter,
+            exception.InvalidQuery,
             exception.InvalidUsage,
             exception.ManualResolutionNeeded,
             exception.NotADirectory,
