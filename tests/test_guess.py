@@ -12,8 +12,9 @@ def test_guess_release():
         ('f19', 'grizzly'),
         ('f20', 'havana'),
         ('f21', 'icehouse'),
+        ('f22', 'juno'),
         # XXX: moving part (will need update on new Fedora)
-        ('master', 'juno'),
+        ('master', 'kilo'),
     ]
     for branch, rls in cases:
         grls = guess.osrelease(branch)
