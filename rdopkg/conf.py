@@ -36,9 +36,8 @@ class Config(dict):
 cfg = Config({
     'HOME_DIR': os.path.expanduser("~/.rdopkg"),
     'RDOINFO_REPO': "https://github.com/redhat-openstack/rdoinfo.git",
-    'RDO_UPDATE_REPO': "https://review.gerrithub.io/redhat-openstack/rdo-update",
+    'RDO_UPDATE_REPO': 'ssh://review.gerrithub.io:29418/redhat-openstack/rdo-update',
     'RDO_UPDATE_GERRIT_HOST': 'review.gerrithub.io',
-    'RDO_UPDATE_GERRIT_SSH': 'ssh://review.gerrithub.io:29418/redhat-openstack/rdo-update',
     'FETCH_PERIOD': 600,
 })
 cfg_files = []

@@ -21,7 +21,7 @@ def get_review_update_info(review, gitdir):
     uploader = patch_set['uploader']
     apprs = patch_set.get('approvals', [])
     authors = ["%s <%s>" % (uploader['name'], uploader['email'])]
-    cmd.git('fetch', cfg['RDO_UPDATE_GERRIT_SSH'], ref, log_cmd=False)
+    cmd.git('fetch', cfg['RDO_UPDATE_REPO'], ref, log_cmd=False)
     cmd.git('checkout', 'FETCH_HEAD', log_cmd=False)
     upf = rdoupdate.actions.get_last_commit_update('.')
     update = rdoupdate.actions.check_file(upf)
