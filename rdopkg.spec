@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.25
+Version:          0.26
 Release:          1%{?dist}
 Summary:          RDO packaging automation tool
 
@@ -74,6 +74,13 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Mon Mar 30 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.26-1
+- Update to 0.26
+- query: new action to query RDO package versions
+- update: use SSH for update repo
+- reqdiff: fix stupid regexp
+- new-version: ignore missing requirements.txt diff
+
 * Wed Feb 18 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.25-1
 - Update to 0.25
 - update: parsable update summary in gerrit topic
