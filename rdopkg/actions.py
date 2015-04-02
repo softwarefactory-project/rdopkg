@@ -577,8 +577,8 @@ def update_spec(branch=None, changes=None,
     spec.save()
 
 
-def get_source(bump_only=False):
-    if bump_only:
+def get_source(no_new_sources=False):
+    if no_new_sources:
         return
     source_urls = specfile.Spec().get_source_urls()
     # So far, only Source0 is a tarball to download
@@ -595,11 +595,8 @@ def get_source(bump_only=False):
                 ".spec file.", rerun=True)
 
 
-def new_sources(branch=None, fedpkg=FEDPKG, no_new_sources=False,
-                bump_only=False):
+def new_sources(branch=None, fedpkg=FEDPKG, no_new_sources=False):
     _ensure_branch(branch)
-    if bump_only:
-        return
     if no_new_sources:
         log.info("skipping `%s new-sources` as requested." % fedpkg[0])
         return
