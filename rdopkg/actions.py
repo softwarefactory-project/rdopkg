@@ -13,7 +13,7 @@ from rdopkg.actionmods import nightly
 from rdopkg.actionmods import pushupdate
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import rdoinfo
-from rdopkg.actionmods import reqs
+from rdopkg.actionmods import reqs as _reqs
 from rdopkg.actionmods import reviews
 from rdopkg.actionmods import update as _update
 from utils import log
@@ -125,6 +125,12 @@ ACTIONS = [
                         "2 args: diff between 1st and 2nd supplied revisions"),
                ],
            ),
+    Action('reqcheck', atomic=True, help="inspect "
+                                         "requirements.txt vs .spec Requires",
+           steps=[
+               Action('get_package_env'),
+               Action('reqcheck'),
+           ]),
     Action('update', atomic=True, help="submit RDO update",
            optional_args=[
                Arg('update_file', positional=True, nargs='?',
@@ -436,8 +442,13 @@ def reqdiff(version, new_version):
     fmt = "\n{t.bold}requirements.txt diff{t.normal} between " \
           "{t.bold}{old}{t.normal} and {t.bold}{new}{t.normal}:"
     log.info(fmt.format(t=log.term, old=version, new=new_version))
-    rdiff = reqs.reqdiff_from_refs(version, new_version)
-    reqs.print_reqdiff(*rdiff)
+    rdiff = _reqs.reqdiff_from_refs(version, new_version)
+    _reqs.print_reqdiff(*rdiff)
+
+
+def reqcheck(version):
+    reqcheck = _reqs.reqcheck_spec(version)
+    _reqs.print_reqcheck(*reqcheck)
 
 
 def _ensure_branch(branch):

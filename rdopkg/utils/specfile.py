@@ -1,4 +1,5 @@
 import codecs
+from collections import defaultdict
 import os
 import re
 import time
@@ -347,3 +348,26 @@ class Spec(object):
         if strip:
             lines = map(lambda x: x.lstrip(" -*\t"), lines)
         return lines[0], lines[1:]
+
+    def get_requires(self, versions_as_string=False, remove_epoch=True):
+        reqs = defaultdict(set)
+        for pkg in self.rpmspec.packages:
+            pkg_reqs = pkg.header.dsFromHeader('requirename')
+            for req in pkg_reqs:
+                m = re.match(r'R (\S+)\s+([=<>!]+)\s*(\S+)', req.DNEVR())
+                if m:
+                    name, eq, ver = m.groups()
+                    if eq == '=':
+                        eq = '=='
+                    if remove_epoch:
+                        _, sep, rest = ver.partition(':')
+                        if sep:
+                            ver = rest
+                    reqs[name].add(eq + ver)
+                else:
+                    name = req.N()
+                    reqs[name]
+        if versions_as_string:
+            for name in reqs:
+                reqs[name] = ','.join(reqs[name])
+        return reqs
