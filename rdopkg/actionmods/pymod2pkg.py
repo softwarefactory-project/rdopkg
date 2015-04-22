@@ -33,7 +33,12 @@ class MultiRule(TranslationRule):
 
 
 def default_tr(mod):
-        return 'python-' + mod.replace('_', '-').replace('.', '-').lower()
+    pkg = mod.rsplit('-python')[0]
+    pkg = pkg.replace('_', '-').replace('.', '-').lower()
+    if pkg.startswith('python-'):
+        return pkg
+    else:
+        return 'python-' + pkg
 
 
 def exact_tr(mod):
@@ -57,6 +62,7 @@ RPM_PKG_MAP = [
     SingleRule('pastedeploy', 'python-paste-deploy'),
     SingleRule('sqlalchemy-migrate', 'python-migrate'),
     SingleRule('qpid-python', 'python-qpid'),
+    SingleRule('posix_ipc', 'python-posix_ipc'),
     MultiRule(
         mods=['PyYAML', 'm2crypto', 'numpy', 'pyflakes', 'pylint', 'pyparsing',
               'pytz', 'pysendfile', 'libvirt-python'],

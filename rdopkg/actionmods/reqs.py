@@ -146,7 +146,7 @@ def print_reqcheck(met, any_version, wrong_version, missing):
     cats = [
         ("\n{t.bold_green}MET{t.normal}:", met),
         ("\n{t.bold}VERSION NOT ENFORCED{t.normal}:", any_version),
-        ("\n{t.bold_yellow}VERSION MISSMATCH{t.normal}:", wrong_version),
+        ("\n{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
         ("\n{t.bold_red}MISSING{t.normal}:", missing),
         ]
     for title, reqs in cats:
