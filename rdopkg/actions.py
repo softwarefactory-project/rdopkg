@@ -680,9 +680,10 @@ def update_patches(branch, local_patches_branch,
     spec.sanity_check()
     n_excluded = spec.get_n_excluded_patches()
 
-    pfns = spec.get_patch_fns()
-    for pfn in pfns:
+    patch_fns = spec.get_patch_fns()
+    for pfn in patch_fns:
         git('rm', '--ignore-unmatch', pfn)
+    patch_fns = []
 
     if n_excluded > 0:
         patches = patches[:-n_excluded]
@@ -697,11 +698,11 @@ def update_patches(branch, local_patches_branch,
 
         rng = git.rev_range(start_commit + '~', local_patches_branch)
         o = git('format-patch', '--no-renames', '--no-signature', '-N', rng)
-        pfns = git._parse_output(o)
-        spec.set_new_patches(pfns)
-        for pfn in pfns:
+        patch_fns = git._parse_output(o)
+        for pfn in patch_fns:
             git('add', pfn)
 
+    spec.set_new_patches(patch_fns)
     spec.save()
     if git.is_clean():
         log.info('No new patches.')
