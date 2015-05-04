@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.27
+Version:          0.27.1
 Release:          1%{?dist}
 Summary:          RDO packaging automation tool
 
@@ -74,6 +74,10 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Mon May 04 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.27.1-1
+- Update to 0.27.1
+- update-patches: create commit even with only removed patches
+
 * Mon Apr 27 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.27-1
 - Update to 0.27
 - reqcheck: new action to check for correct Requires
