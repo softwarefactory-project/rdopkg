@@ -266,6 +266,8 @@ ACTIONS = [
                Arg('verbose', shortcut='-v', action='store_true',
                    help="print status during queries"),
            ]),
+    Action('autocomplete', atomic=True,
+           help="get TAB completion for rdopkg!")
 ]
 
 
@@ -1067,3 +1069,23 @@ def query(filter, package, verbose=False):
     if verbose:
         print('')
     _query.pretty_print_query_results(r)
+
+
+def autocomplete():
+    try:
+        import argcomplete
+        print("argcomplete module is available.")
+    except ImportError:
+        print(
+            "You're missing the argcomplete python module. Install it using\n\n"
+            "    # yum install -y python-argcomplete\n\n"
+            "or\n\n"
+            "    # pip install argcomplete\n\n"
+            "and run `rdopkg autocomplete` again.")
+        return
+    print('')
+    print(
+        "Make sure following line is somewhere in your bash config:\n\n"
+        '    eval "$(register-python-argcomplete rdopkg)"\n\n'
+        "For zsh, you need bashcompinit, see https://github.com/kislyuk/"
+        "argcomplete/issues/10#issuecomment-19369876")

@@ -11,6 +11,13 @@ import core
 import exception
 from utils import log
 
+ARGCOMPLETE_AVAILABLE = False
+try:
+    import argcomplete
+    ARGCOMPLETE_AVAILABLE = True
+except ImportError:
+    pass
+
 
 def action2cmd(action):
     return action.replace('_', '-')
@@ -65,6 +72,9 @@ def main(cargs=None):
     runner.load_state_safe()
 
     parser = get_parser(runner)
+    if ARGCOMPLETE_AVAILABLE:
+        argcomplete.autocomplete(parser)
+
     if not cargs:
         parser.print_help()
         return
