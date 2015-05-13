@@ -1,6 +1,8 @@
 import re
 
 
+from rdopkg.actionmods import rdoinfo
+from rdopkg.actionmods import query
 from rdopkg.actionmods import pymod2pkg
 from rdopkg import exception
 from rdopkg.utils.cmd import git
@@ -74,9 +76,22 @@ def get_reqs_from_path(path):
     return parse_reqs_txt(o)
 
 
-def get_reqs_from_spec():
+def get_reqs_from_spec(as_objects=False):
     spec = specfile.Spec()
-    return spec.get_requires(versions_as_string=True)
+    reqs = spec.get_requires(versions_as_string=True)
+    if as_objects:
+        creqs = []
+        for name in sorted(reqs):
+            req = DiffReq(name, reqs[name])
+            creqs.append(req)
+        return creqs
+    return reqs
+
+
+def map_reqs2pkgs(reqs, dist):
+    for r in reqs:
+        r.name = pymod2pkg.module2package(r.name, dist)
+    return reqs
 
 
 def reqdiff(reqs1, reqs2):
@@ -119,12 +134,6 @@ def print_reqdiff(added, changed, removed):
     if not (added or changed or removed):
         print("\nno requirements changed")
     print("")
-
-
-def map_reqs2pkgs(reqs, dist):
-    for r in reqs:
-        r.name = pymod2pkg.module2package(r.name, dist)
-    return reqs
 
 
 def reqcheck(desired_reqs, reqs):
@@ -173,3 +182,122 @@ def reqcheck_spec(ref=None, reqs_txt=None):
     map_reqs2pkgs(reqs_txt, 'epel')
     spec_reqs = get_reqs_from_spec()
     return reqcheck(reqs_txt, spec_reqs)
+
+
+VER_OK, VER_FAIL, VER_WTF = range(3)
+VERCMP_TABLE = {
+    '<': [-1],
+    '<=': [-1, 0],
+    '>': [1],
+    '>=': [1, 0],
+    '==': [0],
+    '=': [0],
+    '!=': [-1, 1],
+}
+VERCMP_COLORS = {
+    VER_OK: 'green',
+    VER_FAIL: 'red',
+    VER_WTF: 'yellow'
+}
+
+
+def match_version_rule(ver, rver):
+    m = re.match('(<|<=|>|>=|==|=|!=)(\d.*)$', rver)
+    if not m:
+        return VER_WTF
+    op, rv = m.groups()
+    goal = VERCMP_TABLE.get(op, [])
+    c = specfile.vcmp(ver, rv)
+    if c in goal:
+        return VER_OK
+    return VER_FAIL
+
+
+def match_required_vers(ver, rvers):
+    if not rvers:
+        if ver:
+            return [('any version', VER_OK)]
+        else:
+            return [('any version', VER_FAIL)]
+    matches = []
+    for rv in rvers.split(','):
+        matches.append((rv, match_version_rule(ver, rv)))
+    return matches
+
+
+def color_matched_required_vers(matches):
+    vers = []
+    for ver, m in matches:
+        s = '{t.%s}{v}{t.normal}' % VERCMP_COLORS[m]
+        vers.append(s.format(t=log.term, v=ver))
+    return ','.join(vers)
+
+
+def reqquery(reqs, release, dist=None, module2pkg=True, verbose=False):
+    info = rdoinfo.get_default_inforepo()
+    distrepos = info.get_distrepos(release=release, dist=dist)
+    r = []
+    for rls, dist, repos in distrepos:
+        packages = []
+        for req in reqs:
+            if module2pkg:
+                pkg_name = pymod2pkg.module2package(req.name, dist)
+            else:
+                pkg_name = req.name
+            vers = query.query_repos(repos, pkg_name, verbose=verbose)
+            repo, nvr, v = None, None, None
+            if vers:
+                repo, nvr = vers[0]
+                v = specfile.nvr2version(nvr)
+            pkg = {
+                'package': pkg_name,
+                'version_required': req.vers or None,
+                'version_available': v,
+                'nvr_available': nvr,
+                'repo_available': repo,
+                }
+            if module2pkg:
+                pkg['module'] = req.name
+            packages.append(pkg)
+        vers = {
+            'release': rls,
+            'dist': dist,
+            'packages': packages
+        }
+        r.append(vers)
+    return r
+
+
+def print_reqquery(q):
+    first = True
+    for ver in q:
+        if first:
+            first = False
+        else:
+            print('')
+        fmt = "\n{t.bold}{rls}{t.normal}/{t.bold}{dist}{t.normal}"
+        print(fmt.format(t=log.term, rls=ver['release'], dist=ver['dist']))
+        for pkg in ver['packages']:
+            module = pkg.get('module') or pkg['package']
+            mvers = match_required_vers(pkg['version_available'],
+                                        pkg['version_required'])
+            cvers = color_matched_required_vers(mvers)
+            nvr = pkg['nvr_available']
+            if nvr and pkg['version_available']:
+                nvr = re.sub(re.escape(pkg['version_available']),
+                             '{t.bold}%s{t.normal}' % pkg['version_available'],
+                             nvr)
+                nvr = nvr.format(t=log.term)
+            print("  {t.bold}{m}{t.normal}".format(t=log.term, m=module))
+            if nvr:
+                print("    nvr:   %s" % nvr)
+            else:
+                fmt = "    nvr:   {pkg} {t.red}not available{t.normal}"
+                print(fmt.format(t=log.term, pkg=pkg['package']))
+            print("    need:  %s" % cvers)
+            met = '{t.green}OK{t.normal}'
+            for _, m in mvers:
+                if m != VER_OK:
+                    met = '{t.red}not met{t.normal}'
+                    break
+            print(("    state: " + met).format(t=log.term))

@@ -3,33 +3,9 @@ import re
 
 import exception
 from utils.cmd import run, git
+from utils import specfile
 from rdopkg.actionmods import rdoinfo
 from rdopkg.conf import cfg
-
-
-OS_RELEASES = [
-    ('austin', None),
-    ('bexar', None),
-    ('cactus', None),
-    ('diablo', None),
-    ('essex', 1),
-    ('folsom', 2),
-    ('grizzly', 3),
-    ('havana', 4),
-    ('icehouse', 5),
-    ('juno', 6),
-    ('kilo', 7),
-]
-
-# XXX: moving part (will need update on new Fedora release)
-FEDORA_MASTER = 'f22'
-
-
-def os_release_name(n):
-    names = [name for name, ver in OS_RELEASES if ver == n]
-    if not names:
-        return None
-    return names[0]
 
 
 def package(default=exception.CantGuess):
@@ -41,6 +17,25 @@ def package(default=exception.CantGuess):
         else:
             return default
     return pkg
+
+
+def current_version(default=exception.CantGuess):
+    version = None
+    try:
+        spec = specfile.Spec()
+        version, _ = spec.get_patches_base(expand_macros=True)
+        if not version:
+            version = spec.get_tag('Version', expand_macros=True)
+        if not version:
+            raise exception.CantGuess(msg="got empty .spec Version")
+    except Exception as ex:
+        if default is exception.CantGuess:
+            raise exception.CantGuess(
+                what="current package version",
+                why=str(ex))
+        else:
+            return default
+    return version
 
 
 def current_branch(default=exception.CantGuess):
@@ -144,42 +139,16 @@ def _get_rdoinfo():
     return inforepo.get_info()
 
 
-def osrelease_internal(branch):
-    _branch = branch
-    if branch == 'master':
-        _branch = FEDORA_MASTER
-    m = re.match(r'f(\d+)$', _branch)
-    if m:
-        # XXX: RDO/Fedora dark magic: f19 -> grizzly, f20 -> havana, ...
-        fedn = int(m.group(1))
-        ver = fedn - 16
-        name = os_release_name(ver)
-        if name:
-            return name
-
-    for name, _ in OS_RELEASES:
-        m = re.search(r'\b%s\b' % name, branch, re.I)
-        if m:
-            return name
-    for name, ver in OS_RELEASES:
-        if not ver:
-            continue
-        m = re.search(r'\b(%d)\.\d+(?:\.\d+)*\b' % ver, branch)
-        if m:
-            return name
-    return None
-
-
-def osrelease_rdoinfo(branch):
+def osreleasedist_rdoinfo(branch):
     info = _get_rdoinfo()
     for rls in info['releases']:
         for repo in rls['repos']:
             if repo['branch'] == branch:
-                return rls['name']
-    return None
+                return rls['name'], repo['name']
+    return None, None
 
 
-def osrelease(branch=None, default=exception.CantGuess):
+def osreleasedist(branch=None, default=exception.CantGuess):
     if branch is None:
         try:
             branch = current_branch()
@@ -190,18 +159,25 @@ def osrelease(branch=None, default=exception.CantGuess):
             else:
                 return default
 
-    rls = osrelease_rdoinfo(branch)
+    rls, dist = osreleasedist_rdoinfo(branch)
     if rls:
-        return rls
-    rls = osrelease_internal(branch)
-    if rls:
-        return rls
+        return rls, dist
 
     if default is exception.CantGuess:
         raise exception.CantGuess(what="release",
                                   why="unknown branch '%s'" % branch)
     else:
         return default
+
+
+def osrelease(branch=None, default=exception.CantGuess):
+    rls, _ = osreleasedist(branch=branch, default=(default, None))
+    return rls
+
+
+def dist(branch=None, default=exception.CantGuess):
+    _, dist = osreleasedist(branch=branch, default=(None, default))
+    return dist
 
 
 def builds(release):
@@ -226,76 +202,3 @@ def osdist(branch=None):
     if branch.startswith('rhos-') or branch.startswith('rh-'):
         return 'RHOS'
     return 'RDO'
-
-
-# XXX: obsolete, remove if really unused
-def dist(branch=None, default=exception.CantGuess):
-    if branch is None:
-        try:
-            branch = current_branch()
-        except exception.CantGuess as ex:
-            if default is exception.CantGuess:
-                raise exception.CantGuess(what="dist",
-                                          why=ex.kwargs['why'])
-            else:
-                return default
-
-    m = re.search(r'\brhel-?(\d+)\b', branch, re.I)
-    if m:
-        return 'rhel-' + m.group(1)
-    m = re.search(r'\be(?:pe)?l-?(\d+)\b', branch, re.I)
-    if m:
-        return 'epel-' + m.group(1)
-    _branch = branch
-    if branch == 'master':
-        _branch = FEDORA_MASTER
-    m = re.search(r'\bf(?:edora)?-?(\d+)\b', _branch, re.I)
-    if m:
-        fedn = int(m.group(1))
-        # XXX: RDO provides packages for Fedora N-1
-        fedn -= 1
-        return 'fedora-%d' % fedn
-
-    if default is exception.CantGuess:
-        raise exception.CantGuess(what="dist",
-                                  why="unknown branch '%s'" % branch)
-    else:
-        return default
-
-
-def nvr(pkg=None, branch=None, default=exception.CantGuess):
-    if not pkg:
-        try:
-            pkg = package()
-        except exception.CantGuess:
-            if default is exception.CantGuess:
-                raise
-            else:
-                return default
-    if not branch:
-        try:
-            branch = current_branch()
-        except Exception:
-            if default is exception.CantGuess:
-                raise
-            else:
-                return default
-    tag = branch
-    if tag.startswith('el6-'):
-        tag = "dist-6E-epel-testing-candidate"
-    kojiout = run("koji", "latest-pkg",  "--quiet", tag, pkg,
-                  fatal=False, print_output=True)
-    if not kojiout.success:
-        if default is exception.CantGuess:
-            raise exception.CantGuess(what="nvr",
-                                      why="koji query failed")
-        else:
-            return default
-    m = re.match('^(\S+)\s+\S+\s+\S+$', kojiout)
-    if not m:
-        if default is exception.CantGuess:
-            raise exception.CantGuess(what="nvr",
-                                      why="can't parse koji output")
-        else:
-            return default
-    return m.group(1)

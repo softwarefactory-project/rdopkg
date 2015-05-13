@@ -1,5 +1,6 @@
 import os
 import re
+import yaml
 
 import rdoupdate.core
 
@@ -125,11 +126,48 @@ ACTIONS = [
                         "2 args: diff between 1st and 2nd supplied revisions"),
                ],
            ),
-    Action('reqcheck', atomic=True, help="inspect "
-                                         "requirements.txt vs .spec Requires",
+    Action('reqcheck', atomic=True,
+           help="inspect requirements.txt vs .spec Requires",
            steps=[
                Action('get_package_env'),
                Action('reqcheck'),
+           ]),
+    Action('reqquery', atomic=True,
+           help="query RDO repos for versions defined in requirements.txt",
+           required_args=[
+               Arg('filter', positional=True, metavar='RELEASE(/DIST)',
+                   nargs='?',
+                   help="RDO release(/dist) to query (see `rdopkg info`)"),
+           ],
+           optional_args=[
+               Arg('reqs_file', shortcut='-r', metavar='FILE',
+                   help="query supplied requirements.txt FILE"),
+               Arg('reqs_ref', shortcut='-R', metavar='VERSION',
+                   help="query requirements.txt from VERSION git ref"),
+               Arg('spec', shortcut='-s', action='store_true',
+                   help="query .spec file in current directory"),
+               Arg('load', shortcut='-l', action='store_true',
+                   help="load query results from requirements.yml "
+                        "(created with -d)"),
+               Arg('load_file', shortcut='-L', metavar='FILE',
+                   help="load query results from FILE (created with -D)"),
+               Arg('dump', shortcut='-d', action='store_true',
+                   help="dump query results to requirements.yml "
+                        "(view with -l)"),
+               Arg('dump_file', shortcut='-D', metavar='FILE',
+                   help="dump query results to FILE (view with -L)"),
+               Arg('verbose', shortcut='-v', action='store_true',
+                   help="print status during queries"),
+           ]),
+    Action('query', atomic=True, help="query RDO and distribution repos for "
+                                      "available package versions",
+           optional_args=[
+               Arg('filter', positional=True, metavar='RELEASE(/DIST)',
+                   help="RDO release(/dist) to query (see `rdopkg info`)"),
+               Arg('package', positional=True, metavar='PACKAGE',
+                   help="package name to query about"),
+               Arg('verbose', shortcut='-v', action='store_true',
+                   help="print status during queries"),
            ]),
     Action('update', atomic=True, help="submit RDO update",
            optional_args=[
@@ -206,7 +244,7 @@ ACTIONS = [
                Arg('skip_build', shortcut='-s', action='store_true',
                    help="Skip the actual build. "
                         "Useful for generating update files."),
-               ]),
+           ]),
     Action('mockbuild', atomic=True, help="Run fedpkg/rhpkg mockbuild",
            steps=[
                Action('get_package_env'),
@@ -255,16 +293,6 @@ ACTIONS = [
                    help="show info about packages with ATTR matching REGEX"),
                Arg('force_fetch', shortcut='-f', action='store_true',
                    help="force fetch of info repo"),
-               ]),
-    Action('query', atomic=True, help="query RDO and distribution repos for "
-                                      "available package versions",
-           optional_args=[
-               Arg('filter', positional=True, metavar='RELEASE(/DIST)',
-                   help="RDO release(/dist) to query (see `rdopkg info`)"),
-               Arg('package', positional=True, metavar='PACKAGE',
-                   help="package name to query about"),
-               Arg('verbose', shortcut='-v', action='store_true',
-                   help="print status during queries"),
            ]),
     Action('autocomplete', atomic=True,
            help="get TAB completion for rdopkg!")
@@ -274,7 +302,7 @@ ACTIONS = [
 FEDPKG = ['fedpkg']
 
 
-def get_package_env(version=None, release=None,
+def get_package_env(version=None, release=None, dist=None,
                     patches_branch=None, local_patches_branch=None):
     branch = git.current_branch()
     if branch.endswith('-patches'):
@@ -290,10 +318,12 @@ def get_package_env(version=None, release=None,
         'package': guess.package(),
         'branch': branch,
     }
-    if not release:
-        release = guess.osrelease(branch, default='')
-        if release:
-            args['release'] = release
+    if not release or not dist:
+        _release, _dist = guess.osreleasedist(branch, default=(None, None))
+        if not release and _release:
+            args['release'] = _release
+        if not dist and _dist:
+            args['dist'] = _dist
     osdist = guess.osdist()
     if osdist == 'RHOS':
         log.info("RHOS package detected.")
@@ -305,17 +335,13 @@ def get_package_env(version=None, release=None,
     if not local_patches_branch:
         args['local_patches_branch'] = patches_branch.partition('/')[2]
     if not version:
-        spec = specfile.Spec()
-        version, _ = spec.get_patches_base(expand_macros=True)
-        if not version:
-            version = spec.get_tag('Version', expand_macros=True)
-        args['version'] = version
+        args['version'] = guess.current_version()
     return args
 
 
 def show_package_env(package, version,
                      branch, patches_branch, local_patches_branch,
-                     release=None):
+                     release=None, dist=None):
     def _putv(title, val):
         print("{t.bold}{title}{t.normal} {val}"
               .format(title=title, val=val, t=log.term))
@@ -331,7 +357,8 @@ def show_package_env(package, version,
     _putv('Remote patches branch:', patches_branch)
     print
     if osdist == 'RDO':
-        _putv('RDO release guess:', release or 'unknown')
+        rlsdist = '%s/%s' % (release or 'unknown', dist or 'unknown')
+        _putv('RDO release/dist guess:', rlsdist)
         print
 
 
@@ -460,6 +487,65 @@ def reqcheck(version):
     else:
         check = _reqs.reqcheck_spec(ref=version)
     _reqs.print_reqcheck(*check)
+
+
+def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
+             dump=None, dump_file=None, load=None, load_file=None,
+             verbose=False):
+    if not (reqs_ref or reqs_file or spec or load or load_file):
+        reqs_ref = guess.current_version()
+    if not (bool(reqs_ref) ^ bool(reqs_file) ^ bool(spec)
+            ^ bool(load) ^ bool(load_file)):
+        raise exception.InvalidUsage(
+            why="Only one requirements source (-r/-R/-s/-l/-L) can be "
+                "selected.")
+    if dump and dump_file:
+        raise exception.InvalidUsage(
+            why="Only one dump method (-d/-D) can be selected.")
+    if dump:
+        dump_file = 'requirements.yml'
+    if load:
+        load_file = 'requirements.yml'
+
+    # get query results as requested
+    if load_file:
+        log.info("Loading query results from file: %s" % load_file)
+        r = yaml.load(open(load_file))
+    else:
+        release, dist = None, None
+        if not filter:
+            try:
+                release, dist = guess.osreleasedist()
+                log.info('Autodetected filter: %s/%s'
+                         % (release, dist))
+            except exception.CantGuess as ex:
+                raise exception.CantGuess(
+                    msg='%s\n\nPlease select RELEASE(/DIST) filter to query.' %
+                        str(ex))
+        else:
+            release, _, dist = filter.partition('/')
+        module2pkg = True
+        if reqs_file:
+            log.info("Querying requirements file: %s" % reqs_file)
+            reqs = _reqs.get_reqs_from_path(reqs_file)
+        elif reqs_ref:
+            log.info("Querying requirements file from git: "
+                     "%s -- requirements.txt" % reqs_ref)
+            reqs = _reqs.get_reqs_from_ref(reqs_ref)
+        else:
+            log.info("Querying .spec file")
+            module2pkg = False
+            reqs = _reqs.get_reqs_from_spec(as_objects=True)
+        log.info('')
+        r = _reqs.reqquery(reqs, release=release, dist=dist,
+                           module2pkg=module2pkg, verbose=verbose)
+
+    if dump_file:
+        log.info("Saving query results to file: %s" % dump_file)
+        yaml.dump(r, open(dump_file, 'w'))
+
+    _reqs.print_reqquery(r)
+
 
 
 def _ensure_branch(branch):

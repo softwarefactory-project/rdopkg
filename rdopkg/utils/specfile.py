@@ -57,6 +57,21 @@ def nvrcmp(nvr1, nvr2):
     return rpm.labelCompare(t1, t2)
 
 
+def vcmp(v1, v2):
+    if not RPM_AVAILABLE:
+        raise exception.RpmModuleNotAvailable()
+    t1 = ('0', v1, '')
+    t2 = ('0', v2, '')
+    return rpm.labelCompare(t1, t2)
+
+
+def nvr2version(nvr):
+    if not RPM_AVAILABLE:
+        raise exception.RpmModuleNotAvailable()
+    _, v, _, _, _ = rpmUtils.miscutils.splitFilename(nvr)
+    return v
+
+
 class Spec(object):
     """
     Lazy .spec file parser and editor.

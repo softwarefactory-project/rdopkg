@@ -84,12 +84,16 @@ class RdoinfoRepo(repoman.RepoManager):
             dr = repo.get('distrepos')
             if dr:
                 distrepos.append((release, repo['name'], dr))
-            if dist:
-                found_dist = True
-                break
+                if dist:
+                    found_dist = True
+                    break
         if dist and not found_dist:
             why = 'dist not defined in rdoinfo: %s/%s' % (release, dist)
             raise exception.InvalidQuery(why=why)
+        if not distrepos:
+            why = 'No distrepos information in rdoinfo for %s' % release
+            raise exception.InvalidQuery(why=why)
+
         return distrepos
 
     def print_releases(self):
