@@ -207,7 +207,7 @@ ACTIONS = [
                    help="Skip the actual build. "
                         "Useful for generating update files."),
                ]),
-    Action('mockbuild', atomic=True, help="do a mock build",
+    Action('mockbuild', atomic=True, help="Run fedpkg/rhpkg mockbuild",
            steps=[
                Action('get_package_env'),
                Action('fedpkg_mockbuild'),
@@ -795,12 +795,8 @@ def list_updates(update_repo=None, local_update_repo=None,
         repo.pretty_print_updates()
 
 
-def fedpkg_mockbuild(branch=None, fedpkg=FEDPKG):
-    if not branch:
-        branch = guess.current_branch(default=None)
+def fedpkg_mockbuild(fedpkg=FEDPKG):
     cmd = list(fedpkg) + ['mockbuild']
-    if fedpkg[0] == 'rhpkg':
-        cmd += ['--root', 'epel-6-x86_64']
     run(*cmd, direct=True)
 
 
