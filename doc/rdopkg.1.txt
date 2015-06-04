@@ -356,6 +356,23 @@ appropriate directory: `$DEST_BASE$REPO/$DIST/$TAG`
  * If you input incorrect passphrase, run `rdopkg -c` to try again.
  * You can force overwrite of existing packages by `-w`/`--overwrite`
 
+ACTION: conf
+~~~~~~~~~~~~
+
+Display rdopkg's local configuration.
+
+This command prints the default configuration that ships with rdopkg out of the
+box. You can override the individual settings here by using `.py` files in the
+configuration directories.
+
+Store your per-user configuration in `~/.rdopkg/conf.d/*.py`, or store
+system-wide configuration in `/etc/rdopkg.d/*.py`.
+
+For example, to override `RDO_UPDATE_REPO`, place the following into
+`~/.rdopkg/conf.d/rdoupdate-repo.py`:
+
+    RDO_UPDATE_REPO="ssh://git@github.com/myaccount/rdo-update"
+
 
 AUTOMAGIC
 ---------
