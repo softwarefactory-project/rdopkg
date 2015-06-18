@@ -356,6 +356,37 @@ appropriate directory: `$DEST_BASE$REPO/$DIST/$TAG`
  * If you input incorrect passphrase, run `rdopkg -c` to try again.
  * You can force overwrite of existing packages by `-w`/`--overwrite`
 
+
+ACTION: info
+~~~~~~~~~~~~
+
+Show information about RDO packaging.
+
+Use this command to find out about:
+
+ * currently supported RDO OpenStack releses
+ * which distros are supported for each release
+ * what branch to build from
+ * what build system to build in
+ * supported packages
+ * various repositories tied to a package
+ * package maintainers
+
+This command is a human interface to <<rdoinfo,rdoinfo>>.
+
+*Releases/dists/branches overview:*
+
+    rdopkg info
+
+*Detailed information about a package:*
+
+    rdopkg info novaclient
+
+*Filter packages by maintainers:*
+
+    rdopkg info maintainers:jruzicka
+
+
 ACTION: conf
 ~~~~~~~~~~~~
 
@@ -455,6 +486,28 @@ will generate following commit message:
     Changelog:
     - Update to upstream 0.5.1
     - Fix evil Bug of Doom (rhbz#123456)
+
+
+[[rdoinfo]]
+rdoinfo
+~~~~~~~
+
+`rdoinfo` is a special utility repository with RDO metadata:
+
+https://github.com/redhat-openstack/rdoinfo
+
+`rdopkg` uses `rdoinfo` to
+
+ * detect release/dist from branch name
+ * check valid RDO updates
+ * query packages from RDO/distribution repos
+
+and more.
+
+You can view the `rdoinfo` metada using `rdopkg info`.
+
+`rdopkg.actionmods.rdoinfo` module provides convenient interface use `rdoinfo`
+should you want to integrate it into your codez.
 
 
 SEE ALSO
