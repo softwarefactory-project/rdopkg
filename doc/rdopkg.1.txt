@@ -181,6 +181,92 @@ detection.
     rdopkg update-patches
 
 
+ACTION: query
+~~~~~~~~~~~~~
+
+Query RDO/distro repos for available package versions.
+
+This action uses `repoquery` to discover latest package versions available
+from RDO and other repos available on a supported distibution.
+
+See output of `rdopkg info` for supported releases and distros.
+
+*Query specific RELEASE/DIST:*
+
+     rdopkg query kilo/el7 openstack-nova
+
+*Query all dists of a release and show what's happening:*
+
+     rdopkg query -v kilo openstack-nova
+
+
+ACTION: reqquery
+~~~~~~~~~~~~~~~~
+
+Query RDO/distro repos for versions defined in requirements.txt.
+
+This action essentially runs `rdopkg query` on every module/package defined in
+`requirements.txt`. It accepts the same RELEAESE/DIST filter.
+
+Python module names listed in `requirements.txt` are mapped to package names
+using `rdopkg.actionmods.pymod2pkg` module.
+
+*Query `requirements.txt` from `2015.1` tag:*
+
+    rdopkg reqquery -R 2015.1 kilo/el7
+
+*Query `requirements.txt` file:*
+
+    rdopkg reqquery -r path/to/requirements.txt kilo/f21
+
+*Query `.spec` Requires (experimental):*
+
+    rdopkg reqquery -s
+
+*Verbosely dump query results to a file and view them:*
+
+    rdopkg reqquery -v -d -R 2015.1
+    rdopkg reqquery -l
+
+
+ACTION: reqcheck
+~~~~~~~~~~~~~~~~
+
+Inspect `requirements.txt` vs `.spec` Requires.
+
+This action parses current `requirements.txt` from git and checks whether
+they're met in the `.spec` file. Simple report is printed.
+
+Python module names listed in `requirements.txt` are mapped to package names
+using `rdopkg.actionmods.pymod2pkg` module.
+
+NOTE: Checking for exact version ranges is dumb at the moment.
+
+*Example:*
+
+    rdopkg reqcheck
+
+
+ACTION: reqdiff
+~~~~~~~~~~~~~~~
+
+Show pretty diff of `requirements.txt`.
+
+Use this to see how requirements changed between versions.
+
+*See diff between current and latest upstream version (automagic):*
+
+    rdopkg reqdiff
+
+*See diff between current and specified version:*
+
+    rdopkg reqdiff 2015.1
+
+*See diff between two supplied versions:*
+
+    rdopkg reqdiff 2015.1 2015.2
+
+
 ACTION: kojibuild
 ~~~~~~~~~~~~~~~~~
 
