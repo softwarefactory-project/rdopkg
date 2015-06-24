@@ -347,14 +347,22 @@ def show_package_env(package, version,
               .format(title=title, val=val, t=log.term))
 
     osdist = guess.osdist()
+
+    upstream_branch = guess.upstream_branch()
+    if not git.ref_exists('refs/remotes/%s' % upstream_branch):
+        upstream_version = 'upstream remote/branch not found'
+    else:
+        upstream_version = git.get_latest_tag(upstream_branch)
     print
-    _putv('Package:', package)
-    _putv('Version:', version)
-    _putv('OS dist:', osdist)
+    _putv('Package: ', package)
+    _putv('Version: ', version)
+    _putv('Upstream:', upstream_version)
+    _putv('OS dist: ', osdist)
     print
-    _putv('Dist-git branch:      ', branch)
-    _putv('Local patches branch: ', local_patches_branch)
-    _putv('Remote patches branch:', patches_branch)
+    _putv('Dist-git branch:       ', branch)
+    _putv('Local patches branch:  ', local_patches_branch)
+    _putv('Remote patches branch: ', patches_branch)
+    _putv('Remote upstream branch:', upstream_branch or 'not found')
     print
     if osdist == 'RDO':
         rlsdist = '%s/%s' % (release or 'unknown', dist or 'unknown')
