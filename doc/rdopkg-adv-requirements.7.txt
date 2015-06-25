@@ -49,12 +49,12 @@ whether its requirements are met.
     Version:  1.0.3
     Upstream: 1.1.0
     OS dist:  RDO
-
+    
     Dist-git branch:        master
     Local patches branch:   master-patches
     Remote patches branch:  patches/master-patches
     Remote upstream branch: openstack/master
-
+    
     RDO release/dist guess: kilo/f22
 
 Now we know that
@@ -80,10 +80,10 @@ upstream versions:
 
     $ rdopkg reqdiff
     requirements.txt diff between 1.0.3 and 1.1.0:
-
+    
     ADDED:
     os-client-config 
-
+    
     CHANGED:
     cliff >=1.10.0  (was >=1.7.0)
     oslo.config >=1.9.3  (was >=1.9.0)
@@ -105,7 +105,7 @@ between them:
 
     $ rdopkg reqdiff 0.4.0 1.0.0
     requirements.txt diff between 0.4.0 and 1.0.0:
-
+    
     ADDED:
     Babel >=1.3
     cliff-tablib >=1.0
@@ -114,7 +114,7 @@ between them:
     oslo.utils >=1.0.0
     python-neutronclient >=2.3.6,<3
     stevedore >=1.1.0
-
+    
     CHANGED:
     cliff >=1.7.0  (was >=1.4.3)
     python-cinderclient >=1.1.0  (was >=1.0.6)
@@ -122,7 +122,7 @@ between them:
     python-keystoneclient >=0.11.1  (was >=0.9.0)
     python-novaclient >=2.18.0  (was >=2.17.0)
     requests >=2.2.0,!=2.4.0  (was >=1.1)
-
+    
     REMOVED:
     keyring >=2.1
     pycrypto >=2.6
@@ -139,7 +139,7 @@ CHAPTER 2
 met in the `.spec` file. Human friendly summary is printed.
 
     $ rdopkg reqcheck
-
+    
     VERSION NOT ENFORCED:
       python-babel >=1.3
       python-cliff >=1.7.0
@@ -155,7 +155,7 @@ met in the `.spec` file. Human friendly summary is printed.
       python-requests >=2.2.0,!=2.4.0
       python-six >=1.9.0
       python-stevedore >=1.1.0
-
+    
     MISSING:
       python-cliff-tablib >=1.0
       python-oslo-config >=1.9.0
@@ -186,12 +186,12 @@ We can also query a package across all dists of an RDO release. We might
 want to use `-v`/`--verbose` to see what's happening in the background:
 
     $ rdopkg query -v kilo python-novaclient
-
+    
     repoquery --nvr --repofrompath=rdopkg_RDO_Kilo_f22,...
     RDO Kilo f22: python-novaclient-2.23.0-1.fc23
     repoquery --nvr --repofrompath=rdopkg_Fedora_22_Updates,...
     ...
-
+    
     kilo/f22
         python-novaclient-2.23.0-1.fc23  @  RDO Kilo f22
         python-novaclient-2.20.0-1.fc22  @  Fedora 22
@@ -219,7 +219,7 @@ package version in autodetected release/dist:
     $ rdopkg reqquery
     Autodetected filter: kilo/f22
     Querying requirements file from git: 1.0.3 -- requirements.txt
-
+    
     kilo/f22
       pbr
         nvr:   python-pbr-0.10.8-1.fc22
@@ -261,7 +261,7 @@ want to run with `-v`/`--verbose`, dump to `requirements.yml` with
     $ rdopkg reqquery -v -d
     Autodetected filter: kilo/f22
     Querying requirements file from git: 1.0.3 -- requirements.txt
-
+    
     repoquery --nvr --repofrompath=...
     RDO Kilo f22: N/A
     ...
