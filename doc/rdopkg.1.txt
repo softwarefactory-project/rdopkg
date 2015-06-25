@@ -186,6 +186,9 @@ ACTION: query
 
 Query RDO/distro repos for available package versions.
 
+See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for
+complete example of `query` and other requirements management actions.
+
 This action uses `repoquery` to discover latest package versions available
 from RDO and other repos available on a supported distibution.
 
@@ -205,8 +208,12 @@ ACTION: reqquery
 
 Query RDO/distro repos for versions defined in requirements.txt.
 
+See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for
+complete example of `reqquery` and other requirements management actions.
+
 This action essentially runs `rdopkg query` on every module/package defined in
-`requirements.txt`. It accepts the same RELEAESE/DIST filter.
+`requirements.txt` and prints colorful report to quickly find unmet
+dependencies. It accepts the same RELEAESE/DIST filter as `rdopkg query`.
 
 Python module names listed in `requirements.txt` are mapped to package names
 using `rdopkg.actionmods.pymod2pkg` module.
@@ -225,7 +232,7 @@ using `rdopkg.actionmods.pymod2pkg` module.
 
 *Verbosely dump query results to a file and view them:*
 
-    rdopkg reqquery -v -d -R 2015.1
+    rdopkg reqquery -v -d
     rdopkg reqquery -l
 
 
@@ -233,6 +240,9 @@ ACTION: reqcheck
 ~~~~~~~~~~~~~~~~
 
 Inspect `requirements.txt` vs `.spec` Requires.
+
+See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for
+complete example of `reqcheck` and other requirements management actions.
 
 This action parses current `requirements.txt` from git and checks whether
 they're met in the `.spec` file. Simple report is printed.
@@ -251,6 +261,9 @@ ACTION: reqdiff
 ~~~~~~~~~~~~~~~
 
 Show pretty diff of `requirements.txt`.
+
+See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for
+complete example of `reqdiff` and other requirements management actions.
 
 Use this to see how requirements changed between versions.
 
@@ -600,7 +613,8 @@ SEE ALSO
 --------
 
 link:rdopkg-adv-new-version.7.html[rdopkg-adv-new-version(7)],
-link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)]
+link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)],
+link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)]
 
 CONTACT
 -------
