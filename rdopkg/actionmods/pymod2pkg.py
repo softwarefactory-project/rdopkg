@@ -62,6 +62,7 @@ RPM_PKG_MAP = [
     SingleRule('sqlalchemy-migrate', 'python-migrate'),
     SingleRule('qpid-python', 'python-qpid'),
     SingleRule('posix_ipc', 'python-posix_ipc'),
+    SingleRule('oslosphinx', 'python-oslo-sphinx'),
     MultiRule(
         mods=['PyYAML', 'm2crypto', 'numpy', 'pyflakes', 'pylint', 'pyparsing',
               'pytz', 'pysendfile', 'libvirt-python'],
