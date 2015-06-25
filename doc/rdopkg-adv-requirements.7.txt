@@ -44,18 +44,20 @@ its distgit with `patches` and `upstream` remotes set up:
 Let's assume we see the package for the first time and we want to check
 whether its requirements are met.
 
-    $ rdopkg pkgenv
-    Package:  python-openstackclient
-    Version:  1.0.3
-    Upstream: 1.1.0
-    OS dist:  RDO
-    
-    Dist-git branch:        master
-    Local patches branch:   master-patches
-    Remote patches branch:  patches/master-patches
-    Remote upstream branch: openstack/master
-    
-    RDO release/dist guess: kilo/f22
+....
+$ rdopkg pkgenv
+Package:  python-openstackclient
+Version:  1.0.3
+Upstream: 1.1.0
+OS dist:  RDO
+
+Dist-git branch:        master
+Local patches branch:   master-patches
+Remote patches branch:  patches/master-patches
+Remote upstream branch: openstack/master
+
+RDO release/dist guess: kilo/f22
+....
 
 Now we know that
 
@@ -78,20 +80,22 @@ When `patches` and `upstream` remotes are set correctly, the action can be run
 without arguments and `rdopkg` will do a diff between current and latest
 upstream versions:
 
-    $ rdopkg reqdiff
-    requirements.txt diff between 1.0.3 and 1.1.0:
-    
-    ADDED:
-    os-client-config 
-    
-    CHANGED:
-    cliff >=1.10.0  (was >=1.7.0)
-    oslo.config >=1.9.3  (was >=1.9.0)
-    oslo.i18n >=1.5.0  (was >=1.3.0)
-    oslo.serialization >=1.4.0  (was >=1.2.0)
-    oslo.utils >=1.4.0  (was >=1.2.0)
-    python-novaclient >=2.22.0  (was >=2.18.0,!=2.21.0)
-    stevedore >=1.3.0  (was >=1.1.0)
+....
+$ rdopkg reqdiff
+requirements.txt diff between 1.0.3 and 1.1.0:
+
+ADDED:
+  os-client-config
+
+CHANGED:
+  cliff >=1.10.0  (was >=1.7.0)
+  oslo.config >=1.9.3  (was >=1.9.0)
+  oslo.i18n >=1.5.0  (was >=1.3.0)
+  oslo.serialization >=1.4.0  (was >=1.2.0)
+  oslo.utils >=1.4.0  (was >=1.2.0)
+  python-novaclient >=2.22.0  (was >=2.18.0,!=2.21.0)
+  stevedore >=1.3.0  (was >=1.1.0)
+....
 
 With one argument, diff between current package version and supplied git ref
 is done:
@@ -103,29 +107,31 @@ is done:
 Finally, we can supply two git refs to get `requirements.txt` diff
 between them:
 
-    $ rdopkg reqdiff 0.4.0 1.0.0
-    requirements.txt diff between 0.4.0 and 1.0.0:
-    
-    ADDED:
-    Babel >=1.3
-    cliff-tablib >=1.0
-    oslo.i18n >=1.0.0
-    oslo.serialization >=1.0.0
-    oslo.utils >=1.0.0
-    python-neutronclient >=2.3.6,<3
-    stevedore >=1.1.0
-    
-    CHANGED:
-    cliff >=1.7.0  (was >=1.4.3)
-    python-cinderclient >=1.1.0  (was >=1.0.6)
-    python-glanceclient >=0.14.0  (was >=0.9.0)
-    python-keystoneclient >=0.11.1  (was >=0.9.0)
-    python-novaclient >=2.18.0  (was >=2.17.0)
-    requests >=2.2.0,!=2.4.0  (was >=1.1)
-    
-    REMOVED:
-    keyring >=2.1
-    pycrypto >=2.6
+....
+$ rdopkg reqdiff 0.4.0 1.0.0
+requirements.txt diff between 0.4.0 and 1.0.0:
+
+ADDED:
+  Babel >=1.3
+  cliff-tablib >=1.0
+  oslo.i18n >=1.0.0
+  oslo.serialization >=1.0.0
+  oslo.utils >=1.0.0
+  python-neutronclient >=2.3.6,<3
+  stevedore >=1.1.0
+
+CHANGED:
+  cliff >=1.7.0  (was >=1.4.3)
+  python-cinderclient >=1.1.0  (was >=1.0.6)
+  python-glanceclient >=0.14.0  (was >=0.9.0)
+  python-keystoneclient >=0.11.1  (was >=0.9.0)
+  python-novaclient >=2.18.0  (was >=2.17.0)
+  requests >=2.2.0,!=2.4.0  (was >=1.1)
+
+REMOVED:
+  keyring >=2.1
+  pycrypto >=2.6
+....
 
 Note that `reqdiff` is automatically shown during `rdopkg new-version`.
 
@@ -138,27 +144,29 @@ CHAPTER 2
 `reqcheck` is used to check whether requires defined in `requirements.txt` are
 met in the `.spec` file. Human friendly summary is printed.
 
-    $ rdopkg reqcheck
-    
-    VERSION NOT ENFORCED:
-      python-babel >=1.3
-      python-cliff >=1.7.0
-      python-oslo-i18n >=1.3.0
-      python-oslo-serialization >=1.2.0
-      python-oslo-utils >=1.2.0
-      python-pbr >=0.6,!=0.7,<1.0
-      python-cinderclient >=1.1.0
-      python-glanceclient >=0.15.0
-      python-keystoneclient >=1.1.0
-      python-neutronclient >=2.3.11,<3
-      python-novaclient >=2.18.0,!=2.21.0
-      python-requests >=2.2.0,!=2.4.0
-      python-six >=1.9.0
-      python-stevedore >=1.1.0
-    
-    MISSING:
-      python-cliff-tablib >=1.0
-      python-oslo-config >=1.9.0
+....
+$ rdopkg reqcheck
+
+VERSION NOT ENFORCED:
+  python-babel >=1.3
+  python-cliff >=1.7.0
+  python-oslo-i18n >=1.3.0
+  python-oslo-serialization >=1.2.0
+  python-oslo-utils >=1.2.0
+  python-pbr >=0.6,!=0.7,<1.0
+  python-cinderclient >=1.1.0
+  python-glanceclient >=0.15.0
+  python-keystoneclient >=1.1.0
+  python-neutronclient >=2.3.11,<3
+  python-novaclient >=2.18.0,!=2.21.0
+  python-requests >=2.2.0,!=2.4.0
+  python-six >=1.9.0
+  python-stevedore >=1.1.0
+
+MISSING:
+  python-cliff-tablib >=1.0
+  python-oslo-config >=1.9.0
+....
 
 Human brain superpowers are used to evaluate the report and fix the `.spec`
 file if needed.
@@ -185,21 +193,23 @@ but newer `python-novaclient-2.23.0-1` is available from RDO Kilo f22 repo.
 We can also query a package across all dists of an RDO release. We might
 want to use `-v`/`--verbose` to see what's happening in the background:
 
-    $ rdopkg query -v kilo python-novaclient
-    
-    repoquery --nvr --repofrompath=rdopkg_RDO_Kilo_f22,...
-    RDO Kilo f22: python-novaclient-2.23.0-1.fc23
-    repoquery --nvr --repofrompath=rdopkg_Fedora_22_Updates,...
-    ...
-    
-    kilo/f22
-        python-novaclient-2.23.0-1.fc23  @  RDO Kilo f22
-        python-novaclient-2.20.0-1.fc22  @  Fedora 22
-    kilo/f21
-        python-novaclient-2.23.0-1.fc23  @  RDO Kilo f21
-        python-novaclient-2.17.0-3.fc21  @  Fedora 21
-    kilo/el7
-        python-novaclient-2.23.0-1.el7  @  RDO Kilo el7
+....
+$ rdopkg query -v kilo python-novaclient
+
+repoquery --nvr --repofrompath=rdopkg_RDO_Kilo_f22,...
+RDO Kilo f22: python-novaclient-2.23.0-1.fc23
+repoquery --nvr --repofrompath=rdopkg_Fedora_22_Updates,...
+...
+
+kilo/f22
+    python-novaclient-2.23.0-1.fc23  @  RDO Kilo f22
+    python-novaclient-2.20.0-1.fc22  @  Fedora 22
+kilo/f21
+    python-novaclient-2.23.0-1.fc23  @  RDO Kilo f21
+    python-novaclient-2.17.0-3.fc21  @  Fedora 21
+kilo/el7
+    python-novaclient-2.23.0-1.el7  @  RDO Kilo el7
+....
 
 See `rdopkg info` to get supported release/dist combinations.
 
@@ -216,24 +226,26 @@ available and in correct versions.
 Simplest use case without arguments queries all `requirements.txt` of current
 package version in autodetected release/dist:
 
-    $ rdopkg reqquery
-    Autodetected filter: kilo/f22
-    Querying requirements file from git: 1.0.3 -- requirements.txt
-    
-    kilo/f22
-      pbr
-        nvr:   python-pbr-0.10.8-1.fc22
-        need:  >=0.6,!=0.7,<1.0
-        state: OK
-      python-novaclient
-        nvr:   python-novaclient-2.23.0-1.fc23
-        need:  >=2.18.0,!=2.21.0
-        state: OK
-      cliff-tablib
-        nvr:   python-cliff-tablib not available
-        need:  >=1.0
-        state: not met
-    ...
+....
+$ rdopkg reqquery
+Autodetected filter: kilo/f22
+Querying requirements file from git: 1.0.3 -- requirements.txt
+
+kilo/f22
+  pbr
+    nvr:   python-pbr-0.10.8-1.fc22
+    need:  >=0.6,!=0.7,<1.0
+    state: OK
+  python-novaclient
+    nvr:   python-novaclient-2.23.0-1.fc23
+    need:  >=2.18.0,!=2.21.0
+    state: OK
+  cliff-tablib
+    nvr:   python-cliff-tablib not available
+    need:  >=1.0
+    state: not met
+...
+....
 
 We can also select the release/dist filter manually (see `rdopkg info`):
 
@@ -258,15 +270,17 @@ As it usually takes quite some time to `repoquery` all the repos, we might
 want to run with `-v`/`--verbose`, dump to `requirements.yml` with
 `-d`/`--dump` and then view the report with `-l`/`--load`:
 
-    $ rdopkg reqquery -v -d
-    Autodetected filter: kilo/f22
-    Querying requirements file from git: 1.0.3 -- requirements.txt
-    
-    repoquery --nvr --repofrompath=...
-    RDO Kilo f22: N/A
-    ...
-    
-    $ rdopkg reqquery -l
+....
+$ rdopkg reqquery -v -d
+Autodetected filter: kilo/f22
+Querying requirements file from git: 1.0.3 -- requirements.txt
+
+repoquery --nvr --repofrompath=...
+RDO Kilo f22: N/A
+...
+
+$ rdopkg reqquery -l
+....
 
 
 EPILOGUE
