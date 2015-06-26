@@ -135,6 +135,13 @@ Don't forget to `git fetch --all` before running the action.
 
 After running `rdopkg new-version`, new commit will contain the changes.
 
+To just update `.spec` without touching patches branch, `-b`/`--bump-only` can
+be used. You might also occasionally want to skip `fedpkg new-sources` step
+with `-n`/`--no-new-sources`. These two options combined give you local-only
+operation, much like `rpmdev-bumpspec`:
+
+    rdopkg -bn
+
 *Flow:*
 
   * Show diff from previous version, especially changes to `requirements.txt`.
