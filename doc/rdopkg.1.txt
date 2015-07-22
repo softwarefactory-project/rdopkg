@@ -32,12 +32,14 @@ persistence
 
 `rdopkg` provides multi-step actions where each step is (should be) idempotent
 so if something fails along the way or human interaction is required, rdopkg
-drops to shell, let's you rectify and then continue by running `rdopkg -c`.
+drops to shell, let's you rectify and then continue by running
+`rdopkg --continue` (`rdopkg -c`).
 
 The state is stored in `.rdopkg.json` file in current directory. Stored action
-can be inspected (`rdopkg -i`) or continued (`rdopkg -c`). When new action is
-run in such directory, `rdopkg` asks to confirm if you want to abandon the
-previous action.
+can be inspected (`rdopkg status`), continued (`rdopkg --continue`) or aborted
+(`rdopkg --abort`). `rdopkg` will refuse to start new multi-step action if
+state file is present.
+
 
 ACTIONS
 -------
@@ -612,7 +614,7 @@ and more.
 
 You can view the `rdoinfo` metada using `rdopkg info`.
 
-`rdopkg.actionmods.rdoinfo` module provides convenient interface use `rdoinfo`
+`rdopkg.actionmods.rdoinfo` module provides convenient interface to `rdoinfo`
 should you want to integrate it into your codez.
 
 
