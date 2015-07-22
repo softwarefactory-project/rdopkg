@@ -14,7 +14,7 @@ Sources are hosted at github:
 
     git clone https://github.com/redhat-openstack/rdopkg
 
-Submit pull requests.
+Submit pull requests and poke `jruzicka` on IRC to accelerate the review.
 
 requirements
 ------------
@@ -143,32 +143,3 @@ update them man pages
 needed. Documenting new functionality sounds like a good idea, too.
 
 Captain Obvious out.
-
-
-submitting your c0dez
----------------------
-
-Please use `git review` to submit your patches instead of `git push` unless
-you're fixing something trivial like typo.
-
-Workflow:
-
-    git checkout -b some-fix origin/master
-    # setup gerrit - adds hook to append commit messages with Change-Id
-    git review -s
-    # EDIT ALL THE CODEZ
-    git commit
-    git review
-
-After that, link to gerrit is printed where the rest of the battle will occur.
-If you need to submit multiple commits, that's OK. If you need to change your
-patch after -1 or so:
-
-    git fetch origin
-    git checkout some-fix
-    git rebase origin/master
-    # FIX ALL THE NITPICKS
-    git commit -a
-    git review
-
-After that, poke `jruzicka` on IRC to accelerate the review.
