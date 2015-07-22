@@ -13,6 +13,11 @@ class NoActionInProgress(RdopkgException):
     msg_fmt = "No action in progress."
 
 
+class ActionInProgress(RdopkgException):
+    msg_fmt = "Please `--continue` or `--abort` previous action before " \
+              "running a new one."
+
+
 class ActionFunctionNotAvailable(RdopkgException):
     msg_fmt = "Action function not available: %(action)s"
 
@@ -103,3 +108,7 @@ class DebugAbort(RdopkgException):
 
 class RequirementNotMet(RdopkgException):
     msg_fmt = "Requirement not met: %(what)s"
+
+
+class InternalAction(RdopkgException):
+    msg_fmt = "Unhandled internal action: %(action)s"

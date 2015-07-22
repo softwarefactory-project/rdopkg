@@ -41,8 +41,6 @@ def get_action_args(action, args):
 def get_parser(runner):
     parser = argparse.ArgumentParser(prog='rdopkg')
     subparsers = parser.add_subparsers(help='available actions')
-    parser.add_argument('-i', '--info', action='store_true',
-                        help='show information about current action')
     parser.add_argument('-c', '--continue', action='store_true',
                         help='continue running current action')
     verinfo = "%s (rdoupdate %s)" % (VERSION, rdoupdate.VERSION)
@@ -75,27 +73,28 @@ def main(cargs=None):
     if ARGCOMPLETE_AVAILABLE:
         argcomplete.autocomplete(parser)
 
-    if not cargs:
-        parser.print_help()
-        return
-    # argparse still can't do this with subparsers (reported 2009)
-    if '-i' in cargs or '--info' in cargs:
-        runner.info()
-        return
-    elif '-c' in cargs or '--continue' in cargs:
-        # state already loaded
-        pass
-    else:
-        args = parser.parse_args(cargs)
-        action = args.action
-        action_args = get_action_args(action, args)
-        runner.new_action(action, action_args)
-
     code = 1
     try:
+        if not cargs:
+            parser.print_help()
+            return
+        # argparse still can't do this with subparsers (reported 2009)
+        elif '--abort' in cargs:
+            runner.clear_state(verbose=True)
+            return 1
+        elif '--continue' in cargs or cargs == ['-c']:
+            # state already loaded
+            pass
+        else:
+            args = parser.parse_args(cargs)
+            action = args.action
+            action_args = get_action_args(action, args)
+            runner.new_action(action, action_args)
+
         runner.engage()
         code = 0
     except (
+            exception.ActionInProgress,
             exception.BranchNotFound,
             exception.BuildArchSanityCheckFailed,
             exception.CantGuess,
@@ -127,6 +126,12 @@ def main(cargs=None):
     except exception.CommandFailed as ex:
         # this was logged already
         pass
+    except exception.InternalAction as ex:
+        if ex.kwargs['action'] == 'status':
+            runner.load_state_safe()
+            runner.status()
+            return 0
+        raise
     return code
 
 if __name__ == '__main__':

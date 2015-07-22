@@ -24,6 +24,7 @@ import helpers
 
 
 ACTIONS = [
+    Action('status', atomic=True, help="show status of previous action"),
     Action('fix', help="change .spec file without introducing new patches",
            steps=[
                Action('get_package_env'),
@@ -300,6 +301,10 @@ ACTIONS = [
 
 
 FEDPKG = ['fedpkg']
+
+
+def status():
+    raise exception.InternalAction(action='status')
 
 
 def get_package_env(version=None, release=None, dist=None,

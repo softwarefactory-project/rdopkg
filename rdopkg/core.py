@@ -8,6 +8,7 @@ import actions
 import const
 import exception
 import helpers
+from utils import log
 
 
 def default_action_manager():
@@ -38,21 +39,16 @@ class ActionRunner(object):
         sf.close()
 
     def load_state(self):
+        self.action = []
+        self.args = {}
         if not os.path.isfile(self.state_file_path):
             return
         sf = file(self.state_file_path, 'rt')
         data = json.load(sf)
-        self.action = self.action_manager.action_deserialize(data['action'])
+        action = self.action_manager.action_deserialize(data['action'])
         self.args = data['args']
+        self.action = action
         sf.close()
-
-    def clear_state(self, state_file=True, verbose=False):
-        self.action = []
-        self.args = {}
-        if state_file and os.path.isfile(self.state_file_path):
-            os.remove(self.state_file_path)
-            if verbose:
-                print("State file removed.")
 
     def load_state_safe(self):
         try:
@@ -68,16 +64,32 @@ class ActionRunner(object):
             else:
                 raise
 
+    def clear_state(self, state_file=True, verbose=False):
+        self.action = []
+        self.args = {}
+        if state_file and os.path.isfile(self.state_file_path):
+            os.remove(self.state_file_path)
+            if verbose:
+                print("State file removed.")
+
+
     def _new_action_check(self, new_action):
         if self.action and not new_action.atomic:
-            print("An action is in progress:\n")
-            self.info()
-            print
-            cnf = raw_input("Do you want to run a new action anyway? [Yn] ")
-            if cnf != '' and cnf.lower() != 'y':
-                raise exception.UserAbort()
-            print
-            self.clear_state(verbose=True)
+            action_name = self.action[0].name
+            print(log.term.important(
+                  "You're in the middle of previous action: %s\n" %
+                  action_name))
+            print((
+                " a) View status of previous action:\n"
+                "    {t.cmd}rdopkg status{t.normal}\n\n"
+                " b) Continue the previous action:\n"
+                "    {t.cmd}rdopkg --continue{t.normal} / "
+                "{t.cmd}rdopkg -c{t.normal}\n\n"
+                " a) Abort the previous action:\n"
+                "    {t.cmd}rdopkg --abort{t.normal}"
+                  ).format(t=log.term)
+            )
+            raise exception.ActionInProgress(action=action_name)
 
     def new_action(self, action, args=None):
         self._new_action_check(action)
@@ -100,7 +112,7 @@ class ActionRunner(object):
         if not self.action:
             return
 
-        def _print_steps(steps, current, indent=0, done=True):
+        def _print_steps(steps, current, indent=1, done=True):
             if current:
                 _current = current[0]
             else:
@@ -116,7 +128,7 @@ class ActionRunner(object):
                     schar = 'x'
                 else:
                     schar = ' '
-                print("%s[%s] %s" % (indent * "    ", schar, step.name))
+                print("%s[%s] %s" % (indent * "  ", schar, step.name))
                 if step.steps:
                     _print_steps(step.steps, next_current,
                                  indent=indent + 1, done=done)
@@ -125,20 +137,20 @@ class ActionRunner(object):
 
         _print_steps([self.action[0]], self.action)
 
-    def info(self):
+    def status(self):
         if self.action:
-            print("Action: %s" %
-                  self.action_manager.action_str(self.action) or "no action")
+            print("{t.bold}Action in progress: {t.green}{a}{t.normal}\n".format(
+                  t=log.term, a=self.action[0].name))
             if self.args:
-                print "Arguments:"
+                print(log.term.bold("Arguments:"))
                 for key in sorted(self.args, key=self.args.get):
                     print("  %s: %s" % (key, self.args[key]))
-                print "Progress:"
+                print(log.term.bold("\nProgress:"))
                 self.print_progress()
             else:
-                print "No arguments"
+                print(log.term.bold("No arguments.\n"))
         else:
-            print "No action in progress."
+            print(log.term.bold("No action in progress."))
 
     def engage(self):
         if not self.action:
