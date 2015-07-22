@@ -1121,6 +1121,10 @@ def koji_build(update_file=None, skip_build=False):
         git('push')
         build_id = kojibuild.new_build()
     build = kojibuild.guess_build(build_id)
+    if not build:
+        raise exception.CantGuess(
+            what="build arguments",
+            why="Unknown branch? Check `rdopkg pkgenv` and `rdopkg info`")
     _show_update_entry(build)
     if update_file:
         _update.dump_build(build, update_file)
