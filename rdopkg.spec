@@ -1,7 +1,7 @@
 Name:             rdopkg
 Version:          0.29
-Release:          1%{?dist}
-Summary:          RDO packaging automation tool
+Release:          2%{?dist}
+Summary:          RPM packaging automation tool
 
 Group:            Development/Languages
 License:          ASL 2.0
@@ -28,8 +28,12 @@ Requires:         python-blessings
 
 
 %description
-rdopkg is a tool for automating RDO packaging tasks including building and
-submitting of new RDO packages.
+rdopkg is a tool for automating RPM packaging tasks such as managing patches,
+updating to a new version and much more.
+
+Although it contains several RDO-specific actions, most of rdopkg
+functionality can be used for any RPM package following conventions
+described in the rdopkg manual.
 
 
 %package bsources
@@ -74,6 +78,9 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Thu Jul 23 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.29-2
+- Update package description
+
 * Thu Jul 23 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.29-1
 - Update to 0.29
 - new-version: support vX.Y.Z version tags
