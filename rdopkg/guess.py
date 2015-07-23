@@ -24,7 +24,9 @@ def current_version(default=exception.CantGuess):
     try:
         spec = specfile.Spec()
         version, _ = spec.get_patches_base(expand_macros=True)
-        if not version:
+        if version:
+            version, _ = tag2version(version)
+        else:
             version = spec.get_tag('Version', expand_macros=True)
         if not version:
             raise exception.CantGuess(msg="got empty .spec Version")
@@ -55,6 +57,28 @@ def current_branch(default=exception.CantGuess):
         else:
             return default
     return branch
+
+
+def tag2version(tag):
+    if tag and re.match('^v[0-9]', tag):
+        return tag[1:], 'vX.Y.Z'
+    return tag, None
+
+
+def version2tag(version, tag_style=None):
+    if tag_style == 'vX.Y.Z':
+        return 'v' + version
+    return version
+
+
+def version_tag_style(version=None):
+    if not version:
+        version = current_version()
+    if git.ref_exists('refs/tags/' + version):
+        return None
+    elif git.ref_exists('refs/tags/v' + version):
+        return 'vX.Y.Z'
+    return None
 
 
 def find_patches_branch(distgit, remote):
@@ -111,6 +135,18 @@ def upstream_branch():
             return ub
 
     return '%s/master' % remotes[0]
+
+
+def upstream_version(branch=None):
+    if not branch:
+        branch = upstream_branch()
+    if git.ref_exists('refs/remotes/%s' % branch):
+        vtag = git.get_latest_tag(branch)
+        if not vtag:
+            return None
+        version, _ = tag2version(vtag)
+        return version
+    return None
 
 
 def user():

@@ -256,7 +256,7 @@ class Git(ShellCommand):
         cmd = ['describe', '--abbrev=0', '--tags']
         if branch:
             cmd.append(branch)
-        out = self(*cmd)
+        out = self(*cmd, log_cmd=False)
         return out
 
     def get_file_authors(self, path, with_email=True):

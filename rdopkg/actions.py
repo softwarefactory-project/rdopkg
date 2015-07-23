@@ -56,7 +56,7 @@ ACTIONS = [
     Action('new_version', help="update package to new upstream version",
            optional_args=[
                Arg('new_version', positional=True, nargs='?',
-                   help="version (git tag) to update to"),
+                   help="version to update to"),
                Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
                    help="remote git branch containing patches"),
                Arg('local_patches_branch', shortcut='-P', metavar='LOCAL_BRANCH',
@@ -121,10 +121,10 @@ ACTIONS = [
                Action('reqdiff'),
            ],
            optional_args=[
-               Arg('diff_range', positional=True, nargs='*', metavar='VERSION',
+               Arg('diff_range', positional=True, nargs='*', metavar='GIT_REF',
                    help="no args: diff between current and upstream; "
-                        "1 arg: diff between current and supplied revision; "
-                        "2 args: diff between 1st and 2nd supplied revisions"),
+                        "1 arg: diff between current and supplied git ref; "
+                        "2 args: diff between 1st and 2nd supplied git refs"),
                ],
            ),
     Action('reqcheck', atomic=True,
@@ -340,13 +340,16 @@ def get_package_env(version=None, release=None, dist=None,
     if not local_patches_branch:
         args['local_patches_branch'] = patches_branch.partition('/')[2]
     if not version:
-        args['version'] = guess.current_version()
+        version = guess.current_version()
+        args['version'] = version
+    args['version_tag_style'] = guess.version_tag_style(version=version)
+
     return args
 
 
 def show_package_env(package, version,
                      branch, patches_branch, local_patches_branch,
-                     release=None, dist=None):
+                     release=None, dist=None, version_tag_style=None):
     def _putv(title, val):
         print("{t.bold}{title}{t.normal} {val}"
               .format(title=title, val=val, t=log.term))
@@ -357,12 +360,15 @@ def show_package_env(package, version,
     if not git.ref_exists('refs/remotes/%s' % upstream_branch):
         upstream_version = 'upstream remote/branch not found'
     else:
-        upstream_version = git.get_latest_tag(upstream_branch)
+        upstream_version = guess.upstream_version(branch=upstream_branch)
+        if not upstream_version:
+            upstream_version = 'no version tag found'
     print
-    _putv('Package: ', package)
-    _putv('Version: ', version)
-    _putv('Upstream:', upstream_version)
-    _putv('OS dist: ', osdist)
+    _putv('Package:  ', package)
+    _putv('Version:  ', version)
+    _putv('Upstream: ', upstream_version)
+    _putv('Tag style:', version_tag_style or 'X.Y.Z')
+    _putv('OS dist:  ', osdist)
     print
     _putv('Dist-git branch:       ', branch)
     _putv('Local patches branch:  ', local_patches_branch)
@@ -386,9 +392,16 @@ def conf():
         log.info("%s: %s" % item)
 
 
-def new_version_setup(new_version=None):
+def new_version_setup(new_version=None, version_tag_style=None):
     args = {}
-    if not new_version:
+    if new_version:
+        # support both version and tag
+        ver, _ = guess.tag2version(new_version)
+        if ver != new_version:
+            new_version = ver
+            args['new_version'] = new_version
+        new_version_tag = guess.version2tag(new_version, version_tag_style)
+    else:
         ub = guess.upstream_branch()
         if not git.ref_exists('refs/remotes/%s' % ub):
             msg=("Upstream branch not found: %s\n"
@@ -399,11 +412,12 @@ def new_version_setup(new_version=None):
                  "   $ git remote add -f upstream GIT_URL\n"
                  % ub)
             raise exception.CantGuess(msg=msg)
-        new_version = git.get_latest_tag(ub)
+        new_version_tag = git.get_latest_tag(ub)
+        new_version, _ = guess.tag2version(new_version_tag)
         args['new_version'] = new_version
         log.info("Latest version detected from %s: %s" % (ub, new_version))
     args['changes'] = ['Update to upstream %s' % new_version]
-    args['new_patches_base'] = new_version
+    args['new_patches_base'] = new_version_tag
     spec = specfile.Spec()
     rpm_version = spec.get_tag('Version')
     new_rpm_version, new_milestone = specfile.version_parts(new_version)
@@ -434,30 +448,33 @@ def ensure_patches_branch(patches_branch=None, local_patches=False,
                   patches_branch))
 
 
-def diff(version, new_version, bump_only=False, no_diff=False):
+def diff(version, new_version, bump_only=False, no_diff=False,
+         version_tag_style=None):
     if bump_only or no_diff:
         return
-    git('--no-pager', 'diff', '--stat', '%s..%s' % (version, new_version),
+    vtag_from = guess.version2tag(version, version_tag_style)
+    vtag_to = guess.version2tag(new_version, version_tag_style)
+    git('--no-pager', 'diff', '--stat', '%s..%s' % (vtag_from, vtag_to),
         direct=True)
     try:
-        reqdiff(version, new_version)
+        reqdiff(vtag_from, vtag_to)
     except Exception:
         pass
     raw_input("Press <Enter> to continue after you inspected the diff. ")
 
 
 def get_diff_range(diff_range=None, patches_branch=None, branch=None):
-    version, new_version = None, None
+    vtag_from, vtag_to = None, None
     if diff_range:
         n = len(diff_range)
         if n > 2:
             raise exception.InvalidUsage(why="diff only supports one or two "
                                              "positional parameters.")
         if n == 2:
-            version, new_version = diff_range
+            vtag_from, vtag_to = diff_range
         else:
-            new_version = diff_range[0]
-    if not version:
+            vtag_to = diff_range[0]
+    if not vtag_from:
         if not patches_branch:
             if not branch:
                 branch = guess.current_branch()
@@ -470,21 +487,21 @@ def get_diff_range(diff_range=None, patches_branch=None, branch=None):
                  "b) add git remote with expected patches branch"
                  % patches_branch)
             raise exception.CantGuess(msg=msg)
-        version = git.get_latest_tag(branch=patches_branch)
-    if not new_version:
+        vtag_from = git.get_latest_tag(branch=patches_branch)
+    if not vtag_to:
         upstream_branch = guess.upstream_branch()
-        new_version = git.get_latest_tag(branch=upstream_branch)
+        vtag_to = git.get_latest_tag(branch=upstream_branch)
     return {
-        'version': version,
-        'new_version': new_version
+        'version_tag_from': vtag_from,
+        'version_tag_to': vtag_to
     }
 
 
-def reqdiff(version, new_version):
+def reqdiff(version_tag_from, version_tag_to):
     fmt = "\n{t.bold}requirements.txt diff{t.normal} between " \
           "{t.bold}{old}{t.normal} and {t.bold}{new}{t.normal}:"
-    log.info(fmt.format(t=log.term, old=version, new=new_version))
-    rdiff = _reqs.reqdiff_from_refs(version, new_version)
+    log.info(fmt.format(t=log.term, old=version_tag_from, new=version_tag_to))
+    rdiff = _reqs.reqdiff_from_refs(version_tag_from, version_tag_to)
     _reqs.print_reqdiff(*rdiff)
 
 
@@ -595,11 +612,12 @@ def reset_patches_branch(local_patches_branch, patches_branch,
 
 def rebase_patches_branch(new_version, local_patches_branch,
                           patches_branch=None, local_patches=False,
-                          bump_only=False):
+                          bump_only=False, version_tag_style=None):
     if bump_only:
         return
     git.checkout(local_patches_branch)
-    git('rebase', new_version, direct=True)
+    new_version_tag = guess.version2tag(new_version, version_tag_style)
+    git('rebase', new_version_tag, direct=True)
     if local_patches or not patches_branch:
         return
     if _is_same_commit(local_patches_branch, patches_branch):
@@ -612,7 +630,7 @@ def rebase_patches_branch(new_version, local_patches_branch,
         git('push', '--force', remote,
             '%s:%s' % (local_patches_branch, branch))
         # push the tag
-        git('push', '--force', remote, new_version)
+        git('push', '--force', remote, new_version_tag)
     except exception.UserAbort:
         pass
 
@@ -701,6 +719,9 @@ def update_spec(branch=None, changes=None,
 def get_source(no_new_sources=False):
     if no_new_sources:
         return
+    if not os.path.isfile('sources'):
+        log.info("'sources' file not found, skipping source download.")
+        return
     source_urls = specfile.Spec().get_source_urls()
     # So far, only Source0 is a tarball to download
     source_url = source_urls[0]
@@ -750,7 +771,7 @@ def _commit_message(changes=None):
     return msg
 
 
-def commit_distgit_update(branch=None, new_version=None):
+def commit_distgit_update(branch=None):
     _ensure_branch(branch)
     msg = _commit_message()
     git('commit', '-a', '-F', '-', input=msg, print_output=True)
@@ -764,15 +785,16 @@ def amend():
 
 
 def update_patches(branch, local_patches_branch,
-                   version=None, new_version=None, amend=False,
-                   bump_only=False):
+                   version=None, new_version=None, version_tag_style=None,
+                   amend=False, bump_only=False):
     if bump_only:
         return
-    tag = new_version or version
-    if not tag:
+    target_version = new_version or version
+    if not target_version:
         raise exception.RequiredActionArgumentNotAvailable(
             action='update_patches',
             arg='version or new_version')
+    tag = guess.version2tag(target_version, version_tag_style)
     _ensure_branch(local_patches_branch)
     patches = git.get_commits(tag, local_patches_branch)
     n_patches = len(patches)
