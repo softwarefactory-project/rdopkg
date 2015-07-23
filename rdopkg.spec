@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.28.1
+Version:          0.29
 Release:          1%{?dist}
 Summary:          RDO packaging automation tool
 
@@ -74,6 +74,11 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Thu Jul 23 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.29-1
+- Update to 0.29
+- new-version: support vX.Y.Z version tags
+- core: improve state file handling
+
 * Fri Jun 26 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.28.1-1
 - Update to 0.28.1
 - doc: such documentation, much clarity, wow
