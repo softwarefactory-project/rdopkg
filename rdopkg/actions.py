@@ -636,7 +636,8 @@ def rebase_patches_branch(new_version, local_patches_branch,
 
 
 def check_new_patches(version, local_patches_branch, local_patches=False,
-                      patches_branch=None, changes=None):
+                      patches_branch=None, changes=None,
+                      version_tag_style=None):
     if not changes:
         changes = []
     if local_patches:
@@ -648,7 +649,8 @@ def check_new_patches(version, local_patches_branch, local_patches=False,
         head = patches_branch
     spec = specfile.Spec()
     n_patches = spec.get_n_patches() + spec.get_n_excluded_patches()
-    patches = git.get_commit_subjects(version, head)
+    version_tag = guess.version2tag(version, version_tag_style)
+    patches = git.get_commit_subjects(version_tag, head)
     if n_patches > 0:
         patches = patches[0:-n_patches]
     if not patches:
