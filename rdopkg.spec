@@ -1,6 +1,6 @@
 Name:             rdopkg
-Version:          0.29
-Release:          2%{?dist}
+Version:          0.29.1
+Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
 Group:            Development/Languages
@@ -78,6 +78,10 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Tue Aug 04 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.29.1-1
+- Update to 0.29.1
+- Handle version_tag_style in check_new_patches()
+
 * Thu Jul 23 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.29-2
 - Update package description
 
