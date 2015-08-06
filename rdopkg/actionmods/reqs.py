@@ -1,9 +1,9 @@
 import re
+import pymod2pkg
 
 
 from rdopkg.actionmods import rdoinfo
 from rdopkg.actionmods import query
-from rdopkg.actionmods import pymod2pkg
 from rdopkg import exception
 from rdopkg.utils.cmd import git
 from rdopkg.utils import log
