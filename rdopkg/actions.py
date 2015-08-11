@@ -822,7 +822,8 @@ def update_patches(branch, local_patches_branch,
             log.info("%s  %s" % (hsh, title))
 
         rng = git.rev_range(start_commit + '~', local_patches_branch)
-        o = git('format-patch', '--no-renames', '--no-signature', '-N', rng)
+        o = git('format-patch', '--no-renames', '--no-signature', '-N',
+                '--ignore-submodules', rng)
         patch_fns = git._parse_output(o)
         for pfn in patch_fns:
             git('add', pfn)
