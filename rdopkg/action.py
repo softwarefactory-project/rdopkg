@@ -128,7 +128,7 @@ class ActionManager(object):
         if not args:
             args = {}
         if not action.atomic:
-            print(log.term.bold("## %s" % action.name))
+            log.info(log.term.bold("## %s" % action.name))
         for carg in action.const_args:
             args[carg] = action.const_args[carg]
         action_fun = action.action_fun

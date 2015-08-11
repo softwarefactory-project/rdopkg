@@ -69,11 +69,11 @@ def find_files(path, ext=None):
 
 def print_list(l, pre='- ', nl_before=False, nl_after=False):
     if nl_before:
-        log.info("")
+        print("")
     for e in l:
-        log.info('%s%s' % (pre, e))
+        print('%s%s' % (pre, e))
     if nl_after:
-        log.info("")
+        print("")
 
 
 def action_required(msg):

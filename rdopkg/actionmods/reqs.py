@@ -159,14 +159,19 @@ def reqcheck(desired_reqs, reqs):
 
 def print_reqcheck(met, any_version, wrong_version, missing):
     cats = [
-        ("\n{t.bold_green}MET{t.normal}:", met),
-        ("\n{t.bold}VERSION NOT ENFORCED{t.normal}:", any_version),
-        ("\n{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
-        ("\n{t.bold_red}MISSING{t.normal}:", missing),
+        ("{t.bold_green}MET{t.normal}:", met),
+        ("{t.bold}VERSION NOT ENFORCED{t.normal}:", any_version),
+        ("{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
+        ("{t.bold_red}MISSING{t.normal}:", missing),
         ]
+    first = True
     for title, reqs in cats:
         if not reqs:
             continue
+        if first:
+            first = False
+        else:
+            print("")
         print(title.format(t=log.term))
         helpers.print_list(reqs, pre='  ')
 
