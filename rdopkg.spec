@@ -17,6 +17,7 @@ BuildRequires:    PyYAML
 Requires:         rdopkg-bsources >= %{version}
 Requires:         python-rdoupdate >= 0.14
 Requires:         python-paramiko
+Requires:         python-pymod2pkg >= 0.2.1
 Requires:         python-requests
 Requires:         python-setuptools
 Requires:         PyYAML
