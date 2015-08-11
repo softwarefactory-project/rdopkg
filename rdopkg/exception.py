@@ -1,5 +1,5 @@
 from utils.exception import RdopkgException
-from utils.exception import CommandFailed, SpecFileNotFound, \
+from utils.exception import CommandFailed, CommandNotFound, SpecFileNotFound, \
     IncompleteChangelog, MultipleSpecFilesFound, SpecFileParseError, \
     InvalidAction, ModuleNotAvailable, RpmModuleNotAvailable, \
     BuildArchSanityCheckFailed, BranchNotFound

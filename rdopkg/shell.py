@@ -100,6 +100,7 @@ def main(cargs=None):
             exception.CantGuess,
             exception.ConfigError,
             exception.CoprError,
+            exception.CommandNotFound,
             exception.DebugAbort,
             exception.FileNotFound,
             exception.IncompleteChangelog,

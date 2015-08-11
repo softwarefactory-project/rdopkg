@@ -30,8 +30,16 @@ def download_file(url):
 
 
 def edit(path):
-    editor = os.environ.get('EDITOR', 'vim')
-    r = run(editor, path, direct=True)
+    editor = os.environ.get('EDITOR')
+    if not editor:
+        editor = 'vim'
+        log.info("$EDITOR not set. Falling back to %s." % editor)
+    try:
+        r = run(editor, path, direct=True)
+    except exception.CommandNotFound as ex:
+        raise exception.CommandNotFound(
+            msg='Failed to find suitable text editor. Please set $EDITOR '
+                'environment variable.')
     return r.success
 
 

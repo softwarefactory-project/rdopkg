@@ -17,6 +17,10 @@ class CommandFailed(RdopkgException):
     msg_fmt = "Command failed: %(cmd)s"
 
 
+class CommandNotFound(RdopkgException):
+    msg_fmt = "Command not found: %(cmd)s"
+
+
 class InvalidRemoteBranch(RdopkgException):
     msg_fmt = "Git remote not found for remote branch: %(branch)s"
 

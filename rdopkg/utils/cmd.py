@@ -61,8 +61,11 @@ def run(cmd, *params, **kwargs):
         stdout = subprocess.PIPE
         stderr = subprocess.PIPE
 
-    prc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout,
-                           stderr=stdout)
+    try:
+        prc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout,
+                               stderr=stdout)
+    except OSError as ex:
+        raise exception.CommandNotFound(cmd=cmd[0])
     out, err = prc.communicate(input=input)
 
     if out:
