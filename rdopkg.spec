@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.29.1
+Version:          0.30
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -79,6 +79,13 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Tue Aug 11 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.30-1
+- Update to 0.30
+- spec: require standalone pymod2pkg >= 0.2.1
+- log: improve stdout vs stderr logging
+- helpers.edit: Clear message about unset $EDITOR
+- update-patches: ignore git submodule changes
+
 * Tue Aug 04 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.29.1-1
 - Update to 0.29.1
 - Handle version_tag_style in check_new_patches()
