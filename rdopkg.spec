@@ -128,7 +128,7 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 
 * Wed Feb 04 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.24-1
 - Update to upstream 0.24
-- update-patches: support %autosetup patch apply method
+- update-patches: support %%autosetup patch apply method
 - Require rdoupdate with cbs support
 
 * Thu Jan 22 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.23.1-1
