@@ -10,7 +10,6 @@ import exception
 import guess
 from rdopkg.actionmods import copr as _copr
 from rdopkg.actionmods import kojibuild
-from rdopkg.actionmods import nightly
 from rdopkg.actionmods import pushupdate
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import rdoinfo
@@ -82,34 +81,6 @@ ACTIONS = [
                Action('update_spec'),
                Action('get_source'),
                Action('new_sources'),
-               Action('commit_distgit_update'),
-               Action('update_patches', const_args={'amend': True}),
-               Action('final_spec_diff'),
-           ]),
-    Action('rebase',
-           help="rebase our downstream patches on upstream ones",
-           required_args=[
-               Arg('upstream_branch',
-                   help="remote git branch to rebase on"),
-           ],
-           optional_args=[
-               Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
-                   help="remote git branch containing downstream patches"),
-               Arg('local_patches_branch', shortcut='-P', metavar='LOCAL_BRANCH',
-                   help="local git branch containing downstream patches"),
-               Arg('local_patches', shortcut='-l', action='store_true',
-                   help="don't reset local patches branch, use it as is"),
-               Arg('lame_patches', shortcut='-d', nargs='+',
-                   help=("list of patches that don't change the code but "
-                         "cause conflicts while building, e.g setup.cfg")),
-           ],
-           steps=[
-               Action('get_package_env'),
-               Action('ensure_patches_branch'),
-               Action('reset_patches_branch'),
-               Action('rebase_nightly'),
-               Action('get_upstream_patches'),
-               Action('update_spec'),
                Action('commit_distgit_update'),
                Action('update_patches', const_args={'amend': True}),
                Action('final_spec_diff'),
@@ -1033,15 +1004,6 @@ def upush_cleanup(update_repo_path, dest_base, temp_path, debug=False):
                                      temp_path=temp_path,
                                      debug=True)
     pusher.clean_env()
-
-
-def rebase_nightly(upstream_branch, local_patches_branch, branch=None,
-                   lame_patches=None):
-    log.info("Rebasing upstream %s" % upstream_branch)
-    nightly.rebase_nightly(upstream_branch,
-                           lame_patches=lame_patches,
-                           patches_branch=local_patches_branch,
-                           distgit_branch=branch)
 
 
 def build_prep(update_file=None, no_update_file=False):
