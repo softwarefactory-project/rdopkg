@@ -800,6 +800,8 @@ def update_patches(branch, local_patches_branch,
             git('add', pfn)
 
     spec.set_new_patches(patch_fns)
+    patches_branch_ref = git('rev-parse', local_patches_branch)
+    spec.set_commit_ref_macro(patches_branch_ref)
     spec.save()
     if git.is_clean():
         log.info('No new patches.')

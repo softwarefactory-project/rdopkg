@@ -245,6 +245,11 @@ class Spec(object):
             return 'autosetup'
         return 'rpm'
 
+    def set_commit_ref_macro(self, ref):
+        self._txt = re.sub(
+            r'^\%global commit \w+',
+            '%%global commit %s' % ref, self.txt, flags=re.M)
+
     def set_new_patches(self, fns):
         self.wipe_patches()
         if not fns:
