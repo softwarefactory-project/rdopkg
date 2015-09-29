@@ -262,7 +262,7 @@ ACTIONS = [
            steps=[
                Action('get_package_env'),
                Action('show_patch_log'),
-               ]),
+           ]),
     Action('conf', atomic=True, help="show rdopkg configuration"),
     Action('info', atomic=True, help="show information about RDO packaging",
            optional_args=[
@@ -370,7 +370,7 @@ def _print_patch_log(patches, tag, n_excluded):
             chsh = log.term.green(hsh)
         else:
             chsh = log.term.red(hsh)
-        log.info("%s  %s" % (chsh, title))
+        print("%s  %s" % (chsh, title))
         ei -= 1
 
 
