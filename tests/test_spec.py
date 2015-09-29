@@ -82,3 +82,12 @@ def test_patches_base_noop_weird(tmpdir):
         spec.save()
         spec_after = spec_path.read()
     common.assert_distgit(dist_path, 'empty-weird')
+
+def test_set_commit_ref_macro(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'commit')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        spec.set_commit_ref_macro('86a713c35718520cb3b681260182a8388ac809f3')
+        spec.save()
+    common.assert_distgit(dist_path, 'commit-patched')

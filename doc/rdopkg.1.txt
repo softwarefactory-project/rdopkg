@@ -184,6 +184,11 @@ detection.
  * Export patches from patches branch using `git format-patch`
  * Add these patches to dist-git and edit `.spec` file to apply them
  * Create new commit with the change (or amend previous with `-a`/`--amend`)
+ * If a "%global commit asdf1234" macro declaration is present, rewrite
+   it with the current sha1 of the patches branch. (This makes the sha1
+   value available during your package's build process. You can use this
+   to build your program so that "mycoolprogram --version" could display
+   the sha1 to users.)
 
 *Example:*
 
