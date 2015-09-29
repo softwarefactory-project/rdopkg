@@ -689,11 +689,14 @@ def update_spec(branch=None, changes=None,
     spec.save()
 
 
+def _has_valid_sources():
+    # Some dist-gits keep empty `sources` file in order to keep fedpkg
+    # compatibility although they don't require `fedpkg new-sources`
+    return os.path.isfile('sources') and os.path.getsize('sources') > 0
+
+
 def get_source(no_new_sources=False):
-    if no_new_sources:
-        return
-    if not os.path.isfile('sources'):
-        log.info("'sources' file not found, skipping source download.")
+    if no_new_sources or not _has_valid_sources():
         return
     source_urls = specfile.Spec().get_source_urls()
     # So far, only Source0 is a tarball to download
@@ -712,12 +715,7 @@ def get_source(no_new_sources=False):
 
 def new_sources(branch=None, fedpkg=FEDPKG, no_new_sources=False):
     _ensure_branch(branch)
-    if no_new_sources:
-        log.info("skipping `%s new-sources` as requested." % fedpkg[0])
-        return
-    if not os.path.isfile('sources'):
-        log.info("'sources' file not found, skipping `%s new-sources`" %
-                 fedpkg[0])
+    if no_new_sources or not _has_valid_sources():
         return
     sources = specfile.Spec().get_source_fns()
     cmd = fedpkg + ['new-sources'] + sources
