@@ -258,6 +258,11 @@ ACTIONS = [
                Action('get_package_env'),
                Action('show_package_env'),
            ]),
+    Action('patchlog', atomic=True, help="show patches branch log",
+           steps=[
+               Action('get_package_env'),
+               Action('show_patch_log'),
+               ]),
     Action('conf', atomic=True, help="show rdopkg configuration"),
     Action('info', atomic=True, help="show information about RDO packaging",
            optional_args=[
@@ -350,6 +355,34 @@ def show_package_env(package, version,
         rlsdist = '%s/%s' % (release or 'unknown', dist or 'unknown')
         _putv('RDO release/dist guess:', rlsdist)
         print
+
+
+def _print_patch_log(patches, tag, n_excluded):
+    n_patches = len(patches)
+    print("\n{t.bold}{n} patches{t.normal} on top of {t.bold}{tag}{t.normal}"
+          ", {t.bold}{ne}{t.normal} excluded\n".format(
+          t=log.term, n=n_patches, tag=tag, ne=n_excluded))
+    if n_patches <= 0:
+        return
+    ei = n_patches - n_excluded
+    for hsh, title in patches:
+        if ei > 0:
+            chsh = log.term.green(hsh)
+        else:
+            chsh = log.term.red(hsh)
+        log.info("%s  %s" % (chsh, title))
+        ei -= 1
+
+
+def show_patch_log(version, patches_branch, version_tag_style=None):
+    tag = guess.version2tag(version, version_tag_style)
+    patches = git.get_commits(tag, patches_branch)
+    spec = specfile.Spec()
+    n_excluded = spec.get_n_excluded_patches()
+    print("\nPatches branch {t.bold}{pb}{t.normal} is at version {t.bold}"
+          "{ver}{t.normal}".format(
+          t=log.term, pb=patches_branch, ver=version))
+    _print_patch_log(patches, tag, n_excluded)
 
 
 def conf():
@@ -788,7 +821,7 @@ def update_patches(branch, local_patches_branch,
     if patches:
         start_commit = patches[-1][0]
         for hsh, title in patches:
-            log.info("%s  %s" % (hsh, title))
+            log.info("%s  %s" % (log.term.green(hsh), title))
 
         rng = git.rev_range(start_commit + '~', local_patches_branch)
         o = git('format-patch', '--no-renames', '--no-signature', '-N',
