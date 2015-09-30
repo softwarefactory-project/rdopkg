@@ -1,9 +1,24 @@
 # rdopkg
 
-`rdopkg` is RDO packaging tool. It provides automation for modifying,
-building and submitting (not only) [RDO](https://openstack.redhat.com) RPM
-packages.
+`rdopkg` is an RPM packaging automation tool. It provides automation for
+package maintenance including git-based patches management and automagic
+rebases to new upstream versions. It also contains various functionality we
+needed for [RDO](https://www.rdoproject.org/) packaging, such as advanced
+`requirements.txt` management for python projects.
 
+`rdopkg` is under constant development, serving the needs of the mighty
+[RDO](https://www.rdoproject.org/) packager-warriors.
+
+Generic
+[dist-git](https://www.rdoproject.org/packaging/rdo-packaging.html#dist-git)
+and patches management functionality and conventions provided by `rdopkg`
+proved to be efficient way of packaging fast-moving upstream projects with
+minimal human effort. In order to make this functionality conveniently
+available for packagers, I'm splitting (and refactoring) the best of `rdopkg`
+features into a generic modular packaging tools framework called
+[pwnpkg](https://github.com/yac/pwnpkg). Check it out if you are interested in
+advanced dist-git patches management, writing you own `*pkg` tool or creating
+`fedpkg`/`copr-cli` we deserve.
 
 
 ## Installation
@@ -18,6 +33,8 @@ page contains instructions howto enable the repository.
 After you've enabled the repo, just
 
     yum install rdopkg
+
+Note that [Fedora review](https://bugzilla.redhat.com/show_bug.cgi?id=1246199) is underway.
 
 
 ### from source
@@ -46,7 +63,7 @@ a module.
 
 ## [The Manual](https://www.rdoproject.org/packaging/rdopkg/rdopkg.1.html)
 
-Exhaustive `rdopkg` manual is avalable, you can:
+Exhaustive `rdopkg` manual is available, you can:
 
  * [read it online](https://www.rdoproject.org/packaging/rdopkg/rdopkg.1.html)
  * read its nice source: [doc/rdopkg.1.txt](doc/rdopkg.1.txt)
@@ -57,7 +74,8 @@ guide](https://www.rdoproject.org/packaging/rdo-packaging.html) which contains
 some examples of `rdopkg` usage and more.
 
 
-
 ## Bugs
 
-Please use the github Issues to report bugs. I usually fix them within days.
+Please use the
+[github Issues](https://github.com/redhat-openstack/rdopkg/issues)
+to report bugs. I usually fix them within days.
