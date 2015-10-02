@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.30
+Version:          0.31
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -79,6 +79,14 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Fri Oct 02 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.31-1
+- Update to 0.31
+- new-version: auto --bump-only on missing patches branch
+- new-version: only run `fedpkg new-sources` with non-empty sources file
+- update-patches: update the "%commit" macro
+- patchlog: new action to show patches branch log
+- remove unused 'rebase' action
+
 * Tue Aug 11 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.30-1
 - Update to 0.30
 - spec: require standalone pymod2pkg >= 0.2.1
