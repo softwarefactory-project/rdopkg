@@ -72,7 +72,6 @@ ACTIONS = [
            steps=[
                Action('get_package_env'),
                Action('new_version_setup'),
-               Action('ensure_patches_branch'),
                Action('diff'),
                Action('rebase_patches', steps=[
                    Action('reset_patches_branch'),
@@ -396,7 +395,8 @@ def conf():
         log.info("%s: %s" % item)
 
 
-def new_version_setup(new_version=None, version_tag_style=None):
+def new_version_setup(patches_branch=None, new_version=None,
+                      version_tag_style=None):
     args = {}
     if new_version:
         # support both version and tag
@@ -433,6 +433,10 @@ def new_version_setup(new_version=None, version_tag_style=None):
             args['new_release'] = '0.1'
         else:
             args['new_release'] = '1'
+    if not patches_branch or not git.branch_exists(patches_branch):
+        log.warn("Patches branch %s not found. Running in --bump-only mode." %
+                 patches_branch)
+        args['bump_only'] = True
     return args
 
 
