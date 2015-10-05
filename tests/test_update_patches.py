@@ -88,6 +88,40 @@ def test_update_weird(tmpdir):
     assert commit_before != commit_after, "New commit not created"
 
 
+def test_update_dense(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'empty-dense')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        common.prep_patches_branch(dist_path)
+        spec_before = spec_path.read()
+        commit_before = git('rev-parse', 'HEAD')
+        common.add_patches(extra=True)
+        actions.update_patches('master',
+                               local_patches_branch='master-patches',
+                               version='1.2.3')
+        spec_after = spec_path.read()
+        commit_after = git('rev-parse', 'HEAD')
+    common.assert_distgit(dist_path, 'patched-dense')
+    assert commit_before != commit_after, "New commit not created"
+
+
+def test_update_dense_ex(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'empty-dense-ex')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        common.prep_patches_branch(dist_path)
+        spec_before = spec_path.read()
+        commit_before = git('rev-parse', 'HEAD')
+        common.add_patches(extra=True)
+        actions.update_patches('master',
+                               local_patches_branch='master-patches',
+                               version='1.2.3')
+        spec_after = spec_path.read()
+        commit_after = git('rev-parse', 'HEAD')
+    common.assert_distgit(dist_path, 'patched-dense-ex')
+    assert commit_before != commit_after, "New commit not created"
+
+
 def test_update_git_am(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'git-am')
     spec_path = dist_path.join('foo.spec')

@@ -78,9 +78,10 @@ class Spec(object):
     """
 
     RE_PATCH = r'(?:^|\n)(Patch\d+:)'
-    RE_AFTER_SOURCES = r'((?:^|\n)Source\d+:[^\n]*\n\n)'
+    RE_AFTER_SOURCES = r'((?:^|\n)Source\d+:[^\n]*\n\n?)'
     RE_AFTER_PATCHES_BASE = (
-        r'((?:^|\n)(?:#\n)*#\s*patches_base\s*=[^\n]*\n(?:#\n)*)\n*')
+        r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
+        r'\t]*\n)*)\n*')
 
     def __init__(self, fn=None, txt=None):
         self._fn = fn
@@ -265,14 +266,21 @@ class Spec(object):
         self._txt, n = re.subn(
             self.RE_AFTER_PATCHES_BASE,
             r'\g<1>%s\n' % ps, self.txt, count=1)
+
         if n != 1:
-            self._txt, n = re.subn(
-                self.RE_AFTER_SOURCES,
-                r'\g<1>%s\n' % ps, self.txt, count=1)
-        if n != 1:
-            raise exception.SpecFileParseError(
-                spec_fn=self.fn,
-                error="Failed to append PatchXXXX: lines")
+            for m in re.finditer(self.RE_AFTER_SOURCES, self.txt):
+                pass
+            if not m:
+                raise exception.SpecFileParseError(
+                    spec_fn=self.fn,
+                    error="Failed to append PatchXXXX: lines")
+            i = m.end()
+            startnl, endnl = '', ''
+            if self._txt[i-2] != '\n':
+                startnl += '\n'
+            if self._txt[i] != '\n':
+                endnl += '\n'
+            self._txt = self._txt[:i] + startnl + ps + endnl + self._txt[i:]
         ## %patchXXX -p1 lines after "%setup" if needed
         if apply_method == 'rpm':
             self._txt, n = re.subn(

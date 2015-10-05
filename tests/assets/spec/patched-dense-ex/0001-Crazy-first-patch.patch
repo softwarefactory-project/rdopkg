@@ -1,0 +1,16 @@
+From ca9bbf1e8fa6067ed33f1b44d5469adbc17a5efa Mon Sep 17 00:00:00 2001
+From: Jakub Ruzicka <jruzicka@redhat.com>
+Date: Mon, 5 Oct 2015 14:33:35 +0200
+Subject: [PATCH] Crazy first patch
+
+---
+ foofile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/foofile b/foofile
+index 6238541..fd11acc 100644
+--- a/foofile
++++ b/foofile
+@@ -1 +1 @@
+-#nope
++#huehue, change
