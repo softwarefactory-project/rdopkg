@@ -34,6 +34,10 @@ class InvalidQuery(RdopkgException):
     msg_fmt = "Invalid query: %(why)s"
 
 
+class InvalidRDOPackage(RdopkgException):
+    msg_fmt = "Package not found in rdoinfo: %(package)s"
+
+
 class InvalidPackageFilter(RdopkgException):
     msg_fmt = "Invalid package filter: %(why)s"
 

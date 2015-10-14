@@ -69,6 +69,13 @@ class RdoinfoRepo(repoman.RepoManager):
                 return rls
         return None
 
+    def get_package(self, name):
+        pkgs = self.info['packages']
+        for pkg in pkgs:
+            if pkg['name'] == name:
+                return pkg
+        return None
+
     def get_distrepos(self, release, dist=None):
         # release is required now, but this function can be extended to
         # return distrepos for multiple releases if needed

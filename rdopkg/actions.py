@@ -84,6 +84,16 @@ ACTIONS = [
                Action('update_patches', const_args={'amend': True}),
                Action('final_spec_diff'),
            ]),
+    Action('clone', atomic=True,
+           help="clone an RDO package distgit and setup remotes",
+           required_args=[
+               Arg('package', positional=True, metavar='PACKAGE',
+                   help="RDO package to clone (see `rdopkg info`)"),
+           ],
+           optional_args=[
+                Arg('use_master_distgit', shortcut='-m', action='store_true',
+                    help="clone 'master-distgit'"),
+           ]),
     Action('reqdiff', atomic=True, help="show diff of requirements.txt",
            steps=[
                Action('get_package_env'),
@@ -454,6 +464,45 @@ def ensure_patches_branch(patches_branch=None, local_patches=False,
                   "Specify with -p/--patches-branch, use -l/--local-patches, "
                   "or skip patches branch operations with -b/--bump-only" %
                   patches_branch))
+
+
+def clone(package, force_fetch=False, use_master_distgit=False):
+    inforepo = rdoinfo.get_default_inforepo()
+    inforepo.init(force_fetch=force_fetch)
+    pkg = inforepo.get_package(package)
+    if not pkg:
+        raise exception.InvalidRDOPackage(package=package)
+    if use_master_distgit:
+        try:
+            distgit = pkg['master-distgit']
+            distgit_str = 'master-distgit'
+        except KeyError:
+            raise exception.InvalidUsage(
+                msg="-m/--use-master-distgit used but 'master-distgit' "
+                    "missing in rdoinfo for package: %s" % package)
+    else:
+        distgit = pkg['distgit']
+        distgit_str = 'distgit'
+    log.info("Cloning {dg} into ./{t.bold}{pkg}{t.normal}/".format(
+        t=log.term, dg=distgit_str, pkg=package))
+    patches = pkg.get('patches')
+    upstream = pkg.get('upstream')
+
+    git('clone', distgit, package)
+    with helpers.cdir(package):
+        if patches:
+            log.info('Adding patches remote...')
+            git('remote', 'add', 'patches', patches)
+        else:
+            log.warn("'patches' remote information not available in rdoinfo.")
+        if upstream:
+            log.info('Adding upstrem remote...')
+            git('remote', 'add', 'upstream', upstream)
+        else:
+            log.warn("'upstream' remote information not available in rdoinfo.")
+        if patches or upstream:
+            git('fetch', '--all')
+        git('remote', '-v', direct=True)
 
 
 def diff(version, new_version, bump_only=False, no_diff=False,

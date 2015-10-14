@@ -105,6 +105,7 @@ def main(cargs=None):
             exception.FileNotFound,
             exception.IncompleteChangelog,
             exception.InvalidPackageFilter,
+            exception.InvalidRDOPackage,
             exception.InvalidQuery,
             exception.InvalidUsage,
             exception.ManualResolutionNeeded,
