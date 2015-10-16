@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.32
+Version:          0.32.1
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -79,6 +79,10 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Fri Oct 16 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.32.1-1
+- Update to 0.32.1
+- new-version: fix patches branch detection
+
 * Wed Oct 14 2015 Jakub Ruzicka <jruzicka@redhat.com> 0.32-1
 - Update to 0.32
 - clone: new action to setup RDO package git remotes
