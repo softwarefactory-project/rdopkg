@@ -430,7 +430,7 @@ def new_version_setup(patches_branch=None, local_patches=False,
         new_version, _ = guess.tag2version(new_version_tag)
         args['new_version'] = new_version
         log.info("Latest version detected from %s: %s" % (ub, new_version))
-    args['changes'] = ['Update to upstream %s' % new_version]
+    args['changes'] = ['Update to %s' % new_version]
     args['new_patches_base'] = new_version_tag
     spec = specfile.Spec()
     rpm_version = spec.get_tag('Version')
