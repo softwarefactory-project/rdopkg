@@ -405,8 +405,8 @@ def conf():
         log.info("%s: %s" % item)
 
 
-def new_version_setup(patches_branch=None, new_version=None,
-                      version_tag_style=None):
+def new_version_setup(patches_branch=None, local_patches=False,
+                      new_version=None, version_tag_style=None):
     args = {}
     if new_version:
         # support both version and tag
@@ -443,10 +443,12 @@ def new_version_setup(patches_branch=None, new_version=None,
             args['new_release'] = '0.1'
         else:
             args['new_release'] = '1'
-    if not patches_branch or not git.branch_exists(patches_branch):
-        log.warn("Patches branch %s not found. Running in --bump-only mode." %
-                 patches_branch)
-        args['bump_only'] = True
+    if not local_patches:
+        if not patches_branch or \
+           not git.ref_exists('refs/remotes/' + patches_branch):
+            log.warn("Patches branch '%s' not found. Running in --bump-only "
+                     "mode." % patches_branch)
+            args['bump_only'] = True
     return args
 
 
