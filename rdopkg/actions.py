@@ -498,7 +498,7 @@ def clone(package, force_fetch=False, use_master_distgit=False):
         else:
             log.warn("'patches' remote information not available in rdoinfo.")
         if upstream:
-            log.info('Adding upstrem remote...')
+            log.info('Adding upstream remote...')
             git('remote', 'add', 'upstream', upstream)
         else:
             log.warn("'upstream' remote information not available in rdoinfo.")
