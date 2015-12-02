@@ -43,11 +43,14 @@ ACTIONS = [
                    help="local git branch containing patches"),
                Arg('local_patches', shortcut='-l', action='store_true',
                    help="don't reset local patches branch, use it as is"),
+               Arg('gerrit_patches_chain', shortcut='-g', metavar='X/Y/Z',
+                   help="Top gerrit review id of the patch chain"),
            ],
            steps=[
                Action('get_package_env'),
                Action('ensure_patches_branch'),
                Action('reset_patches_branch'),
+               Action('fetch_patches_branch'),
                Action('check_new_patches'),
                Action('update_spec'),
                Action('commit_distgit_update'),
@@ -676,6 +679,13 @@ def reset_patches_branch(local_patches_branch, patches_branch,
         return
     _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
+def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None):
+    if not gerrit_patches_chain:
+        return
+    git('fetch', 'patches', 'refs/changes/' + gerrit_patches_chain)
+    git.checkout(local_patches_branch)
+    git('reset', '--hard', 'FETCH_HEAD')
+    git.checkout('rdo-liberty')
 
 def rebase_patches_branch(new_version, local_patches_branch,
                           patches_branch=None, local_patches=False,
@@ -702,12 +712,14 @@ def rebase_patches_branch(new_version, local_patches_branch,
         pass
 
 
-def check_new_patches(version, local_patches_branch, local_patches=False,
+def check_new_patches(version, local_patches_branch,
+                      gerrit_patches_chain=None,
+                      local_patches=False,
                       patches_branch=None, changes=None,
                       version_tag_style=None):
     if not changes:
         changes = []
-    if local_patches:
+    if local_patches or gerrit_patches_chain:
         head = local_patches_branch
     else:
         if not patches_branch:
