@@ -47,7 +47,7 @@ def prep_spec_test(tmpdir, distgit):
     return dist_path
 
 
-def prep_patches_branch(dist_path):
+def prep_patches_branch():
     git('checkout', '--orphan', 'master-patches')
     f = open('foofile', 'w')
     f.write("#not really a patch\n")
