@@ -16,6 +16,8 @@ Source0:          http://pypi.python.org/packages/source/f/%{name}/%{name}-%{ver
 #
 # patches_base=+2
 #
+Patch0001: 0001-Crazy-first-patch.patch
+Patch0002: 0002-Epic-bugfix-of-doom-MK2.patch
 
 BuildArch:        noarch
 BuildRequires:    python-setuptools
@@ -31,6 +33,9 @@ This is foo! This is foo! This is foo!
 
 %prep
 %setup -q
+
+%patch0001 -p1
+%patch0002 -p1
 
 # We provide version like this in order to remove runtime dep on pbr.
 sed -i s/REDHATNOVACLIENTVERSION/%{version}/ novaclient/__init__.py

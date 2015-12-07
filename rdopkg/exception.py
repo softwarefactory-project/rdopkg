@@ -78,6 +78,13 @@ class UpdateCheckFailed(RdopkgException):
     msg_fmt = "Update check failed: %(fail)s"
 
 
+class OnlyPatchesIgnoreUsed(RdopkgException):
+    msg_fmt = ("update-patches attempted with only #patches_ignore magic "
+               "comment in the spec file. Currently it is not safe to run "
+               "update-patches without #patches_base specified AFTER "
+               "#patches_ignore.")
+
+
 class NotADirectory(RdopkgException):
     msg_fmt = "Not a directory: %(path)s"
 

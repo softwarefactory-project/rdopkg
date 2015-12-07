@@ -214,3 +214,15 @@ def test_wipe(tmpdir):
     assert spec_after == spec_exp
 
 
+def test_filter_out(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'empty-ex-filter')
+    with dist_path.as_cwd():
+        common.prep_patches_branch()
+        commit_before = git('rev-parse', 'HEAD')
+        common.add_patches(extra=True, filtered=True)
+        actions.update_patches('master',
+                               local_patches_branch='master-patches',
+                               version='1.2.3')
+        commit_after = git('rev-parse', 'HEAD')
+    common.assert_distgit(dist_path, 'patched-filter')
+    assert commit_before != commit_after, "New commit not created"

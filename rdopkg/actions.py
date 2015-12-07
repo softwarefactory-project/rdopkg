@@ -1,3 +1,4 @@
+import itertools
 import os
 import re
 import yaml
@@ -843,6 +844,45 @@ def amend():
     git('--no-pager', 'log', '--name-status', 'HEAD~..HEAD', direct=True)
 
 
+def _partition_patches(patches, regex):
+    if regex is None:
+        return [patches]
+
+    take = lambda patch: not bool(regex.search(patch[1]))
+
+    def _stacker(buckets):
+        while True:
+            item, new_bucket = yield
+            if new_bucket:
+                buckets.append([item])
+            else:
+                buckets[-1].append(item)
+
+    def _filter(check, stacker):
+        start_bucket = True
+        while True:
+            item = yield
+            if check(item):
+                stacker.send((item, start_bucket))
+                start_bucket = False
+            else:
+                start_bucket = True
+
+    buckets = []
+    stacker = _stacker(buckets)
+    stacker.next()
+    filter = _filter(take, stacker)
+    filter.next()
+
+    for patch in patches:
+        filter.send(patch)
+    return buckets
+
+
+def flatten(list_of_lists):
+    return list(itertools.chain(*list_of_lists))
+
+
 def update_patches(branch, local_patches_branch,
                    version=None, new_version=None, version_tag_style=None,
                    amend=False, bump_only=False):
@@ -860,7 +900,13 @@ def update_patches(branch, local_patches_branch,
     _ensure_branch(branch)
     spec = specfile.Spec()
     spec.sanity_check()
-    n_excluded = spec.get_n_excluded_patches()
+    patches_base, n_excluded = spec.get_patches_base()
+    ignore_regex = spec.get_patches_ignore_regex()
+    if not ignore_regex:
+        log.info('No valid patch filtering regex found in the spec file.')
+    if ignore_regex and patches_base is None:
+        raise exception.OnlyPatchesIgnoreUsed()
+
 
     patch_fns = spec.get_patch_fns()
     for pfn in patch_fns:
@@ -869,19 +915,39 @@ def update_patches(branch, local_patches_branch,
 
     if n_excluded > 0:
         patches = patches[:-n_excluded]
-    log.info("\n{t.bold}{n} patches{t.normal} on top of {t.bold}{tag}{t.normal}"
-             ", {t.bold}{ne}{t.normal} excluded".format(
-        t=log.term, n=n_patches, tag=tag, ne=n_excluded))
+    patches.reverse()
 
-    if patches:
-        start_commit = patches[-1][0]
-        for hsh, title in patches:
+    ranges = [patches]
+    filtered_patches = patches
+    if ignore_regex:
+        ranges = _partition_patches(patches, ignore_regex)
+        filtered_patches = flatten(ranges)
+    n_filtered_out = len(patches) - len(filtered_patches)
+
+    log.info("\n{t.bold}{n} patches{t.normal} on top of {t.bold}{tag}{t.normal}"
+             ", {t.bold}{ne}{t.normal} excluded by base"
+             ", {t.bold}{nf}{t.normal} filtered out by regex.".format(
+        t=log.term, n=n_patches, tag=tag, ne=n_excluded, nf=n_filtered_out))
+
+    if patches and filtered_patches:
+        for hsh, title in reversed(filtered_patches):
             log.info("%s  %s" % (log.term.green(hsh), title))
 
-        rng = git.rev_range(start_commit + '~', local_patches_branch)
-        o = git('format-patch', '--no-renames', '--no-signature', '-N',
-                '--ignore-submodules', rng)
-        patch_fns = git._parse_output(o)
+        patch_fns = []
+        for patch_range in ranges:
+            start_commit, _title = patch_range[0]
+            end_commit, _title = patch_range[-1]
+            start_number = len(patch_fns) + 1
+
+            rng = git.rev_range(start_commit + '~', end_commit)
+            format_patch_cmd = ['format-patch', '--no-renames',
+                                '--no-signature', '-N', '--ignore-submodules',
+                                '--start-number', str(start_number), rng]
+
+            o = git(*format_patch_cmd)
+            range_files = git._parse_output(o)
+            patch_fns.extend(range_files)
+
         for pfn in patch_fns:
             git('add', pfn)
 
