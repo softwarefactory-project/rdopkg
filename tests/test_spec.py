@@ -91,3 +91,19 @@ def test_set_commit_ref_macro(tmpdir):
         spec.set_commit_ref_macro('86a713c35718520cb3b681260182a8388ac809f3')
         spec.save()
     common.assert_distgit(dist_path, 'commit-patched')
+
+
+def test_get_filter_regex(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'empty-ex-filter')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        regex = spec.get_filter_regex()
+        assert regex.pattern == 'DROP-IN-RPM'
+
+
+def test_get_filter_regex_fail(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'empty-filter-bogus')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        regex = spec.get_filter_regex()
+        assert regex is None
