@@ -232,6 +232,10 @@ class Git(ShellCommand):
             rng += to_revision
         return rng
 
+    def rev_diff(self, from_revision, to_revision=None):
+        rng = self.rev_range(from_revision, to_revision)
+        return rng.replace('..', '...')
+
     def get_commits(self, from_revision, to_revision=None):
         rng = self.rev_range(from_revision, to_revision)
         log_out = self('log', '--format=%h %s', rng, log_cmd=False)
