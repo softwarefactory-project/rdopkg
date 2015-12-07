@@ -78,6 +78,12 @@ class UpdateCheckFailed(RdopkgException):
     msg_fmt = "Update check failed: %(fail)s"
 
 
+class OnlyFilterOutUsed(RdopkgException):
+    msg_fmt = ("update-patches attempted with only #filter_out magic comment "
+               "found in the spec file. Currently it is not safe to run "
+               "update-patches without #patches_base specified AFTER it.")
+
+
 class NotADirectory(RdopkgException):
     msg_fmt = "Not a directory: %(path)s"
 
