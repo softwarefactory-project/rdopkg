@@ -154,6 +154,29 @@ class Spec(object):
             n_commits = 0
         return patches_base_ref, n_commits
 
+    def get_patches_ignore_regex(self):
+        """Returns a string representing a regex for filtering out patches
+
+        This string is parsed from a comment in the specfile that contains the
+        word filter-out followed by an equal sign.
+
+        For example a comment as such:
+            # patches_ignore=(regex)
+
+        would mean this method returns the string '(regex)'
+
+        Only a very limited subset of characters are accepted so no fancy stuff
+        like matching groups etc.
+        """
+        match = re.search(r'# *patches_ignore=([\w *.+?[\]{,}\-_]+)', self.txt)
+        if not match:
+            return None
+        regex_string = match.group(1)
+        try:
+            return re.compile(regex_string)
+        except:
+            return None
+
     def _create_new_patches_base(self, base):
         self._txt, n = re.subn(
             self.RE_PATCH,

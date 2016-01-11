@@ -177,7 +177,11 @@ See <<patches-branch,AUTOMAGIC -> patches branch>> for explanation.
 `update-patches` is a rework of now obsolete `update-patches.sh` script with
 less restrictions and more features such as optional #patches_base, support
 for `git am %{patches}` method of applying patches and smart patches branch
-detection.
+detection. It also supports filtering out patches based on matching a
+regex provided by a magic #patches_ignore comment in the spec file. This is
+useful, for example, in case the patches branch contains changes that are
+related to the CI/code review infra, that are useful to keep around but don't
+need to end up in the RPM.
 
 *Flow:*
 

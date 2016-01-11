@@ -47,7 +47,7 @@ def prep_spec_test(tmpdir, distgit):
     return dist_path
 
 
-def prep_patches_branch(dist_path):
+def prep_patches_branch():
     git('checkout', '--orphan', 'master-patches')
     f = open('foofile', 'w')
     f.write("#not really a patch\n")
@@ -66,13 +66,18 @@ def _do_patch(fn, content, msg):
     git('commit', '-m', msg)
 
 
-def add_patches(extra=False):
+def add_patches(extra=False, filtered=False):
     git('checkout', 'master-patches')
     if extra:
         _do_patch('foofile', "#meh\n", 'Look, excluded patch')
         _do_patch('foofile', "#nope\n", 'Yet another excluded patch')
     _do_patch('foofile', "#huehue, change\n", 'Crazy first patch')
+    if filtered:
+        _do_patch('foofile', "#fix ci\n", 'DROP-IN-RPM: ci fix')
+        _do_patch('foofile', "#and now for real\n", 'DROP-IN-RPM: moar ci fix')
     _do_patch('foofile', "#lol, another change\n", 'Epic bugfix of doom MK2')
+    if filtered:
+        _do_patch('foofile', "#oooops\n", 'DROP-IN-RPM: even moar ci fix')
     git('checkout', 'master')
 
 

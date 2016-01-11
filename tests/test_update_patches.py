@@ -13,7 +13,7 @@ def test_update_empty(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         actions.update_patches('master',
@@ -38,7 +38,7 @@ def test_update_noop(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         common.add_patches()
         actions.update_patches('master',
@@ -58,7 +58,7 @@ def test_update_full(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'some-ex')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
@@ -75,7 +75,7 @@ def test_update_weird(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty-weird')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
@@ -92,7 +92,7 @@ def test_update_dense(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty-dense')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
@@ -109,7 +109,7 @@ def test_update_dense_ex(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty-dense-ex')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
@@ -126,7 +126,7 @@ def test_update_comments(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'some-comments')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
@@ -143,7 +143,7 @@ def test_update_git_am(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'git-am')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
@@ -162,7 +162,7 @@ def test_update_git_am_buildarch_fail(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'git-am-fail')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
@@ -181,7 +181,7 @@ def test_update_autosetup(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'autosetup')
     spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        common.prep_patches_branch(dist_path)
+        common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
@@ -214,3 +214,15 @@ def test_wipe(tmpdir):
     assert spec_after == spec_exp
 
 
+def test_filter_out(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'empty-ex-filter')
+    with dist_path.as_cwd():
+        common.prep_patches_branch()
+        commit_before = git('rev-parse', 'HEAD')
+        common.add_patches(extra=True, filtered=True)
+        actions.update_patches('master',
+                               local_patches_branch='master-patches',
+                               version='1.2.3')
+        commit_after = git('rev-parse', 'HEAD')
+    common.assert_distgit(dist_path, 'patched-filter')
+    assert commit_before != commit_after, "New commit not created"
