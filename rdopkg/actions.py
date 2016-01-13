@@ -10,6 +10,7 @@ from conf import cfg, cfg_files
 import exception
 import guess
 from rdopkg.actionmods import copr as _copr
+from rdopkg.actionmods import doctor as _doctor
 from rdopkg.actionmods import kojibuild
 from rdopkg.actionmods import pushupdate
 from rdopkg.actionmods import query as _query
@@ -282,7 +283,9 @@ ACTIONS = [
                    help="force fetch of info repo"),
            ]),
     Action('autocomplete', atomic=True,
-           help="get TAB completion for rdopkg!")
+           help="get TAB completion for rdopkg!"),
+    Action('doctor', atomic=True,
+           help="activate rdopkg psychoanalyst mode")
 ]
 
 
@@ -1329,3 +1332,7 @@ def autocomplete():
         '    eval "$(register-python-argcomplete rdopkg)"\n\n'
         "For zsh, you need bashcompinit, see https://github.com/kislyuk/"
         "argcomplete/issues/10#issuecomment-19369876")
+
+
+def doctor():
+    _doctor.can_haz_doctor()
