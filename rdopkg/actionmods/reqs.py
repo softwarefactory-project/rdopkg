@@ -14,6 +14,8 @@ from rdopkg import helpers
 class DiffReq(object):
     def __init__(self, name, vers):
         self.name = name
+        # ensure that comp. operators are surrounded with spaces
+        vers = re.sub(r'([<>=!]+)', r'\1 ', vers)
         self.vers = vers
         self.old_vers = vers
 
