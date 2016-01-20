@@ -281,6 +281,8 @@ ACTIONS = [
                    help="show info about packages with ATTR matching REGEX"),
                Arg('force_fetch', shortcut='-f', action='store_true',
                    help="force fetch of info repo"),
+               Arg('local_info', shortcut='-l',
+                   help="use local rdoinfo repo found in specified path"),
            ]),
     Action('autocomplete', atomic=True,
            help="get TAB completion for rdopkg!"),
@@ -1279,10 +1281,11 @@ def koji_build(update_file=None, skip_build=False):
         _update.dump_build(build, update_file)
 
 
-def info(pkgs=None, info_repo=None, force_fetch=False, verbose=False):
-    if not info_repo:
-        info_repo = cfg['RDOINFO_REPO']
-    inforepo = rdoinfo.get_default_inforepo()
+def info(pkgs=None, local_info=None, force_fetch=False, verbose=False):
+    if local_info:
+        inforepo = rdoinfo.RdoinfoRepo(local_repo_path=local_info)
+    else:
+        inforepo = rdoinfo.get_default_inforepo()
     inforepo.init(force_fetch=force_fetch)
     if pkgs:
         filters = {}
