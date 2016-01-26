@@ -279,6 +279,8 @@ ACTIONS = [
            optional_args=[
                Arg('pkgs', positional=True, nargs='*', metavar='ATTR:REGEX',
                    help="show info about packages with ATTR matching REGEX"),
+               Arg('apply_tag', shortcut='-t',
+                   help="apply overrides for selected tag"),
                Arg('force_fetch', shortcut='-f', action='store_true',
                    help="force fetch of info repo"),
                Arg('local_info', shortcut='-l',
@@ -1281,11 +1283,11 @@ def koji_build(update_file=None, skip_build=False):
         _update.dump_build(build, update_file)
 
 
-def info(pkgs=None, local_info=None, force_fetch=False, verbose=False):
+def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False, verbose=False):
     if local_info:
-        inforepo = rdoinfo.RdoinfoRepo(local_repo_path=local_info)
+        inforepo = rdoinfo.RdoinfoRepo(local_repo_path=local_info, apply_tag=apply_tag)
     else:
-        inforepo = rdoinfo.get_default_inforepo()
+        inforepo = rdoinfo.get_default_inforepo(apply_tag=apply_tag)
     inforepo.init(force_fetch=force_fetch)
     if pkgs:
         filters = {}

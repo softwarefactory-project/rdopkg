@@ -40,9 +40,10 @@ class RdoinfoRepo(repoman.RepoManager):
     repo_desc = 'info'
 
     def __init__(self, *args, **kwargs):
+        self.info_file = kwargs.pop('info_file', 'rdo.yml')
+        self.apply_tag = kwargs.pop('apply_tag', None)
         repoman.RepoManager.__init__(self, *args, **kwargs)
         self.rdoinfo = None
-        self.info_file = kwargs.get('info_file', 'rdo.yml')
         self._info = None
 
     def ensure_rdoinfo(self):
@@ -54,7 +55,7 @@ class RdoinfoRepo(repoman.RepoManager):
     def get_info(self):
         self.ensure_rdoinfo()
         with self.repo_dir():
-            info = self.rdoinfo.parse_info_file(self.info_file)
+            info = self.rdoinfo.parse_info_file(self.info_file, apply_tag=self.apply_tag)
         return info
 
     @property
@@ -153,8 +154,7 @@ class RdoinfoRepo(repoman.RepoManager):
         self.print_pkg_summary()
 
     def print_pkgs(self, filters=None):
-        info = self.get_info()
-        pkgs = info['packages']
+        pkgs = self.info['packages']
         if filters:
             pkgs = filter_pkgs(pkgs, rexen=filters)
         if not pkgs:
@@ -167,8 +167,8 @@ class RdoinfoRepo(repoman.RepoManager):
             print_pkg(pkg)
 
 
-def get_default_inforepo():
-    return RdoinfoRepo(cfg['HOME_DIR'], cfg['RDOINFO_REPO'])
+def get_default_inforepo(apply_tag=None):
+    return RdoinfoRepo(cfg['HOME_DIR'], cfg['RDOINFO_REPO'], apply_tag=apply_tag)
 
 
 def print_pkg(pkg):
