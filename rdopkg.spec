@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.33
+Version:          0.34
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -79,6 +79,10 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Tue Jan 26 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.34-1
+- Update to 0.34
+- info: support rdoinfo tags/overrides
+
 * Mon Jan 11 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.33-1
 - Update to 0.33
 - update-patches: support #patches_ignore regex filter
