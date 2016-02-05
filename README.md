@@ -28,13 +28,16 @@ advanced dist-git patches management, writing you own `*pkg` tool or creating
 
 The easiest and recommended way to get rdopkg is use [jruzicka/rdopkg
 copr](https://copr.fedoraproject.org/coprs/jruzicka/rdopkg/). The linked
-page contains instructions howto enable the repository.
+page contains instructions howto enable the repository:
+
+    dnf copr enable jruzicka/rdopkg
 
 After you've enabled the repo, just
 
-    yum install rdopkg
+    dnf install rdopkg
 
-Note that [Fedora review](https://bugzilla.redhat.com/show_bug.cgi?id=1246199) is underway.
+Note that [Fedora review](https://bugzilla.redhat.com/show_bug.cgi?id=1246199)
+is underway but not likely to finish before `pwnpkg` split.
 
 
 ### from source
