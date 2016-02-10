@@ -414,7 +414,7 @@ class Spec(object):
                         _, sep, rest = ver.partition(':')
                         if sep:
                             ver = rest
-                    reqs[name].add(eq + ver)
+                    reqs[name].add(eq + ' ' +ver)
                 else:
                     name = req.N()
                     reqs[name]
