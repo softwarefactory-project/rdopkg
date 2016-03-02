@@ -92,6 +92,20 @@ def cdir(path):
         os.chdir(prev_cwd)
 
 
+@contextlib.contextmanager
+def setenv(**env_dict):
+    orig_env = os.environ.copy()
+    for k, v in env_dict.items():
+        os.environ[k] = str(v)
+    try:
+        yield
+    finally:
+        for k, v in env_dict.items():
+            del os.environ[k]
+        for k, v in orig_env.items():
+            os.environ[k] = v
+
+
 def print_keyval(key, val, kb=True, vb=False):
     if kb:
         fmt = '{t.bold}{key}{t.normal}: '

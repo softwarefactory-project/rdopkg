@@ -25,11 +25,33 @@ class RepoManager(object):
     repo_desc = 'git'
 
     def __init__(self, base_path=None, url=None, local_repo_path=None,
-                 verbose=False):
+                 verbose=False, user=None):
         # remote repo (base_path, url) XOR local repo (local_repo_path)
         assert bool(base_path and url) != bool(local_repo_path)
-
+        
+        self.user = user
         self.url = url
+        if self.url.startswith('ssh://'):
+            #is there a user already ?
+            match = re.compile('ssh://([^@]+)@.+').match(self.url)
+            if match:
+                ssh_user = match.groups()[0]
+                if ssh_user != self.user:
+                    # assume prevalence of argument
+                    self.url.replace(ssh_user + '@',
+                                     self.user + '@')
+            else:
+                if not self.user:
+                    # we need a user, so pick the current user by default
+                    env = os.environ.copy()
+                    # USERNAME is an env var used by gerrit
+                    self.user = env.get('USERNAME') or env.get('USER')
+                    if verbose:
+                        log.info('Using user %s with %s' % (self.user,
+                                                            self.url))
+                self.url = 'ssh://' +\
+                           self.user + '@' +\
+                           self.url[len('ssh://'):]
         self.verbose = verbose
         if local_repo_path:
             self.repo_path = local_repo_path
@@ -80,6 +102,21 @@ class RepoManager(object):
                 cmd.git('checkout', '-f', 'master', log_cmd=self.verbose)
                 cmd.git('reset', '--hard', 'origin/master',
                         log_cmd=self.verbose)
+
+    def setup_review(self):
+        with self.repo_dir():
+            with helpers.setenv(USERNAME=self.user):
+                cmd.git('review', '-s')
+
+    def review(self):
+        with self.repo_dir():
+            with helpers.setenv(USERNAME=self.user):
+                cmd.git('review')
+
+    def get_review(self, review_id):
+        with self.repo_dir():
+            with helpers.setenv(USERNAME=self.user):
+                cmd.git('review', '-d', str(review_id))
 
     def repo_dir(self):
         return helpers.cdir(self.repo_path)
