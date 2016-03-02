@@ -7,6 +7,7 @@ from rdopkg import exception
 from rdopkg.conf import cfg
 from rdopkg.utils import log
 from rdopkg.utils import cmd
+from rdopkg.utils import tidy_ssh_user
 from rdopkg import helpers
 
 
@@ -30,28 +31,15 @@ class RepoManager(object):
         assert bool(base_path and url) != bool(local_repo_path)
         
         self.user = user
-        self.url = url
-        if self.url.startswith('ssh://'):
-            #is there a user already ?
-            match = re.compile('ssh://([^@]+)@.+').match(self.url)
-            if match:
-                ssh_user = match.groups()[0]
-                if ssh_user != self.user:
-                    # assume prevalence of argument
-                    self.url.replace(ssh_user + '@',
-                                     self.user + '@')
-            else:
-                if not self.user:
-                    # we need a user, so pick the current user by default
-                    env = os.environ.copy()
-                    # USERNAME is an env var used by gerrit
-                    self.user = env.get('USERNAME') or env.get('USER')
-                    if verbose:
-                        log.info('Using user %s with %s' % (self.user,
-                                                            self.url))
-                self.url = 'ssh://' +\
-                           self.user + '@' +\
-                           self.url[len('ssh://'):]
+        if not self.user:
+            # we need a user, so pick the current user by default
+            env = os.environ.copy()
+            # USERNAME is an env var used by gerrit
+            self.user = env.get('USERNAME') or env.get('USER')
+            if verbose:
+                log.info('Using user %s with repo %s' % (self.user,
+                                                         url))
+        self.url = tidy_ssh_user(url, self.user)
         self.verbose = verbose
         if local_repo_path:
             self.repo_path = local_repo_path
