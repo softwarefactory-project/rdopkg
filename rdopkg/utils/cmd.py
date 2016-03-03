@@ -1,6 +1,7 @@
 import subprocess
 
 import exception
+import json
 import log
 
 
@@ -287,6 +288,25 @@ class Git(ShellCommand):
     def remove(self, hash):
         self('rebase', '--onto', hash+'^', hash, '--preserve-merges',
              '--committer-date-is-author-date')
+
+
+class GerritQuery(ShellCommand):
+        def __init__(self, host, port):
+            self.host = host
+            self.port = port
+
+        def __call__(self, *params, **kwargs):
+            results = run('ssh', '-p', self.port, self.host,
+                          'gerrit', 'query', '--format=JSON',
+                          *params, **kwargs)
+            # gerrit sends stats that we need to discard
+            result = results.split('}\n{')[0]
+            if not result.endswith('}'):
+                j = json.loads(result + '}')
+                return j
+            else:
+                # we got no results
+                return None        
 
 
 git = Git()
