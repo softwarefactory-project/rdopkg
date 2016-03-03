@@ -95,6 +95,8 @@ ACTIONS = [
            optional_args=[
                 Arg('use_master_distgit', shortcut='-m', action='store_true',
                     help="clone 'master-distgit'"),
+                Arg('gerrit_remotes', shortcut='-g', action='store_true',
+                    help="Create branches 'gerrit-origin' and 'gerrit-patches'"),
            ]),
     Action('reqdiff', atomic=True, help="show diff of requirements.txt",
            steps=[
@@ -476,7 +478,7 @@ def ensure_patches_branch(patches_branch=None, local_patches=False,
                   patches_branch))
 
 
-def clone(package, force_fetch=False, use_master_distgit=False):
+def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=False):
     inforepo = rdoinfo.get_default_inforepo()
     inforepo.init(force_fetch=force_fetch)
     pkg = inforepo.get_package(package)
@@ -500,9 +502,15 @@ def clone(package, force_fetch=False, use_master_distgit=False):
 
     git('clone', distgit, package)
     with helpers.cdir(package):
+        if gerrit_remotes:
+            log.info('Adding gerrit-origin remote...')
+            git('remote', 'add', 'gerrit-origin', distgit)
         if patches:
             log.info('Adding patches remote...')
             git('remote', 'add', 'patches', patches)
+            if gerrit_remotes:
+                log.info('Adding gerrit-patches remote...')
+                git('remote', 'add', 'gerrit-patches', patches)
         else:
             log.warn("'patches' remote information not available in rdoinfo.")
         if upstream:
