@@ -19,7 +19,7 @@ from rdopkg.actionmods import reqs as _reqs
 from rdopkg.actionmods import reviews
 from rdopkg.actionmods import update as _update
 from utils import log
-from utils.cmd import run, git
+from utils.cmd import run, git, GerritQuery
 from utils import specfile
 from utils import tidy_ssh_user
 import helpers
@@ -55,6 +55,10 @@ ACTIONS = [
                Action('update_patches', const_args={'amend': True}),
                Action('final_spec_diff'),
            ]),
+    Action('prepare_patch_chain',
+           help=("sets the repository at the top of the current patch chain"
+                 " from rpmfactory's gerrit"),
+           ),
     Action('new_version', help="update package to new upstream version",
            optional_args=[
                Arg('new_version', positional=True, nargs='?',
@@ -339,6 +343,78 @@ def get_package_env(version=None, release=None, dist=None,
     args['version_tag_style'] = guess.version_tag_style(version=version)
 
     return args
+
+
+# TODO(mhu) get the branch info from which to get the spec file rather than
+# hard coded
+def prepare_patch_chain(*args, **kwargs):
+    spec_branch = 'rdo-liberty'
+    branch = 'remotes/origin/%s' % spec_branch
+    git.checkout(branch)
+    spec = specfile.Spec()
+    patch_files = spec.get_patch_fns()
+    if not patch_files:
+        print "There are no patches for this project yet"
+        git.checkout('/remotes/review-patches/%s' % 'liberty')
+        return
+    gerrit_url = [p for p in git('remote', '-v').split('\n')
+                  if p.startswith('review-patches')][0]
+    gerrit_url = [g[len('ssh://'):].split('/')[0]
+                  for g in gerrit_url.split('\t')
+                  if g.startswith('ssh://')][0].split(':')
+    gerrit_query = GerritQuery(gerrit_url[0],
+                               gerrit_url[1])
+    # TODO(mhu) there's got to be a better way to figure out the project ...
+    proj = [p for p in git('remote', '-v').split('\n')
+            if p.startswith('patches')][0]
+    project = proj.split('/')[-1]
+    # remove (fetch) or (push)
+    project = project.split(' ')[0]
+    if project.endswith('.git'):
+        project = project[:-len('.git')]
+    # TODO(mhu) this needs to be confirmed, is the last patch applied always
+    # the last patch of the chain ? Supposedly yes
+    def k(x):
+        d = re.compile("^([0-9]+)-").match(x)
+        if not d:
+            return -1
+        return int(d.groups()[0])
+    assumed_last_patch = max(patch_files, key=k)
+    print('Assumed last patch is %s' % assumed_last_patch)
+    with open(assumed_last_patch, 'r') as f:
+        contents = f.read()
+    subject_regex = re.compile("^Subject: (?:\[PATCH\]\s*)?(.+)$",
+                               re.MULTILINE | re.IGNORECASE)
+    subject = None
+    s = subject_regex.findall(contents)
+    if s:
+        subject = s[0]
+    print subject
+    # Look for changeIDs first
+    cid_regex = re.compile(r"^Change-Id: I[0-9a-f]{40}",
+                           re.MULTILINE | re.IGNORECASE)
+    candidate = None
+    for cid in cid_regex.findall(contents):
+        query = "project:%s change:%s" % (project, cid)
+        if subject:
+            query += " message:%s" % subject
+        query += " limit:1"
+        q = gerrit_query(query)
+        if q:
+            candidate = q
+            break
+    if not candidate:
+        # last chance
+        query = "project:%s" % project
+        if subject:
+            query += " message:%s" % subject
+        query += " limit:1"
+        candidate = gerrit_query(query)
+    if not candidate:
+        print("Patch chain not found :(")
+        return
+    print("found patch %s (%s)" % (candidate['number'], candidate['url']))
+    git("review", "-r", "review-patches", "-d", candidate['number'])
 
 
 def show_package_env(package, version,
