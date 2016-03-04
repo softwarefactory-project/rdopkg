@@ -31,8 +31,8 @@ class RepoManager(object):
         
         self.user = user
         self.url = url
-        if self.url.startswith('ssh://'):
-            #is there a user already ?
+        if self.url and self.url.startswith('ssh://'):
+            # is there a user already?
             match = re.compile('ssh://([^@]+)@.+').match(self.url)
             if match:
                 ssh_user = match.groups()[0]
