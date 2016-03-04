@@ -31,12 +31,12 @@ class RepoManager(object):
         
         self.user = user
         self.url = url
-        if self.url.startswith('ssh://'):
+        if self.url and self.url.startswith('ssh://'):
             #is there a user already ?
             match = re.compile('ssh://([^@]+)@.+').match(self.url)
             if match:
                 ssh_user = match.groups()[0]
-                if ssh_user != self.user:
+                if self.user and ssh_user != self.user:
                     # assume prevalence of argument
                     self.url.replace(ssh_user + '@',
                                      self.user + '@')
