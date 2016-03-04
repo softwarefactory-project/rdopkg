@@ -21,6 +21,7 @@ from rdopkg.actionmods import update as _update
 from utils import log
 from utils.cmd import run, git
 from utils import specfile
+from utils import tidy_ssh_user
 import helpers
 
 
@@ -502,6 +503,8 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
         t=log.term, dg=distgit_str, pkg=package))
     patches = pkg.get('patches')
     upstream = pkg.get('upstream')
+    review_patches = pkg.get('review-patches')
+    review_origin = pkg.get('review-origin')
 
     git('clone', distgit, package)
     with helpers.cdir(package):
@@ -521,7 +524,28 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
             git('remote', 'add', 'upstream', upstream)
         else:
             log.warn("'upstream' remote information not available in rdoinfo.")
-        if patches or upstream:
+        env = os.environ.copy()
+        # USERNAME is an env var used by gerrit
+        review_user = env.get('USERNAME') or env.get('USER')
+        if review_patches:
+            log.info('Adding gerrit remote for patch chains reviews...')
+            r = tidy_ssh_user(review_patches, review_user)
+            log.info('Using %s as gerrit username, you can change it with'
+                     '"git remote set-url review-patches ..."' % review_user)
+            git('remote', 'add', 'review-patches', r)
+        else:
+            log.warn("'review-patches' remote information not available"
+                     " in rdoinfo.")
+        if review_origin:
+            log.info('Adding gerrit remote for reviews...')
+            r = tidy_ssh_user(review_origin, review_user)
+            log.info('Using %s as gerrit username, you can change it with'
+                     '"git remote set-url review-origin ..."' % review_user)
+            git('remote', 'add', 'review-origin', r)
+        else:
+            log.warn("'review-origin' remote information not available"
+                     " in rdoinfo.")
+        if patches or upstream or review_patches or review_origin:
             git('fetch', '--all')
         git('remote', '-v', direct=True)
 
