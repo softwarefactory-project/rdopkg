@@ -67,6 +67,14 @@ ACTIONS = [
                         "(example: rdo-liberty"),
            ],
            ),
+     Action('review_patch',
+            help=("sends patch for review on rpmfactory"),
+            required_args=[
+             Arg('release', positional=True, metavar='RELEASE',
+                 help="the release on which the patch is to be applied, "
+                      "example: liberty"),
+            ],
+            ), 
     Action('new_version', help="update package to new upstream version",
            optional_args=[
                Arg('new_version', positional=True, nargs='?',
@@ -652,6 +660,13 @@ def prepare_patch_chain(spec_branch, *args, **kwargs):
         _patchset = _patchset + ',' + number
     print("found patch %s (%s)" % (_patchset, candidate['url']))
     git("review", "-r", "review-patches", "-d", _patchset)
+
+
+def review_patch(release, *args, **kwargs):
+    # this is just an alias easier to remember for the git review command
+    # it assumes a commit was done and ready to be committed
+    branch = '%s-patches' % release
+    git("review", "-i", "-y", "-r", "review-patches", branch)
 
 
 def diff(version, new_version, bump_only=False, no_diff=False,
