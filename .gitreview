@@ -1,0 +1,5 @@
+[gerrit]
+host=rpmfactory.beta.rdoproject.org
+port=29418
+project=rdopkg
+defaultbranch=master
