@@ -198,6 +198,14 @@ ACTIONS = [
            help=("sets the repository at the top of the current patch chain"
                  " from rpmfactory's gerrit"),
            ),
+    Action('review_patch',
+           help=("send a patch for review on rpmfactory"),
+           required_args=[
+               Arg('release', positional=True, metavar='RELEASE',
+                   nargs='?',
+                   help="the release affected by the patch (example: liberty)"),
+           ],
+           ),
     Action('coprbuild', atomic=True, help="build package in copr-jruzicka",
            steps=[
                Action('get_package_env'),
@@ -529,6 +537,8 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
             git('remote', 'add', 'upstream', upstream)
         else:
             log.warn("'upstream' remote information not available in rdoinfo.")
+        if patches or upstream:
+            git('fetch', '--all')
         env = os.environ.copy()
         # USERNAME is an env var used by gerrit
         review_user = env.get('USERNAME') or env.get('USER')
@@ -550,14 +560,16 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
         else:
             log.warn("'review-origin' remote information not available"
                      " in rdoinfo.")
-        if patches or upstream or review_patches or review_origin:
-            git('fetch', '--all')
         git('remote', '-v', direct=True)
 
 
 def prepare_patch_chain(*args, **kwargs):
     spec = specfile.Spec()
     rpmfactory.prepare_patch_chain(spec)
+
+
+def review_patch(release, *args, **kwargs):
+    rpmfactory.review_patch(release)
 
 
 def diff(version, new_version, bump_only=False, no_diff=False,
@@ -722,12 +734,13 @@ def reset_patches_branch(local_patches_branch, patches_branch,
     _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
 
-def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None):
+def fetch_patches_branch(local_patches_branch, branch, gerrit_patches_chain=None):
     if not gerrit_patches_chain:
         return
     git('fetch', 'patches', 'refs/changes/' + gerrit_patches_chain)
     git.checkout(local_patches_branch)
     git('reset', '--hard', 'FETCH_HEAD')
+    git.checkout(branch)
 
 
 def rebase_patches_branch(new_version, local_patches_branch,
