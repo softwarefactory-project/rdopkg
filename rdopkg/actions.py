@@ -19,7 +19,7 @@ from rdopkg.actionmods import reqs as _reqs
 from rdopkg.actionmods import reviews
 from rdopkg.actionmods import update as _update
 from utils import log
-from utils.cmd import run, git
+from utils.cmd import run, git, GerritQuery
 from utils import specfile
 from utils import tidy_ssh_user
 import helpers
@@ -58,6 +58,15 @@ ACTIONS = [
                Action('update_patches', const_args={'amend': True}),
                Action('final_spec_diff'),
            ]),
+    Action('prepare_patch_chain',
+           help=("sets the repository at the top of the current patch chain"
+                 " from rpmfactory's gerrit"),
+           required_args=[
+               Arg('spec_branch', positional=True, metavar='BRANCH',
+                   help="branch to switch to for the spec file "
+                        "(example: rdo-liberty"),
+           ],
+           ),
     Action('new_version', help="update package to new upstream version",
            optional_args=[
                Arg('new_version', positional=True, nargs='?',
@@ -548,6 +557,101 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
         if patches or upstream or review_patches or review_origin:
             git('fetch', '--all')
         git('remote', '-v', direct=True)
+
+
+def prepare_patch_chain(spec_branch, *args, **kwargs):
+    branch = 'remotes/origin/%s' % spec_branch
+    git.checkout(branch)
+    spec = specfile.Spec()
+    patch_files = spec.get_patch_fns()
+    if not patch_files:
+        print "There are no patches for this project yet, ",
+        print "trying to checkout branch %s-patches" % spec_branch[4:]
+        try:
+            git.checkout('remotes/review-patches/%s-patches' % spec_branch[4:])
+            return
+        except:
+            print('%s does not seem to be associated '
+                  'to a valid release' % spec_branch)
+            return
+    gerrit_url = [p for p in git('remote', '-v').split('\n')
+                  if p.startswith('review-patches')][0]
+    gerrit_url = [g[len('ssh://'):].split('/')[0]
+                  for g in gerrit_url.split('\t')
+                  if g.startswith('ssh://')][0].split(':')
+    gerrit_query = GerritQuery(gerrit_url[0],
+                               gerrit_url[1])
+    # TODO(mhu) there's got to be a better way to figure out the project ...
+    proj = [p for p in git('remote', '-v').split('\n')
+            if p.startswith('patches')][0]
+    project = proj.split('/')[-1]
+    # remove (fetch) or (push)
+    project = project.split(' ')[0]
+    if project.endswith('.git'):
+        project = project[:-len('.git')]
+    # TODO(mhu) this needs to be confirmed, is the last patch applied always
+    # the last patch of the chain ? Supposedly yes
+    def k(x):
+        d = re.compile("^([0-9]+)-").match(x)
+        if not d:
+            return -1
+        return int(d.groups()[0])
+    assumed_last_patch = max(patch_files, key=k)
+    print('Assumed last patch is %s' % assumed_last_patch)
+    with open(assumed_last_patch, 'r') as f:
+        contents = f.read()
+    subject_regex = re.compile("^Subject: (?:\[PATCH\]\s*)?(.+)$",
+                               re.MULTILINE | re.IGNORECASE)
+    subject = None
+    s = subject_regex.findall(contents)
+    if s:
+        subject = s[0]
+    candidate = None
+    number = None
+    # First, look for the commit id, this will tell us which revision we need
+    from_regex = re.compile(r"^From ([0-9a-f]{40})",
+                            re.MULTILINE | re.IGNORECASE)
+    for from_commit in from_regex.findall(contents):
+        query = "project:%s commit:%s" % (project, from_commit)
+        q = gerrit_query('--patch-sets', query)
+        if q:
+            candidate = q
+            number = [ps.get('number') for ps in candidate.get('patchSets')
+                      if ps.get('revision') == from_commit]
+            if number:
+                number = number[0]
+            break
+    # If this fails (we're dealing with migration residues) look for changeIDs
+    # and assume the last revision is the one we want.
+    if not candidate:
+        print("Revision number not found, the latest patchset (if found) "
+              "will be downloaded.")
+        cid_regex = re.compile(r"^Change-Id: (I[0-9a-f]{40})",
+                               re.MULTILINE | re.IGNORECASE)
+        for cid in cid_regex.findall(contents):
+            query = "project:%s change:%s" % (project, cid)
+            if subject:
+                query += " message:%s" % subject
+            query += " limit:1"
+            q = gerrit_query(query)
+            if q:
+                candidate = q
+                break
+    # last chance, with the commit message
+    if not candidate:
+        query = "project:%s" % project
+        if subject:
+            query += " message:%s" % subject
+        query += " limit:1"
+        candidate = gerrit_query(query)
+    if not candidate:
+        print("Patch chain not found :(")
+        return
+    _patchset = candidate['number']
+    if number:
+        _patchset = _patchset + ',' + number
+    print("found patch %s (%s)" % (_patchset, candidate['url']))
+    git("review", "-r", "review-patches", "-d", _patchset)
 
 
 def diff(version, new_version, bump_only=False, no_diff=False,
