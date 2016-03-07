@@ -15,6 +15,7 @@ from rdopkg.actionmods import kojibuild
 from rdopkg.actionmods import pushupdate
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import rdoinfo
+from rdopkg.actionmods import rpmfactory
 from rdopkg.actionmods import reqs as _reqs
 from rdopkg.actionmods import reviews
 from rdopkg.actionmods import update as _update
@@ -193,6 +194,10 @@ ACTIONS = [
                Arg('local_patches_branch', shortcut='-P', metavar='LOCAL_BRANCH',
                    help="local git branch containing patches"),
            ]),
+    Action('prepare_patch_chain',
+           help=("sets the repository at the top of the current patch chain"
+                 " from rpmfactory's gerrit"),
+           ),
     Action('coprbuild', atomic=True, help="build package in copr-jruzicka",
            steps=[
                Action('get_package_env'),
@@ -548,6 +553,11 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
         if patches or upstream or review_patches or review_origin:
             git('fetch', '--all')
         git('remote', '-v', direct=True)
+
+
+def prepare_patch_chain(*args, **kwargs):
+    spec = specfile.Spec()
+    rpmfactory.prepare_patch_chain(spec)
 
 
 def diff(version, new_version, bump_only=False, no_diff=False,
