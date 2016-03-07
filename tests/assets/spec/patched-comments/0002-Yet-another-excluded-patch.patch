@@ -1,0 +1,16 @@
+From 613168aad5c94471ac4814c831b2f05f3679a211 Mon Sep 17 00:00:00 2001
+From: Jakub Ruzicka <jruzicka@redhat.com>
+Date: Mon, 5 Oct 2015 14:51:41 +0200
+Subject: [PATCH] Yet another excluded patch
+
+---
+ foofile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/foofile b/foofile
+index 6b35b2b..6238541 100644
+--- a/foofile
++++ b/foofile
+@@ -1 +1 @@
+-#meh
++#nope

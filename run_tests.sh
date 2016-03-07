@@ -1,2 +1,2 @@
 #!/bin/sh
-py.test
+PYTHONPATH=. py.test $@
