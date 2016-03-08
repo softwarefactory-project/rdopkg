@@ -198,6 +198,22 @@ ACTIONS = [
            help=("sets the repository at the top of the current patch chain"
                  " from rpmfactory's gerrit"),
            ),
+    Action('review_patch',
+           help=("send a patch for review on rpmfactory"),
+           optional_args=[
+               Arg('branch', positional=True, metavar='BRANCH',
+                   help="the patch branch, if not already checked out "
+                        "(example: liberty-patches)"),
+           ],
+           ),
+    Action('review_spec',
+           help=("sends distgit for review on rpmfactory"),
+           optional_args=[
+               Arg('branch', positional=True, metavar='BRANCH',
+                   help="the branch on which the patch is to be applied if not "
+                        "already checked out, example: rdo-liberty"),
+           ],
+           ),
     Action('coprbuild', atomic=True, help="build package in copr-jruzicka",
            steps=[
                Action('get_package_env'),
@@ -558,6 +574,14 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
 def prepare_patch_chain(*args, **kwargs):
     spec = specfile.Spec()
     rpmfactory.prepare_patch_chain(spec)
+
+
+def review_patch(branch, *args, **kwargs):
+    rpmfactory.review_patch(branch)
+
+
+def review_spec(branch, *args, **kwargs):
+    rpmfactory.review_spec(branch)
 
 
 def diff(version, new_version, bump_only=False, no_diff=False,
