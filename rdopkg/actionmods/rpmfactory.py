@@ -38,3 +38,16 @@ def prepare_patch_chain(spec):
         _patchset = _patchset + ',' + number
     log.info("found patch %s (%s)" % (_patchset, candidate['url']))
     git("review", "-r", "review-patches", "-d", _patchset)
+
+
+def review_patch(release):
+    # this is just an alias easier to remember for the git review command
+    # it assumes a commit was done and ready to be committed
+    branch = '%s-patches' % release
+    git("review", "-i", "-y", "-r", "review-patches", branch)
+
+
+def review_spec(release):
+    # this is just an alias easier to remember for the git review command
+    # it assumes a commit was done and ready to be committed
+    git("review", "-i", "-r", "review-origin", release)
