@@ -206,6 +206,14 @@ ACTIONS = [
                    help="the release affected by the patch (example: liberty)"),
            ],
            ),
+    Action('review_spec',
+           help=("sends distgit for review on rpmfactory"),
+           required_args=[
+               Arg('release', positional=True, metavar='RELEASE',
+                   help="the release on which the patch is to be applied, "
+                        "example: rdo-liberty"),
+           ],
+           ),
     Action('coprbuild', atomic=True, help="build package in copr-jruzicka",
            steps=[
                Action('get_package_env'),
@@ -572,6 +580,10 @@ def review_patch(release, *args, **kwargs):
     rpmfactory.review_patch(release)
 
 
+def review_spec(release, *args, **kwargs):
+    rpmfactory.review_spec(release)
+
+
 def diff(version, new_version, bump_only=False, no_diff=False,
          version_tag_style=None):
     if bump_only or no_diff:
@@ -733,13 +745,14 @@ def reset_patches_branch(local_patches_branch, patches_branch,
         return
     _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
+
 def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None):
     if not gerrit_patches_chain:
         return
     git('fetch', 'patches', 'refs/changes/' + gerrit_patches_chain)
     git.checkout(local_patches_branch)
     git('reset', '--hard', 'FETCH_HEAD')
-    git.checkout('rdo-liberty')
+
 
 def rebase_patches_branch(new_version, local_patches_branch,
                           patches_branch=None, local_patches=False,
