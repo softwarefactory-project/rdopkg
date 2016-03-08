@@ -75,6 +75,14 @@ ACTIONS = [
                       "example: liberty"),
             ],
             ), 
+     Action('review_spec',
+            help=("sends distgit for review on rpmfactory"),
+            required_args=[
+             Arg('release', positional=True, metavar='RELEASE',
+                 help="the release on which the patch is to be applied, "
+                      "example: rdo-liberty"),
+            ],
+            ), 
     Action('new_version', help="update package to new upstream version",
            optional_args=[
                Arg('new_version', positional=True, nargs='?',
@@ -669,6 +677,12 @@ def review_patch(release, *args, **kwargs):
     git("review", "-i", "-y", "-r", "review-patches", branch)
 
 
+def review_spec(release, *args, **kwargs):
+    # this is just an alias easier to remember for the git review command
+    # it assumes a commit was done and ready to be committed
+    git("review", "-i", "-r", "review-origin", release)
+
+
 def diff(version, new_version, bump_only=False, no_diff=False,
          version_tag_style=None):
     if bump_only or no_diff:
@@ -831,12 +845,13 @@ def reset_patches_branch(local_patches_branch, patches_branch,
     _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
 def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None):
+    current_branch = git('rev-parse', '-abbrev-ref', 'HEAD')
     if not gerrit_patches_chain:
         return
     git('fetch', 'patches', 'refs/changes/' + gerrit_patches_chain)
     git.checkout(local_patches_branch)
     git('reset', '--hard', 'FETCH_HEAD')
-    git.checkout('rdo-liberty')
+    git.checkout(current_branch)
 
 def rebase_patches_branch(new_version, local_patches_branch,
                           patches_branch=None, local_patches=False,
