@@ -129,10 +129,10 @@ class Git(ShellCommand):
 
     def _parse_branch_output(self, out):
         output = [l for l in self._parse_output(out) if l.find('HEAD') < 0]
-        return out
+        return output
 
     def remote_branches(self, remote=""):
-        res = self("branch", "-r")
+        res = self("branch", "-r", "--no-color")
         branches = self._parse_branch_output(res)
         branches = [b.replace("remotes/", "")
                     for b in branches if b.startswith(remote)]
