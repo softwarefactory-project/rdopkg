@@ -609,13 +609,21 @@ def reqdiff(version_tag_from, version_tag_to):
 
 def reqcheck(version):
     if version.upper() == 'XXX':
-        m = re.search(r'/([^/]+)_distro', os.getcwd())
-        if not m:
-            raise exception.CantGuess(what="requirements.txt location",
-                                      why="failed to parse current path")
-        path = '../%s/requirements.txt' % m.group(1)
-        log.info("Delorean detected. Using %s" % path)
-        check = _reqs.reqcheck_spec(reqs_txt=path)
+        if 'upstream' in git.remotes():
+            current_branch = git.current_branch()
+            branch = current_branch.replace('rpm-', '')
+            if branch != 'master':
+                branch = 'stable/{}'.format(branch)
+            version = 'upstream/{}'.format(branch)
+            check = _reqs.reqcheck_spec(ref=version)
+        else:
+            m = re.search(r'/([^/]+)_distro', os.getcwd())
+            if not m:
+                raise exception.CantGuess(what="requirements.txt location",
+                                          why="failed to parse current path")
+            path = '../%s/requirements.txt' % m.group(1)
+            log.info("Delorean detected. Using %s" % path)
+            check = _reqs.reqcheck_spec(reqs_txt=path)
     else:
         check = _reqs.reqcheck_spec(ref=version)
     _reqs.print_reqcheck(*check)
