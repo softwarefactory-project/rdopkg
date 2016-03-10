@@ -129,10 +129,10 @@ class Git(ShellCommand):
 
     def _parse_branch_output(self, out):
         output = [l for l in self._parse_output(out) if l.find('HEAD') < 0]
-        return out
+        return output
 
     def remote_branches(self, remote=""):
-        res = self("branch", "-r")
+        res = self("branch", "-r", "--no-color")
         branches = self._parse_branch_output(res)
         branches = [b.replace("remotes/", "") \
                     for b in branches if b.startswith(remote)]
@@ -219,8 +219,6 @@ class Git(ShellCommand):
         h1 = self.get_latest_commit_hash(branch)
         h2 = self.get_latest_commit_hash(remote_branch)
         return h1 != h2
-
-
 
     def linearize(self, starting_point, branch=None):
         if branch is not None and self.current_branch() != branch:
