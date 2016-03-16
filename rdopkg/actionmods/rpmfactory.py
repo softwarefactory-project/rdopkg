@@ -2,8 +2,8 @@
 
 
 from rdopkg.utils import log
-from rdopkg.utils.cmd import git
-from rdopkg import guess
+from rdopkg.utils.cmd import git, GerritQuery
+from rdopkg import guess, helpers, exception
 
 
 def prepare_patch_chain(spec):
@@ -45,6 +45,33 @@ def review_patch(release):
     # it assumes a commit was done and ready to be committed
     branch = '%s-patches' % release
     git("review", "-i", "-y", "-r", "review-patches", branch)
+
+
+def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None,
+                         force=False):
+    git('fetch', 'patches', 'refs/changes/' + gerrit_patches_chain)
+    patch_commit = git('rev-parse', 'FETCH_HEAD')
+    gerrit_host, gerrit_port = guess.gerrit_from_repo()
+    q = GerritQuery(gerrit_host, gerrit_port)
+    review = q('--current-patch-set', 'commit:%s' % patch_commit)
+    approvals = review.get('currentPatchSet', {}).get('approvals', [])
+    jenkins = [a for a in approvals
+               if a.get('type') == 'Verified'
+               and a.get('by', {}).get('username') == 'jenkins']
+    if not jenkins:
+        verified = 0
+    else:
+        verified = int(jenkins[0]['value'])
+    if verified != 1:
+        if force:
+            log.warn(
+                "Ref %s has not been validated by CI" % gerrit_patches_chain)
+            helpers.confirm("Do you want to continue anyway?",
+                            default_yes=False)
+        else:
+            raise exception.UnverifiedPatch()
+    git.checkout(local_patches_branch)
+    git('reset', '--hard', 'FETCH_HEAD')
 
 
 def review_spec(release):
