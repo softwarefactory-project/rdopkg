@@ -301,12 +301,15 @@ class GerritQuery(ShellCommand):
                           *params, **kwargs)
             # gerrit sends stats that we need to discard
             result = results.split('}\n{')[0]
-            if not result.endswith('}'):
+            try:
                 j = json.loads(result + '}')
-                return j
-            else:
-                # we got no results
+            except ValueError:
+                j = json.loads(result)
+            if j.get('type') in ['error', 'stats']:
+                # we have no results, just the query stats
                 return None
+            else:
+                return j
 
 
 git = Git()
