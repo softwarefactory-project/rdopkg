@@ -47,6 +47,8 @@ ACTIONS = [
                    help="don't reset local patches branch, use it as is"),
                Arg('gerrit_patches_chain', shortcut='-g', metavar='X/Y/Z',
                    help="Top gerrit review id of the patch chain"),
+               Arg('force', shortcut='--force', action='store_false',
+                   help="use patch even if it was not validated in CI"),
            ],
            steps=[
                Action('get_package_env'),
@@ -746,12 +748,13 @@ def reset_patches_branch(local_patches_branch, patches_branch,
     _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
 
-def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None):
+def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None,
+                         force=False):
     if not gerrit_patches_chain:
         return
-    git('fetch', 'patches', 'refs/changes/' + gerrit_patches_chain)
-    git.checkout(local_patches_branch)
-    git('reset', '--hard', 'FETCH_HEAD')
+    rpmfactory.fetch_patches_branch(local_patches_branch,
+                                    gerrit_patches_chain,
+                                    force)
 
 
 def rebase_patches_branch(new_version, local_patches_branch,
