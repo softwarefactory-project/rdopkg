@@ -117,6 +117,7 @@ def main(cargs=None):
             exception.ToolNotFound,
             exception.UserAbort,
             exception.UpdateCheckFailed,
+            exception.UnverifiedPatch,
             rdoupdate.exception.InvalidUpdateStructure,
             rdoupdate.exception.BuildNotAvailable,
             KeyboardInterrupt,

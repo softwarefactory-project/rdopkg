@@ -123,3 +123,7 @@ class RequirementNotMet(RdopkgException):
 
 class InternalAction(RdopkgException):
     msg_fmt = "Unhandled internal action: %(action)s"
+
+
+class UnverifiedPatch(RdopkgException):
+    msg_fmt = "Patch not validated by CI, use --force to override"
