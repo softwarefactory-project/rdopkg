@@ -524,6 +524,8 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
             git('remote', 'add', 'upstream', upstream)
         else:
             log.warn("'upstream' remote information not available in rdoinfo.")
+        if patches or upstream:
+            git('fetch', '--all')
         env = os.environ.copy()
         # USERNAME is an env var used by gerrit
         review_user = env.get('USERNAME') or env.get('USER')
@@ -545,8 +547,6 @@ def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=F
         else:
             log.warn("'review-origin' remote information not available"
                      " in rdoinfo.")
-        if patches or upstream or review_patches or review_origin:
-            git('fetch', '--all')
         git('remote', '-v', direct=True)
 
 
