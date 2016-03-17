@@ -69,9 +69,9 @@ def _get_copr_data(req, user, type=None):
             req.text)
     if req.status_code != 200:
         msg = "[%s] %s" % (req.status_code, output['error'])
-        if (type == 'new_build'
-                and req.status_code == 500
-                and output.get('error') == 'Invalid request'):
+        if (type == 'new_build' and
+                    req.status_code == 500 and
+                    output.get('error') == 'Invalid request'):
             msg += ("\nThis funny copr response might mean you don't have "
                     "permission to build in this copr. Or not. Hahaha.")
         raise exception.CoprError(code=req.status_code,

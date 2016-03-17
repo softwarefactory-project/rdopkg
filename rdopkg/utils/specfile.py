@@ -4,6 +4,8 @@ import os
 import re
 import time
 
+import exception
+
 RPM_AVAILABLE = False
 try:
     import rpm
@@ -11,8 +13,6 @@ try:
     RPM_AVAILABLE = True
 except ImportError:
     pass
-
-import exception
 
 
 def spec_fn(spec_dir='.'):

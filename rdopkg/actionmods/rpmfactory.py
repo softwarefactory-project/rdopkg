@@ -59,8 +59,8 @@ def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None,
     review = q('--current-patch-set', 'commit:%s' % patch_commit)
     approvals = review.get('currentPatchSet', {}).get('approvals', [])
     jenkins = [a for a in approvals
-               if a.get('type') == 'Verified'
-               and a.get('by', {}).get('username') == 'jenkins']
+               if a.get('type') == 'Verified' and
+               a.get('by', {}).get('username') == 'jenkins']
     if not jenkins:
         verified = 0
     else:

@@ -673,8 +673,8 @@ def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
              verbose=False):
     if not (reqs_ref or reqs_file or spec or load or load_file):
         reqs_ref = guess.current_version()
-    if not (bool(reqs_ref) ^ bool(reqs_file) ^ bool(spec)
-            ^ bool(load) ^ bool(load_file)):
+    if not (bool(reqs_ref) ^ bool(reqs_file) ^ bool(spec) ^
+            bool(load) ^ bool(load_file)):
         raise exception.InvalidUsage(
             why="Only one requirements source (-r/-R/-s/-l/-L) can be "
                 "selected.")
@@ -952,7 +952,8 @@ def _partition_patches(patches, regex):
     if regex is None:
         return [patches]
 
-    take = lambda patch: not bool(regex.search(patch[1]))
+    def take(_patch):
+        return not bool(regex.search(_patch[1]))
 
     def _stacker(buckets):
         while True:
