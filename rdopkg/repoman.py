@@ -15,7 +15,7 @@ def repo_name_from_url(repo_url):
     if repo_url:
         i = repo_url.rfind('/')
         if i != -1:
-            d = repo_url[i+1:]
+            d = repo_url[i + 1:]
             if d.endswith('.git'):
                 d = d[:-4]
             return d
@@ -29,7 +29,7 @@ class RepoManager(object):
                  verbose=False, user=None):
         # remote repo (base_path, url) XOR local repo (local_repo_path)
         assert bool(base_path and url) != bool(local_repo_path)
-        
+
         self.user = user
         if not self.user:
             # we need a user, so pick the current user by default
@@ -63,10 +63,10 @@ class RepoManager(object):
 
             log.info("Cloning {desc} repo: {url}\n"
                      "        {space} into: {path}".format(
-                desc=self.repo_desc,
-                space=len(self.repo_desc) * ' ',
-                url=self.url,
-                path=self.repo_path))
+                         desc=self.repo_desc,
+                         space=len(self.repo_desc) * ' ',
+                         url=self.url,
+                         path=self.repo_path))
         with helpers.cdir(self.base_path):
             cmd.git('clone', self.url, self.repo_name, log_cmd=self.verbose)
 

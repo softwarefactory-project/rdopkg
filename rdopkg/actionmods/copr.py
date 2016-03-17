@@ -56,20 +56,24 @@ def _get_copr_data(req, user, type=None):
     if '<title>Sign in Coprs</title>' in req.text:
         raise exception.CoprError(code=403, error='Invalid API token')
     if req.status_code == 404:
-        raise exception.CoprError(code=req.status_code,
-            error="404 for user %s" % user.get('username'))
+        raise exception.CoprError(
+            code=req.status_code,
+            error="404 for user %s" %
+            user.get('username'))
     try:
         output = json.loads(req.text)
     except ValueError:
-        raise exception.CoprError(code=req.status_code,
-            error="Invalid response (not JSON):\n%s" % req.text)
+        raise exception.CoprError(
+            code=req.status_code,
+            error="Invalid response (not JSON):\n%s" %
+            req.text)
     if req.status_code != 200:
         msg = "[%s] %s" % (req.status_code, output['error'])
         if (type == 'new_build'
                 and req.status_code == 500
                 and output.get('error') == 'Invalid request'):
             msg += ("\nThis funny copr response might mean you don't have "
-                   "permission to build in this copr. Or not. Hahaha.")
+                    "permission to build in this copr. Or not. Hahaha.")
         raise exception.CoprError(code=req.status_code,
                                   copr_msg=output.get('error'),
                                   error=msg)
@@ -91,7 +95,7 @@ def get_copr_user():
         username = config.get('copr-cli', 'username', None)
         login = config.get('copr-cli', 'login', None)
         token = config.get('copr-cli', 'token', None)
-    except ConfigParser.Error, err:
+    except ConfigParser.Error as err:
         raise exception.CoprError(
             'Bad configuration file %s: %s' % (config_fn, err))
     return {'username': username, 'token': token, 'login': login}
@@ -118,6 +122,7 @@ def need_user(f):
 
 
 class RdoCoprs(object):
+
     def __init__(self, owner='jruzicka', copr_url=None, copr_results_url=None):
         self.owner = owner
         self.user = {}
@@ -195,7 +200,11 @@ class RdoCoprs(object):
                                               cstatus))
                         prevstatus = status
 
-                    if status in ['succeeded', 'failed', 'canceled', 'skipped']:
+                    if status in [
+                            'succeeded',
+                            'failed',
+                            'canceled',
+                            'skipped']:
                         break
 
                     time.sleep(60)

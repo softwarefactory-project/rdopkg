@@ -41,7 +41,8 @@ ACTIONS = [
            optional_args=[
                Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
                    help="remote git branch containing patches"),
-               Arg('local_patches_branch', shortcut='-P', metavar='LOCAL_BRANCH',
+               Arg('local_patches_branch', shortcut='-P',
+                   metavar='LOCAL_BRANCH',
                    help="local git branch containing patches"),
                Arg('local_patches', shortcut='-l', action='store_true',
                    help="don't reset local patches branch, use it as is"),
@@ -67,7 +68,8 @@ ACTIONS = [
                    help="version to update to"),
                Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
                    help="remote git branch containing patches"),
-               Arg('local_patches_branch', shortcut='-P', metavar='LOCAL_BRANCH',
+               Arg('local_patches_branch', shortcut='-P',
+                   metavar='LOCAL_BRANCH',
                    help="local git branch containing patches"),
                Arg('local_patches', shortcut='-l', action='store_true',
                    help="don't reset local patches branch, use it as is"),
@@ -100,10 +102,11 @@ ACTIONS = [
                    help="RDO package to clone (see `rdopkg info`)"),
            ],
            optional_args=[
-                Arg('use_master_distgit', shortcut='-m', action='store_true',
-                    help="clone 'master-distgit'"),
-                Arg('gerrit_remotes', shortcut='-g', action='store_true',
-                    help="Create branches 'gerrit-origin' and 'gerrit-patches'"),
+               Arg('use_master_distgit', shortcut='-m', action='store_true',
+                   help="clone 'master-distgit'"),
+               Arg('gerrit_remotes', shortcut='-g', action='store_true',
+                   help="Create branches "
+                        "'gerrit-origin' and 'gerrit-patches'"),
            ]),
     Action('reqdiff', atomic=True, help="show diff of requirements.txt",
            steps=[
@@ -116,7 +119,7 @@ ACTIONS = [
                    help="no args: diff between current and upstream; "
                         "1 arg: diff between current and supplied git ref; "
                         "2 args: diff between 1st and 2nd supplied git refs"),
-               ],
+           ],
            ),
     Action('reqcheck', atomic=True,
            help="inspect requirements.txt vs .spec Requires",
@@ -165,7 +168,8 @@ ACTIONS = [
            optional_args=[
                Arg('update_file', positional=True, nargs='?',
                    metavar='UPDATE_FILE',
-                   help="UPDATE_FILE to submit (default: %s)" % _update.UPFILE),
+                   help="UPDATE_FILE to submit (default: %s)" %
+                        _update.UPFILE),
                Arg('update_repo', shortcut='-u',
                    help="remote rdo-update repo to submit to"),
                Arg('no_check_available', shortcut='-a', action='store_true',
@@ -193,7 +197,8 @@ ACTIONS = [
            optional_args=[
                Arg('amend', shortcut='-a', action='store_true',
                    help="amend previous commit"),
-               Arg('local_patches_branch', shortcut='-P', metavar='LOCAL_BRANCH',
+               Arg('local_patches_branch', shortcut='-P',
+                   metavar='LOCAL_BRANCH',
                    help="local git branch containing patches"),
            ]),
     Action('prepare_patch_chain',
@@ -212,8 +217,8 @@ ACTIONS = [
            help=("sends distgit for review on rpmfactory"),
            optional_args=[
                Arg('branch', positional=True, metavar='BRANCH',
-                   help="the branch on which the patch is to be applied if not "
-                        "already checked out, example: rdo-liberty"),
+                   help="the branch on which the patch is to be applied if "
+                        "not already checked out, example: rdo-liberty"),
            ],
            ),
     Action('coprbuild', atomic=True, help="build package in copr-jruzicka",
@@ -232,7 +237,7 @@ ACTIONS = [
                    help="target distribution (fedora-20, epel-7, ...)"),
                Arg('update_file', shortcut='-f', metavar='UPDATE_FILE',
                    help=("Dump build to UPDATE_FILE (default: %s)"
-                   % _update.UPFILE)),
+                         % _update.UPFILE)),
                Arg('no_update_file', shortcut='-F', action='store_true',
                    help="Don't dump build to an update file."),
                Arg('skip_build', shortcut='-s', action='store_true',
@@ -246,7 +251,7 @@ ACTIONS = [
                Action('get_package_env'),
                Action('build_prep'),
                Action('koji_build'),
-               ],
+           ],
            optional_args=[
                Arg('update_file', shortcut='-f', metavar='UPDATE_FILE',
                    help=("Dump build to UPDATE_FILE (default: %s)"
@@ -277,7 +282,7 @@ ACTIONS = [
                Arg('files', shortcut='-f', nargs='+', metavar='FILE',
                    help=("only push selected update file(s)"
                          " (relative to update-repo-path)"),
-               ),
+                   ),
                Arg('overwrite', shortcut='-w', action='store_true',
                    help="overwrite existing packages"),
                Arg('debug', action='store_true',
@@ -335,8 +340,10 @@ def get_package_env(version=None, release=None, dist=None,
     if branch.endswith('-patches'):
         branch = branch[:-8]
         if git.branch_exists(branch):
-            log.info("This looks like -patches branch. Assuming distgit branch: "
-                    "%s" % branch)
+            log.info(
+                "This looks like -patches branch. Assuming distgit branch: "
+                "%s" %
+                branch)
             git.checkout(branch)
         else:
             raise exception.InvalidUsage(
@@ -407,7 +414,7 @@ def _print_patch_log(patches, tag, n_excluded):
     n_patches = len(patches)
     print("\n{t.bold}{n} patches{t.normal} on top of {t.bold}{tag}{t.normal}"
           ", {t.bold}{ne}{t.normal} excluded\n".format(
-          t=log.term, n=n_patches, tag=tag, ne=n_excluded))
+              t=log.term, n=n_patches, tag=tag, ne=n_excluded))
     if n_patches <= 0:
         return
     ei = n_patches - n_excluded
@@ -427,7 +434,7 @@ def show_patch_log(version, patches_branch, version_tag_style=None):
     n_excluded = spec.get_n_excluded_patches()
     print("\nPatches branch {t.bold}{pb}{t.normal} is at version {t.bold}"
           "{ver}{t.normal}".format(
-          t=log.term, pb=patches_branch, ver=version))
+              t=log.term, pb=patches_branch, ver=version))
     _print_patch_log(patches, tag, n_excluded)
 
 
@@ -455,13 +462,13 @@ def new_version_setup(patches_branch=None, local_patches=False,
     else:
         ub = guess.upstream_branch()
         if not git.ref_exists('refs/remotes/%s' % ub):
-            msg=("Upstream branch not found: %s\n"
-                 "Can't guess latest version.\n\n"
-                 "a) provide new version (git tag) yourself\n"
-                 "   $ rdopkg new-version 1.2.3\n\n"
-                 "b) add upstream git remote:\n"
-                 "   $ git remote add -f upstream GIT_URL\n"
-                 % ub)
+            msg = ("Upstream branch not found: %s\n"
+                   "Can't guess latest version.\n\n"
+                   "a) provide new version (git tag) yourself\n"
+                   "   $ rdopkg new-version 1.2.3\n\n"
+                   "b) add upstream git remote:\n"
+                   "   $ git remote add -f upstream GIT_URL\n"
+                   % ub)
             raise exception.CantGuess(msg=msg)
         new_version_tag = git.get_latest_tag(ub)
         new_version, _ = guess.tag2version(new_version_tag)
@@ -505,7 +512,11 @@ def ensure_patches_branch(patches_branch=None, local_patches=False,
                   patches_branch))
 
 
-def clone(package, force_fetch=False, use_master_distgit=False, gerrit_remotes=False):
+def clone(
+        package,
+        force_fetch=False,
+        use_master_distgit=False,
+        gerrit_remotes=False):
     inforepo = rdoinfo.get_default_inforepo()
     inforepo.init(force_fetch=force_fetch)
     pkg = inforepo.get_package(package)
@@ -618,12 +629,12 @@ def get_diff_range(diff_range=None, patches_branch=None, branch=None):
                 branch = guess.current_branch()
             patches_branch = guess.patches_branch(branch)
         if not git.ref_exists('refs/remotes/%s' % patches_branch):
-            msg=("Patches branch not found: %s\n"
-                 "Can't guess current version.\n\n"
-                 "a) provide git tags/refs yourself a la:\n"
-                 "   $ rdopkg reqdiff 1.1.1 2.2.2\n\n"
-                 "b) add git remote with expected patches branch"
-                 % patches_branch)
+            msg = ("Patches branch not found: %s\n"
+                   "Can't guess current version.\n\n"
+                   "a) provide git tags/refs yourself a la:\n"
+                   "   $ rdopkg reqdiff 1.1.1 2.2.2\n\n"
+                   "b) add git remote with expected patches branch"
+                   % patches_branch)
             raise exception.CantGuess(msg=msg)
         vtag_from = git.get_latest_tag(branch=patches_branch)
     if not vtag_to:
@@ -715,7 +726,6 @@ def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
     _reqs.print_reqquery(r)
 
 
-
 def _ensure_branch(branch):
     if not branch:
         return
@@ -748,8 +758,11 @@ def reset_patches_branch(local_patches_branch, patches_branch,
     _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
 
-def fetch_patches_branch(local_patches_branch, branch, gerrit_patches_chain=None,
-                         force=False):
+def fetch_patches_branch(
+        local_patches_branch,
+        branch,
+        gerrit_patches_chain=None,
+        force=False):
     if not gerrit_patches_chain:
         return
     rpmfactory.fetch_patches_branch(local_patches_branch,
@@ -853,7 +866,8 @@ def update_spec(branch=None, changes=None,
         if spec.recognized_release():
             spec.set_release(new_release, milestone=new_milestone)
         else:
-            log.info('Custom Release format detected - assuming custom milestone management.')
+            log.info('Custom Release format detected '
+                     '- assuming custom milestone management.')
             spec.set_release(new_release)
     else:
         spec.bump_release(milestone=new_milestone)
@@ -997,7 +1011,6 @@ def update_patches(branch, local_patches_branch,
     if ignore_regex and patches_base is None:
         raise exception.OnlyPatchesIgnoreUsed()
 
-
     patch_fns = spec.get_patch_fns()
     for pfn in patch_fns:
         git('rm', '--ignore-unmatch', pfn)
@@ -1014,10 +1027,15 @@ def update_patches(branch, local_patches_branch,
         filtered_patches = flatten(ranges)
     n_filtered_out = len(patches) - len(filtered_patches)
 
-    log.info("\n{t.bold}{n} patches{t.normal} on top of {t.bold}{tag}{t.normal}"
-             ", {t.bold}{ne}{t.normal} excluded by base"
-             ", {t.bold}{nf}{t.normal} filtered out by regex.".format(
-        t=log.term, n=n_patches, tag=tag, ne=n_excluded, nf=n_filtered_out))
+    log.info(
+        "\n{t.bold}{n} patches{t.normal} on top of {t.bold}{tag}{t.normal}"
+        ", {t.bold}{ne}{t.normal} excluded by base"
+        ", {t.bold}{nf}{t.normal} filtered out by regex.".format(
+            t=log.term,
+            n=n_patches,
+            tag=tag,
+            ne=n_excluded,
+            nf=n_filtered_out))
 
     if patches and filtered_patches:
         for hsh, title in reversed(filtered_patches):
@@ -1329,12 +1347,12 @@ def copr_build(srpm_url, release, dist, package, version,
                  "{t.bold}SRPM:{t.normal} {srpm}\n"
                  "{t.bold}repo:{t.normal} {repo}\n"
                  "{t.bold}web: {t.normal} {web}".format(
-                 owner=copr_owner,
-                 copr=copr_name,
-                 srpm=srpm_url,
-                 repo=repo_url,
-                 web=web_url,
-                 t=log.term))
+                     owner=copr_owner,
+                     copr=copr_name,
+                     srpm=srpm_url,
+                     repo=repo_url,
+                     web=web_url,
+                     t=log.term))
         copr.new_build(srpm_url, release, dist, watch=True)
     build = rdoupdate.core.Build(id=_copr.copr_fetcher_id(srpm_url),
                                  repo=release,
@@ -1366,9 +1384,16 @@ def koji_build(update_file=None, skip_build=False):
         _update.dump_build(build, update_file)
 
 
-def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False, verbose=False):
+def info(
+        pkgs=None,
+        local_info=None,
+        apply_tag=None,
+        force_fetch=False,
+        verbose=False):
     if local_info:
-        inforepo = rdoinfo.RdoinfoRepo(local_repo_path=local_info, apply_tag=apply_tag)
+        inforepo = rdoinfo.RdoinfoRepo(
+            local_repo_path=local_info,
+            apply_tag=apply_tag)
     else:
         inforepo = rdoinfo.get_default_inforepo(apply_tag=apply_tag)
     inforepo.init(force_fetch=force_fetch)
@@ -1408,7 +1433,8 @@ def autocomplete():
         print("argcomplete module is available.")
     except ImportError:
         print(
-            "You're missing the argcomplete python module. Install it using\n\n"
+            "You're missing the argcomplete python module. "
+            "Install it using\n\n"
             "    # yum install -y python-argcomplete\n\n"
             "or\n\n"
             "    # pip install argcomplete\n\n"

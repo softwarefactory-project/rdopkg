@@ -16,7 +16,7 @@ class _CommandOutput(str):
 
 def log_cmd_fail(cmd, cout, fail_log_fun=log.warn, out_log_fun=log.info):
     fail_log_fun('{t.error}command failed: {t.normal}{t.cmd}{cmd}{t.normal}'
-        .format(t=log.term, cmd=cmd))
+                 .format(t=log.term, cmd=cmd))
     nl = False
     if cout:
         out_log_fun(log.term.bold("stdout:"))
@@ -134,7 +134,7 @@ class Git(ShellCommand):
     def remote_branches(self, remote=""):
         res = self("branch", "-r")
         branches = self._parse_branch_output(res)
-        branches = [b.replace("remotes/", "") \
+        branches = [b.replace("remotes/", "")
                     for b in branches if b.startswith(remote)]
         return branches
 
@@ -219,8 +219,6 @@ class Git(ShellCommand):
         h1 = self.get_latest_commit_hash(branch)
         h2 = self.get_latest_commit_hash(remote_branch)
         return h1 != h2
-
-
 
     def linearize(self, starting_point, branch=None):
         if branch is not None and self.current_branch() != branch:

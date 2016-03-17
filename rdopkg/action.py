@@ -5,6 +5,7 @@ from utils import log
 
 
 class Arg(object):
+
     def __init__(self, name, **kwargs):
         self.name = name
         self.shortcut = kwargs.pop('shortcut', None)
@@ -20,6 +21,7 @@ class Arg(object):
 
 
 class Action(object):
+
     def __init__(self, name, steps=None, atomic=False, action_fun=None,
                  required_args=None, optional_args=None, const_args=None,
                  help=None):
@@ -40,6 +42,7 @@ class Action(object):
 
 
 class ActionModule(object):
+
     def __init__(self, module, name=None):
         if not name:
             name = module.__name__
@@ -55,6 +58,7 @@ class ActionManager(object):
     Action namespaces might be added, but I'm not convinced it'd be worth it,
     so there is no such thing now.
     """
+
     def __init__(self):
         self.actions = []
         self.modules = []

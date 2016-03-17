@@ -121,7 +121,7 @@ def main(cargs=None):
             rdoupdate.exception.InvalidUpdateStructure,
             rdoupdate.exception.BuildNotAvailable,
             KeyboardInterrupt,
-            ) as ex:
+    ) as ex:
         print("")
         print log.term.important(str(ex) or type(ex).__name__)
     except exception.NoActionInProgress as ex:

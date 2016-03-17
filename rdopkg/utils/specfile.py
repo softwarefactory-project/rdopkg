@@ -16,7 +16,7 @@ import exception
 
 
 def spec_fn(spec_dir='.'):
-    specs = [f for f in os.listdir(spec_dir) \
+    specs = [f for f in os.listdir(spec_dir)
              if os.path.isfile(f) and f.endswith('.spec')]
     if not specs:
         raise exception.SpecFileNotFound()
@@ -235,7 +235,8 @@ class Spec(object):
 
     def get_patch_fns(self):
         fns = []
-        for m in re.finditer(r'^\s*Patch\d+:\s*(\S+)\s*$', self.txt, flags=re.M):
+        for m in re.finditer(r'^\s*Patch\d+:\s*(\S+)\s*$', self.txt,
+                             flags=re.M):
             fns.append(m.group(1))
         return fns
 
@@ -285,7 +286,7 @@ class Spec(object):
             ps += "Patch%04d: %s\n" % (i, pfn)
             if apply_method == 'rpm':
                 pa += "%%patch%04d -p1\n" % i
-        ## PatchXXX: lines after Source0 / #patches_base=
+        # PatchXXX: lines after Source0 / #patches_base=
         self._txt, n = re.subn(
             self.RE_AFTER_PATCHES_BASE,
             r'\g<1>%s\n' % ps, self.txt, count=1)
@@ -304,7 +305,7 @@ class Spec(object):
             if self._txt[i] != '\n':
                 endnl += '\n'
             self._txt = self._txt[:i] + startnl + ps + endnl + self._txt[i:]
-        ## %patchXXX -p1 lines after "%setup" if needed
+        # %patchXXX -p1 lines after "%setup" if needed
         if apply_method == 'rpm':
             self._txt, n = re.subn(
                 r'((?:^|\n)%setup[^\n]*\n)\s*',
@@ -414,7 +415,7 @@ class Spec(object):
                         _, sep, rest = ver.partition(':')
                         if sep:
                             ver = rest
-                    reqs[name].add(eq + ' ' +ver)
+                    reqs[name].add(eq + ' ' + ver)
                 else:
                     name = req.N()
                     reqs[name]

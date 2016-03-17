@@ -82,6 +82,7 @@ class FedpkgArgsStub(object):
     """
     fedpkg sucks, this is one of many results
     """
+
     def __init__(self):
         self.q = False
 

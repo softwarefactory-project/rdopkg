@@ -9,7 +9,8 @@ def renegade_master():
     print(t)
     print("Wildchild version: https://youtu.be/-fLgCjHC6iA")
     print("Fat Boy Slim version: https://youtu.be/JyWqeJ1vLWo")
-    print("VaVaTeK remix: https://soundcloud.com/vavatekk/vavatek-once-again-renegade-master")
+    print("VaVaTeK remix: "
+          "https://soundcloud.com/vavatekk/vavatek-once-again-renegade-master")
 
 
 def can_haz_doctor():

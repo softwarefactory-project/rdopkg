@@ -30,7 +30,7 @@ def filter_pkgs(pkgs, rexen):
             else:
                 raise exception.InvalidPackageFilter(
                     why=("Can only filter strings but '%s' is %s"
-                         % (attr, type( rex).__name__)))
+                         % (attr, type(rex).__name__)))
         return True
 
     return filter(_filter, pkgs)
@@ -55,7 +55,8 @@ class RdoinfoRepo(repoman.RepoManager):
     def get_info(self):
         self.ensure_rdoinfo()
         with self.repo_dir():
-            info = self.rdoinfo.parse_info_file(self.info_file, apply_tag=self.apply_tag)
+            info = self.rdoinfo.parse_info_file(
+                self.info_file, apply_tag=self.apply_tag)
         return info
 
     @property
@@ -115,17 +116,17 @@ class RdoinfoRepo(repoman.RepoManager):
                 if 'special' in repo:
                     print ("    {t.bold}{name}{t.normal}: "
                            "{t.yellow}{special}{t.normal}".format(
-                        t=log.term,
-                        name=repo['name'],
-                        special=repo['special']))
+                               t=log.term,
+                               name=repo['name'],
+                               special=repo['special']))
                 else:
                     print ("    {t.bold}{name}{t.normal} built in"
                            " {t.bold}{bs}{t.normal} from"
                            " {t.bold}{branch}{t.normal} branch".format(
-                        t=log.term,
-                        name=repo['name'],
-                        bs=repo.get('buildsys', '??'),
-                        branch=repo['branch']))
+                               t=log.term,
+                               name=repo['name'],
+                               bs=repo.get('buildsys', '??'),
+                               branch=repo['branch']))
 
     def print_pkg_summary(self):
         pkgs = self.info['packages']
@@ -168,7 +169,10 @@ class RdoinfoRepo(repoman.RepoManager):
 
 
 def get_default_inforepo(apply_tag=None):
-    return RdoinfoRepo(cfg['HOME_DIR'], cfg['RDOINFO_REPO'], apply_tag=apply_tag)
+    return RdoinfoRepo(
+        cfg['HOME_DIR'],
+        cfg['RDOINFO_REPO'],
+        apply_tag=apply_tag)
 
 
 def print_pkg(pkg):

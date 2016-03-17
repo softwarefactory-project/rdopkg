@@ -12,6 +12,7 @@ from rdopkg import helpers
 
 
 class DiffReq(object):
+
     def __init__(self, name, vers):
         self.name = name
         # ensure that comp. operators are surrounded with spaces
@@ -27,6 +28,7 @@ class DiffReq(object):
 
 
 class CheckReq(object):
+
     def __init__(self, name, desired_vers, vers):
         self.name = name
         self.desired_vers = desired_vers
@@ -165,7 +167,7 @@ def print_reqcheck(met, any_version, wrong_version, missing):
         ("{t.bold}VERSION NOT ENFORCED{t.normal}:", any_version),
         ("{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
         ("{t.bold_red}MISSING{t.normal}:", missing),
-        ]
+    ]
     first = True
     for title, reqs in cats:
         if not reqs:
@@ -262,7 +264,7 @@ def reqquery(reqs, release, dist=None, module2pkg=True, verbose=False):
                 'version_available': v,
                 'nvr_available': nvr,
                 'repo_available': repo,
-                }
+            }
             if module2pkg:
                 pkg['module'] = req.name
             packages.append(pkg)

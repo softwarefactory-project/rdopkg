@@ -228,7 +228,7 @@ def builds(release):
             if not bs:
                 continue
             name = repo['name']
-            b.append((name,bs))
+            b.append((name, bs))
         break
     return b
 

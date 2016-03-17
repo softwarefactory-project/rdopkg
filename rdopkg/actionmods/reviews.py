@@ -25,7 +25,12 @@ def get_review_update_info(review, gitdir):
     cmd.git('checkout', 'FETCH_HEAD', log_cmd=False)
     upf = rdoupdate.actions.get_last_commit_update('.')
     update = rdoupdate.actions.check_file(upf)
-    uinfo = UpdateInfo(upf, update, authors, gerrit_url=url, gerrit_apprs=apprs)
+    uinfo = UpdateInfo(
+        upf,
+        update,
+        authors,
+        gerrit_url=url,
+        gerrit_apprs=apprs)
     return uinfo
 
 

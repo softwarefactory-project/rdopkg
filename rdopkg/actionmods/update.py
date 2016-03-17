@@ -70,7 +70,7 @@ def ensure_update_notes(upfile_path):
     while not ok:
         update = rdoupdate.actions.check_file(upfile_path)
         if (not update.notes or update.notes == FILLME or
-            update.notes == rdoupdate.core.FILL_THIS):
+                update.notes == rdoupdate.core.FILL_THIS):
             fmt = ("\n{t.important}Please describe this update "
                    "in the 'notes' field.\n\n"
                    "Press <Enter> to edit update file: {upf}{t.normal}\n")
@@ -134,6 +134,7 @@ def update_summary(update):
 
 
 class UpdateInfo(object):
+
     def __init__(self, upf, update, authors,
                  gerrit_url=None, gerrit_apprs=None):
         self.upf = upf
@@ -200,7 +201,8 @@ class UpdateRepo(repoman.RepoManager):
             update_id = generate_id()
             upfile_path = self._upfile_path_abs(update_id)
             if os.path.exists(upfile_path):
-                log.info("Generated colliding ID %s. Weird. Generating new ID.")
+                log.info("Generated colliding ID %s. Weird. "
+                         "Generating new ID.")
             else:
                 looking = False
         return update_id, upfile_path
@@ -253,7 +255,7 @@ class UpdateRepo(repoman.RepoManager):
                     builds_str = "\n".join(map(str, bad_builds))
                     print("\n{t.important}Builds below doesn't seem to be "
                           "available:{t.normal}\n{builds}\n".format(
-                          t=log.term, builds=builds_str))
+                              t=log.term, builds=builds_str))
                     print("Options:")
                     print("  e: Edit update")
                     print("  u: Update anyway")
@@ -300,7 +302,9 @@ def dump_build(build, update_file):
                 found = True
                 break
         if found:
-            log.info("\nBuild already present in update file: %s" % update_file)
+            log.info(
+                "\nBuild already present in update file: %s" %
+                update_file)
         else:
             log.info("\nAppending build to update file: %s" % update_file)
             update.builds.append(build)

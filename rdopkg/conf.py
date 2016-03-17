@@ -7,6 +7,7 @@ import os.path
 
 
 class Config(dict):
+
     def __init__(self, defaults=None):
         dict.__init__(self, defaults or {})
 
@@ -35,8 +36,9 @@ class Config(dict):
 
 cfg = Config({
     'HOME_DIR': os.path.expanduser("~/.rdopkg"),
-    'RDOINFO_REPO': "https://github.com/redhat-openstack/rdoinfo.git",
-    'RDO_UPDATE_REPO': 'ssh://review.gerrithub.io:29418/redhat-openstack/rdo-update',
+    'RDOINFO_REPO': 'https://github.com/redhat-openstack/rdoinfo.git',
+    'RDO_UPDATE_REPO':
+        'ssh://review.gerrithub.io:29418/redhat-openstack/rdo-update',
     'RDO_UPDATE_GERRIT_HOST': 'review.gerrithub.io',
     'FETCH_PERIOD': 600,
 })

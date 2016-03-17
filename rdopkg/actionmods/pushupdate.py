@@ -32,6 +32,7 @@ def copy_package(pkg_path, dest_dir, overwrite=False):
 
 
 class UpdatePusher(object):
+
     def __init__(self, update_repo_path, dest_base, ready_dir='ready',
                  temp_path=None, sign_tool_path=None,
                  update_files=None, fails=None,
@@ -172,7 +173,8 @@ class UpdatePusher(object):
                         pkg_name = os.path.basename(rpm)
                         pkg_dst = os.path.join(dest_path, pkg_name)
                         if os.path.exists(pkg_dst):
-                            raise exception.NewPackageAlreadyPresent(path=pkg_dst)
+                            raise exception.NewPackageAlreadyPresent(
+                                path=pkg_dst)
 
         return self._run_on_each(_check_collision, 'collision check')
 

@@ -115,7 +115,11 @@ def print_keyval(key, val, kb=True, vb=False):
         fmt += '{t.bold}{val}{t.bold}'
     else:
         fmt += '{val}'
-    if not isinstance(val, basestring) and isinstance(val, collections.Iterable):
+    if not isinstance(
+            val,
+            basestring) and isinstance(
+            val,
+            collections.Iterable):
         vals = "\n" + "\n".join(map(lambda x: '- ' + str(x), val))
     else:
         vals = str(val)
@@ -124,6 +128,7 @@ def print_keyval(key, val, kb=True, vb=False):
 
 class DictPrinter(object):
     # Very simple and stupid dict printer.
+
     def __init__(self, header=None, first=None, last=None):
         self.first = first or []
         self.last = last or []

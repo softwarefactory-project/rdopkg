@@ -18,6 +18,7 @@ def default_action_manager():
 
 
 class ActionRunner(object):
+
     def __init__(self, action_manager=None, state_file_path=None):
         if not action_manager:
             action_manager = default_action_manager()
@@ -72,7 +73,6 @@ class ActionRunner(object):
             if verbose:
                 print("State file removed.")
 
-
     def _new_action_check(self, new_action):
         if self.action and not new_action.atomic:
             action_name = self.action[0].name
@@ -87,7 +87,7 @@ class ActionRunner(object):
                 "{t.cmd}rdopkg -c{t.normal}\n\n"
                 " a) Abort the previous action:\n"
                 "    {t.cmd}rdopkg --abort{t.normal}"
-                  ).format(t=log.term)
+            ).format(t=log.term)
             )
             raise exception.ActionInProgress(action=action_name)
 
@@ -139,8 +139,9 @@ class ActionRunner(object):
 
     def status(self):
         if self.action:
-            print("{t.bold}Action in progress: {t.green}{a}{t.normal}\n".format(
-                  t=log.term, a=self.action[0].name))
+            print(
+                "{t.bold}Action in progress: {t.green}{a}{t.normal}\n".format(
+                    t=log.term, a=self.action[0].name))
             if self.args:
                 print(log.term.bold("Arguments:"))
                 for key in sorted(self.args, key=self.args.get):
@@ -198,4 +199,3 @@ class ActionRunner(object):
                 self.save_state()
             if abort:
                 return
-
