@@ -584,16 +584,16 @@ def clone(
         git('remote', '-v', direct=True)
 
 
-def prepare_patch_chain(*args, **kwargs):
+def prepare_patch_chain():
     spec = specfile.Spec()
     rpmfactory.prepare_patch_chain(spec)
 
 
-def review_patch(branch, *args, **kwargs):
+def review_patch(branch):
     rpmfactory.review_patch(branch)
 
 
-def review_spec(branch, *args, **kwargs):
+def review_spec(branch):
     rpmfactory.review_spec(branch)
 
 
