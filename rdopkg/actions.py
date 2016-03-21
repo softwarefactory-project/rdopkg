@@ -105,8 +105,10 @@ ACTIONS = [
                Arg('use_master_distgit', shortcut='-m', action='store_true',
                    help="clone 'master-distgit'"),
                Arg('gerrit_remotes', shortcut='-g', action='store_true',
-                   help="Create branches "
+                   help="create branches "
                         "'gerrit-origin' and 'gerrit-patches'"),
+               Arg('review_user', shortcut='-u', metavar='USER',
+                   help="gerrit username for reviews"),
            ]),
     Action('reqdiff', atomic=True, help="show diff of requirements.txt",
            steps=[
@@ -516,7 +518,8 @@ def clone(
         package,
         force_fetch=False,
         use_master_distgit=False,
-        gerrit_remotes=False):
+        gerrit_remotes=False,
+        review_user=None):
     inforepo = rdoinfo.get_default_inforepo()
     inforepo.init(force_fetch=force_fetch)
     pkg = inforepo.get_package(package)
@@ -560,14 +563,18 @@ def clone(
             log.warn("'upstream' remote information not available in rdoinfo.")
         if patches or upstream:
             git('fetch', '--all')
-        env = os.environ.copy()
-        # USERNAME is an env var used by gerrit
-        review_user = env.get('USERNAME') or env.get('USER')
+
+        if not review_user:
+            # USERNAME is an env var used by gerrit
+            review_user = os.environ.get('USERNAME') or os.environ.get('USER')
+        msg_user = ('Using {t.bold}{u}{t.normal} as gerrit username, '
+                    'you can change it with '
+                    '{t.cmd}git remote set-url {r} ...{t.normal}')
         if review_patches:
             log.info('Adding gerrit remote for patch chains reviews...')
             r = tidy_ssh_user(review_patches, review_user)
-            log.info('Using %s as gerrit username, you can change it with'
-                     '"git remote set-url review-patches ..."' % review_user)
+            log.info(msg_user.format(u=review_user, r='review-patches',
+                                     t=log.term))
             git('remote', 'add', 'review-patches', r)
         else:
             log.warn("'review-patches' remote information not available"
@@ -575,8 +582,8 @@ def clone(
         if review_origin:
             log.info('Adding gerrit remote for reviews...')
             r = tidy_ssh_user(review_origin, review_user)
-            log.info('Using %s as gerrit username, you can change it with'
-                     '"git remote set-url review-origin ..."' % review_user)
+            log.info(msg_user.format(u=review_user, r='review-origin',
+                                     t=log.term))
             git('remote', 'add', 'review-origin', r)
         else:
             log.warn("'review-origin' remote information not available"
