@@ -37,7 +37,7 @@ def prepare_patch_chain(spec):
     if number:
         _patchset = _patchset + ',' + number
     log.info("found patch %s (%s)" % (_patchset, candidate['url']))
-    git("review", "-r", "review-patches", "-d", _patchset)
+    git("review", "-r", "review-patches", "-d", _patchset, direct=True)
 
 
 def review_patch(branch):
@@ -47,7 +47,7 @@ def review_patch(branch):
         branch = guess.current_branch()
     if not branch.endswith('patches'):
         branch = '%s-patches' % branch
-    git("review", "-i", "-y", "-r", "review-patches", branch)
+    git("review", "-i", "-y", "-r", "review-patches", branch, direct=True)
 
 
 def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None,
@@ -82,4 +82,4 @@ def review_spec(branch):
     # it assumes a commit was done and ready to be committed
     if not branch:
         branch = guess.current_branch()
-    git("review", "-i", "-r", "review-origin", branch)
+    git("review", "-i", "-r", "review-origin", branch, direct=True)

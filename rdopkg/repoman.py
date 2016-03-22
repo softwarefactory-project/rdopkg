@@ -94,17 +94,17 @@ class RepoManager(object):
     def setup_review(self):
         with self.repo_dir():
             with helpers.setenv(USERNAME=self.user):
-                cmd.git('review', '-s')
+                cmd.git('review', '-s', direct=True)
 
     def review(self):
         with self.repo_dir():
             with helpers.setenv(USERNAME=self.user):
-                cmd.git('review')
+                cmd.git('review', direct=True)
 
     def get_review(self, review_id):
         with self.repo_dir():
             with helpers.setenv(USERNAME=self.user):
-                cmd.git('review', '-d', str(review_id))
+                cmd.git('review', '-d', str(review_id), direct=True)
 
     def repo_dir(self):
         return helpers.cdir(self.repo_path)
