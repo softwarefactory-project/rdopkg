@@ -203,7 +203,7 @@ ACTIONS = [
                    metavar='LOCAL_BRANCH',
                    help="local git branch containing patches"),
            ]),
-    Action('prepare_patch_chain',
+    Action('prep_patch_chain',
            help=("sets the repository at the top of the current patch chain"
                  " from rpmfactory's gerrit"),
            ),
@@ -591,7 +591,7 @@ def clone(
         git('remote', '-v', direct=True)
 
 
-def prepare_patch_chain():
+def prep_patch_chain():
     spec = specfile.Spec()
     rpmfactory.prepare_patch_chain(spec)
 
