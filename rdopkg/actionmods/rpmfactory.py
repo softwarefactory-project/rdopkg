@@ -61,6 +61,8 @@ def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None,
     jenkins = [a for a in approvals
                if a.get('type') == 'Verified' and
                a.get('by', {}).get('username') == 'jenkins']
+    code_reviews = [int(a.get('Value', 0)) for a in approvals
+                    if a.get('type') == 'Code-Review']
     if not jenkins:
         verified = 0
     else:
@@ -68,11 +70,16 @@ def fetch_patches_branch(local_patches_branch, gerrit_patches_chain=None,
     if verified != 1:
         if force:
             log.warn(
-                "Ref %s has not been validated by CI" % gerrit_patches_chain)
+                "Ref %s has not been validated by CI." % gerrit_patches_chain)
             helpers.confirm("Do you want to continue anyway?",
                             default_yes=False)
         else:
             raise exception.UnverifiedPatch()
+    if -1 in code_reviews:
+        log.warn(
+            "Ref %s has at least one negative review." % gerrit_patches_chain)
+        helpers.confirm("Do you want to continue anyway?",
+                        default_yes=False)
     git.checkout(local_patches_branch)
     git('reset', '--hard', 'FETCH_HEAD')
 
