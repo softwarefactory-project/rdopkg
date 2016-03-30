@@ -77,8 +77,10 @@ ACTIONS = [
                    help="only bump .spec to new version a la rpmdev-bumpspec"),
                Arg('no_diff', shortcut='-d', action='store_true',
                    help="don't show git/requirements diff"),
+               Arg('new_sources', shortcut='-N', action='store_true',
+                   help="also run `fedpkg new-sources`"),
                Arg('no_new_sources', shortcut='-n', action='store_true',
-                   help="don't run `fedpkg new-sources`"),
+                   help="[LEGACY] no effect, to be removed"),
            ],
            steps=[
                Action('get_package_env'),
@@ -897,14 +899,10 @@ def update_spec(branch=None, changes=None,
     spec.save()
 
 
-def _has_valid_sources():
-    # Some dist-gits keep empty `sources` file in order to keep fedpkg
-    # compatibility although they don't require `fedpkg new-sources`
-    return os.path.isfile('sources') and os.path.getsize('sources') > 0
-
-
-def get_source(no_new_sources=False):
-    if no_new_sources or not _has_valid_sources():
+def get_source(new_sources=False, no_new_sources=False):
+    if no_new_sources:
+        log.warn('-n/--no-new-sources is now default and has no effect.')
+    if not new_sources:
         return
     source_urls = specfile.Spec().get_source_urls()
     # So far, only Source0 is a tarball to download
@@ -921,9 +919,9 @@ def get_source(no_new_sources=False):
                 ".spec file.", rerun=True)
 
 
-def new_sources(branch=None, fedpkg=FEDPKG, no_new_sources=False):
+def new_sources(branch=None, fedpkg=FEDPKG, new_sources=False):
     _ensure_branch(branch)
-    if no_new_sources or not _has_valid_sources():
+    if not new_sources:
         return
     sources = specfile.Spec().get_source_fns()
     cmd = fedpkg + ['new-sources'] + sources
