@@ -898,16 +898,33 @@ def check_new_patches(version, local_patches_branch,
             raise exception.RequiredActionArgumentNotAvailable(
                 action='check_new_patches', arg='patches_branch')
         head = patches_branch
-    spec = specfile.Spec()
-    n_patches = spec.get_n_patches() + spec.get_n_excluded_patches()
+
     version_tag = guess.version2tag(version, version_tag_style)
-    patches = git.get_commit_subjects(version_tag, head)
-    if n_patches > 0:
-        patches = patches[0:-n_patches]
-    if not patches:
+    patches = git.get_commits(version_tag, head)
+    spec = specfile.Spec()
+
+    n_git_patches = len(patches)
+    n_spec_patches = spec.get_n_patches()
+    n_skip_patches = spec.get_n_excluded_patches()
+    n_ignore_patches = 0
+
+    ignore_regex = spec.get_patches_ignore_regex()
+    if ignore_regex:
+        patches = (flatten(_partition_patches(patches, ignore_regex)))
+        n_ignore_patches = n_git_patches - len(patches)
+
+    patch_subjects = [subject for hash, subject in patches]
+    n_base_patches = n_skip_patches + n_spec_patches
+    log.debug("Total patches in git:%d spec:%d skip:%d ignore:%d" % (
+              n_git_patches, n_spec_patches, n_skip_patches, n_ignore_patches))
+
+    if n_base_patches > 0:
+        patch_subjects = patch_subjects[0:-n_base_patches]
+
+    if not patch_subjects:
         log.warn("No new patches detected in %s." % head)
         helpers.confirm("Do you want to continue anyway?", default_yes=False)
-    changes.extend(patches)
+    changes.extend(patch_subjects)
     return {'changes': changes}
 
 
