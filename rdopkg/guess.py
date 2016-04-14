@@ -288,12 +288,12 @@ def last_patch(patch_files=None):
     return max(patch_files, key=k)
 
 
-def gerrit_patches_chain(project=None):
+def gerrit_patches_chain(project=None, verbose=True):
     if not project:
         project = project_from_repo()
 
     gerrit_host, gerrit_port = gerrit_from_repo()
-    gerrit_query = GerritQuery(gerrit_host, gerrit_port)
+    gerrit_query = GerritQuery(gerrit_host, gerrit_port, log_cmd=verbose)
 
     candidate = None
     number = None
