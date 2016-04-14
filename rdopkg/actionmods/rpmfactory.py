@@ -19,6 +19,17 @@ def _review_ref(review_n, patchset_n):
     return 'refs/changes/%s/%s/%s' % (cache, review_n, patchset_n)
 
 
+def review_url(review_n, gerrit_query=None, verbose=False):
+    if not review_n:
+        return None
+    if not gerrit_query:
+        gerrit_host, gerrit_port = guess.gerrit_from_repo()
+        gerrit_query = GerritQuery(gerrit_host, gerrit_port, log_cmd=verbose)
+    review = gerrit_query('--current-patch-set', review_n)
+    cps = review.get('currentPatchSet', {})
+    return review.get('url')
+
+
 def fetch_patches_branch(local_patches_branch, gerrit_patches_chain,
                          force=False):
     review_n = _review_number(gerrit_patches_chain)

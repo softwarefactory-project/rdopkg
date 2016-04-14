@@ -46,7 +46,7 @@ ACTIONS = [
                    help="local git branch containing patches"),
                Arg('local_patches', shortcut='-l', action='store_true',
                    help="don't reset local patches branch, use it as is"),
-               Arg('gerrit_patches_chain', shortcut='-g', metavar='X/Y/Z',
+               Arg('gerrit_patches_chain', shortcut='-g', metavar='REVIEW_NUMBER',
                    help="top gerrit review id of the patch chain"),
                Arg('force', shortcut='--force', action='store_true',
                    help="use patch even if it was not validated in CI"),
@@ -120,7 +120,7 @@ ACTIONS = [
                Arg('local_patches_branch', shortcut='-P',
                    metavar='LOCAL_BRANCH',
                    help="local git branch containing patches"),
-               Arg('gerrit_patches_chain', shortcut='-g', metavar='X/Y/Z',
+               Arg('gerrit_patches_chain', shortcut='-g', metavar='REVIEW_NUMBER',
                    help="top gerrit review id of the patch chain"),
                Arg('force', shortcut='--force', action='store_true',
                    help="use patch even if it was not validated in CI"),
@@ -404,7 +404,8 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
 
 def show_package_env(package, version,
                      branch, patches_branch, local_patches_branch,
-                     release=None, dist=None, version_tag_style=None):
+                     release=None, dist=None, version_tag_style=None,
+                     patches_style=None, gerrit_patches_chain=None):
     def _putv(title, val):
         print("{t.bold}{title}{t.normal} {val}"
               .format(title=title, val=val, t=log.term))
@@ -418,18 +419,27 @@ def show_package_env(package, version,
         upstream_version = guess.upstream_version(branch=upstream_branch)
         if not upstream_version:
             upstream_version = 'no version tag found'
+
+    if patches_style == 'review':
+        if not gerrit_patches_chain:
+            gerrit_patches_chain = guess.gerrit_patches_chain(verbose=False)
+        gerrit_review_url = rpmfactory.review_url(gerrit_patches_chain) or 'unknown'
+
     print
     _putv('Package:  ', package)
     _putv('Version:  ', version)
     _putv('Upstream: ', upstream_version)
     _putv('Tag style:', version_tag_style or 'X.Y.Z')
-    _putv('OS dist:  ', osdist)
     print
+    _putv('Patches style:         ', patches_style)
+    if patches_style == 'review':
+        _putv('Patches chain:         ', gerrit_review_url)
     _putv('Dist-git branch:       ', branch)
     _putv('Local patches branch:  ', local_patches_branch)
     _putv('Remote patches branch: ', patches_branch)
     _putv('Remote upstream branch:', upstream_branch or 'not found')
     print
+    _putv('OS dist:               ', osdist)
     if osdist == 'RDO':
         rlsdist = '%s/%s' % (release or 'unknown', dist or 'unknown')
         _putv('RDO release/dist guess:', rlsdist)
