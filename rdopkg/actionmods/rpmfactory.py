@@ -62,19 +62,9 @@ def fetch_patches_branch(local_patches_branch, gerrit_patches_chain,
         'FETCH_HEAD')
 
 
-def review_spec(branch=None):
-    # this is just an alias easier to remember for the git review command
-    # it assumes a commit was done and ready to be committed
-    if not branch:
-        branch = guess.current_branch()
+def review_spec(branch):
     git("review", "-r", "review-origin", branch, direct=True)
 
 
-def review_patch(branch=None):
-    # this is just an alias easier to remember for the git review command
-    # it assumes a commit was done and ready to be committed
-    if not branch:
-        branch = guess.current_branch()
-    if not branch.endswith('patches'):
-        branch = '%s-patches' % branch
+def review_patch(branch):
     git("review", "-y", "-r", "review-patches", branch, direct=True)
