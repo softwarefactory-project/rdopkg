@@ -127,6 +127,14 @@ def patches_branch(distgit, pkg=None, osdist='RDO'):
     return '%s/%s-patches' % (remotes[0], distgit)
 
 
+def patches_style(gerrit_patch_chain=None):
+    if gerrit_patch_chain:
+        return 'review'
+    if 'review-patches' in git.remotes():
+        return 'review'
+    return 'branch'
+
+
 def upstream_branch():
     remotes = ['upstream', 'openstack']
 
@@ -243,9 +251,9 @@ def osdist(branch=None):
 
 def project_from_repo():
     # assuming we're in a git repository
-    proj = [p for p in git('remote', '-v').split('\n')
+    proj = [p for p in git('remote', '-v', log_cmd=False).split('\n')
             if p.startswith('patches')][0]
-    project = proj.split('/')[-1]
+    project = '/'.join(proj.split('/')[-2:])
     # remove (fetch) or (push)
     project = project.split(' ')[0]
     if project.endswith('.git'):
@@ -255,7 +263,7 @@ def project_from_repo():
 
 def gerrit_from_repo():
     # assuming we're in a git repository
-    gerrit = [p for p in git('remote', '-v').split('\n')
+    gerrit = [p for p in git('remote', '-v', log_cmd=False).split('\n')
               if p.startswith('review-patches')][0]
     # discard ssh://, pick user@hostname + port from uri and split them
     gerrit_url = [g[len('ssh://'):].split('/')[0]
@@ -264,7 +272,7 @@ def gerrit_from_repo():
     return gerrit_url
 
 
-def last_patch(patch_files):
+def last_patch(patch_files=None):
     # TODO(mhu) this needs to be confirmed, is the last patch applied always
     # the last patch of the chain ? Supposedly yes
     def k(x):
@@ -272,52 +280,64 @@ def last_patch(patch_files):
         if not d:
             return -1
         return int(d.groups()[0])
+
+    if not patch_files:
+        patch_files = specfile.Spec().get_patch_fns()
+    if not patch_files:
+        return None
     return max(patch_files, key=k)
 
 
-def patch_on_gerrit(contents, project, gerrit_host, gerrit_port):
-    """Find a patch reference on a gerrit instance from the patch
-    stored in a distgit repo.
-    """
-    gerrit_query = GerritQuery(gerrit_host,
-                               gerrit_port)
-    subject_regex = re.compile("^Subject: (?:\[PATCH\]\s*)?(.+)$",
-                               re.MULTILINE | re.IGNORECASE)
-    subject = None
-    s = subject_regex.findall(contents)
-    if s:
-        subject = s[0]
+def gerrit_patches_chain(project=None):
+    if not project:
+        project = project_from_repo()
+
+    gerrit_host, gerrit_port = gerrit_from_repo()
+    gerrit_query = GerritQuery(gerrit_host, gerrit_port)
+
     candidate = None
     number = None
-    # First, look for the commit id, this will tell us which revision we need
-    from_regex = re.compile(r"^From ([0-9a-f]{40})",
-                            re.MULTILINE | re.IGNORECASE)
-    for from_commit in from_regex.findall(contents):
-        query = "project:%s commit:%s" % (project, from_commit)
-        q = gerrit_query('--patch-sets', query)
-        if q:
-            candidate = q
-            numbers = [ps.get('number') for ps in candidate.get('patchSets')
-                       if ps.get('revision') == from_commit]
-            if numbers:
-                number = numbers[0]
-            break
-    # If this fails (we're dealing with migration residues) look for changeIDs
-    # and assume the last revision is the one we want.
-    if not candidate:
-        log.info("Revision number not found, the latest patchset (if found) "
-                 "will be downloaded.")
-        cid_regex = re.compile(r"^Change-Id: (I[0-9a-f]{40})",
-                               re.MULTILINE | re.IGNORECASE)
-        for cid in cid_regex.findall(contents):
-            query = "project:%s change:%s" % (project, cid)
-            if subject:
-                query += " message:%s" % subject
-            query += " limit:1"
-            q = gerrit_query(query)
+    subject = None
+    _last_patch = last_patch()
+    if _last_patch:
+        log.info('Assumed last patch is %s' % _last_patch)
+        with open(_last_patch, 'r') as f:
+            patch_content = f.read()
+        subject_regex = re.compile("^Subject: (?:\[PATCH\]\s*)?(.+)$",
+                                   re.MULTILINE | re.IGNORECASE)
+        s = subject_regex.findall(patch_content)
+        if s:
+            subject = s[0]
+        # commit id tells us which revision we need
+        from_regex = re.compile(r"^From ([0-9a-f]{40})",
+                                re.MULTILINE | re.IGNORECASE)
+        for from_commit in from_regex.findall(patch_content):
+            query = "project:%s commit:%s" % (project, from_commit)
+            q = gerrit_query('--patch-sets', query)
             if q:
                 candidate = q
+                numbers = [ps.get('number') for ps
+                           in candidate.get('patchSets')
+                           if ps.get('revision') == from_commit]
+                if numbers:
+                    number = numbers[0]
                 break
+        # If this fails (we're dealing with migration residues),
+        # look for changeIDs and use last revision.
+        if not candidate:
+            log.info("Revision number not found, the latest patchset "
+                     "(if found) will be downloaded.")
+            cid_regex = re.compile(r"^Change-Id: (I[0-9a-f]{40})",
+                                   re.MULTILINE | re.IGNORECASE)
+            for cid in cid_regex.findall(patch_content):
+                query = "project:%s change:%s" % (project, cid)
+                if subject:
+                    query += " message:%s" % subject
+                query += " limit:1"
+                q = gerrit_query(query)
+                if q:
+                    candidate = q
+                    break
     # last chance, with the commit message
     if not candidate:
         query = "project:%s" % project
@@ -325,4 +345,10 @@ def patch_on_gerrit(contents, project, gerrit_host, gerrit_port):
             query += " message:%s" % subject
         query += " limit:1"
         candidate = gerrit_query(query)
-    return candidate, number
+
+    if not candidate:
+        return None
+    patchset = candidate.get('number')
+    if number:
+        patchset = "%s/%s" % (patchset, number)
+    return patchset
