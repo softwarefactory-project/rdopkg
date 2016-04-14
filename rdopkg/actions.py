@@ -47,7 +47,7 @@ ACTIONS = [
                Arg('local_patches', shortcut='-l', action='store_true',
                    help="don't reset local patches branch, use it as is"),
                Arg('gerrit_patches_chain', shortcut='-g', metavar='X/Y/Z',
-                   help="Top gerrit review id of the patch chain"),
+                   help="top gerrit review id of the patch chain"),
                Arg('force', shortcut='--force', action='store_true',
                    help="use patch even if it was not validated in CI"),
            ],
@@ -111,6 +111,26 @@ ACTIONS = [
                         "'gerrit-origin' and 'gerrit-patches'"),
                Arg('review_user', shortcut='-u', metavar='USER',
                    help="gerrit username for reviews"),
+           ]),
+    Action('get-patches', atomic=True,
+           help="setup local patches branch and switch to it",
+           optional_args=[
+               Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
+                   help="remote git branch containing patches"),
+               Arg('local_patches_branch', shortcut='-P',
+                   metavar='LOCAL_BRANCH',
+                   help="local git branch containing patches"),
+               Arg('gerrit_patches_chain', shortcut='-g', metavar='X/Y/Z',
+                   help="top gerrit review id of the patch chain"),
+               Arg('force', shortcut='--force', action='store_true',
+                   help="use patch even if it was not validated in CI"),
+           ],
+           steps=[
+               Action('get_package_env'),
+               Action('ensure_patches_branch'),
+               Action('reset_patches_branch'),
+               Action('fetch_patches_branch'),
+               Action('checkout_patches_branch'),
            ]),
     Action('reqdiff', atomic=True, help="show diff of requirements.txt",
            steps=[
@@ -205,10 +225,6 @@ ACTIONS = [
                    metavar='LOCAL_BRANCH',
                    help="local git branch containing patches"),
            ]),
-    Action('prepare_patch_chain',
-           help=("sets the repository at the top of the current patch chain"
-                 " from rpmfactory's gerrit"),
-           ),
     Action('review_patch',
            help=("send a patch for review on rpmfactory"),
            optional_args=[
@@ -339,15 +355,15 @@ def status():
 
 
 def get_package_env(version=None, release=None, dist=None,
-                    patches_branch=None, local_patches_branch=None):
+                    patches_branch=None, local_patches_branch=None,
+                    patches_style=None, gerrit_patches_chain=None):
     branch = git.current_branch()
     if branch.endswith('-patches'):
         branch = branch[:-8]
         if git.branch_exists(branch):
             log.info(
                 "This looks like -patches branch. Assuming distgit branch: "
-                "%s" %
-                branch)
+                "%s" % branch)
             git.checkout(branch)
         else:
             raise exception.InvalidUsage(
@@ -369,6 +385,9 @@ def get_package_env(version=None, release=None, dist=None,
     if not patches_branch:
         patches_branch = guess.patches_branch(branch, pkg=args['package'],
                                               osdist=osdist)
+    if not patches_style:
+        patches_style = guess.patches_style(gerrit_patches_chain)
+    args['patches_style'] = patches_style
     args['patches_branch'] = patches_branch
     if not local_patches_branch:
         args['local_patches_branch'] = patches_branch.partition('/')[2]
@@ -593,11 +612,6 @@ def clone(
         git('remote', '-v', direct=True)
 
 
-def prepare_patch_chain():
-    spec = specfile.Spec()
-    rpmfactory.prepare_patch_chain(spec)
-
-
 def review_patch(branch):
     rpmfactory.review_patch(branch)
 
@@ -775,52 +789,62 @@ def reset_patches_branch(local_patches_branch, patches_branch,
     _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
 
-def fetch_patches_branch(
-        local_patches_branch,
-        branch,
-        gerrit_patches_chain=None,
-        force=False):
-    if not gerrit_patches_chain:
+def fetch_patches_branch(branch, local_patches_branch,
+                         patches_style=None, gerrit_patches_chain=None,
+                         force=False):
+    if patches_style != 'review':
         return
-    rpmfactory.fetch_patches_branch(local_patches_branch,
-                                    gerrit_patches_chain,
-                                    force)
-    git.checkout(branch)
+    if not gerrit_patches_chain:
+        gerrit_patches_chain = guess.gerrit_patches_chain()
+    if gerrit_patches_chain:
+        rpmfactory.fetch_patches_branch(local_patches_branch,
+                                        gerrit_patches_chain,
+                                        force)
+    else:
+        log.warn('Review patches chain not found. No patches yet?')
+
+
+def checkout_patches_branch(local_patches_branch):
+    git.checkout(local_patches_branch)
 
 
 def rebase_patches_branch(new_version, local_patches_branch,
                           patches_branch=None, local_patches=False,
-                          bump_only=False, version_tag_style=None):
+                          patches_style=None, version_tag_style=None,
+                          bump_only=False):
     if bump_only:
         return
     git.checkout(local_patches_branch)
     new_version_tag = guess.version2tag(new_version, version_tag_style)
     git('rebase', new_version_tag, direct=True)
-    if local_patches or not patches_branch:
-        return
-    if _is_same_commit(local_patches_branch, patches_branch):
-        log.info("%s is up to date, no need for push." % patches_branch)
-        return
-    try:
-        remote, branch = git.remote_branch_split(patches_branch)
-        helpers.confirm("Push %s to %s / %s (with --force)?" % (
-            local_patches_branch, remote, branch))
-        git('push', '--force', remote,
-            '%s:%s' % (local_patches_branch, branch))
-        # push the tag
-        git('push', '--force', remote, new_version_tag)
-    except exception.UserAbort:
-        pass
+    if patches_style == 'review':
+        log.warn("review patches style isn't yet fully supported"
+                 "in new-version.")
+    else:
+        if local_patches or not patches_branch:
+            return
+        if _is_same_commit(local_patches_branch, patches_branch):
+            log.info("%s is up to date, no need for push." % patches_branch)
+            return
+        try:
+            remote, branch = git.remote_branch_split(patches_branch)
+            helpers.confirm("Push %s to %s / %s (with --force)?" % (
+                local_patches_branch, remote, branch))
+            git('push', '--force', remote,
+                '%s:%s' % (local_patches_branch, branch))
+            # push the tag
+            git('push', '--force', remote, new_version_tag)
+        except exception.UserAbort:
+            pass
 
 
 def check_new_patches(version, local_patches_branch,
-                      gerrit_patches_chain=None,
-                      local_patches=False,
+                      patches_style=None, local_patches=False,
                       patches_branch=None, changes=None,
                       version_tag_style=None):
     if not changes:
         changes = []
-    if local_patches or gerrit_patches_chain:
+    if local_patches or patches_style == 'review':
         head = local_patches_branch
     else:
         if not patches_branch:
