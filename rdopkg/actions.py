@@ -226,21 +226,23 @@ ACTIONS = [
                    help="local git branch containing patches"),
            ]),
     Action('review_patch',
-           help=("send a patch for review on rpmfactory"),
+           help="send patch(es) for review",
            optional_args=[
-               Arg('branch', positional=True, metavar='BRANCH',
-                   help="the patch branch, if not already checked out "
-                        "(example: liberty-patches)"),
-           ],
-           ),
-    Action('review_spec',
-           help=("sends distgit for review on rpmfactory"),
+               Arg('local_patches_branch', metavar='PATCHES_BRANCH',
+                   positional=True, nargs='?',
+                   help="local patches branch with changes to review"),
+           ]),
+    Action('review_spec', atomic=True,
+           help="send distgit (.spec file) change for review",
            optional_args=[
-               Arg('branch', positional=True, metavar='BRANCH',
-                   help="the branch on which the patch is to be applied if "
-                        "not already checked out, example: rdo-liberty"),
+               Arg('branch', metavar='DISTGIT_BRANCH',
+                   positional=True, nargs='?',
+                   help="local distgit branch with changes to review"),
            ],
-           ),
+           steps=[
+               Action('get_package_env'),
+               Action('review_spec'),
+           ]),
     Action('coprbuild', atomic=True, help="build package in copr-jruzicka",
            steps=[
                Action('get_package_env'),
@@ -354,10 +356,11 @@ def status():
     raise exception.InternalAction(action='status')
 
 
-def get_package_env(version=None, release=None, dist=None,
+def get_package_env(version=None, release=None, dist=None, branch=None,
                     patches_branch=None, local_patches_branch=None,
                     patches_style=None, gerrit_patches_chain=None):
-    branch = git.current_branch()
+    if not branch:
+        branch = git.current_branch()
     if branch.endswith('-patches'):
         branch = branch[:-8]
         if git.branch_exists(branch):
@@ -612,8 +615,14 @@ def clone(
         git('remote', '-v', direct=True)
 
 
-def review_patch(branch):
-    rpmfactory.review_patch(branch)
+def review_patch(local_patches_branch=None):
+    if not local_patches_branch:
+        local_patches_branch = git.current_branch()
+        if not local_patches_branch.endswith('-patches'):
+            br = guess.patches_branch(local_patches_branch)
+            if br:
+                local_patches_branch = br.partition('/')[2]
+    rpmfactory.review_patch(local_patches_branch)
 
 
 def review_spec(branch):
