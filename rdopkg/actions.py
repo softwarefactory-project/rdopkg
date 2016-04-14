@@ -404,7 +404,8 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
 
 def show_package_env(package, version,
                      branch, patches_branch, local_patches_branch,
-                     release=None, dist=None, version_tag_style=None):
+                     release=None, dist=None, version_tag_style=None,
+                     patches_style=None):
     def _putv(title, val):
         print("{t.bold}{title}{t.normal} {val}"
               .format(title=title, val=val, t=log.term))
@@ -423,13 +424,14 @@ def show_package_env(package, version,
     _putv('Version:  ', version)
     _putv('Upstream: ', upstream_version)
     _putv('Tag style:', version_tag_style or 'X.Y.Z')
-    _putv('OS dist:  ', osdist)
     print
+    _putv('Patches style:         ', patches_style)
     _putv('Dist-git branch:       ', branch)
     _putv('Local patches branch:  ', local_patches_branch)
     _putv('Remote patches branch: ', patches_branch)
     _putv('Remote upstream branch:', upstream_branch or 'not found')
     print
+    _putv('OS dist:               ', osdist)
     if osdist == 'RDO':
         rlsdist = '%s/%s' % (release or 'unknown', dist or 'unknown')
         _putv('RDO release/dist guess:', rlsdist)
