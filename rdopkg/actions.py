@@ -55,8 +55,7 @@ ACTIONS = [
            steps=[
                Action('get_package_env'),
                Action('ensure_patches_branch'),
-               Action('reset_patches_branch'),
-               Action('fetch_patches_branch'),
+               Action('get_patches_branch'),
                Action('check_new_patches'),
                Action('update_spec'),
                Action('commit_distgit_update'),
@@ -87,16 +86,16 @@ ACTIONS = [
                Action('get_package_env'),
                Action('new_version_setup'),
                Action('diff'),
-               Action('rebase_patches', steps=[
-                   Action('reset_patches_branch'),
-                   Action('rebase_patches_branch'),
-               ]),
+               Action('prep_new_patches_branch'),
+               Action('get_patches_branch'),
+               Action('rebase_patches_branch'),
                Action('update_spec'),
                Action('get_source'),
                Action('new_sources'),
                Action('commit_distgit_update'),
                Action('update_patches', const_args={'amend': True}),
                Action('final_spec_diff'),
+               Action('review_patches_branch')
            ]),
     Action('clone', atomic=True,
            help="clone an RDO package distgit and setup remotes",
@@ -130,8 +129,7 @@ ACTIONS = [
            steps=[
                Action('get_package_env'),
                Action('ensure_patches_branch'),
-               Action('reset_patches_branch'),
-               Action('fetch_patches_branch'),
+               Action('get_patches_branch'),
                Action('checkout_patches_branch'),
            ]),
     Action('reqdiff', atomic=True, help="show diff of requirements.txt",
@@ -536,7 +534,7 @@ def new_version_setup(patches_branch=None, local_patches=False,
 
 
 def ensure_patches_branch(patches_branch=None, local_patches=False,
-                          bump_only=False):
+                          bump_only=False, patches_style=None):
     if local_patches or bump_only:
         return
     if not patches_branch:
@@ -804,30 +802,56 @@ def fetch_all():
     git('fetch', '--all', direct=True)
 
 
-def reset_patches_branch(local_patches_branch, patches_branch,
-                         local_patches=False, bump_only=False):
-    if local_patches or bump_only:
-        return
-    _reset_branch(local_patches_branch, remote_branch=patches_branch)
-
-
-def fetch_patches_branch(branch, local_patches_branch,
-                         patches_style=None, gerrit_patches_chain=None,
-                         force=False):
-    if patches_style != 'review':
-        return
-    if not gerrit_patches_chain:
-        gerrit_patches_chain = guess.gerrit_patches_chain()
-    if gerrit_patches_chain:
-        rpmfactory.fetch_patches_branch(local_patches_branch,
-                                        gerrit_patches_chain,
-                                        force)
+def prep_new_patches_branch(new_version,
+                            local_patches_branch, patches_branch,
+                            local_patches=False, bump_only=False,
+                            patches_style=None, version_tag_style=None):
+    if patches_style == 'review':
+        new_version_tag = guess.version2tag(new_version, version_tag_style)
+        try:
+            remote, branch = git.remote_branch_split(patches_branch)
+            helpers.confirm("Push %s to %s/%s (with --force)?" % (
+                new_version_tag, remote, branch))
+            git('branch', '--force', local_patches_branch, new_version_tag)
+            git('push', '--force', remote,
+                '%s:%s' % (local_patches_branch, branch))
+            # push the tag
+            git('push', '--force', remote, new_version_tag)
+        except exception.UserAbort:
+            pass
     else:
-        log.warn('Review patches chain not found. No patches yet?')
+        if not (local_patches or bump_only):
+            _reset_branch(local_patches_branch, remote_branch=patches_branch)
+
+
+def get_patches_branch(branch, local_patches_branch, patches_branch,
+                       patches_style=None, gerrit_patches_chain=None,
+                       force=False):
+    if patches_style == 'review':
+        if not gerrit_patches_chain:
+            gerrit_patches_chain = guess.gerrit_patches_chain()
+        if gerrit_patches_chain:
+            rpmfactory.fetch_patches_branch(local_patches_branch,
+                                            gerrit_patches_chain,
+                                            force)
+        else:
+            log.warn("Review patches chain not found. No patches yet?")
+    else:
+        _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
 
 def checkout_patches_branch(local_patches_branch):
     git.checkout(local_patches_branch)
+
+
+def review_patches_branch(local_patches_branch, patches_style=None):
+    if patches_style != 'review':
+        return
+    try:
+        helpers.confirm("Send %s branch for review?" % local_patches_branch)
+        rpmfactory.review_patch(local_patches_branch)
+    except exception.UserAbort:
+        pass
 
 
 def rebase_patches_branch(new_version, local_patches_branch,
@@ -839,10 +863,8 @@ def rebase_patches_branch(new_version, local_patches_branch,
     git.checkout(local_patches_branch)
     new_version_tag = guess.version2tag(new_version, version_tag_style)
     git('rebase', new_version_tag, direct=True)
-    if patches_style == 'review':
-        log.warn("review patches style isn't yet fully supported"
-                 "in new-version.")
-    else:
+
+    if patches_style != 'review':
         if local_patches or not patches_branch:
             return
         if _is_same_commit(local_patches_branch, patches_branch):
