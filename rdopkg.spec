@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.35.1
+Version:          0.36
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -79,6 +79,9 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Wed Apr 20 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.36-1
+- Release 0.36
+
 * Fri Mar 04 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.35.1-1
 - Update to 0.35.1
 - repoman: fix regression on local rdoinfo repo
