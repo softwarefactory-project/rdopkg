@@ -824,9 +824,11 @@ def prep_new_patches_branch(new_version,
             _reset_branch(local_patches_branch, remote_branch=patches_branch)
 
 
-def get_patches_branch(branch, local_patches_branch, patches_branch,
+def get_patches_branch(local_patches_branch, patches_branch,
                        patches_style=None, gerrit_patches_chain=None,
-                       force=False):
+                       bump_only=False, force=False):
+    if bump_only:
+        return
     if patches_style == 'review':
         if not gerrit_patches_chain:
             gerrit_patches_chain = guess.gerrit_patches_chain()
@@ -844,8 +846,9 @@ def checkout_patches_branch(local_patches_branch):
     git.checkout(local_patches_branch)
 
 
-def review_patches_branch(local_patches_branch, patches_style=None):
-    if patches_style != 'review':
+def review_patches_branch(local_patches_branch, patches_style=None,
+                          bump_only=False):
+    if patches_style != 'review' or bump_only:
         return
     try:
         helpers.confirm("Send %s branch for review?" % local_patches_branch)
