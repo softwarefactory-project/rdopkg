@@ -825,9 +825,10 @@ def prep_new_patches_branch(new_version,
 
 
 def get_patches_branch(local_patches_branch, patches_branch,
-                       patches_style=None, gerrit_patches_chain=None,
+                       local_patches=False, patches_style=None,
+                       gerrit_patches_chain=None,
                        bump_only=False, force=False):
-    if bump_only:
+    if local_patches or bump_only:
         return
     if patches_style == 'review':
         if not gerrit_patches_chain:
