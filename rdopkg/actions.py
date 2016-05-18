@@ -78,9 +78,9 @@ ACTIONS = [
                Arg('no_diff', shortcut='-d', action='store_true',
                    help="don't show git/requirements diff"),
                Arg('new_sources', shortcut='-N', action='store_true',
-                   help="also run `fedpkg new-sources`"),
+                   help="run `fedpkg new-sources` (default: auto)"),
                Arg('no_new_sources', shortcut='-n', action='store_true',
-                   help="[LEGACY] no effect, to be removed"),
+                   help="don't run `fedpkg new-sources` (default: auto)"),
            ],
            steps=[
                Action('get_package_env'),
@@ -487,7 +487,8 @@ def conf():
 
 
 def new_version_setup(patches_branch=None, local_patches=False,
-                      new_version=None, version_tag_style=None):
+                      version=None, new_version=None, version_tag_style=None,
+                      new_sources=None, no_new_sources=None):
     args = {}
     if new_version:
         # support both version and tag
@@ -511,6 +512,11 @@ def new_version_setup(patches_branch=None, local_patches=False,
         new_version, _ = guess.tag2version(new_version_tag)
         args['new_version'] = new_version
         log.info("Latest version detected from %s: %s" % (ub, new_version))
+    if version == new_version:
+        helpers.confirm(
+            msg="It seems the package is already at version %s\n\n"
+                "Run new-version anyway?" % version,
+            default_yes=False)
     args['changes'] = ['Update to %s' % new_version]
     args['new_patches_base'] = new_version_tag
     spec = specfile.Spec()
@@ -530,6 +536,15 @@ def new_version_setup(patches_branch=None, local_patches=False,
             log.warn("Patches branch '%s' not found. Running in --bump-only "
                      "mode." % patches_branch)
             args['bump_only'] = True
+    if new_sources or no_new_sources:
+        if new_sources and no_new_sources:
+            raise exception.InvalidUsage(
+                msg="DOES NOT COMPUTE: both -n and -N don't make sense.")
+        # new_sources == not no_new_sources
+    else:
+        new_sources = guess.new_sources()
+    args['new_sources'] = new_sources
+
     return args
 
 
@@ -970,9 +985,7 @@ def update_spec(branch=None, changes=None,
     spec.save()
 
 
-def get_source(new_sources=False, no_new_sources=False):
-    if no_new_sources:
-        log.warn('-n/--no-new-sources is now default and has no effect.')
+def get_source(new_sources=False):
     if not new_sources:
         return
     source_urls = specfile.Spec().get_source_urls()
