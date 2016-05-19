@@ -3,6 +3,7 @@ import subprocess
 import exception
 import json
 import log
+import re
 
 
 class _CommandOutput(str):
@@ -246,6 +247,28 @@ class Git(ShellCommand):
         rng = self.rev_range(from_revision, to_revision)
         log_out = self('log', '--format=%h', rng, log_cmd=False)
         return self._parse_output(log_out)
+
+    def get_commit_bzs(self, from_revision, to_revision=None):
+        """
+        Return a list of tuples, one per commit. Each tuple is (sha1, subject,
+        bz_list). bz_list is a (possibly zero-length) list of numbers.
+        """
+        rng = self.rev_range(from_revision, to_revision)
+        GIT_COMMIT_FIELDS = ['id', 'subject', 'body']
+        GIT_LOG_FORMAT = ['%h', '%s', '%b']
+        GIT_LOG_FORMAT = '%x1f'.join(GIT_LOG_FORMAT) + '%x1e'
+        log_out = self('log', '--format=%s' % GIT_LOG_FORMAT, rng,
+                       log_cmd=False)
+        log = log_out.strip('\n\x1e').split("\x1e")
+        log = [row.strip().split("\x1f") for row in log]
+        log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in log]
+        BZ_REGEX = r'rhbz#(\d+)'
+        result = []
+        for commit in log:
+            bzs = re.findall(BZ_REGEX, commit['subject'])
+            bzs.extend(re.findall(BZ_REGEX, commit['body']))
+            result.append((commit['id'], commit['subject'], bzs))
+        return result
 
     def get_latest_commit_hash(self, ref=None):
         cmd = ['log', '-n', '1', '--format=%H']
