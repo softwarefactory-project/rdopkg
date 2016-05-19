@@ -455,18 +455,22 @@ def _print_patch_log(patches, tag, n_excluded):
     if n_patches <= 0:
         return
     ei = n_patches - n_excluded
-    for hsh, title in patches:
+    for hsh, title, bzs in patches:
         if ei > 0:
             chsh = log.term.green(hsh)
         else:
             chsh = log.term.red(hsh)
-        print("%s  %s" % (chsh, title))
+        bzlog = ' '.join(map(lambda x: 'rhbz#%s' % x, bzs))
+        patchlog = "%s  %s" % (chsh, title)
+        if bzlog != '':
+            patchlog += ' (%s)' % bzlog
+        print(patchlog)
         ei -= 1
 
 
 def show_patch_log(version, patches_branch, version_tag_style=None):
     tag = guess.version2tag(version, version_tag_style)
-    patches = git.get_commits(tag, patches_branch)
+    patches = git.get_commit_bzs(tag, patches_branch)
     spec = specfile.Spec()
     n_excluded = spec.get_n_excluded_patches()
     print("\nPatches branch {t.bold}{pb}{t.normal} is at version {t.bold}"
