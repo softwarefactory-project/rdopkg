@@ -920,7 +920,7 @@ def check_new_patches(version, local_patches_branch,
         head = patches_branch
 
     version_tag = guess.version2tag(version, version_tag_style)
-    patches = git.get_commits(version_tag, head)
+    patches = git.get_commit_bzs(version_tag, head)
     spec = specfile.Spec()
 
     n_git_patches = len(patches)
@@ -933,7 +933,13 @@ def check_new_patches(version, local_patches_branch,
         patches = (flatten(_partition_patches(patches, ignore_regex)))
         n_ignore_patches = n_git_patches - len(patches)
 
-    patch_subjects = [subject for hash, subject in patches]
+    patch_subjects = []
+    for hash, subject, bzs in patches:
+        subj = subject
+        bzstr = ' '.join(map(lambda x:'rhbz#%s' % x, bzs))
+        if bzstr != '':
+            subj += ' (%s)' % bzstr
+        patch_subjects.append(subj)
     n_base_patches = n_skip_patches + n_spec_patches
     log.debug("Total patches in git:%d spec:%d skip:%d ignore:%d" % (
               n_git_patches, n_spec_patches, n_skip_patches, n_ignore_patches))
