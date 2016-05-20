@@ -1007,7 +1007,7 @@ def get_source(new_sources=False):
     if not new_sources:
         return
     source_urls = specfile.Spec().get_source_urls()
-    # So far, only Source0 is a tarball to download
+    # So far, only Source/Source0 is a tarball to download
     source_url = source_urls[0]
     source_fn = os.path.basename(source_url)
     if os.path.isfile(source_fn):

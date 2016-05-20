@@ -78,7 +78,7 @@ class Spec(object):
     """
 
     RE_PATCH = r'(?:^|\n)(Patch\d+:)'
-    RE_AFTER_SOURCES = r'((?:^|\n)Source\d+:[^\n]*\n\n?)'
+    RE_AFTER_SOURCES = r'((?:^|\n)Source\d*:[^\n]*\n\n?)'
     RE_AFTER_PATCHES_BASE = (
         r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
         r'\t]*\n)*)\n*')
@@ -292,6 +292,7 @@ class Spec(object):
             r'\g<1>%s\n' % ps, self.txt, count=1)
 
         if n != 1:
+            m = None
             for m in re.finditer(self.RE_AFTER_SOURCES, self.txt):
                 pass
             if not m:
