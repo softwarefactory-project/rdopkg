@@ -131,7 +131,8 @@ If you're doing non-trivial change, I strongly suggest adding unit tests.
 
 Either way, make sure *existing unit tests pass* after your change by running
 
-    py.test
+    pip install pytest
+    ./run_tests.sh
 
 until automatic gating is done on the repo.
 
