@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.36
+Version:          0.37
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -79,6 +79,17 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{python_sitelib}/rdoupdate/bsources/*.py*
 
 %changelog
+* Mon May 23 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.37-1
+- Release 0.37
+- patchlog: print rhbz numbers
+- patch: add rhbz numbers from commits
+- patch: Improve parsing of .spec Source attribute
+- actions: Do not reset branch if local_patches is set
+- Reintroduce new-sources autodetection for RHOSP
+- check_new_patches: Do not count commits using the patches_ignore keyword
+- README: update links and more
+- HACKING.md: correct tests command
+
 * Wed Apr 20 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.36-1
 - Release 0.36
 - Support new review based workflow with rpmfactory
