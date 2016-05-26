@@ -189,10 +189,7 @@ class Git(ShellCommand):
             return None
         if not o:
             return None
-        remote, sep, _ = o.partition('/')
-        if not sep:
-            return None
-        return remote
+        return o
 
     def delete_branch(self, branch):
         if self.branch_exists(branch):
