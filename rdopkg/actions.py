@@ -246,7 +246,6 @@ ACTIONS = [
     Action('coprbuild', atomic=True, help="build package in copr-jruzicka",
            steps=[
                Action('get_package_env'),
-               Action('build_prep'),
                Action('copr_check'),
                Action('make_srpm'),
                Action('copr_upload'),
@@ -257,32 +256,13 @@ ACTIONS = [
                    help="OpenStack release (havana, icehouse, ...)"),
                Arg('dist', shortcut='-d',
                    help="target distribution (fedora-20, epel-7, ...)"),
-               Arg('update_file', shortcut='-f', metavar='UPDATE_FILE',
-                   help=("Dump build to UPDATE_FILE (default: %s)"
-                         % _update.UPFILE)),
-               Arg('no_update_file', shortcut='-F', action='store_true',
-                   help="Don't dump build to an update file."),
-               Arg('skip_build', shortcut='-s', action='store_true',
-                   help="Skip the actual build and package upload. "
-                        "Useful for generating update files."),
                Arg('fuser', shortcut='-u',
                    help="Fedora user to upload srpm as to fedorapeople.org"),
            ]),
     Action('kojibuild', atomic=True, help="build package in koji",
            steps=[
                Action('get_package_env'),
-               Action('build_prep'),
                Action('koji_build'),
-           ],
-           optional_args=[
-               Arg('update_file', shortcut='-f', metavar='UPDATE_FILE',
-                   help=("Dump build to UPDATE_FILE (default: %s)"
-                         % _update.UPFILE)),
-               Arg('no_update_file', shortcut='-F', action='store_true',
-                   help="Don't dump build to an update file."),
-               Arg('skip_build', shortcut='-s', action='store_true',
-                   help="Skip the actual build. "
-                        "Useful for generating update files."),
            ]),
     Action('mockbuild', atomic=True, help="Run fedpkg/rhpkg mockbuild",
            steps=[
@@ -1394,14 +1374,6 @@ def upush_cleanup(update_repo_path, dest_base, temp_path, debug=False):
     pusher.clean_env()
 
 
-def build_prep(update_file=None, no_update_file=False):
-    if update_file and no_update_file:
-        raise exception.InvalidUsage(
-            why="Using both -f and -F doesn't make sense.")
-    if not update_file and not no_update_file:
-        return {'update_file': _update.UPFILE}
-
-
 def make_srpm(package, dist=None, fedpkg=FEDPKG):
     cmd = list(fedpkg)
     if dist:
@@ -1489,25 +1461,12 @@ def copr_build(srpm_url, release, dist, package, version,
         _update.dump_build(build, update_file)
 
 
-def koji_build(update_file=None, skip_build=False):
-    if skip_build:
-        log.info("\nSkipping koji build due to -s/--skip-build")
-        fcmd = kojibuild.get_fedpkg_commands()
-        build_id = fcmd.nvr
-    else:
-        if git.branch_needs_push():
-            helpers.confirm("It seems local distgit branch needs push. Push "
-                            "now?")
+def koji_build():
+    if git.branch_needs_push():
+        helpers.confirm("It seems local distgit branch needs push. Push "
+                        "now?")
         git('push')
-        build_id = kojibuild.new_build()
-    build = kojibuild.guess_build(build_id)
-    if not build:
-        raise exception.CantGuess(
-            what="build arguments",
-            why="Unknown branch? Check `rdopkg pkgenv` and `rdopkg info`")
-    _show_update_entry(build)
-    if update_file:
-        _update.dump_build(build, update_file)
+    kojibuild.new_build()
 
 
 def info(
