@@ -9,6 +9,7 @@ from action import Action, Arg
 from conf import cfg, cfg_files
 import exception
 import guess
+from rdopkg.actionmods import cbsbuild
 from rdopkg.actionmods import copr as _copr
 from rdopkg.actionmods import doctor as _doctor
 from rdopkg.actionmods import kojibuild
@@ -263,6 +264,15 @@ ACTIONS = [
            steps=[
                Action('get_package_env'),
                Action('koji_build'),
+           ]),
+    Action('cbsbuild', atomic=True, help="build package in CBS",
+           steps=[
+               Action('get_package_env'),
+               Action('cbs_build'),
+           ],
+           optional_args=[
+               Arg('scratch', action='store_true',
+                   help='Perform a scratch build'),
            ]),
     Action('mockbuild', atomic=True, help="Run fedpkg/rhpkg mockbuild",
            steps=[
@@ -1467,6 +1477,14 @@ def koji_build():
                         "now?")
         git('push')
     kojibuild.new_build()
+
+
+def cbs_build(scratch=False):
+    if git.branch_needs_push() and not scratch:
+        helpers.confirm("It seems local distgit branch needs push. Push "
+                        "now?")
+        git('push')
+    cbsbuild.new_build(profile='cbs', scratch=scratch)
 
 
 def info(
