@@ -1,3 +1,4 @@
+
 import os
 import re
 
@@ -103,7 +104,8 @@ def patches_branch(distgit, pkg=None, osdist='RDO'):
     else:
         remotes.append('redhat-openstack')
     # support patches branch in the same remote
-    remote = git.remote_of_local_branch(distgit)
+    remote_branch = git.remote_of_local_branch(distgit) or ''
+    remote = remote_branch.partition('/')[0]
     if remote:
         remotes.append(remote)
 
