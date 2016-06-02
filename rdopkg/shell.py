@@ -3,9 +3,6 @@
 import sys
 import argparse
 
-import rdoupdate
-import rdoupdate.exception
-
 from . import VERSION
 import core
 import exception
@@ -43,7 +40,7 @@ def get_parser(runner):
     subparsers = parser.add_subparsers(help='available actions')
     parser.add_argument('-c', '--continue', action='store_true',
                         help='continue running current action')
-    verinfo = "%s (rdoupdate %s)" % (VERSION, rdoupdate.VERSION)
+    verinfo = "%s" % VERSION
     parser.add_argument('--version', action='version', version=verinfo)
     for action in runner.action_manager.actions:
         cmd = action2cmd(action.name)
@@ -118,8 +115,6 @@ def main(cargs=None):
             exception.UserAbort,
             exception.UpdateCheckFailed,
             exception.UnverifiedPatch,
-            rdoupdate.exception.InvalidUpdateStructure,
-            rdoupdate.exception.BuildNotAvailable,
             KeyboardInterrupt,
     ) as ex:
         print("")

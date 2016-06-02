@@ -9,8 +9,6 @@ import sys
 import time
 import os
 
-import rdoupdate.core
-
 from rdopkg import exception
 from rdopkg.utils.log import log
 from rdopkg import guess
@@ -118,16 +116,3 @@ def new_build(watch=True):
             log.warn("Failed to get build status: %s" % ex)
 
     return fcmd.nvr
-
-
-def guess_build(build_id):
-    release = guess.osrelease()
-    builds = guess.builds(release)
-    for name, bs in builds:
-        if bs.startswith('koji'):
-            build = rdoupdate.core.Build(id=build_id,
-                                         repo=release,
-                                         dist=name,
-                                         source='koji')
-            return build
-    return None

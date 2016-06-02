@@ -4,8 +4,6 @@ hacking rdopkg
 Hello, dear stranger who wishes to make rdopkg better. This file aims to get
 you started hacking quickly.
 
-Note that certain changes related to update files must be done in rdoupdate
-library. 
 
 git repo
 --------
@@ -22,14 +20,7 @@ requirements
 Check out `requirements.txt` or `Requires:` in .spec file to see which python
 modules you need.
 
-One of them is `rdoupdate` module used for parsing update files:
-
-    git clone http://github.com/yac/rdoupdate.git
-    cd rdoupdate
-    python setup.py develop --user
-
-For development, I suggest installing both rdopkg and required rdoupdate like
-this:
+For development, I suggest installing rdopkg like this:
     
     python setup.py develop --user
 
@@ -39,7 +30,6 @@ file layout
 
 Top level stuff you should know about:
 
-    ├── bsources/     <- internal build sources for rdoupdate (brew, copr-jruzicka)
     ├── doc/          <- man pages/docs in asciidoc
     ├── rdopkg/       <- actual python sources
     ├── rdopkg.spec   <- .spec file to build RPM - don't touch unless asked to
@@ -59,9 +49,6 @@ interesting files:
     │   ├── __init__.py        functionality needed in rdopkg actions;
     │   ├── copr.py            feel free to add your own
     │   ├── nightly.py
-    │   ├── pushupdate.py
-    │   ├── reviews.py
-    │   └── update.py
     ├── actions.py          <- this is basically an imperative config file that
     ├── conf.py                defines actions' interface and logic - please
     ├── const.py               don't put complex code here!

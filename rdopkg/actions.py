@@ -3,8 +3,6 @@ import os
 import re
 import yaml
 
-import rdoupdate.core
-
 from action import Action, Arg
 from conf import cfg, cfg_files
 import exception
@@ -12,13 +10,10 @@ import guess
 from rdopkg.actionmods import copr as _copr
 from rdopkg.actionmods import doctor as _doctor
 from rdopkg.actionmods import kojibuild
-from rdopkg.actionmods import pushupdate
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import rdoinfo
 from rdopkg.actionmods import rpmfactory
 from rdopkg.actionmods import reqs as _reqs
-from rdopkg.actionmods import reviews
-from rdopkg.actionmods import update as _update
 from utils import log
 from utils.cmd import run, git
 from utils import specfile
@@ -188,30 +183,6 @@ ACTIONS = [
                Arg('verbose', shortcut='-v', action='store_true',
                    help="print status during queries"),
            ]),
-    Action('update', atomic=True, help="submit RDO update",
-           optional_args=[
-               Arg('update_file', positional=True, nargs='?',
-                   metavar='UPDATE_FILE',
-                   help="UPDATE_FILE to submit (default: %s)" %
-                        _update.UPFILE),
-               Arg('update_repo', shortcut='-u',
-                   help="remote rdo-update repo to submit to"),
-               Arg('no_check_available', shortcut='-a', action='store_true',
-                   help="don't check build availability")
-           ]),
-    Action('list_updates', atomic=True, help="list pending RDO updates",
-           optional_args=[
-               Arg('update_repo', shortcut='-u',
-                   help="remote rdo-update repo to check updates from"),
-               Arg('local_update_repo', shortcut='-l',
-                   help="local rdo-update repo to check updates from"),
-               Arg('include_reviews', shortcut='-r', action='store_true',
-                   help="include updates under review (slow)"),
-               Arg('reviews_only', shortcut='-R', action='store_true',
-                   help="only list updates under review (slow)"),
-               Arg('verbose', shortcut='-v', action='store_true',
-                   help="print status messages"),
-           ]),
     Action('update_patches', atomic=True,
            help="update patches from -patches branch",
            steps=[
@@ -274,32 +245,6 @@ ACTIONS = [
     Action('squash', atomic=True,
            help="squash HEAD into HEAD~ using HEAD~ commit message"),
     Action('get_source', atomic=True, help="fetch source archive"),
-    Action('push_updates',
-           help="(special) push package updates to repos",
-           required_args=[
-               Arg('update_repo_path', help="path to rdo-update repo"),
-               Arg('dest_base', help="destination repo path base"),
-           ],
-           optional_args=[
-               Arg('files', shortcut='-f', nargs='+', metavar='FILE',
-                   help=("only push selected update file(s)"
-                         " (relative to update-repo-path)"),
-                   ),
-               Arg('overwrite', shortcut='-w', action='store_true',
-                   help="overwrite existing packages"),
-               Arg('debug', action='store_true',
-                   help=('debug mode: break into shell on individual update '
-                         'error')),
-           ],
-           steps=[
-               Action('upush_setup_env'),
-               Action('upush_download_packages'),
-               Action('upush_sanity_check'),
-               Action('upush_sign'),
-               Action('upush_push'),
-               Action('upush_summary'),
-               Action('upush_cleanup'),
-           ]),
     Action('pkgenv', atomic=True, help="show detected package environment",
            steps=[
                Action('get_package_env'),
@@ -1197,181 +1142,9 @@ def edit_spec():
         msg="Edit .spec file as needed and describe changes in changelog.")
 
 
-def update(update_file=None, update_repo=None, no_check_available=False):
-    check_avail = not no_check_available
-    if not update_repo:
-        update_repo = cfg['RDO_UPDATE_REPO']
-    repo = _update.UpdateRepo(cfg['HOME_DIR'], update_repo)
-
-    if update_file:
-        if not os.path.isfile(update_file):
-            raise exception.UpdateFileNotFound(path=update_file)
-    else:
-        update_file = _update.UPFILE
-        if not os.path.isfile(update_file):
-            raise exception.UpdateFileNotFound(
-                msg="Default update file not found: %s\n\n"
-                    "Use `kojibuild` and `coprbuild` actions to create it."
-                    % update_file)
-    repo.init()
-    repo.submit_existing_update(update_file, check_availability=check_avail)
-    if update_file == _update.UPFILE:
-        log.info("Removing default update file after successful update: %s"
-                 % _update.UPFILE)
-        os.remove(update_file)
-
-
-def list_updates(update_repo=None, local_update_repo=None,
-                 include_reviews=False, reviews_only=False, verbose=False):
-    if reviews_only and (include_reviews or update_repo or local_update_repo):
-        raise exception.ConfigError(
-            what="-R/--reviews-only is exclusive with other options.")
-    if update_repo and local_update_repo:
-        raise exception.ConfigError(
-            what="-u/--update-repo and -l/--local-update-repo are exclusive.")
-
-    if local_update_repo:
-        base_dir, repo_name = os.path.split(local_update_repo)
-    if not local_update_repo and not update_repo:
-        update_repo = cfg['RDO_UPDATE_REPO']
-    list_merged = True
-    list_reviews = False
-    if include_reviews:
-        list_reviews = True
-    if reviews_only:
-        list_merged = False
-        list_reviews = True
-
-    if list_reviews:
-        uinfos = reviews.get_updates_info(verbose=verbose)
-        uinfos_dict = {'__reviews__': uinfos}
-        _update.pretty_print_uinfos_dict(uinfos_dict)
-
-    if list_merged:
-        if local_update_repo:
-            repo = _update.UpdateRepo(local_repo_path=local_update_repo,
-                                      verbose=verbose)
-        else:
-            repo = _update.UpdateRepo(base_path=cfg['HOME_DIR'],
-                                      url=update_repo, verbose=verbose)
-        repo.init(force_fetch=True)
-        repo.pretty_print_updates()
-
-
 def fedpkg_mockbuild(fedpkg=FEDPKG):
     cmd = list(fedpkg) + ['mockbuild']
     run(*cmd, direct=True)
-
-
-def _upush_check_updates(update_files, update_fails):
-    if not update_files:
-        raise exception.ActionGoto(goto=['upush_summary'])
-
-
-def upush_setup_env(update_repo_path, dest_base, files=None, debug=False):
-    if not os.path.isdir(update_repo_path):
-        raise exception.NotADirectory(path=update_repo_path)
-    pusher = pushupdate.UpdatePusher(update_repo_path, dest_base, debug=debug)
-    if not os.path.isdir(pusher.ready_path()):
-        raise exception.NotADirectory(path=pusher.ready_path())
-    if files:
-        pusher.update_files = files
-        pusher.ready_dir = ''
-    else:
-        if not pusher.get_update_files():
-            raise exception.ActionFinished(msg="No pending updates.")
-    log.info("Initializing update push environment...")
-    pusher.init_env()
-    return {'update_files': pusher.update_files,
-            'update_fails': pusher.fails,
-            'temp_path': pusher.temp_path,
-            'ready_dir': pusher.ready_dir}
-
-
-def upush_download_packages(update_repo_path, dest_base, update_files,
-                            update_fails, temp_path, debug=False):
-    _upush_check_updates(update_files, update_fails)
-    pusher = pushupdate.UpdatePusher(update_repo_path,
-                                     dest_base,
-                                     update_files=update_files,
-                                     fails=update_fails,
-                                     temp_path=temp_path,
-                                     debug=debug)
-    log.info("Downloading packages to push...")
-    pusher.download_packages()
-    return {'update_files': pusher.update_files,
-            'update_fails': pusher.fails}
-
-
-def upush_sanity_check(update_repo_path, dest_base, update_files, update_fails,
-                       temp_path, overwrite=False, debug=False):
-    _upush_check_updates(update_files, update_fails)
-    pusher = pushupdate.UpdatePusher(update_repo_path,
-                                     dest_base,
-                                     update_files=update_files,
-                                     fails=update_fails,
-                                     temp_path=temp_path,
-                                     overwrite=overwrite,
-                                     debug=debug)
-    pusher.check_collision()
-    return {'update_files': pusher.update_files,
-            'update_fails': pusher.fails}
-
-
-def upush_sign(update_repo_path, dest_base, update_files, update_fails,
-               temp_path, debug=False):
-    _upush_check_updates(update_files, update_fails)
-    pusher = pushupdate.UpdatePusher(update_repo_path,
-                                     dest_base,
-                                     update_files=update_files,
-                                     fails=update_fails,
-                                     temp_path=temp_path,
-                                     debug=debug)
-    pusher.sign_packages()
-    return {'update_files': pusher.update_files,
-            'update_fails': pusher.fails}
-
-
-def upush_push(update_repo_path, dest_base, update_files, update_fails,
-               temp_path, overwrite=False, debug=False):
-    _upush_check_updates(update_files, update_fails)
-    pusher = pushupdate.UpdatePusher(update_repo_path,
-                                     dest_base,
-                                     update_files=update_files,
-                                     fails=update_fails,
-                                     temp_path=temp_path,
-                                     overwrite=overwrite,
-                                     debug=debug)
-    need_sync = pusher.push_packages()
-    return {'update_files': pusher.update_files,
-            'update_fails': pusher.fails,
-            'need_sync': need_sync}
-
-
-def upush_summary(update_repo_path, dest_base, update_files, update_fails,
-                  temp_path, need_sync=None, debug=False):
-    pusher = pushupdate.UpdatePusher(update_repo_path,
-                                     dest_base,
-                                     update_files=update_files,
-                                     fails=update_fails,
-                                     temp_path=temp_path,
-                                     debug=debug)
-    pusher.print_summary()
-    if need_sync:
-        log.success("Updated trees (might need sync):")
-        helpers.print_list(map(os.path.basename, need_sync), nl_after=True)
-        log.info(log.term.warn(
-            "Don't forget to push changes to update repo:"))
-        log.info(update_repo_path)
-        log.info('')
-
-
-def upush_cleanup(update_repo_path, dest_base, temp_path, debug=False):
-    log.info("Cleaning up update push environment: %s" % temp_path)
-    pusher = pushupdate.UpdatePusher(update_repo_path, dest_base,
-                                     temp_path=temp_path,
-                                     debug=True)
-    pusher.clean_env()
 
 
 def make_srpm(package, dist=None, fedpkg=FEDPKG):
@@ -1426,14 +1199,8 @@ def copr_upload(srpm, fuser=None, skip_build=False):
     return {'srpm_url': url}
 
 
-def _show_update_entry(build):
-    log.info("")
-    fmt = "{t.bold}Entry for{t.normal} {t.cmd}rdopkg update{t.normal}:\n\n{s}"
-    log.info(fmt.format(t=log.term, s=build.as_yaml_item()))
-
-
 def copr_build(srpm_url, release, dist, package, version,
-               update_file=None, copr_owner='jruzicka', skip_build=False):
+               copr_owner='jruzicka', skip_build=False):
     if skip_build:
         log.info("\nSkipping copr build due to -s/--skip-build")
     else:
@@ -1452,13 +1219,6 @@ def copr_build(srpm_url, release, dist, package, version,
                      web=web_url,
                      t=log.term))
         copr.new_build(srpm_url, release, dist, watch=True)
-    build = rdoupdate.core.Build(id=_copr.copr_fetcher_id(srpm_url),
-                                 repo=release,
-                                 dist=dist,
-                                 source='copr-jruzicka')
-    _show_update_entry(build)
-    if update_file:
-        _update.dump_build(build, update_file)
 
 
 def koji_build():
