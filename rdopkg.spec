@@ -1,6 +1,6 @@
 Name:             rdopkg
 Version:          0.37
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          RPM packaging automation tool
 
 Group:            Development/Languages
@@ -14,8 +14,6 @@ BuildRequires:    python-setuptools
 BuildRequires:    python2-devel
 BuildRequires:    PyYAML
 
-Requires:         rdopkg-bsources >= %{version}
-Requires:         python-rdoupdate >= 0.14
 Requires:         python-paramiko
 Requires:         python-pymod2pkg >= 0.2.1
 Requires:         python-requests
@@ -37,16 +35,6 @@ functionality can be used for any RPM package following conventions
 described in the rdopkg manual.
 
 
-%package bsources
-Summary:         Additional RDO build sources for rdoupdate
-
-Requires:        python-rdoupdate >= 0.14
-Requires:        python-beautifulsoup4
-
-%description bsources
-This package contains additional rdoupdate build sources used for updating RDO.
-
-
 %prep
 %setup -q
 
@@ -61,10 +49,6 @@ install -d -m 755 %{buildroot}%{_mandir}/man{1,7}
 install -p -m 644 doc/man/*.1 %{buildroot}%{_mandir}/man1/
 install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 
-# additional build sources for rdoupdate
-mkdir -p %{buildroot}%{python_sitelib}/rdoupdate/bsources
-cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
-
 %files
 %doc README.md
 %doc doc/*.txt doc/html
@@ -75,10 +59,10 @@ cp bsources/*.py %{buildroot}%{python_sitelib}/rdoupdate/bsources/
 %{_mandir}/man1
 %{_mandir}/man7
 
-%files bsources
-%{python_sitelib}/rdoupdate/bsources/*.py*
-
 %changelog
+* Thu Jun 02 2016 Haikel Guemar <hguemar@fedoraproject.org> 0.37-2
+- Drop deprecated rdoupdate code
+
 * Mon May 23 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.37-1
 - Release 0.37
 - patchlog: print rhbz numbers
