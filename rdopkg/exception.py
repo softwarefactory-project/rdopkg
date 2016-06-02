@@ -70,14 +70,6 @@ class FileNotFound(RdopkgException):
     msg_fmt = "File not found: %(path)s"
 
 
-class UpdateFileNotFound(FileNotFound):
-    msg_fmt = "Update file not found: %(path)s"
-
-
-class UpdateCheckFailed(RdopkgException):
-    msg_fmt = "Update check failed: %(fail)s"
-
-
 class OnlyPatchesIgnoreUsed(RdopkgException):
     msg_fmt = ("update-patches attempted with only #patches_ignore magic "
                "comment in the spec file. Currently it is not safe to run "
