@@ -165,6 +165,23 @@ operation, much like `rpmdev-bumpspec`:
     rdopkg -c
     
 
+ACTION: clone
+~~~~~~~~~~~~~
+
+Clone an RDO package distgit and setup remotes.
+
+`clone` uses <<rdoinfo,rdoinfo>> metadata to clone the specified RDO package
+distgit and also setup relevant remotes to get you packaging quickly.
+
+If your github username differs from your `$USER`, use `-u`/`--review-user`.
+
+*Example:*
+
+    rdopkg clone -u github-user python-novaclient
+    cd python-novaclient
+    git remote -v
+
+
 ACTION: update-patches
 ~~~~~~~~~~~~~~~~~~~~~~
 
