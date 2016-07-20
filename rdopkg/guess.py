@@ -108,22 +108,10 @@ def patches_branch(distgit, pkg=None, osdist='RDO'):
     if remote:
         remotes.append(remote)
 
-    special_name = None
-    # special case for RDO client stable branches
-    if osdist == 'RDO' and pkg and pkg.endswith('client'):
-        release = osrelease(distgit, default=None)
-        if release:
-            special_name = 'stable/%s' % release
-
     for remote in remotes:
-        if special_name:
-            pb = '%s/%s' % (remote, special_name)
-            if git.ref_exists('refs/remotes/%s' % pb):
-                return pb
-        else:
-            pb = find_patches_branch(distgit, remote)
-            if pb:
-                return pb
+        pb = find_patches_branch(distgit, remote)
+        if pb:
+            return pb
 
     return '%s/%s-patches' % (remotes[0], distgit)
 
