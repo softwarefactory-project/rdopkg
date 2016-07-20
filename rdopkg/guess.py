@@ -355,7 +355,7 @@ def gerrit_patches_chain(project=None, verbose=True):
                     break
     # last chance, with the commit message
     if not candidate:
-        query = "project:%s" % project
+        query = "project:%s status:open" % project
         if subject:
             query += " message:%s" % subject
         query += " limit:1"
