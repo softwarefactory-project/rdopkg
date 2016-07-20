@@ -1,6 +1,6 @@
 Name:             rdopkg
-Version:          0.37
-Release:          2%{?dist}
+Version:          0.38
+Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
 Group:            Development/Languages
@@ -60,6 +60,9 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Wed Jul 20 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.38-1
+- Update to 0.38
+
 * Thu Jun 02 2016 Haikel Guemar <hguemar@fedoraproject.org> 0.37-2
 - Drop deprecated rdoupdate code
 
