@@ -22,7 +22,7 @@ setuptools.setup(
     author='Jakub Ruzicka',
     author_email='jruzicka@redhat.com',
     url='https://github.com/redhat-openstack/rdopkg',
-    packages=['rdopkg', 'rdopkg.utils', 'rdopkg.actionmods', 'rdopkg.gerrit'],
+    packages=['rdopkg', 'rdopkg.utils', 'rdopkg.actionmods'],
     install_requires=requires(),
     entry_points={
         "console_scripts": ["rdopkg = rdopkg.shell:main"]

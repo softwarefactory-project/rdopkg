@@ -54,11 +54,6 @@ interesting files:
     ├── const.py               don't put complex code here!
     ├── core.py
     ├── exception.py        <- nova-style exceptions, add as needed
-    ├── gerrit
-    │   ├── __init__.py
-    │   ├── filters.py
-    │   ├── reviews.py
-    │   └── ssh.py
     ├── guess.py            <- some hardcore automagic guessing happens here
     ├── helpers.py
     ├── shell.py            <- CLI related logic here
