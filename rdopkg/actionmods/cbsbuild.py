@@ -6,12 +6,20 @@ from distutils.spawn import find_executable
 import os
 import subprocess
 
-import koji
 import rpm
 
 from rdopkg.utils.specfile import spec_fn, Spec
 from rdopkg.utils.log import log
 from rdopkg import guess
+
+
+KOJI_AVAILABLE = False
+try:
+    import koji
+    KOJI_AVAILABLE = True
+except ImportError:
+    pass
+
 
 options = None
 
@@ -27,6 +35,8 @@ class KojiOpts(object):
 def new_build(profile='cbs', scratch=True):
     # Very ugly: some utilities are only available in koji CLI
     # and not in the koji module
+    if not KOJI_AVAILABLE:
+        raise exception.ModuleNotAvailable(module='koji')
     import imp
     kojibin = find_executable('koji')
     kojicli = imp.load_source('kojicli', kojibin)
