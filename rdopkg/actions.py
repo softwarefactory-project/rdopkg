@@ -361,8 +361,10 @@ def show_package_env(package, version,
         gerrit_review_url = rpmfactory.review_url(gerrit_patches_chain) or \
             'unknown'
 
+    nvr = specfile.Spec().get_nvr()
     print
     _putv('Package:  ', package)
+    _putv('NVR:      ', nvr)
     _putv('Version:  ', version)
     _putv('Upstream: ', upstream_version)
     _putv('Tag style:', version_tag_style or 'X.Y.Z')

@@ -346,20 +346,24 @@ class Spec(object):
         release = ".".join(numlist)
         return self.set_release(release, milestone=milestone, postfix=postfix)
 
-    def new_changelog_entry(self, user, email, changes=[]):
-        changes_str = "\n".join(map(lambda x: "- %s" % x, changes)) + "\n"
-        date = time.strftime('%a %b %d %Y')
+    def get_nvr(self):
         version = self.get_tag('Version', expand_macros=True)
         try:
             epoch = self.get_tag('Epoch')
             version = '%s:%s' % (epoch, version)
         except exception.SpecFileParseError:
             pass
-        release = self.get_tag('Release', expand_macros=True)
-        # Assume release ends with %{?dist}
-        release, _, _ = release.rpartition('.')
+        release = self.get_tag('Release')
+        release = re.sub(r'%\{?\??dist\}?$', '', release)
+        release = self.expand_macro(release)
+        return '%s-%s' % (version, release)
+
+    def new_changelog_entry(self, user, email, changes=[]):
+        changes_str = "\n".join(map(lambda x: "- %s" % x, changes)) + "\n"
+        date = time.strftime('%a %b %d %Y')
         # TODO: detect if there is '-' in changelog entries and use it if so
-        head = "* %s %s <%s> %s-%s" % (date, user, email, version, release)
+        nvr = self.get_nvr()
+        head = "* %s %s <%s> %s" % (date, user, email, nvr)
         entry = "%s\n%s\n" % (head, changes_str)
         self._txt = re.sub(r'(%changelog\n)', r'\g<1>%s' % entry, self.txt)
 
