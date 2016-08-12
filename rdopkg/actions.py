@@ -462,11 +462,13 @@ def new_version_setup(patches_branch=None, local_patches=False,
     args['new_patches_base'] = new_version_tag
     spec = specfile.Spec()
     rpm_version = spec.get_tag('Version')
+    rpm_milestone = spec.get_milestone()
     new_rpm_version, new_milestone = specfile.version_parts(new_version)
     args['new_rpm_version'] = new_rpm_version
     if new_milestone:
         args['new_milestone'] = new_milestone
-    if rpm_version != new_rpm_version:
+    if (rpm_version != new_rpm_version or
+            bool(new_milestone) != bool(rpm_milestone)):
         if new_milestone:
             args['new_release'] = '0.1'
         else:
@@ -894,6 +896,7 @@ def check_new_patches(version, local_patches_branch,
 def get_upstream_patches(version, local_patches_branch,
                          patches_branch=None, upstream_branch=None,
                          new_milestone=None):
+    # TODO: nuke this, looks unused
     patches = git("log", "--cherry-pick", "--pretty=format:\%s",
                   "%(remote)s...%(local)s" % {'remote': patches_branch,
                                               'local': local_patches_branch})

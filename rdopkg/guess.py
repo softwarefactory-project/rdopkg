@@ -29,6 +29,9 @@ def current_version(default=exception.CantGuess):
             version, _ = tag2version(version)
         else:
             version = spec.get_tag('Version', expand_macros=True)
+            milestone = spec.get_milestone()
+            if milestone:
+                version += milestone
         if not version:
             raise exception.CantGuess(msg="got empty .spec Version")
     except Exception as ex:

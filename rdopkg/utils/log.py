@@ -3,6 +3,7 @@ import logging
 import terminal
 
 
+WARN = logging.WARN
 INFO = logging.INFO
 # between info and debug
 VERBOSE = (logging.INFO + logging.DEBUG) / 2
