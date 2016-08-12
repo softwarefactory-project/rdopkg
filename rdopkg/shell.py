@@ -59,7 +59,7 @@ def get_parser(runner):
     return parser
 
 
-def main(cargs=None):
+def main(*cargs):
     if not cargs:
         cargs = sys.argv[1:]
 

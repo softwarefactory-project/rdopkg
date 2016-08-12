@@ -3,9 +3,12 @@ import py
 import shutil
 
 from rdopkg.utils.cmd import git
+from rdopkg.utils.specfile import Spec
+from rdopkg.utils import log
 
 
 ASSETS_DIR = 'tests/assets'
+DIST_POSTFIX = '%{?dist}'
 
 
 def ffind(path='.', include_dirs=True):
@@ -66,7 +69,7 @@ def _do_patch(fn, content, msg):
     git('commit', '-m', msg)
 
 
-def add_patches(extra=False, filtered=False):
+def add_patches(extra=False, filtered=False, tag=None):
     git('checkout', 'master-patches')
     if extra:
         _do_patch('foofile', "#meh\n", 'Look, excluded patch')
@@ -78,6 +81,8 @@ def add_patches(extra=False, filtered=False):
     _do_patch('foofile', "#lol, another change\n", 'Epic bugfix of doom MK2')
     if filtered:
         _do_patch('foofile', "#oooops\n", 'DROP-IN-RPM: even moar ci fix')
+    if tag:
+        git('tag', tag)
     git('checkout', 'master')
 
 
@@ -89,3 +94,14 @@ def assert_distgit(dg_path, img_dg):
     current_txt = dg_path.join('foo.spec').read()
     exp_txt = open(os.path.join(img_path, 'foo.spec')).read()
     assert current_txt == exp_txt
+
+
+def assert_spec_version(version, release_parts, milestone):
+    spec = Spec()
+    spec_version = spec.get_tag('Version')
+    spec_release_parts = spec.get_release_parts()
+    spec_milestone = spec.get_milestone()
+
+    assert spec_version == version
+    assert spec_release_parts == release_parts
+    assert spec_milestone == milestone

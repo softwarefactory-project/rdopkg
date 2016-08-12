@@ -11,14 +11,16 @@ def _assert_vparts(version, numeric, rest):
 
 
 def test_version_parts():
-    _assert_vparts('', '', None)
-    _assert_vparts('1', '1', None)
-    _assert_vparts('1.2.3', '1.2.3', None)
-    _assert_vparts('a', 'a', None)
-    _assert_vparts('a.b', 'a.b', None)
-    _assert_vparts('1.b42', '1', 'b42')
-    _assert_vparts('1.0.b4.2', '1.0', 'b4.2')
-    _assert_vparts('1.2.3.a.b-c.d', '1.2.3', 'a.b-c.d')
+    _assert_vparts('', '', '')
+    _assert_vparts('1', '1', '')
+    _assert_vparts('1.2.3', '1.2.3', '')
+    _assert_vparts('1.2.3.0b1', '1.2.3', '.0b1')
+    _assert_vparts('10.10.10.0rc2', '10.10.10', '.0rc2')
+    _assert_vparts('a', 'a', '')
+    _assert_vparts('a.b', 'a.b', '')
+    _assert_vparts('1.b42', '1', '.b42')
+    _assert_vparts('1.0.b4.2', '1.0', '.b4.2')
+    _assert_vparts('1.2.3.a.b-c.d', '1.2.3', '.a.b-c.d')
 
 
 def _assert_rparts(release, nums, milestone, macros):
@@ -29,13 +31,21 @@ def _assert_rparts(release, nums, milestone, macros):
 def test_release_parts():
     _assert_rparts('1', '1', '', '')
     _assert_rparts('0.1.2', '0.1.2', '', '')
-    _assert_rparts('1.b1', '1.', 'b1', '')
-    _assert_rparts('0.1.rc2', '0.1.', 'rc2', '')
+    _assert_rparts('1.b1', '1', '.b1', '')
+    _assert_rparts('0.1.rc2', '0.1', '.rc2', '')
     _assert_rparts('0.1%{?dist}', '0.1', '', '%{?dist}')
-    _assert_rparts('0.1.b1%{?dist}', '0.1.', 'b1', '%{?dist}')
-    _assert_rparts('0.1.b1.%{?dist}', '0.1.', 'b1.', '%{?dist}')
+    _assert_rparts('0.1.b1%{?dist}', '0.1', '.b1', '%{?dist}')
+    _assert_rparts('0.1.b1.%{?dist}', '0.1', '.b1', '.%{?dist}')
     _assert_rparts('0.1%{m1}%{m2}', '0.1', '', '%{m1}%{m2}')
-    _assert_rparts('0.1.%{m1}%{m2}', '0.1.', '', '%{m1}%{m2}')
+    _assert_rparts('0.1.%m1%m2', '0.1', '', '.%m1%m2')
+    _assert_rparts('0.1.0rc1%{m}', '0.1', '.0rc1', '%{m}')
+    _assert_rparts('0.1.0.0b2%m', '0.1.0', '.0b2', '%m')
+    _assert_rparts('0.1.0.000a000', '0.1.0', '.000a000', '')
+    _assert_rparts('10.10.10.%{?milestone}', '10.10.10', '.%{?milestone}', '')
+    _assert_rparts('10.10.10.%{?milestone}%{foo}',
+                   '10.10.10', '.%{?milestone}', '%{foo}')
+    _assert_rparts('0.0.0%{?milestone}.%bar',
+                   '0.0.0', '%{?milestone}', '.%bar')
     _assert_rparts('%{ver}', '', '', '%{ver}')
 
 

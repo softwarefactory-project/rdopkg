@@ -1,6 +1,7 @@
 import codecs
 from collections import defaultdict
 import os
+import parsley
 import re
 import time
 
@@ -27,15 +28,37 @@ def spec_fn(spec_dir='.'):
 
 def version_parts(version):
     """
-    Split a version into numeric and non-numeric (milestone) parts if possible.
+    Split a version string into numeric X.Y.Z part and the rest (milestone).
     """
-    m = re.match('(\d[\d.]*)(?:\.(.+))?$', version)
-    if m:
-        return m.groups()
-    return version, None
+    g = parsley.makeGrammar("""
+        num = <digit+>
+        numver = <num ('.' num ~letter)*>
+        milestone = <'.' anything+>
+        ver = numver:v milestone?:m -> v or '', m or ''
+        """, {})
+    try:
+        return g(version).ver()
+    except parsley.ParseError:
+        return version, ''
 
 
-def release_parts(release):
+def release_parts(version):
+    """
+    Split RPM Release string into (numeric X.Y.Z part, milestone, rest).
+    """
+    g = parsley.makeGrammar("""
+        num = <digit+>
+        numver = <num ('.' num ~letter)*>
+        mstr = '%{?milestone}'
+        mils = <(anything:x ?(x not in '%.'))+>
+        milestone = <'.'? (mstr | mils)>
+        rest = <anything+>
+        rls = numver?:v milestone?:m rest?:r-> v or '', m or '', r or ''
+        """, {})
+    return g(version).rls()
+
+
+def _release_parts(release):
     """
     Split a release string into numeric, milestone and macro parts.
     """
@@ -82,6 +105,7 @@ class Spec(object):
     RE_AFTER_PATCHES_BASE = (
         r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
         r'\t]*\n)*)\n*')
+    RE_MACRO_BASE = r'%global\s+{0}\s+'
 
     def __init__(self, fn=None, txt=None):
         self._fn = fn
@@ -118,9 +142,12 @@ class Spec(object):
         rs = self.rpmspec
         return rpm.expandMacro(macro)
 
-    def get_tag(self, tag, expand_macros=False):
+    def get_tag(self, tag, default=exception.SpecFileParseError,
+                expand_macros=False):
         m = re.search('^%s:\s+(\S.*)$' % tag, self.txt, re.M)
         if not m:
+            if default != exception.SpecFileParseError:
+                return default
             raise exception.SpecFileParseError(spec_fn=self.fn,
                                                error="%s tag not found" % tag)
         tag = m.group(1).rstrip()
@@ -326,18 +353,53 @@ class Spec(object):
             return True
         return False
 
+    def set_macro(self, macro, value):
+        rex = self.RE_MACRO_BASE.format(re.escape(macro))
+        if value:
+            # replace
+            self._txt, n = re.subn(r'^(%s).*$' % rex, '\g<1>%s' % value,
+                                   self.txt, flags=re.M)
+            if n < 1:
+                # create new
+                self._txt = '%global {0} {1}\n{2}'.format(
+                    macro, value, self.txt)
+        else:
+            # remove
+            self._txt = re.sub(r'(^|\n)%s[^\n]+\n?' % rex, '\g<1>', self.txt)
+
+    def get_macro(self, macro, expanded=False):
+        if expanded:
+            # XXX: rpm module remembers old values even after .spec change
+            # and new Spec() instance (that's why this isn't default)
+            return self.expand_macro('%{?' + macro + '}')
+        else:
+            rex = self.RE_MACRO_BASE.format(re.escape(macro))
+            m = re.search('^%s(.*)$' % rex, self.txt, flags=re.M)
+            if m:
+                v = m.group(1).strip(' \t"')
+                return v
+            return None
+
+    def set_milestone(self, new_milestone):
+        self.set_macro('milestone', new_milestone)
+
+    def get_milestone(self):
+        return self.get_macro('milestone')
+
     def set_release(self, new_release, milestone=None, postfix=None):
-        recognized_format = True
         release = new_release
         if milestone:
-            release += '.%s' % milestone
+            release += '%{?milestone}'
+        self.set_milestone(milestone)
         if postfix is None:
             _, _, postfix = self.get_release_parts()
         release += postfix
         return self.set_tag('Release', release)
 
     def bump_release(self, milestone=None):
-        numbers, milestone, postfix = self.get_release_parts()
+        numbers, _milestone, postfix = self.get_release_parts()
+        if not milestone:
+            milestone = _milestone
         numlist = numbers.split('.')
         i = -1
         if numbers[-1] == '.':
