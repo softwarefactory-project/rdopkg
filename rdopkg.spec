@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.38
+Version:          0.39
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -61,6 +61,12 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Wed Aug 24 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.39-1
+- Update to 0.39
+- new-version: support X.Y.Z.0MILESTONE releases
+- pkgenv: show NVR detected from .spec
+- cbsbuild: make koji module optional
+
 * Wed Jul 20 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.38-1
 - Update to 0.38
 
