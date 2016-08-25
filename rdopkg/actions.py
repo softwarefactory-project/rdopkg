@@ -273,7 +273,19 @@ ACTIONS = [
                Arg('apply_tag', shortcut='-t',
                    help="apply overrides for selected tag"),
                Arg('force_fetch', shortcut='-f', action='store_true',
-                   help="force fetch of info repo"),
+                   help="force fetch of rdoinfo repo"),
+               Arg('local_info', shortcut='-l',
+                   help="use local rdoinfo repo found in specified path"),
+           ]),
+    Action('findpkg', atomic=True,
+           help="find and show single best matching package in rdoinfo",
+           optional_args=[
+               Arg('query', positional=True, metavar='PACKAGE/PROJECT/URL',
+                   help="project name, package name or upstream URL"),
+               Arg('strict', shortcut='-s', action='store_true',
+                   help="only match whole pkg/proj/URL, no substring magics"),
+               Arg('force_fetch', shortcut='-f', action='store_true',
+                   help="force fetch of rdoinfo repo"),
                Arg('local_info', shortcut='-l',
                    help="use local rdoinfo repo found in specified path"),
            ]),
@@ -1252,12 +1264,7 @@ def cbs_build(scratch=False):
     cbsbuild.new_build(profile='cbs', scratch=scratch)
 
 
-def info(
-        pkgs=None,
-        local_info=None,
-        apply_tag=None,
-        force_fetch=False,
-        verbose=False):
+def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False):
     if local_info:
         inforepo = rdoinfo.RdoinfoRepo(
             local_repo_path=local_info,
@@ -1283,6 +1290,19 @@ def info(
               "    rdopkg info conf:client maintainers:jruzicka\n"
               "    rdopkg info '.*'"
               "{t.normal}".format(t=log.term))
+
+
+def findpkg(query, strict=False, local_info=None, force_fetch=False):
+    if local_info:
+        inforepo = rdoinfo.RdoinfoRepo(local_repo_path=local_info)
+    else:
+        inforepo = rdoinfo.get_default_inforepo()
+    inforepo.init(force_fetch=force_fetch)
+    pkg = inforepo.find_package(query, strict=strict)
+    if not pkg:
+        raise exception.InvalidRDOPackage(
+            msg="No package found in rdoinfo for query: %s" % query)
+    rdoinfo.print_pkg(pkg)
 
 
 def query(filter, package, verbose=False):

@@ -72,9 +72,35 @@ class RdoinfoRepo(repoman.RepoManager):
         return None
 
     def get_package(self, name):
-        pkgs = self.info['packages']
-        for pkg in pkgs:
+        for pkg in self.info['packages']:
             if pkg['name'] == name:
+                return pkg
+        return None
+
+    def find_package(self, p, strict=False):
+        # 1. strict package name matching
+        pkg = self.get_package(p)
+        if pkg:
+            return pkg
+        # 2. strict project/upstream matching
+        pl = p.lower()
+        for pkg in self.info['packages']:
+            if 'project' in pkg and pkg['project'].lower() == pl:
+                return pkg
+            # NOTE: might want to strip protocol such 'git://' or 'https://'
+            #       and only compare the rest
+            if 'upstream' in pkg and pkg['upstream'] == p:
+                return pkg
+        if strict:
+            return None
+        # 3. best effort match
+        _, is_url, q = pl.rpartition('/')
+        if q.endswith('.git'):
+            q, _, _ = q.rpartition('.')
+        for pkg in self.info['packages']:
+            if q in pkg['name'].lower():
+                return pkg
+            if is_url and 'project' in pkg and pkg['project'].lower() in q:
                 return pkg
         return None
 
