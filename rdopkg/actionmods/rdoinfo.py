@@ -65,6 +65,16 @@ def tags_diff(info1, info2):
     return diff
 
 
+def strip_project_url(url):
+    """strip proto:// prefix and .git suffix"""
+    m = re.match(r'(?:[^:]+://)?(.*)', url)
+    if m:
+        url = m.group(1)
+    if url.endswith('.git'):
+        url, _, _ = url.rpartition('.')
+    return url
+
+
 class RdoinfoRepo(repoman.RepoManager):
     repo_desc = 'info'
 
@@ -106,9 +116,36 @@ class RdoinfoRepo(repoman.RepoManager):
         return None
 
     def get_package(self, name):
-        pkgs = self.info['packages']
-        for pkg in pkgs:
+        for pkg in self.info['packages']:
             if pkg['name'] == name:
+                return pkg
+        return None
+
+    def find_package(self, p, strict=False):
+        # 1. strict package name matching (openstack-nova)
+        pkg = self.get_package(p)
+        if pkg:
+            return pkg
+        # 2. strict project/upstream matching (nova, git://../openstack/nova)
+        ps = strip_project_url(p)
+        for pkg in self.info['packages']:
+            if 'project' in pkg and pkg['project'].lower() == ps:
+                return pkg
+            if 'upstream' in pkg:
+                upstream = pkg['upstream']
+                if strip_project_url(upstream) == ps:
+                    return pkg
+        if strict:
+            return None
+        # 3. best effort (openstack/nova, novacli, ...)
+        is_url = re.search(r'\W', ps)
+        psl = ps.lower()
+        if is_url:
+            for pkg in self.info['packages']:
+                if 'project' in pkg and pkg['project'].lower() in psl:
+                    return pkg
+        for pkg in self.info['packages']:
+            if psl in pkg['name'].lower():
                 return pkg
         return None
 
