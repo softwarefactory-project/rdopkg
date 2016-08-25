@@ -1,6 +1,7 @@
 import sys
 
 from rdopkg.actionmods import rdoinfo
+from rdopkg import exception
 from rdopkg.utils import log
 
 
@@ -47,3 +48,16 @@ def info_tags_diff(local_info=None, apply_tag=None):
     else:
         for pkg, changes in tdiff:
             print("%s %s" % (pkg, changes))
+
+
+def findpkg(query, strict=False, local_info=None, force_fetch=False):
+    if local_info:
+        inforepo = rdoinfo.RdoinfoRepo(local_repo_path=local_info)
+    else:
+        inforepo = rdoinfo.get_default_inforepo()
+    inforepo.init(force_fetch=force_fetch)
+    pkg = inforepo.find_package(query, strict=strict)
+    if not pkg:
+        raise exception.InvalidRDOPackage(
+            msg="No package found in rdoinfo for query: %s" % query)
+    rdoinfo.print_pkg(pkg)

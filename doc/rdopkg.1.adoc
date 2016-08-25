@@ -455,6 +455,31 @@ Example:
 This is an interface to rdopkg.actionmods.rdoinfo:tags_diff().
 
 
+ACTION: findpkg
+~~~~~~~~~~~~~~~
+
+Find and show single best matching package in <<rdoinfo,rdoinfo>>.
+
+This command produces same output as `rdopkg info` but
+
+ * smart search is performed on package name, project name and upstream URL
+ * only a single matching package is shown
+
+Use `-s`/`--strict` to disable magic substring search and only match whole
+fields.
+
+This command is a human interface to
+`rdopkg.actionmods.rdoinfo.find_package()` helper function.
+
+*Examples of usage:*
+
+    rdopkg findpkg nova
+    rdopkg findpkg -s openstack-nova
+    rdopkg findpkg git://git.openstack.org/openstack/nova
+    rdopkg findpkg openstack/nova
+    rdopkg findpkg novacli
+
+
 ACTION: conf
 ~~~~~~~~~~~~
 
