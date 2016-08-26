@@ -291,6 +291,10 @@ class Git(ShellCommand):
         authors = reversed(authors.split('\n'))
         return authors
 
+    def get_file_content(self, rev, path):
+        obj = '%s:%s' % (rev, path)
+        return self('show', obj, log_cmd=False)
+
     def config_get(self, param):
         return self("config", "--get", param)
 
