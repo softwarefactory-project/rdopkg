@@ -1,6 +1,7 @@
 import itertools
 import os
 import re
+import sys
 import yaml
 
 from action import Action, Arg
@@ -276,6 +277,12 @@ ACTIONS = [
                    help="force fetch of info repo"),
                Arg('local_info', shortcut='-l',
                    help="use local rdoinfo repo found in specified path"),
+           ]),
+    Action('info_diff_tags', atomic=True,
+           help="find which tags have changed between HEAD~..HEAD in rdoinfo",
+           optional_args=[
+               Arg('local_info', positional=True, metavar='RDOINFODIR',
+                   help="use local rdoinfo repo found in RDOINFODIR"),
            ]),
     Action('autocomplete', atomic=True,
            help="get TAB completion for rdopkg!"),
@@ -1283,6 +1290,23 @@ def info(
               "    rdopkg info conf:client maintainers:jruzicka\n"
               "    rdopkg info '.*'"
               "{t.normal}".format(t=log.term))
+
+
+def info_diff_tags(local_info=None, apply_tag=None):
+    if local_info:
+        inforepo = rdoinfo.RdoinfoRepo(
+            local_repo_path=local_info,
+            apply_tag=apply_tag)
+    else:
+        inforepo = rdoinfo.get_default_inforepo(apply_tag=apply_tag)
+    info1 = inforepo.get_info(gitrev='HEAD~')
+    info2 = inforepo.get_info()
+    tdiff = rdoinfo.tags_diff(info1, info2)
+    if not tdiff:
+        sys.stderr.write("No tag changes detected.\n")
+    else:
+        for pkg, changes in tdiff:
+            print("%s %s" % (pkg, changes))
 
 
 def query(filter, package, verbose=False):
