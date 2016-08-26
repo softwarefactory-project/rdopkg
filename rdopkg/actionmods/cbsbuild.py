@@ -6,8 +6,6 @@ from distutils.spawn import find_executable
 import os
 import subprocess
 
-import rpm
-
 from rdopkg.utils.specfile import spec_fn, Spec
 from rdopkg.utils.log import log
 from rdopkg import guess
@@ -17,6 +15,12 @@ KOJI_AVAILABLE = False
 try:
     import koji
     KOJI_AVAILABLE = True
+except ImportError:
+    pass
+RPM_AVAILABLE = False
+try:
+    import rpm
+    RPM_AVAILABLE = True
 except ImportError:
     pass
 
@@ -37,6 +41,8 @@ def new_build(profile='cbs', scratch=True):
     # and not in the koji module
     if not KOJI_AVAILABLE:
         raise exception.ModuleNotAvailable(module='koji')
+    if not RPM_AVAILABLE:
+        raise exception.ModuleNotAvailable(module='rpm')
     import imp
     kojibin = find_executable('koji')
     kojicli = imp.load_source('kojicli', kojibin)
@@ -101,6 +107,8 @@ def create_srpm(dist='el7'):
 
     dist: set package dist tag (default: el7)
     """
+    if not RPM_AVAILABLE:
+        raise exception.ModuleNotAvailable(module='rpm')
     path = os.getcwd()
     try:
         specfile = spec_fn()
