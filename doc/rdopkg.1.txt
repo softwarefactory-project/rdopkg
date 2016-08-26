@@ -431,6 +431,28 @@ This command is a human interface to <<rdoinfo,rdoinfo>>.
     rdopkg info maintainers:jruzicka
 
 
+ACTION: info-tags-diff
+~~~~~~~~~~~~~~~~~~~~~~
+
+Show rdoinfo tag changes.
+
+    rdopkg info-tags-diff RDOINFODIR
+
+will show per-package new/changed tags in rdoinfo between `HEAD~..HEAD`.
+
+For an existing package, a list of changed tags is returned
+
+For a new package, full tags dict is returned.
+
+Example:
+
+    $ rdopkg info-tags-diff ~/.rdopkg/rdoinfo
+    openstack-changed ['newton-uc', 'newton']
+    openstack-new-pkg {'under-review': None}
+
+This is an interface to rdopkg.actionmods.rdoinfo:tags_diff().
+
+
 ACTION: conf
 ~~~~~~~~~~~~
 
