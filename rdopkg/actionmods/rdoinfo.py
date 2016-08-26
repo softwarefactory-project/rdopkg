@@ -1,11 +1,13 @@
 import collections
 import imp
 import re
+import yaml
 
 from rdopkg import exception
 from rdopkg import helpers
 from rdopkg import repoman
 from rdopkg.utils import log
+from rdopkg.utils.cmd import git
 from rdopkg.conf import cfg
 
 
@@ -36,6 +38,29 @@ def filter_pkgs(pkgs, rexen):
     return filter(_filter, pkgs)
 
 
+def tags_diff(info1, info2):
+    changedpkgs = []
+    for package in info2["packages"]:
+        if package not in info1["packages"]:
+            changedpkgs.append(package)
+    diff = []
+    for package in changedpkgs:
+        foundpkg = False
+        for pkg in info1["packages"]:
+            if pkg['name'] == package['name']:
+                foundpkg = True
+                break
+        if foundpkg:
+            updated_branches = []
+            for tag in package['tags']:
+                if package['tags'][tag] != pkg['tags'][tag]:
+                    updated_branches.append(tag)
+            diff.append((package['name'], updated_branches))
+        else:
+            diff.append((package['name'], package['tags']))
+    return diff
+
+
 class RdoinfoRepo(repoman.RepoManager):
     repo_desc = 'info'
 
@@ -52,11 +77,16 @@ class RdoinfoRepo(repoman.RepoManager):
         file, path, desc = imp.find_module('rdoinfo', [self.repo_path])
         self.rdoinfo = imp.load_module('rdoinfo', file, path, desc)
 
-    def get_info(self):
+    def get_info(self, gitrev=None):
         self.ensure_rdoinfo()
         with self.repo_dir():
-            info = self.rdoinfo.parse_info_file(
-                self.info_file, apply_tag=self.apply_tag)
+            if gitrev:
+                infofile = git.get_file_content(gitrev, self.info_file)
+                info = yaml.load(infofile)
+                self.rdoinfo.parse_info(info, apply_tag=self.apply_tag)
+            else:
+                info = self.rdoinfo.parse_info_file(
+                    self.info_file, apply_tag=self.apply_tag)
         return info
 
     @property
