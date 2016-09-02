@@ -470,9 +470,9 @@ def new_version_setup(patches_branch=None, local_patches=False,
     if (rpm_version != new_rpm_version or
             bool(new_milestone) != bool(rpm_milestone)):
         if new_milestone:
-            args['new_release'] = '0.1'
+            args['new_release'] = '0.1%{?dist}'
         else:
-            args['new_release'] = '1'
+            args['new_release'] = '1%{?dist}'
     if not local_patches:
         if not patches_branch or \
            not git.ref_exists('refs/remotes/' + patches_branch):
