@@ -394,6 +394,9 @@ class Spec(object):
         if postfix is None:
             _, _, postfix = self.get_release_parts()
         release += postfix
+        if not release.endswith('%{?dist}'):
+            release += '%{?dist}'
+
         return self.set_tag('Release', release)
 
     def bump_release(self, milestone=None):
