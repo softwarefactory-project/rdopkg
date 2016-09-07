@@ -255,7 +255,9 @@ class Git(ShellCommand):
         GIT_LOG_FORMAT = ['%h', '%s', '%b']
         GIT_LOG_FORMAT = '%x1f'.join(GIT_LOG_FORMAT) + '%x1e'
         log_out = self('log', '--format=%s' % GIT_LOG_FORMAT, rng,
-                       log_cmd=False)
+                       log_cmd=False, fatal=False)
+        if not log_out:
+            return []
         log = log_out.strip('\n\x1e').split("\x1e")
         log = [row.strip().split("\x1f") for row in log]
         log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in log]
