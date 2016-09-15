@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.39
+Version:          0.40
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -61,6 +61,14 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Thu Sep 15 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.40-1
+- Update to 0.40
+- info-tags-diff: new utility action to show rdoinfo tag changes
+- patch: fix traceback with no new patches
+- pkgenv: fix traceback on unknown gerrit chain
+- Fix new-version release tag management
+- cbsbuild: make rpm module optional
+
 * Wed Aug 24 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.39-1
 - Update to 0.39
 - new-version: support X.Y.Z.0MILESTONE releases
