@@ -77,6 +77,8 @@ ACTIONS = [
                    help="run `fedpkg new-sources` (default: auto)"),
                Arg('no_new_sources', shortcut='-n', action='store_true',
                    help="don't run `fedpkg new-sources` (default: auto)"),
+               Arg('unattended', shortcut='-u', action='store_true',
+                   help="Allow unattended runs (NOT RECOMMENDED)"),
            ],
            steps=[
                Action('get_package_env'),
@@ -763,13 +765,17 @@ def fetch_all():
 def prep_new_patches_branch(new_version,
                             local_patches_branch, patches_branch,
                             local_patches=False, bump_only=False,
-                            patches_style=None, version_tag_style=None):
+                            patches_style=None, version_tag_style=None,
+                            unattended=False):
     if patches_style == 'review':
         new_version_tag = guess.version2tag(new_version, version_tag_style)
         try:
             remote, branch = git.remote_branch_split(patches_branch)
-            helpers.confirm("Push %s to %s/%s (with --force)?" % (
-                new_version_tag, remote, branch))
+            if not unattended:
+                helpers.confirm("Push %s to %s/%s (with --force)?" % (
+                    new_version_tag, remote, branch))
+            else:
+                log.warn('Unattended installation: force pushing patches')
             git('branch', '--force', local_patches_branch, new_version_tag)
             git('push', '--force', remote,
                 '%s:%s' % (local_patches_branch, branch))
