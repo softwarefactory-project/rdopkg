@@ -163,7 +163,7 @@ def conf():
 
 def new_version_setup(patches_branch=None, local_patches=False,
                       version=None, new_version=None, version_tag_style=None,
-                      new_sources=None, no_new_sources=None):
+                      new_sources=None, no_new_sources=None, unattended=False):
     args = {}
     if new_version:
         # support both version and tag
@@ -188,6 +188,9 @@ def new_version_setup(patches_branch=None, local_patches=False,
         args['new_version'] = new_version
         log.info("Latest version detected from %s: %s" % (ub, new_version))
     if version == new_version:
+        if unattended:
+            log.info("Package is already at version %s\n" % version)
+            raise exception.UserAbort()
         helpers.confirm(
             msg="It seems the package is already at version %s\n\n"
                 "Run new-version anyway?" % version,
@@ -319,8 +322,8 @@ def clone(
 
 
 def diff(version, new_version, bump_only=False, no_diff=False,
-         version_tag_style=None):
-    if bump_only or no_diff:
+         version_tag_style=None, unattended=False):
+    if bump_only or no_diff or unattended:
         return
     vtag_from = guess.version2tag(version, version_tag_style)
     vtag_to = guess.version2tag(new_version, version_tag_style)
@@ -395,13 +398,19 @@ def fetch_all():
 def prep_new_patches_branch(new_version,
                             local_patches_branch, patches_branch,
                             local_patches=False, bump_only=False,
-                            patches_style=None, version_tag_style=None):
+                            patches_style=None, version_tag_style=None,
+                            unattended=False, no_push_patches=False):
     if patches_style == 'review':
+        if no_push_patches:
+            return
         new_version_tag = guess.version2tag(new_version, version_tag_style)
         try:
             remote, branch = git.remote_branch_split(patches_branch)
-            helpers.confirm("Push %s to %s/%s (with --force)?" % (
-                new_version_tag, remote, branch))
+            if unattended:
+                log.warn('Unattended mode: force pushing patches')
+            else:
+                helpers.confirm("Push %s to %s/%s (with --force)?" % (
+                    new_version_tag, remote, branch))
             git('branch', '--force', local_patches_branch, new_version_tag)
             git('push', '--force', remote,
                 '%s:%s' % (local_patches_branch, branch))
@@ -438,11 +447,15 @@ def checkout_patches_branch(local_patches_branch):
 
 
 def review_patches_branch(local_patches_branch, patches_style=None,
-                          bump_only=False):
+                          bump_only=False, unattended=False):
     if patches_style != 'review' or bump_only:
         return
     try:
-        helpers.confirm("Send %s branch for review?" % local_patches_branch)
+        if unattended:
+            log.warn("Unattended mode: sending %s branch for review")
+        else:
+            helpers.confirm("Send %s branch for review?" %
+                            local_patches_branch)
         rpmfactory.review_patch(local_patches_branch)
     except exception.UserAbort:
         pass
