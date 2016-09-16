@@ -103,6 +103,10 @@ ACTIONS = [
                Arg('no_new_sources', shortcut='-n', action='store_true',
                    help=("don't run `fedpkg new-sources`"
                          " (default: depends on branch name)")),
+               Arg('unattended', shortcut='-U', action='store_true',
+                   help="don't ask any questions (NOT RECOMMENDED)"),
+               Arg('no_push_patches', shortcut='-t', action='store_true',
+                   help="don't push patches branch"),
            ],
            steps=[
                Action('get_package_env'),
