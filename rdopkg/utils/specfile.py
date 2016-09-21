@@ -139,7 +139,6 @@ class Spec(object):
         return self._rpmspec
 
     def expand_macro(self, macro):
-        rs = self.rpmspec
         return rpm.expandMacro(macro)
 
     def get_tag(self, tag, default=exception.SpecFileParseError,
@@ -355,6 +354,7 @@ class Spec(object):
 
     def set_macro(self, macro, value):
         rex = self.RE_MACRO_BASE.format(re.escape(macro))
+        rpm.delMacro(macro)
         if value:
             # replace
             self._txt, n = re.subn(r'^(%s).*$' % rex, '\g<1>%s' % value,
@@ -363,6 +363,7 @@ class Spec(object):
                 # create new
                 self._txt = '%global {0} {1}\n{2}'.format(
                     macro, value, self.txt)
+            rpm.addMacro(macro, value)
         else:
             # remove
             self._txt = re.sub(r'(^|\n)%s[^\n]+\n?' % rex, '\g<1>', self.txt)
