@@ -466,6 +466,28 @@ Store your per-user configuration in `~/.rdopkg/conf.d/*.py`, or store
 system-wide configuration in `/etc/rdopkg.d/*.py`.
 
 
+ACTION: tag-patches
+~~~~~~~~~~~~~~~~~~~
+
+Tag the local -patches branch with the package's Name-Version-Release.
+
+Since the -patches branch can change over time, including rebases, rewrites,
+etc, we need a mechanism to keep historical records of what the -patches branch
+looked like over time. Tagging the -patches branch for each new NVR will
+maintain Git references to each snapshot of the particular patches that went
+into each build.
+
+To look at the -patches branch for an old build, you can simply "git checkout
+name-version-release" for that build and get an exact representation of the Git
+tree for that build.
+
+If a previous tag exists with this name, rdopkg will exit with an error unless
+you use the `--force` option to overwrite the existing tag with this name.
+
+You can automatically push the new tag with the `--push` option. It's a good
+idea to create and push the tag after every successful build.
+
+
 AUTOMAGIC
 ---------
 

@@ -287,7 +287,20 @@ ACTIONS = [
     Action('autocomplete', atomic=True,
            help="get TAB completion for rdopkg!"),
     Action('doctor', atomic=True,
-           help="activate rdopkg psychoanalyst mode")
+           help="activate rdopkg psychoanalyst mode"),
+    Action('tag_patches',
+           help='tag the -patches branch in Git with the current NVR',
+           optional_args=[
+               Arg('force', shortcut='-f', action='store_true',
+                   help='replace an existing tag with this name'),
+               Arg('push', shortcut='-p', action='store_true',
+                   help='push this new tag to the patches remote'),
+           ],
+           steps=[
+               Action('get_package_env'),
+               Action('ensure_patches_branch'),
+               Action('tag_patches_branch'),
+           ]),
 ]
 
 
@@ -1342,3 +1355,19 @@ def autocomplete():
 
 def doctor():
     _doctor.can_haz_doctor()
+
+
+def tag_patches_branch(package, local_patches_branch, patches_branch,
+                       force=False, push=False):
+    """ Tag the local_patches_branch with this package's NVR. """
+    nvr = specfile.Spec().get_nvr()
+    nvr_tag = package + '-' + nvr
+    tag_cmd = ['tag', nvr_tag, local_patches_branch]
+    if force:
+        tag_cmd.append('-f')
+    git(*tag_cmd)
+    patches_remote = patches_branch.partition('/')[0]
+    if push:
+        git('push', patches_remote, nvr_tag)
+    else:
+        print('Not pushing tag. Run "git push %s patches" by hand.' % nvr_tag)
