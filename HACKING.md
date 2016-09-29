@@ -122,7 +122,7 @@ until automatic gating is done on the repo.
 update them man pages
 ---------------------
 
-`grep doc/*.ronn` for keywords relevant to your change and update them if
+`grep doc/*.adoc` for keywords relevant to your change and update them if
 needed. Documenting new functionality sounds like a good idea, too.
 
 Captain Obvious out.
