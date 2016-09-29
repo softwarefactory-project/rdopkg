@@ -1,6 +1,6 @@
-SRCS := $(wildcard *.txt)
-HTML := $(SRCS:%.txt=html/%.html)
-MANS := $(SRCS:%.txt=man/%)
+SRCS := $(wildcard *.adoc)
+HTML := $(SRCS:%.adoc=html/%.html)
+MANS := $(SRCS:%.adoc=man/%)
 ASCIIDOC := $(shell which asciidoctor asciidoc | head -1)
 
 all: doc
@@ -18,10 +18,10 @@ html_dir:
 man_dir:
 	mkdir -p man
 
-html/%.html: %.txt | html_dir
+html/%.html: %.adoc | html_dir
 	$(ASCIIDOC) -b html5 -a stylesheet=rdo.css -o $@ $<
 
-man/%: %.txt | man_dir
+man/%: %.adoc | man_dir
 	a2x --doctype manpage --format manpage -D man $<
 
 clean:

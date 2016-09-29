@@ -73,7 +73,7 @@ a module.
 Exhaustive `rdopkg` manual is available, you can:
 
  * not read it online ATM as we're migrating... [sorry about that](https://github.com/openstack-packages/rdopkg/issues/65)
- * read its nice source: [doc/rdopkg.1.txt](doc/rdopkg.1.txt)
+ * read its nice source: [doc/rdopkg.1.adoc](doc/rdopkg.1.adoc)
  * run `man rdopkg` if you installed from RPM
 
 You might also be interested in

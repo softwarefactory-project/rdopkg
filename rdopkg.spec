@@ -52,7 +52,7 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 
 %files
 %doc README.md
-%doc doc/*.txt doc/html
+%doc doc/*.adoc doc/html
 %license LICENSE
 %{_bindir}/rdopkg
 %{python_sitelib}/rdopkg
