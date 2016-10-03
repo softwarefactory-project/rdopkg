@@ -72,7 +72,7 @@ def run(action_runner, cargs, version=None):
         elif '--abort' in cargs:
             action_runner.clear_state(verbose=True)
             return 1
-        elif '--continue' in cargs or cargs == ['-c']:
+        elif '--continue' in cargs or cargs == ('-c',):
             # state already loaded
             pass
         else:
