@@ -19,7 +19,7 @@ class ActionInProgress(RdopkgException):
 
 
 class ActionFunctionNotAvailable(RdopkgException):
-    msg_fmt = "Action function not available: %(action)s"
+    msg_fmt = "Action function not available: %(module)s:%(action)s"
 
 
 class RequiredActionArgumentNotAvailable(RdopkgException):

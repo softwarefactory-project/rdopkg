@@ -1,7 +1,7 @@
 import shutil
 import pytest
 
-from rdopkg import actions
+from rdopkg.actions.distgit.actions import update_patches
 from rdopkg.utils.cmd import git, run
 from rdopkg.utils import specfile
 import rdopkg.utils.exception
@@ -16,18 +16,18 @@ def test_update_empty(tmpdir):
         common.prep_patches_branch()
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
     assert spec_after == spec_before
     assert commit_before == commit_after, "Commit created for no-op"
     with dist_path.as_cwd():
         common.add_patches()
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched')
@@ -41,15 +41,15 @@ def test_update_noop(tmpdir):
         common.prep_patches_branch()
         spec_before = spec_path.read()
         common.add_patches()
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         assert spec_after == spec_before
         commit_before = git('rev-parse', 'HEAD')
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         commit_after = git('rev-parse', 'HEAD')
     assert commit_before == commit_after, "Commit created for no-op"
 
@@ -62,9 +62,9 @@ def test_update_full(tmpdir):
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched-ex')
@@ -79,9 +79,9 @@ def test_update_weird(tmpdir):
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched-weird')
@@ -96,9 +96,9 @@ def test_update_dense(tmpdir):
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched-dense')
@@ -113,9 +113,9 @@ def test_update_dense_ex(tmpdir):
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched-dense-ex')
@@ -130,9 +130,9 @@ def test_update_comments(tmpdir):
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched-comments')
@@ -147,9 +147,9 @@ def test_update_git_am(tmpdir):
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
         apply_method = specfile.Spec().patches_apply_method()
@@ -167,9 +167,9 @@ def test_update_git_am_buildarch_fail(tmpdir):
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
         with pytest.raises(rdopkg.utils.exception.BuildArchSanityCheckFailed):
-            actions.update_patches('master',
-                                   local_patches_branch='master-patches',
-                                   version='1.2.3')
+            update_patches('master',
+                           local_patches_branch='master-patches',
+                           version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
         apply_method = specfile.Spec().patches_apply_method()
@@ -185,9 +185,9 @@ def test_update_autosetup(tmpdir):
         spec_before = spec_path.read()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         spec_after = spec_path.read()
         commit_after = git('rev-parse', 'HEAD')
         apply_method = specfile.Spec().patches_apply_method()
@@ -220,9 +220,9 @@ def test_filter_out(tmpdir):
         common.prep_patches_branch()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True, filtered=True)
-        actions.update_patches('master',
-                               local_patches_branch='master-patches',
-                               version='1.2.3')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched-filter')
     assert commit_before != commit_after, "New commit not created"

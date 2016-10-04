@@ -25,6 +25,6 @@ setuptools.setup(
     packages=['rdopkg', 'rdopkg.utils', 'rdopkg.actionmods'],
     install_requires=requires(),
     entry_points={
-        "console_scripts": ["rdopkg = rdopkg.shell:main"]
+        "console_scripts": ["rdopkg = rdopkg.cli:main"]
     }
 )
