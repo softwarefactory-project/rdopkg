@@ -35,13 +35,13 @@ def get_action_args(action, args):
     return aargs
 
 
-def get_parser(runner):
+def get_parser(runner, version=None):
     parser = argparse.ArgumentParser(prog='rdopkg')
     subparsers = parser.add_subparsers(help='available actions')
     parser.add_argument('-c', '--continue', action='store_true',
                         help='continue running current action')
-    verinfo = "%s" % VERSION
-    parser.add_argument('--version', action='version', version=verinfo)
+    if version:
+        parser.add_argument('--version', action='version', version=version)
     for action in runner.action_manager.actions:
         cmd = action2cmd(action.name)
         action_parser = subparsers.add_parser(cmd, help=action.help,
@@ -59,14 +59,10 @@ def get_parser(runner):
     return parser
 
 
-def main(*cargs):
-    if not cargs:
-        cargs = sys.argv[1:]
+def run(action_runner, cargs, version=None):
+    action_runner.load_state_safe()
 
-    runner = core.ActionRunner()
-    runner.load_state_safe()
-
-    parser = get_parser(runner)
+    parser = get_parser(action_runner, version=version)
     if ARGCOMPLETE_AVAILABLE:
         argcomplete.autocomplete(parser)
 
@@ -77,7 +73,7 @@ def main(*cargs):
             return
         # argparse still can't do this with subparsers (reported 2009)
         elif '--abort' in cargs:
-            runner.clear_state(verbose=True)
+            action_runner.clear_state(verbose=True)
             return 1
         elif '--continue' in cargs or cargs == ['-c']:
             # state already loaded
@@ -86,9 +82,9 @@ def main(*cargs):
             args = parser.parse_args(cargs)
             action = args.action
             action_args = get_action_args(action, args)
-            runner.new_action(action, action_args)
+            action_runner.new_action(action, action_args)
 
-        runner.engage()
+        action_runner.engage()
         code = 0
     except (
             exception.ActionInProgress,
@@ -125,12 +121,11 @@ def main(*cargs):
         pass
     except exception.InternalAction as ex:
         if ex.kwargs['action'] == 'status':
-            runner.load_state_safe()
-            runner.status()
+            action_runner.load_state_safe()
+            action_runner.status()
             return 0
+        elif ex.kwargs['action'] == 'actions':
+            fails = action_runner.check_actions()
+            return min(1, len(fails))
         raise
     return code
-
-if __name__ == '__main__':
-    code = main()
-    sys.exit(code)

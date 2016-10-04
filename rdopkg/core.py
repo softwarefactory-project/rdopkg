@@ -153,6 +153,27 @@ class ActionRunner(object):
         else:
             print(log.term.bold("No action in progress."))
 
+    def check_actions(self):
+        fails = []
+
+        def _check_action(a, indent=''):
+            s = "%s%s: %s" % (indent, a.module, a.name)
+            if a.steps:
+                print(s)
+                for s in a.steps:
+                    _check_action(s, indent + '  ')
+            else:
+                action_fun = self.action_manager._get_action_fun(a)
+                if not action_fun:
+                    s += ' {t.red_bold}NOT AVAILABLE{t.normal}'.format(
+                        t=log.term)
+                    fails.append(a)
+                print(s)
+
+        for a in self.action_manager.actions:
+            _check_action(a)
+        return fails
+
     def engage(self):
         if not self.action:
             raise exception.NoActionInProgress

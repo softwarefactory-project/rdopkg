@@ -1,4 +1,4 @@
-from rdopkg.shell import main
+from rdopkg.cli import rdopkg
 from rdopkg.utils.cmd import git
 from rdopkg.utils import log
 
@@ -17,7 +17,7 @@ def _test_new_version(asset, dir, steps):
                 in steps:
             commit_before = git('rev-parse', 'HEAD')
             common.add_patches(tag=new_version)
-            main('new-version', '-l', '-d', new_version)
+            rdopkg('new-version', '-l', '-d', new_version)
 
             # after
             commit_after = git('rev-parse', 'HEAD')
