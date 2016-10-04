@@ -1,11 +1,11 @@
 import inspect
+import pkgutil
 
 import exception
 from utils import log
 
 
 class Arg(object):
-
     def __init__(self, name, **kwargs):
         self.name = name
         self.shortcut = kwargs.pop('shortcut', None)
@@ -21,10 +21,9 @@ class Arg(object):
 
 
 class Action(object):
-
-    def __init__(self, name, steps=None, atomic=False, action_fun=None,
-                 required_args=None, optional_args=None, const_args=None,
-                 help=None):
+    def __init__(self, name, steps=None, atomic=False, module=None,
+                 action_fun=None, required_args=None, optional_args=None,
+                 const_args=None, help=None):
         if not const_args:
             const_args = []
         if not required_args:
@@ -32,6 +31,7 @@ class Action(object):
         if not optional_args:
             optional_args = []
         self.name = name
+        self.module = module
         self.steps = steps
         self.atomic = atomic
         self.action_fun = action_fun
@@ -42,31 +42,77 @@ class Action(object):
 
 
 class ActionModule(object):
-
     def __init__(self, module, name=None):
         if not name:
             name = module.__name__
         self.name = name
         self.module = module
         self.actions = module.ACTIONS
+        self._actionsmod = None
+
+    @property
+    def actionsmod(self):
+        if not self._actionsmod:
+            astr = self.module.__name__ + '.actions'
+            apath = astr.split('.')
+            topmod = __import__(astr, globals(), locals(), [], -1)
+            mod = topmod
+            for submod in apath[1:]:
+                mod = getattr(mod, submod)
+            self._actionsmod = mod
+        return self._actionsmod
 
 
 class ActionManager(object):
-    """
-    This class manages all actions available.
-
-    Action namespaces might be added, but I'm not convinced it'd be worth it,
-    so there is no such thing now.
-    """
-
+    """This class manages action modules and contained actions."""
     def __init__(self):
         self.actions = []
         self.modules = []
 
+    def _actions_dict(self):
+        adict = {}
+        for action in self.actions:
+            adict[action.name] = action.module
+        return adict
+
     def add_actions_module(self, module, name=None):
-        # TODO: once this is used, check for duplicate actions and other errors
+        def _assign_module(action):
+            if not action.module:
+                action.module=name
+            if action.steps:
+                for step in action.steps:
+                    _assign_module(step)
+
+        if not name:
+            _, _, name = module.__name__.rpartition('.')
+        adict = self._actions_dict()
+        if not hasattr(module, 'ACTIONS'):
+            raise exception.InvalidActionModule(
+                module=module.__name__, why="missing ACTIONS description")
+        for action in module.ACTIONS:
+            if action.name in adict:
+                raise exception.DuplicateAction(
+                    action=action.name, mod1=adict[action.name], mod2=name)
+            _assign_module(action)
         self.actions += module.ACTIONS
         self.modules.append(ActionModule(module, name))
+
+    def add_actions_modules(self, package):
+        added = []
+        for importer, modname, ispkg in pkgutil.iter_modules(package.__path__):
+            modpath = '%s.%s' % (package.__name__, modname)
+            if not ispkg:
+                continue
+            try:
+                mod = importer.find_module(modname).load_module(modname)
+            except ImportError:
+                log.warn("Failed to import module: %s" % modpath)
+                continue
+            if not hasattr(mod, 'ACTIONS'):
+                continue
+            self.add_actions_module(mod, name=modname)
+            added += modname
+        return added
 
     def action_str(self, action):
         return ".".join(map(lambda x: x.name, action))
@@ -117,16 +163,16 @@ class ActionManager(object):
             action = action[:-1]
         return None
 
-    def _get_action_fun(self, name):
+    def _get_action_fun(self, action):
         fun = None
-        module_name = None
         for m in self.modules:
-            _fun = getattr(m.module, name, None)
+            if m.name != action.module:
+                continue
+            _fun = getattr(m.actionsmod, action.name, None)
             if _fun:
                 fun = _fun
-                module_name = m.name
                 break
-        return fun, module_name
+        return fun
 
     def run_action(self, action, args=None):
         if not args:
@@ -137,9 +183,12 @@ class ActionManager(object):
             args[carg] = action.const_args[carg]
         action_fun = action.action_fun
         if not action_fun:
-            action_fun, action_module = self._get_action_fun(action.name)
+            action_fun = self._get_action_fun(action)
             if not action_fun:
-                raise exception.ActionFunctionNotAvailable(action=action.name)
+                raise exception.ActionFunctionNotAvailable(
+                    action=action.name, module=action.module)
+            action.action_fun = action_fun
+
         argspec = inspect.getargspec(action_fun)
         fun_args = []
         if argspec.defaults:
@@ -157,3 +206,7 @@ class ActionManager(object):
                 else:
                     fun_args.append(argspec.defaults[i - n_required])
         return action_fun(*fun_args)
+
+    def print_actions(self):
+        for action in self.actions:
+            print(str(action))

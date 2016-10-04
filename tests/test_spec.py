@@ -1,4 +1,3 @@
-from rdopkg import actions
 from rdopkg.utils import specfile
 from rdopkg.utils.cmd import git, run
 
