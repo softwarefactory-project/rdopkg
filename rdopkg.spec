@@ -15,7 +15,6 @@ BuildRequires:    python2-devel
 BuildRequires:    PyYAML
 
 Requires:         python-paramiko
-Requires:         python-parsley
 Requires:         python-pymod2pkg >= 0.2.1
 Requires:         python-requests
 Requires:         python-setuptools

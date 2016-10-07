@@ -1,7 +1,6 @@
 import codecs
 from collections import defaultdict
 import os
-import parsley
 import re
 import time
 
@@ -30,15 +29,12 @@ def version_parts(version):
     """
     Split a version string into numeric X.Y.Z part and the rest (milestone).
     """
-    g = parsley.makeGrammar("""
-        num = <digit+>
-        numver = <num ('.' num ~letter)*>
-        milestone = <'.' anything+>
-        ver = numver:v milestone?:m -> v or '', m or ''
-        """, {})
-    try:
-        return g(version).ver()
-    except parsley.ParseError:
+    m = re.match(r'(\d+(?:\.\d+)*)([.%]|$)(.*)?', version)
+    if m:
+        numver = m.group(1)
+        rest = m.group(2) + m.group(3)
+        return numver, rest
+    else:
         return version, ''
 
 
@@ -46,26 +42,19 @@ def release_parts(version):
     """
     Split RPM Release string into (numeric X.Y.Z part, milestone, rest).
     """
-    g = parsley.makeGrammar("""
-        num = <digit+>
-        numver = <num ('.' num ~letter)*>
-        mstr = '%{?milestone}'
-        mils = <(anything:x ?(x not in '%.'))+>
-        milestone = <'.'? (mstr | mils)>
-        rest = <anything+>
-        rls = numver?:v milestone?:m rest?:r-> v or '', m or '', r or ''
-        """, {})
-    return g(version).rls()
-
-
-def _release_parts(release):
-    """
-    Split a release string into numeric, milestone and macro parts.
-    """
-    m = re.match('([\d.]*)([^%{}]*)(.*)$', release)
+    numver, tail = version_parts(version)
+    if numver and not re.match('\d', numver):
+        # entire release is macro a la %{release}
+        tail = numver
+        numver = ''
+    m = re.match(r'(\.?(?:%\{\?milestone\}|[^%.]+))(.*)$', tail)
     if m:
-        return m.group(1), m.group(2), m.group(3)
-    return '', '', release
+        milestone = m.group(1)
+        rest = m.group(2)
+    else:
+        milestone = ''
+        rest = tail
+    return numver, milestone, rest
 
 
 def has_macros(s):
