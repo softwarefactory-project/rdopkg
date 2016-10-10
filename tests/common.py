@@ -50,14 +50,15 @@ def prep_spec_test(tmpdir, distgit):
     return dist_path
 
 
-def prep_patches_branch():
+def prep_patches_branch(tag='1.2.3'):
     git('checkout', '--orphan', 'master-patches')
     f = open('foofile', 'w')
     f.write("#not really a patch\n")
     f.close()
     git('add', 'foofile')
     git('commit', '-m', 'Create this test branch')
-    git('tag', '1.2.3')
+    if tag:
+        git('tag', tag)
     git('checkout', 'master')
 
 

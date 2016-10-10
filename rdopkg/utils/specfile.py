@@ -392,7 +392,7 @@ class Spec(object):
     def bump_release(self, milestone=None):
         numbers, _milestone, postfix = self.get_release_parts()
         if not milestone:
-            milestone = _milestone
+            milestone = self.get_milestone()
         numlist = numbers.split('.')
         i = -1
         if numbers[-1] == '.':
