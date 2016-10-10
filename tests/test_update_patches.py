@@ -226,3 +226,28 @@ def test_filter_out(tmpdir):
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched-filter')
     assert commit_before != commit_after, "New commit not created"
+
+
+def test_update_milestone(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'milestone')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        common.prep_patches_branch()
+        spec_before = spec_path.read()
+        commit_before = git('rev-parse', 'HEAD')
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
+        spec_after = spec_path.read()
+        commit_after = git('rev-parse', 'HEAD')
+    assert spec_after == spec_before
+    assert commit_before == commit_after, "Commit created for no-op"
+    with dist_path.as_cwd():
+        common.add_patches()
+        update_patches('master',
+                       local_patches_branch='master-patches',
+                       version='1.2.3')
+        spec_after = spec_path.read()
+        commit_after = git('rev-parse', 'HEAD')
+    common.assert_distgit(dist_path, 'patched-milestone')
+    assert commit_before != commit_after, "New commit not created"
