@@ -8,11 +8,16 @@ you started hacking quickly.
 git repo
 --------
 
-Sources are hosted at github:
+Sources are hosted at review.rdoproject.org and mirrored to github:
 
-    git clone https://github.com/redhat-openstack/rdopkg
+    git clone https://github.com/openstack-packages/rdopkg
 
-Submit pull requests and poke `jruzicka` on IRC to accelerate the review.
+Submit your changes using
+
+    git review
+
+and optionally poke `jruzicka` on #rdo @ freeendoe IRC to accelerate the
+review.
 
 requirements
 ------------
@@ -21,7 +26,7 @@ Check out `requirements.txt` or `Requires:` in .spec file to see which python
 modules you need.
 
 For development, I suggest installing rdopkg like this:
-    
+
     python setup.py develop --user
 
 
@@ -33,14 +38,14 @@ Top level stuff you should know about:
     ├── doc/          <- man pages/docs in asciidoc
     ├── rdopkg/       <- actual python sources
     ├── rdopkg.spec   <- .spec file to build RPM - don't touch unless asked to
-    └── tests/        <- unit tests!!11one1 run by calling `py.test`
+    └── tests/        <- unit tests!!11one1 run by `./run_tests.sh`
 
 
 sources layout
 --------------
 
 Bellow is the full source tree at the time of writing with points into most
-interesting files: 
+interesting files:
 
     rdopkg
     ├── __init__.py         <- version is here, don't touch
@@ -49,9 +54,21 @@ interesting files:
     │   ├── __init__.py        functionality needed in rdopkg actions;
     │   ├── copr.py            feel free to add your own
     │   ├── nightly.py
-    ├── actions.py          <- this is basically an imperative config file that
-    ├── conf.py                defines actions' interface and logic - please
-    ├── const.py               don't put complex code here!
+    │   ...
+    ├── actions             <- pluggable action modules
+    │   ├── build
+    │   │   ├── __init__.py
+    │   │   └── actions.py
+    │   ├── distgit         <- core rdopkg action module
+    │   │   ├── __init__.py <- interface declaration
+    │   │   └── actions.py  <- action functions (high level interface)
+    │   ├── reqs
+    │   │   ├── __init__.py
+    │   │   └── actions.py
+    │   ...
+    ├── cli.py              <- default high level CLI interface
+    ├── conf.py
+    ├── const.py
     ├── core.py
     ├── exception.py        <- nova-style exceptions, add as needed
     ├── guess.py            <- some hardcore automagic guessing happens here
@@ -61,49 +78,61 @@ interesting files:
         ├── __init__.py        used throughout rdopkg
         ├── cmd.py          <- use run() and git() to interact with the world
         ├── exception.py
-        ├── log.py 
+        ├── log.py
         ├── specfile.py     <- lots of .spec editation magic here
         └── terminal.py
 
 
-actions.py
-----------
+action modules
+--------------
 
-Looking at this file for a while should give you a good idea how everything
-works.
+`rdopkg/actions/` contains action modules which are jruzicka's attempt at
+reasonable python plugins. Interface declaration is separated in `__init__.py`
+allowing rdopkg to collect all available actions and construct CLI without
+loading every single module that could possibly be used. Instead, action code
+is imported on demand.
 
-When defining a new action or modifying a behaviour of existing one, you'll
-need to edit this file. `ACTIONS` hyperstructure defines entire rdopkg
-interface and highest-level flow of actions. Each action function should be
-idempotent because it's possible to re-run last action step by `rdopkg -c` on
-failure/interrupt.
+    actions
+    └── banana            <- banana action module
+        ├── __init__.py   <- interface declaration
+        ├── actions.py    <- action functions (entry points)
+        ├── foo.py        <- arbitrary codez to import form actions.py
+        └── bar.py
+
+Each action module contains `__init__.py:ACTIONS` structure which defines
+entire rdopkg interface and highest-level flow of actions. Each action
+function should be idempotent because it's possible to re-run last action step
+by `rdopkg -c` on failure/interrupt.
 
 Action name directly maps to python functions in `actions.py`. Note that
 dictionary of persistent values much like `ENV` is stored between action steps
-and these are automatically passed to action functions based their signature
-(expected arguments). When an action function returns a dictionary, the
-global action dictionary is updated with returned values, allowing state to be
-stored between steps. That way, functions can be used in rdopkg interface
-without redundant definitions (function signature is sufficient) but also by
-importing them from rdopkg module and calling them with custom parameters.
+and these are automatically passed to action functions based on their
+signature (expected arguments). When an action function returns a dictionary,
+the global action dictionary is updated with returned values, allowing state
+to be stored between steps. That way, functions can be used in rdopkg
+interface without redundant definitions (function signature is sufficient) but
+also by importing them directly from rdopkg module and calling them with
+custom parameters.
 
-As an example, `get_package_env` action function detects package environment
-and saves it in the action dictionary by returning a dict with detected
-values. `patches_branch` is detected using `guess` module and returned.
-Following action functions such as `update_patches` require `patches_branch`
-argument which is passed to them from the action dictionary by the action flow
-logic @ `action.py`.
+As an example, `distgit.actions:get_package_env` action function detects
+package environment and saves it in the action dictionary by returning a dict
+with detected values. `patches_branch` is detected using `guess` module and
+returned.  Following action functions such as `update_patches` require
+`patches_branch` argument which is passed to them from the action dictionary
+by the action flow logic @ `action.py`.
 
-You might get surprised by weirdness of action logic but it allows simple and
-reusable way of representing multi-step action and mapping them to python
-code. If you'd like to change this aspect of rdopkg, I strongly suggest
-discusing it with `jruzicka`. He has long answers for questions such as:
+`actions.py` should ideally contain only high level logic with the rest of
+code in other modules preferably directly in actiom module submodules, but
+that's not the case in the time of writing due to legacy reasons.
 
-* Why flat module instead of mighty OOP classes?
-* Why strings-mapped-to-functions instead of referencing functions directly?
-* Why action abstractions instead of pure python code?
-* Why is action a tree instead of a simple flat list?
-* Isn't `actions.py` too big? (YES, but...)
+Finally, note that some refactoring is expected before action modules
+interface is stable, not limited to:
+
+ * rethink atomic=True which now spams most of actions
+ * include full action documentation in `__init__.py` as opposed of having
+   only short string there and the rest in doc/ - that's sure to desync over
+   time.
+ * other quality of life improvements
 
 
 unit tests
@@ -116,7 +145,7 @@ Either way, make sure *existing unit tests pass* after your change by running
     pip install pytest
     ./run_tests.sh
 
-until automatic gating is done on the repo.
+They need to pass in order for your change to land.
 
 
 update them man pages
