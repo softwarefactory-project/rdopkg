@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.40
+Version:          0.41
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -60,6 +60,16 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Wed Oct 19 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.41-1
+- Update to 0.41
+- patch: fix milestone handling and cover with unit tests
+- Fix macro expansion when redefining macros
+- Nuke python-parsley requirement
+- actions: add "tag-patches" command
+- refactor: split actions.py into action modules
+- doc: rename asciidoc files from ".txt" to ".adoc"
+- doc: update HACKING.md
+
 * Thu Sep 15 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.40-1
 - Update to 0.40
 - info-tags-diff: new utility action to show rdoinfo tag changes
