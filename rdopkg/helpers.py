@@ -39,7 +39,7 @@ def edit(path):
     except exception.CommandNotFound as ex:
         raise exception.CommandNotFound(
             msg='Failed to find suitable text editor. Please set $EDITOR '
-                'environment variable.')
+                'environment variable was ({0}).'.format(ex))
     return r.success
 
 
