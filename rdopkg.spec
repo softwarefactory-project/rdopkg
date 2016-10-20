@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.41.1
+Version:          0.41.2
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -60,6 +60,10 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Thu Oct 20 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.41.2-1
+- Update to 0.41.2
+- Bugfix release that attempts to fix setup.py yet again
+
 * Thu Oct 20 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.41.1-1
 - Update to 0.41.1
 - Bugfix release that adds rdopkg.actions to setup.py
