@@ -36,10 +36,10 @@ def edit(path):
         log.info("$EDITOR not set. Falling back to %s." % editor)
     try:
         r = run(editor, path, direct=True)
-    except exception.CommandNotFound as ex:
+    except exception.CommandNotFound:
         raise exception.CommandNotFound(
-            msg='Failed to find suitable text editor. Please set $EDITOR '
-                'environment variable.')
+            msg='Failed to find suitable text editor ({0}).  '
+                'Please set $EDITOR environment variable.'.format(editor))
     return r.success
 
 
