@@ -30,6 +30,7 @@ setuptools.setup(
         'rdopkg.actions',
         'rdopkg.actions.build',
         'rdopkg.actions.distgit',
+        'rdopkg.actions.info',
         'rdopkg.actions.reqs',
         'rdopkg.actions.review',
         'rdopkg.actions.util',
