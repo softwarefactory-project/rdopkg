@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 
+from . import VERSION
 from rdopkg.action import ActionManager
 from rdopkg.core import ActionRunner
 from rdopkg import shell
@@ -34,7 +35,7 @@ def rdopkg(*cargs):
         $> rdopkg new-version 1.2.3
     """
     runner = rdopkg_runner()
-    return shell.run(runner, cargs=cargs)
+    return shell.run(runner, cargs=cargs, version=VERSION)
 
 
 def main():
