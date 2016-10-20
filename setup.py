@@ -21,8 +21,19 @@ setuptools.setup(
     description='RDO packaging utility',
     author='Jakub Ruzicka',
     author_email='jruzicka@redhat.com',
-    url='https://github.com/redhat-openstack/rdopkg',
-    packages=['rdopkg', 'rdopkg.utils', 'rdopkg.actionmods', 'rdopkg.actions'],
+    url='https://github.com/openstack-packages/rdopkg',
+    # TODO: find better solution than maintaining this redundant list by hand
+    packages=[
+        'rdopkg',
+        'rdopkg.utils',
+        'rdopkg.actionmods',
+        'rdopkg.actions',
+        'rdopkg.actions.build',
+        'rdopkg.actions.distgit',
+        'rdopkg.actions.reqs',
+        'rdopkg.actions.review',
+        'rdopkg.actions.util',
+    ],
     install_requires=requires(),
     entry_points={
         "console_scripts": ["rdopkg = rdopkg.cli:main"]
