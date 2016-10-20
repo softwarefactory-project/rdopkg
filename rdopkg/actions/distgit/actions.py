@@ -819,4 +819,4 @@ def tag_patches_branch(package, local_patches_branch, patches_branch,
     if push:
         git('push', patches_remote, nvr_tag)
     else:
-        print('Not pushing tag. Run "git push %s patches" by hand.' % nvr_tag)
+        print('Not pushing tag. Run "git push patches %s" by hand.' % nvr_tag)
