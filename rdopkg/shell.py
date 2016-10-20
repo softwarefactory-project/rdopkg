@@ -1,10 +1,7 @@
 # -*- encoding: utf-8 -*-
 
-import sys
 import argparse
 
-from . import VERSION
-import core
 import exception
 from utils import log
 
