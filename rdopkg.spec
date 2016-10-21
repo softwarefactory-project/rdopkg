@@ -1,12 +1,12 @@
 Name:             rdopkg
-Version:          0.41.2
+Version:          0.41.3
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
 Group:            Development/Languages
 License:          ASL 2.0
 URL:              https://github.com/redhat-openstack/rdopkg.git
-Source0:          https://pypi.python.org/packages/source/r/%{name}/%{name}-%{version}.tar.gz
+Source0:          https://pypi.python.org/packages/source/r/%{name}/%{name}-%{versiontar.gz
 
 BuildArch:        noarch
 
@@ -60,6 +60,12 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Fri Oct 21 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.41.3-1
+- Update to 0.41.3
+- info: reintroduce lost info and info-diff-tags actions
+- tag-patches: fix recommended "push" action
+- Make --version work again
+
 * Thu Oct 20 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.41.2-1
 - Update to 0.41.2
 - Bugfix release that attempts to fix setup.py yet again
