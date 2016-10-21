@@ -6,7 +6,7 @@ Summary:          RPM packaging automation tool
 Group:            Development/Languages
 License:          ASL 2.0
 URL:              https://github.com/redhat-openstack/rdopkg.git
-Source0:          https://pypi.python.org/packages/source/r/%{name}/%{name}-%{versiontar.gz
+Source0:          https://pypi.python.org/packages/source/r/%{name}/%{name}-%{version}.tar.gz
 
 BuildArch:        noarch
 
