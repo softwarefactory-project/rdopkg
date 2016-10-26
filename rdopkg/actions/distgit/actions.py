@@ -810,6 +810,9 @@ def tag_patches_branch(package, local_patches_branch, patches_branch,
                        force=False, push=False):
     """ Tag the local_patches_branch with this package's NVR. """
     nvr = specfile.Spec().get_nvr()
+    # If this package has an Epoch, strip it out from our Git tag name.
+    if ':' in nvr:
+        nvr = nvr.split(':', 1)[1]
     nvr_tag = package + '-' + nvr
     tag_cmd = ['tag', nvr_tag, local_patches_branch]
     if force:
