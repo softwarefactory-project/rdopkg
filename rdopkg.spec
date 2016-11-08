@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.41.3
+Version:          0.41.4
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -60,6 +60,11 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Tue Nov 08 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.41.4-1
+- Update to 0.41.4
+- Fixed -c argument parsing
+- Evade pyton 2.7.5 regex bug on CentOS 7.2
+
 * Fri Oct 21 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.41.3-1
 - Update to 0.41.3
 - info: reintroduce lost info and info-diff-tags actions
