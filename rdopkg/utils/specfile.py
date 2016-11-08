@@ -149,6 +149,14 @@ class Spec(object):
                                r'\g<1>%s' % value, self.txt, flags=re.M)
         return n > 0
 
+    def get_tag_align_ws(self, tag):
+        if not tag.endswith(':'):
+            tag += ':'
+        m = re.search(r'^%s(\s*)' % re.escape(tag), self.txt, flags=re.M)
+        if not m:
+            return ''
+        return m.group(1)
+
     def get_patches_base(self, expand_macros=False):
         """Return a tuple (version, number_of_commits) that are parsed
         from the patches_base in the specfile.

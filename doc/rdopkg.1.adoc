@@ -285,11 +285,13 @@ they're met in the `.spec` file. Simple report is printed.
 Python module names listed in `requirements.txt` are mapped to package names
 using `rdopkg.actionmods.pymod2pkg` module.
 
-NOTE: Checking for exact version ranges is dumb at the moment.
+Use `--spec`/`-s` option to output Requires: suitable for pasting into .spec
+files. Version comparisons are hidden, whitespace is detected from .spec.
 
 *Example:*
 
     rdopkg reqcheck
+    rdopkg reqcheck -s
 
 
 ACTION: reqdiff

@@ -45,11 +45,11 @@ class CheckReq(object):
                 return False
         return True
 
-    def __str__(self):
+    def __str__(self, format=None):
         s = self.name
         if self.desired_vers:
             s += ' ' + self.desired_vers
-        if self.vers:
+        if not format and self.vers:
             s += '  (%s in .spec)' % self.vers
         return s
 
@@ -161,13 +161,19 @@ def reqcheck(desired_reqs, reqs):
     return met, any_version, wrong_version, missing
 
 
-def print_reqcheck(met, any_version, wrong_version, missing):
+def print_reqcheck(met, any_version, wrong_version, missing, format=None):
     cats = [
         ("{t.bold_green}MET{t.normal}:", met),
         ("{t.bold}VERSION NOT ENFORCED{t.normal}:", any_version),
         ("{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
         ("{t.bold_red}MISSING{t.normal}:", missing),
     ]
+    if format == 'spec':
+        # get alignment from .spec file
+        spec = specfile.Spec()
+        pre = 'Requires:' + (spec.get_tag_align_ws('Requires') or '        ')
+    else:
+        pre = '  '
     first = True
     for title, reqs in cats:
         if not reqs:
@@ -177,7 +183,8 @@ def print_reqcheck(met, any_version, wrong_version, missing):
         else:
             print("")
         print(title.format(t=log.term))
-        helpers.print_list(reqs, pre='  ')
+        reqs = [x.__str__(format=format) for x in reqs]
+        helpers.print_list(reqs, pre=pre)
 
 
 def reqcheck_spec(ref=None, reqs_txt=None):
