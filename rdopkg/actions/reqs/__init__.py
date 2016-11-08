@@ -20,6 +20,10 @@ ACTIONS = [
            steps=[
                Action('get_package_env', module='distgit'),
                Action('reqcheck'),
+           ],
+           optional_args=[
+               Arg('spec', shortcut='-s', action='store_true',
+                   help="output .spec Requires: for easy pasting"),
            ]),
     Action('reqquery', atomic=True,
            help="query RDO repos for versions defined in requirements.txt",
