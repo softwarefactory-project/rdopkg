@@ -29,7 +29,7 @@ def version_parts(version):
     """
     Split a version string into numeric X.Y.Z part and the rest (milestone).
     """
-    m = re.match(r'(\d+(?:\.\d+)*)([.%]|$)(.*)?', version)
+    m = re.match(r'(\d+(?:\.\d+)*)([.%]|$)(.*)', version)
     if m:
         numver = m.group(1)
         rest = m.group(2) + m.group(3)
