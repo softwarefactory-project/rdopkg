@@ -809,14 +809,14 @@ def make_srpm(package, dist=None, fedpkg=FEDPKG):
 def tag_patches_branch(package, local_patches_branch, patches_branch,
                        force=False, push=False):
     """ Tag the local_patches_branch with this package's NVR. """
-    nvr = specfile.Spec().get_nvr()
+    nvr = specfile.Spec().get_nvr(epoch=False)
     nvr_tag = package + '-' + nvr
     tag_cmd = ['tag', nvr_tag, local_patches_branch]
     if force:
         tag_cmd.append('-f')
     git(*tag_cmd)
-    patches_remote = patches_branch.partition('/')[0]
     if push:
+        patches_remote = patches_branch.partition('/')[0]
         git('push', patches_remote, nvr_tag)
     else:
         print('Not pushing tag. Run "git push patches %s" by hand.' % nvr_tag)
