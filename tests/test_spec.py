@@ -1,5 +1,5 @@
+from rdopkg import exception
 from rdopkg.utils import specfile
-from rdopkg.utils.cmd import git, run
 
 import common
 
@@ -48,6 +48,36 @@ def test_release_parts():
     _assert_rparts('%{ver}', '', '', '%{ver}')
 
 
+def _assert_nvr(nvr, epoch_arg, result):
+    epoch, version, release = nvr
+
+    def _get_tag_mock(tag, default=None, expand_macros=False):
+        if tag == 'Version':
+            return version
+        elif tag == 'Release':
+            return release
+        elif tag == 'Epoch':
+            if epoch:
+                return epoch
+            raise exception.SpecFileParseError(
+                spec_fn='TESTING', error='Pretending Epoch tag not found')
+        return "MOCKED-OUT-NVR"
+
+    spec = specfile.Spec()
+    spec.get_tag = _get_tag_mock
+    nvr = spec.get_nvr(epoch=epoch_arg)
+    assert nvr == result
+
+
+def test_get_nvr():
+    _assert_nvr((None, '1.2.3', '0.1'),         None,  '1.2.3-0.1')
+    _assert_nvr((None, '1.2.3', '666%{?dist}'), False, '1.2.3-666')
+    _assert_nvr((None, '1.2.3', ''),            True,  '0:1.2.3')
+    _assert_nvr((23, '1.2.3', ''),              None,  '23:1.2.3')
+    _assert_nvr((23, '1.2.3', '0.1'),           False, '1.2.3-0.1')
+    _assert_nvr((23, '1.2.3', '666%{?dist}'),   True,  '23:1.2.3-666')
+
+
 def test_patches_base_add_patched(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
     spec_path = dist_path.join('foo.spec')
@@ -91,6 +121,7 @@ def test_patches_base_noop_weird(tmpdir):
         spec.save()
         spec_after = spec_path.read()
     common.assert_distgit(dist_path, 'empty-weird')
+
 
 def test_set_commit_ref_macro(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'commit')

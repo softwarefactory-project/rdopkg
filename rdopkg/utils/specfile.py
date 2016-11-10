@@ -401,17 +401,32 @@ class Spec(object):
         release = ".".join(numlist)
         return self.set_release(release, milestone=milestone, postfix=postfix)
 
-    def get_nvr(self):
+    def get_nvr(self, epoch=None):
+        """get NVR string from .spec Version, Release and Epoch
+
+        epoch is None: prefix epoch if present (default)
+        epoch is True: prefix epoch even if not present (0:)
+        epoch is False: omit epoch even if present
+        """
         version = self.get_tag('Version', expand_macros=True)
-        try:
-            epoch = self.get_tag('Epoch')
-            version = '%s:%s' % (epoch, version)
-        except exception.SpecFileParseError:
-            pass
+        e = None
+        if epoch is None or epoch:
+            try:
+                e = self.get_tag('Epoch')
+            except exception.SpecFileParseError:
+                pass
+        if epoch is None and e:
+            epoch = True
+        if epoch:
+            if not e:
+                e = '0'
+            version = '%s:%s' % (e, version)
         release = self.get_tag('Release')
         release = re.sub(r'%\{?\??dist\}?$', '', release)
         release = self.expand_macro(release)
-        return '%s-%s' % (version, release)
+        if release:
+            return '%s-%s' % (version, release)
+        return version
 
     def new_changelog_entry(self, user, email, changes=[]):
         changes_str = "\n".join(map(lambda x: "- %s" % x, changes)) + "\n"
