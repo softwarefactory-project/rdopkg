@@ -374,7 +374,11 @@ class Spec(object):
         self.set_macro('milestone', new_milestone)
 
     def get_milestone(self):
-        return self.get_macro('milestone')
+        ms = self.get_macro('milestone')
+        if ms == '%{?milestone}':
+            # counter milestone bug from past rdopkg versions :(
+            ms = ''
+        return ms
 
     def set_release(self, new_release, milestone=None, postfix=None):
         release = new_release
