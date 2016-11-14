@@ -33,3 +33,8 @@ def _test_patch(asset, version, dir):
 def test_patch_milestone(tmpdir):
     _test_patch('milestone', ('1.2.3', ('0.4', '%{?milestone}', DIST_POSTFIX), '.0rc2'), tmpdir)
 
+
+def test_patch_milestone_bug(tmpdir):
+    # make sure rdopkg removes unwanted '%global milestone %{?milestone}'
+    _test_patch('milestone-bug', ('1.2.3', ('0.4', '', DIST_POSTFIX), None), tmpdir)
+
