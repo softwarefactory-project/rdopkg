@@ -258,7 +258,9 @@ class Spec(object):
     def wipe_patches(self):
         self._txt = re.sub(r'\n+(?:(?:Patch|.patch)\d+[^\n]*)', '', self.txt)
 
-    def buildarch_sanity_check(self):
+    def sanity_check_buildarch(self):
+        # make sure BuildArch is AFTER SourceX and PatchX lines,
+        # otherwise %{patches} macro is empty which causes trouble
         bm = re.search('^BuildArch:', self.txt, flags=re.M)
         if not bm:
             return
@@ -274,10 +276,17 @@ class Spec(object):
             if bi < pi:
                 raise exception.BuildArchSanityCheckFailed()
 
+    def sanity_check_patches_base(self):
+        # duplicate patches_base might lead to unexpected behavior
+        bases = re.findall('^#\s*patches_base', self.txt, flags=re.M)
+        if len(bases) > 1:
+            raise exception.DuplicatePatchesBaseError()
+
     def sanity_check(self):
         method = self.patches_apply_method()
         if method in ['git-am', 'autosetup']:
-            self.buildarch_sanity_check()
+            self.sanity_check_buildarch()
+        self.sanity_check_patches_base()
 
     def patches_apply_method(self):
         if '\ngit am %{patches}' in self.txt:

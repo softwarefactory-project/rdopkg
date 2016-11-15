@@ -92,6 +92,7 @@ def run(action_runner, cargs, version=None):
             exception.CoprError,
             exception.CommandNotFound,
             exception.DebugAbort,
+            exception.DuplicatePatchesBaseError,
             exception.FileNotFound,
             exception.IncompleteChangelog,
             exception.InvalidPackageFilter,
