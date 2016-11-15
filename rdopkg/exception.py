@@ -1,8 +1,10 @@
 from utils.exception import RdopkgException
+# TODO before 1.0: merge utils.exception.* here.
+# Legacy reasons to have them separate no longer apply.
 from utils.exception import CommandFailed, CommandNotFound, SpecFileNotFound, \
     IncompleteChangelog, MultipleSpecFilesFound, SpecFileParseError, \
     InvalidAction, ModuleNotAvailable, RpmModuleNotAvailable, \
-    BuildArchSanityCheckFailed, BranchNotFound
+    BuildArchSanityCheckFailed, DuplicatePatchesBaseError, BranchNotFound
 
 
 class UserAbort(RdopkgException):

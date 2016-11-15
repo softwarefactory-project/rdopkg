@@ -63,3 +63,8 @@ class BuildArchSanityCheckFailed(RdopkgException):
                "AFTER SourceX and PatchXXXX lines in .spec file, otherwise "
                "%%{patches} macro will be empty and `git am %%{patches}` will "
                "fail. You're welcome ;)")
+
+
+class DuplicatePatchesBaseError(RdopkgException):
+    msg_fmt = ("Please make sure to only have one "
+               "# patches_base= entry in .spec")
