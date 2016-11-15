@@ -251,3 +251,18 @@ def test_update_milestone(tmpdir):
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'patched-milestone')
     assert commit_before != commit_after, "New commit not created"
+
+
+def test_update_double_patches_base(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'double-patches')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        common.prep_patches_branch()
+        commit_before = git('rev-parse', 'HEAD')
+        with pytest.raises(rdopkg.utils.exception.DuplicatePatchesBaseError):
+            update_patches('master',
+                           local_patches_branch='master-patches',
+                           version='1.2.3')
+        commit_after = git('rev-parse', 'HEAD')
+    common.assert_distgit(dist_path, 'double-patches')
+    assert commit_before == commit_after, "Commit created on double patches_base (error)"
