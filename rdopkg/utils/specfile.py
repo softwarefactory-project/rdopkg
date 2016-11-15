@@ -275,7 +275,8 @@ class Spec(object):
                 raise exception.BuildArchSanityCheckFailed()
 
     def sanity_check(self):
-        if self.patches_apply_method() == 'git-am':
+        method = self.patches_apply_method()
+        if method in ['git-am', 'autosetup']:
             self.buildarch_sanity_check()
 
     def patches_apply_method(self):

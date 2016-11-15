@@ -60,6 +60,7 @@ class InvalidAction(RdopkgException):
 
 class BuildArchSanityCheckFailed(RdopkgException):
     msg_fmt = ("Due to mysterious ways of rpm, BuildArch needs to be placed "
-               "AFTER SourceX and PatchXXXX lines in .spec file, otherwise "
-               "%%{patches} macro will be empty and `git am %%{patches}` will "
-               "fail. You're welcome ;)")
+               "AFTER SourceX and PatchX lines in .spec file, "
+               "otherwise %%{patches} macro will be empty "
+               "and both %%autosetup and `git am %%{patches}` will fail.\n\n"
+               "Please move BuildArch AFTER SourceX and PatchX.")
