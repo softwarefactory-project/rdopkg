@@ -64,3 +64,8 @@ class BuildArchSanityCheckFailed(RdopkgException):
                "otherwise %%{patches} macro will be empty "
                "and both %%autosetup and `git am %%{patches}` will fail.\n\n"
                "Please move BuildArch AFTER SourceX and PatchX.")
+
+
+class DuplicatePatchesBaseError(RdopkgException):
+    msg_fmt = ("Please make sure to only have one "
+               "# patches_base= entry in .spec")
