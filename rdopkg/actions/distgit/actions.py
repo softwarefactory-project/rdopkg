@@ -587,7 +587,10 @@ def update_spec(branch=None, changes=None,
 
 def get_source(new_sources=False):
     if not new_sources:
+        # due to new-version changes, this function does nothing by default :)
+        # TODO: factor this into get_source() and new_version_get_source()
         return
+    # TODO: consider using `spectool --gf --source`
     source_urls = specfile.Spec().get_source_urls()
     # So far, only Source/Source0 is a tarball to download
     source_url = source_urls[0]
@@ -598,6 +601,7 @@ def get_source(new_sources=False):
     try:
         helpers.download_file(source_url)
     except exception.CommandFailed:
+        # only valid for new-sources, not for get-source
         raise exception.ActionRequired(
             msg="Failed to download source tarball. Please update Source0 in "
                 ".spec file.", rerun=True)
