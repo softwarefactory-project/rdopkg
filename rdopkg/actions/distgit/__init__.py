@@ -133,7 +133,10 @@ ACTIONS = [
            help="amend last commit and recreate commit message"),
     Action('squash', atomic=True,
            help="squash HEAD into HEAD~ using HEAD~ commit message"),
-    Action('get_source', atomic=True, help="fetch source archive"),
+    Action('get_source', atomic=True, help="fetch source archive",
+           steps=[
+               Action('get_source', const_args={'new_sources': True})
+           ]),
     Action('tag_patches', atomic=True,
            help='tag the -patches branch in Git with the current NVR',
            optional_args=[
