@@ -95,7 +95,9 @@ def show_package_env(package, version,
         gerrit_review_url = rpmfactory.review_url(gerrit_patches_chain) or \
             'unknown'
 
-    nvr = specfile.Spec().get_nvr()
+    spec = specfile.Spec()
+    nvr = spec.get_nvr()
+    patches_apply_method = spec.patches_apply_method()
     print
     _putv('Package:  ', package)
     _putv('NVR:      ', nvr)
@@ -112,6 +114,7 @@ def show_package_env(package, version,
         _putv('Patches chain:         ', gerrit_review_url)
     print
     _putv('OS dist:               ', osdist)
+    _putv('Patches apply method:  ', patches_apply_method)
     if osdist == 'RDO':
         rlsdist = '%s/%s' % (release or 'unknown', dist or 'unknown')
         _putv('RDO release/dist guess:', rlsdist)
