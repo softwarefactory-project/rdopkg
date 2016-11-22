@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.41.4
+Version:          0.42
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -60,6 +60,17 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Tue Nov 22 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.42-1
+- Update to 0.42
+- Counter past %{?milestone} bug
+- findpkg: new command to easily find single package
+- specfile: extend BuildArch sanity check to %autosetup
+- specfile: add a sanity check for double # patches_base
+- tag-patches: ignore RPM Epoch
+- get-source: unbreak after defaults change
+- reqcheck: add --spec/-s output for pasting
+- pkgenv: show patches apply method
+
 * Tue Nov 08 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.41.4-1
 - Update to 0.41.4
 - Fixed -c argument parsing
