@@ -1,0 +1,16 @@
+From f32df65ef1800aeefe8c636c9326fe368599e5f6 Mon Sep 17 00:00:00 2001
+From: Jakub Ruzicka <jruzicka@redhat.com>
+Date: Wed, 11 Jan 2017 17:37:10 +0100
+Subject: [PATCH] Extra patch 3
+
+---
+ foofile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/foofile b/foofile
+index 72a6844..e25187e 100644
+--- a/foofile
++++ b/foofile
+@@ -1 +1 @@
+-#extra patch 2
++#extra patch 3

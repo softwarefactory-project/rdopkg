@@ -25,6 +25,26 @@ def spec_fn(spec_dir='.'):
     return specs[0]
 
 
+def get_patches_from_files(patches_dir='.'):
+    patches_fns = [f for f in os.listdir(patches_dir)
+                   if os.path.isfile(f) and f.endswith('.patch')]
+    if not patches_fns:
+        return []
+    patches = []
+    for pfn in patches_fns:
+        txt = codecs.open(pfn, 'r', encoding='utf-8').read()
+        hash = None
+        m = re.search(r'^From ([a-z0-9]+)', txt, flags=re.M)
+        if m:
+            hash = m.group(1)
+        subj = None
+        m = re.search(r'^Subject:\w*(.+)$', txt, flags=re.M)
+        if m:
+            subj = m.group(1)
+        patches.append((pfn, hash, subj))
+    return patches
+
+
 def version_parts(version):
     """
     Split a version string into numeric X.Y.Z part and the rest (milestone).
