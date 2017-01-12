@@ -1,6 +1,7 @@
 from rdopkg.cli import rdopkg
-from rdopkg.utils.cmd import git
+from rdopkg.utils.cmd import git, run
 from rdopkg.utils import log
+from rdopkg.utils import specfile
 
 import common
 from common import DIST_POSTFIX
@@ -38,3 +39,60 @@ def test_patch_milestone_bug(tmpdir):
     # make sure rdopkg removes unwanted '%global milestone %{?milestone}'
     _test_patch('milestone-bug', ('1.2.3', ('0.4', '', DIST_POSTFIX), None), tmpdir)
 
+
+def test_patch_remove(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'patched')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        common.prep_patches_branch()
+        spec_before = spec_path.read()
+        commit_before = git('rev-parse', 'HEAD')
+        common.add_patches()
+        # regen patch files in order for hashes to match git
+        rdopkg('update-patches')
+        common.remove_patches(1)
+        rdopkg('patch', '-l')
+        spec_after = spec_path.read()
+        commit_after = git('rev-parse', 'HEAD')
+        common.norm_changelog()
+    common.assert_distgit(dist_path, 'patch-remove')
+    assert commit_before != commit_after, "New commit not created"
+
+
+def test_patch_add(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'patched')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        common.prep_patches_branch()
+        spec_before = spec_path.read()
+        commit_before = git('rev-parse', 'HEAD')
+        common.add_patches()
+        # regen patch files in order for hashes to match git
+        rdopkg('update-patches')
+        common.add_n_patches(3)
+        rdopkg('patch', '-l')
+        spec_after = spec_path.read()
+        commit_after = git('rev-parse', 'HEAD')
+        common.norm_changelog()
+    common.assert_distgit(dist_path, 'patch-add')
+    assert commit_before != commit_after, "New commit not created"
+
+
+def test_patch_mix(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'patched')
+    spec_path = dist_path.join('foo.spec')
+    with dist_path.as_cwd():
+        common.prep_patches_branch()
+        spec_before = spec_path.read()
+        commit_before = git('rev-parse', 'HEAD')
+        common.add_patches()
+        # regen patch files in order for hashes to match git
+        rdopkg('update-patches')
+        common.remove_patches(1)
+        common.add_n_patches(3)
+        rdopkg('patch', '-l')
+        spec_after = spec_path.read()
+        commit_after = git('rev-parse', 'HEAD')
+        common.norm_changelog()
+    common.assert_distgit(dist_path, 'patch-mix')
+    assert commit_before != commit_after, "New commit not created"

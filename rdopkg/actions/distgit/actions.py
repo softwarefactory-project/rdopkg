@@ -5,16 +5,12 @@ This is the main rdopkg action module with actions for distgit management.
 import itertools
 import os
 import re
-import sys
-import yaml
 
-from rdopkg. action import Action, Arg
 from rdopkg.conf import cfg, cfg_files
 from rdopkg import exception
 from rdopkg import guess
 from rdopkg.actionmods import rdoinfo
 from rdopkg.actionmods import rpmfactory
-from rdopkg.actionmods import reqs as _reqs
 from rdopkg.utils import log
 from rdopkg.utils.cmd import run, git
 from rdopkg.utils import specfile
@@ -495,36 +491,37 @@ def check_new_patches(version, local_patches_branch,
 
     version_tag = guess.version2tag(version, version_tag_style)
     patches = git.get_commit_bzs(version_tag, head)
+    old_patches = specfile.get_patches_from_files()
     spec = specfile.Spec()
 
     n_git_patches = len(patches)
-    n_spec_patches = spec.get_n_patches()
-    n_skip_patches = spec.get_n_excluded_patches()
     n_ignore_patches = 0
-
     ignore_regex = spec.get_patches_ignore_regex()
     if ignore_regex:
         patches = (flatten(_partition_patches(patches, ignore_regex)))
         n_ignore_patches = n_git_patches - len(patches)
 
-    patch_subjects = []
-    for hash, subject, bzs in patches:
-        subj = subject
-        bzstr = ' '.join(map(lambda x: 'rhbz#%s' % x, bzs))
-        if bzstr != '':
-            subj += ' (%s)' % bzstr
-        patch_subjects.append(subj)
-    n_base_patches = n_skip_patches + n_spec_patches
-    log.debug("Total patches in git:%d spec:%d skip:%d ignore:%d" % (
-              n_git_patches, n_spec_patches, n_skip_patches, n_ignore_patches))
+    n_skip_patches = spec.get_n_excluded_patches()
+    if n_skip_patches > 0:
+        patches = patches[0:-n_skip_patches]
 
-    if n_base_patches > 0:
-        patch_subjects = patch_subjects[0:-n_base_patches]
+    log.debug("Total patches in git:%d skip:%d ignore:%d" % (
+        n_git_patches, n_skip_patches, n_ignore_patches))
 
-    if not patch_subjects:
-        log.warn("No new patches detected in %s." % head)
-        helpers.confirm("Do you want to continue anyway?", default_yes=False)
-    changes.extend(patch_subjects)
+    for hash, subj, bzs in patches:
+        new_patch = True
+        for _, old_hash, _ in old_patches:
+            if helpers.is_same_hash(hash, old_hash):
+                new_patch = False
+                break
+        if new_patch:
+            bzstr = ' '.join(map(lambda x: 'rhbz#%s' % x, bzs))
+            if bzstr:
+                subj += ' (%s)' % bzstr
+            changes.append(subj)
+
+    if not changes:
+        changes.append('Update patches')
     return {'changes': changes}
 
 
