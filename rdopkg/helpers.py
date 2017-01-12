@@ -82,6 +82,12 @@ def action_required(msg):
     print("\nOnce done, run `rdopkg -c` to continue.\n")
 
 
+def is_same_hash(h1, h2):
+    if h1 == h2 or h1.startswith(h2) or h2.startswith(h1):
+        return True
+    return False
+
+
 @contextlib.contextmanager
 def cdir(path):
     prev_cwd = os.getcwd()

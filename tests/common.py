@@ -1,5 +1,6 @@
 import os
 import py
+import re
 import shutil
 
 from rdopkg.utils.cmd import git
@@ -62,7 +63,7 @@ def prep_patches_branch(tag='1.2.3'):
     git('checkout', 'master')
 
 
-def _do_patch(fn, content, msg):
+def do_patch(fn, content, msg):
     f = open(fn, 'w')
     f.write(content)
     f.close()
@@ -73,17 +74,30 @@ def _do_patch(fn, content, msg):
 def add_patches(extra=False, filtered=False, tag=None):
     git('checkout', 'master-patches')
     if extra:
-        _do_patch('foofile', "#meh\n", 'Look, excluded patch')
-        _do_patch('foofile', "#nope\n", 'Yet another excluded patch')
-    _do_patch('foofile', "#huehue, change\n", 'Crazy first patch')
+        do_patch('foofile', "#meh\n", 'Look, excluded patch')
+        do_patch('foofile', "#nope\n", 'Yet another excluded patch')
+    do_patch('foofile', "#huehue, change\n", 'Crazy first patch')
     if filtered:
-        _do_patch('foofile', "#fix ci\n", 'DROP-IN-RPM: ci fix')
-        _do_patch('foofile', "#and now for real\n", 'DROP-IN-RPM: moar ci fix')
-    _do_patch('foofile', "#lol, another change\n", 'Epic bugfix of doom MK2')
+        do_patch('foofile', "#fix ci\n", 'DROP-IN-RPM: ci fix')
+        do_patch('foofile', "#and now for real\n", 'DROP-IN-RPM: moar ci fix')
+    do_patch('foofile', "#lol, another change\n", 'Epic bugfix of doom MK2')
     if filtered:
-        _do_patch('foofile', "#oooops\n", 'DROP-IN-RPM: even moar ci fix')
+        do_patch('foofile', "#oooops\n", 'DROP-IN-RPM: even moar ci fix')
     if tag:
         git('tag', tag)
+    git('checkout', 'master')
+
+
+def add_n_patches(n):
+    git('checkout', 'master-patches')
+    for i in range(1, n+1):
+        do_patch('foofile', "#extra patch %d\n" % i, 'Extra patch %d' % i)
+    git('checkout', 'master')
+
+
+def remove_patches(n):
+    git('checkout', 'master-patches')
+    git('reset', '--hard', 'HEAD' + n * '~')
     git('checkout', 'master')
 
 
@@ -106,3 +120,11 @@ def assert_spec_version(version, release_parts, milestone):
     assert spec_version == version
     assert spec_release_parts == release_parts
     assert spec_milestone == milestone
+
+
+def norm_changelog(count=1):
+    spec = Spec()
+    txt, chl = spec.txt.split('%changelog\n')
+    chl, n = re.subn(r'^\* .+\s(\d\S*)$', '* DATE AUTHOR \g<1>', chl, count=count, flags=re.M)
+    spec._txt = txt + '%changelog\n' + chl
+    spec.save()

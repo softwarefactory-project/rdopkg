@@ -100,6 +100,7 @@ def run(action_runner, cargs, version=None):
             exception.InvalidQuery,
             exception.InvalidUsage,
             exception.ManualResolutionNeeded,
+            exception.NoPatchesChanged,
             exception.NotADirectory,
             exception.RequiredActionArgumentNotAvailable,
             exception.RequirementNotMet,

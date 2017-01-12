@@ -121,3 +121,7 @@ class InternalAction(RdopkgException):
 
 class UnverifiedPatch(RdopkgException):
     msg_fmt = "Patch not validated by CI, use --force to override"
+
+
+class NoPatchesChanged(RdopkgException):
+    msg_fmt = "No patches changed"

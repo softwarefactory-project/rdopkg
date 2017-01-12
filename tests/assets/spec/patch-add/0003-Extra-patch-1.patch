@@ -1,0 +1,16 @@
+From 9ac62c97c4c45b8c50efc7263aca49daf3081aed Mon Sep 17 00:00:00 2001
+From: Jakub Ruzicka <jruzicka@redhat.com>
+Date: Wed, 11 Jan 2017 17:37:10 +0100
+Subject: [PATCH] Extra patch 1
+
+---
+ foofile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/foofile b/foofile
+index 93aa8ad..04b4c2b 100644
+--- a/foofile
++++ b/foofile
+@@ -1 +1 @@
+-#lol, another change
++#extra patch 1
