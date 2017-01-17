@@ -66,12 +66,16 @@ def current_branch(default=exception.CantGuess):
 def tag2version(tag):
     if tag and re.match('^v[0-9]', tag):
         return tag[1:], 'vX.Y.Z'
+    if tag and re.match('^V[0-9]', tag):
+        return tag[1:], 'VX.Y.Z'
     return tag, None
 
 
 def version2tag(version, tag_style=None):
     if tag_style == 'vX.Y.Z':
         return 'v' + version
+    if tag_style == 'VX.Y.Z':
+        return 'V' + version
     return version
 
 
@@ -82,6 +86,8 @@ def version_tag_style(version=None):
         return None
     elif git.ref_exists('refs/tags/v' + version):
         return 'vX.Y.Z'
+    elif git.ref_exists('refs/tags/V' + version):
+        return 'VX.Y.Z'
     return None
 
 
