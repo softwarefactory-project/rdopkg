@@ -72,6 +72,8 @@ def tag2version(tag):
 def version2tag(version, tag_style=None):
     if tag_style == 'vX.Y.Z':
         return 'v' + version
+    if tag_style == 'VX.Y.Z':
+        return 'V' + version
     return version
 
 
@@ -82,6 +84,8 @@ def version_tag_style(version=None):
         return None
     elif git.ref_exists('refs/tags/v' + version):
         return 'vX.Y.Z'
+    elif git.ref_exists('refs/tags/V' + version):
+        return 'VX.Y.Z'
     return None
 
 
