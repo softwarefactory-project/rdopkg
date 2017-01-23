@@ -5,16 +5,13 @@ This is the main rdopkg action module with actions for distgit management.
 import itertools
 import os
 import re
-import sys
-import yaml
 
-from rdopkg. action import Action, Arg
 from rdopkg.conf import cfg, cfg_files
 from rdopkg import exception
 from rdopkg import guess
 from rdopkg.actionmods import rdoinfo
 from rdopkg.actionmods import rpmfactory
-from rdopkg.actionmods import reqs as _reqs
+from rdopkg.actions.reqs.actions import reqdiff
 from rdopkg.utils import log
 from rdopkg.utils.cmd import run, git
 from rdopkg.utils import specfile
