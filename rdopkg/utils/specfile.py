@@ -128,6 +128,8 @@ class Spec(object):
         return self._rpmspec
 
     def expand_macro(self, macro):
+        if not RPM_AVAILABLE:
+            raise exception.RpmModuleNotAvailable()
         return rpm.expandMacro(macro)
 
     def get_tag(self, tag, default=exception.SpecFileParseError,
