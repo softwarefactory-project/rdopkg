@@ -135,6 +135,11 @@ a git version tag.
 
 Don't forget to `git fetch --all` before running the action.
 
+You can use the `-N` or `-n` options to control whether `new-version` will
+upload sources to dist-git. By default, rdopkg will automatically enable or
+disable this step based on the dist-git branch name. RHOS-named branches
+(`rhos-*` or `rh-*`) default to `-N`. All other branches default to `-n`.
+
 After running `rdopkg new-version`, new commit will contain the changes.
 
 To just update `.spec` without touching patches branch, `-b`/`--bump-only` can
