@@ -98,9 +98,11 @@ ACTIONS = [
                Arg('no_diff', shortcut='-d', action='store_true',
                    help="don't show git/requirements diff"),
                Arg('new_sources', shortcut='-N', action='store_true',
-                   help="run `fedpkg new-sources` (default: auto)"),
+                   help=("run `fedpkg new-sources`"
+                         " (default: depends on branch name)")),
                Arg('no_new_sources', shortcut='-n', action='store_true',
-                   help="don't run `fedpkg new-sources` (default: auto)"),
+                   help=("don't run `fedpkg new-sources`"
+                         " (default: depends on branch name)")),
            ],
            steps=[
                Action('get_package_env'),

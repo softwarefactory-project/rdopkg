@@ -135,12 +135,17 @@ a git version tag.
 
 Don't forget to `git fetch --all` before running the action.
 
+You can use the `-N`/`--new-sources` or `-n`/`--no-new-sources` options to
+control whether `new-version` will run `fedpkg new-sources`
+(`rhpkg new-sources` on RHOS). By default, `rdopkg` will automatically enable
+or disable this step based on the dist-git branch name. RHOS branches
+(`rhos-*` or `rh-*`) default to `-N`. All other branches default to `-n`.
+
 After running `rdopkg new-version`, new commit will contain the changes.
 
-To just update `.spec` without touching patches branch, `-b`/`--bump-only` can
-be used. You might also occasionally want to skip `fedpkg new-sources` step
-with `-n`/`--no-new-sources`. These two options combined give you local-only
-operation, much like `rpmdev-bumpspec`:
+To only update `.spec` without touching patches branch, `-b`/`--bump-only` can
+be used. Along with `-n`/`--no-new-sources` this enables local-only operation,
+much like `rpmdev-bumpspec`:
 
     rdopkg -bn
 
