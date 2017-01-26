@@ -83,6 +83,8 @@ def action_required(msg):
 
 
 def is_same_hash(h1, h2):
+    if h1 is None or h2 is None:
+        return False
     if h1 == h2 or h1.startswith(h2) or h2.startswith(h1):
         return True
     return False
