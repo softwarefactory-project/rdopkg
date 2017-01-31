@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.42
+Version:          0.43
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -60,6 +60,14 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Tue Jan 31 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.43-1
+- Update to 0.43
+- patch: refactor to properly handle all cases
+- new-version: re-enable reqdiff
+- guess: handle "VX.Y.Z" Git tags
+- specfile: raise when missing rpm lib in expand_macro()
+- Add findpkg integration tests to run_tests.sh
+
 * Tue Nov 22 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.42-1
 - Update to 0.42
 - Counter past %{?milestone} bug
