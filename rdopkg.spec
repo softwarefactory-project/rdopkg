@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.42
+Version:          0.43
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -61,6 +61,34 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Thu Mar 30 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.43-1
+- Update to 0.43
+- new-version: allow fully unattended runs
+- new-version: re-enable reqdiff
+- new-version: don't write patches_base for prefixed tags
+- patch: improve new/old patches detection
+- patch: new --changelog option
+- patch: only create one commit
+- update-patches: deprecate in favor of `rdopkg patch`
+- pkgenv: don't query rdoinfo for obsolete information
+- shell: allow passing action description
+- specfile: raise when missing rpm lib in expand_macro()
+- tests: increase unit test coverage
+- tests: add findpkg integration tests to run_tests.sh
+- tests: skip rpm test when rpm module isn't available
+- tests: remove old test assets
+- tests: run_tests.sh: actually fail on test failure
+- cbsbuild: fix cbsbuild command failure
+- dist: add pytest to test-requirements.txt
+- distgit: better handling for patches_base and ignore
+- distgit: correctly use -f/--force option
+- doc: add virtualenv howto to HACKING and README
+- doc: add documentation on how patches_base is calculated
+- doc: improve docs for new-sources
+- man: give example for patches_ignore
+- guess: handle "VX.Y.Z" Git tags
+- pep8 cleanup 
+
 * Tue Nov 22 2016 Jakub Ruzicka <jruzicka@redhat.com> 0.42-1
 - Update to 0.42
 - Counter past %{?milestone} bug
