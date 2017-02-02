@@ -36,3 +36,6 @@ def test_GerritQuery(monkeypatch):
     mock_result = """{"type":"stats","rowCount":0,"runTimeMilliseconds":4,"moreChanges":false}"""
     r = g('project:ironic')
     assert(None, r)
+
+def test_fail():
+    assert(False)
