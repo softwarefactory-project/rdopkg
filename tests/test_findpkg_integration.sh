@@ -1,7 +1,7 @@
 #!/bin/sh
 # Integration tests for findpkg
 
-set -x
+set -e
 
 GIT_BASE_URL="https://review.rdoproject.org/r/p"
 WORKSPACE="${WORKSPACE:-/tmp}"
@@ -12,6 +12,7 @@ function test_rdopkg_findpkg(){
         echo "$0 FAILED EXPECTED: $@ (GOT: $PKG_NAME)"
         return 1
     fi
+    echo -n .
     return 0
 }
 
@@ -26,6 +27,8 @@ else
     popd
 fi
 
+echo -n "testing findpkg"
+
 test_rdopkg_findpkg glance                          openstack-glance
 test_rdopkg_findpkg glance-distgit                  openstack-glance
 test_rdopkg_findpkg openstack-glance                openstack-glance
@@ -34,3 +37,5 @@ test_rdopkg_findpkg puppet/puppet-glance            puppet-glance
 test_rdopkg_findpkg glanceclient                    python-glanceclient
 test_rdopkg_findpkg openstack/glanceclient-distgit  python-glanceclient
 test_rdopkg_findpkg python-glanceclient             python-glanceclient
+
+echo 'OK'
