@@ -109,11 +109,7 @@ class Spec(object):
     Lazy .spec file parser and editor.
     """
 
-    RE_PATCH = r'(?:^|\n)(Patch\d+:)'
     RE_AFTER_SOURCES = r'((?:^|\n)Source\d*:[^\n]*\n\n?)'
-    RE_AFTER_PATCHES_BASE = (
-        r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
-        r'\t]*\n)*)\n*')
     RE_MACRO_BASE = r'%global\s+{0}\s+'
 
     def __init__(self, fn=None, txt=None):
@@ -342,25 +338,35 @@ class Spec(object):
             if apply_method == 'rpm':
                 pa += "%%patch%04d -p1\n" % i
         # PatchXXX: lines after Source0 / #patches_base=
-        self._txt, n = re.subn(
-            self.RE_AFTER_PATCHES_BASE,
-            r'\g<1>%s\n' % ps, self.txt, count=1)
+        lines = self.txt.split('\n')
+        idx = -1
+        searching = True
+        for i, line in enumerate(lines):
+            if searching:
+                if re.match(r'Source\d+\w*:', line):
+                    # last SourceX: as a fallback
+                    idx = i
+                elif re.match(r'#\s*patches_base\s*=', line):
+                    # found patches_base line
+                    idx = i
+                    searching = False
+            else:
+                # skip commented lines after patches_base
+                if line.startswith('#'):
+                    idx = i
+                else:
+                    break
+        if idx < 0:
+            raise exception.SpecFileParseError(
+                spec_fn=self.fn,
+                error="Failed to append PatchXXXX: lines")
+        idx += 1
+        if idx < len(lines) and re.match('^\s*$', lines[idx]):
+            # no need for extra newline
+            ps = ps[:-1]
+        lines.insert(idx, ps)
+        self._txt = "\n".join(lines)
 
-        if n != 1:
-            m = None
-            for m in re.finditer(self.RE_AFTER_SOURCES, self.txt):
-                pass
-            if not m:
-                raise exception.SpecFileParseError(
-                    spec_fn=self.fn,
-                    error="Failed to append PatchXXXX: lines")
-            i = m.end()
-            startnl, endnl = '', ''
-            if self._txt[i-2] != '\n':
-                startnl += '\n'
-            if self._txt[i] != '\n':
-                endnl += '\n'
-            self._txt = self._txt[:i] + startnl + ps + endnl + self._txt[i:]
         # %patchXXX -p1 lines after "%setup" if needed
         if apply_method == 'rpm':
             self._txt, n = re.subn(
