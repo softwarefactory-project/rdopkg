@@ -1,5 +1,5 @@
 #!/bin/sh
-set -x
+set -ex
 
 PYTHONPATH=. py.test $@
 pep8 rdopkg
