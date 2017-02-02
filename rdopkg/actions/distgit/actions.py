@@ -637,10 +637,13 @@ def _commit_message(changes=None):
     return msg
 
 
-def commit_distgit_update(branch=None):
+def commit_distgit_update(branch=None, amend=False):
     _ensure_branch(branch)
     msg = _commit_message()
-    git('commit', '-a', '-F', '-', input=msg, print_output=True)
+    cmd = ['commit', '-a', '-F', '-']
+    if amend:
+        cmd.append('--amend')
+    git(*cmd, input=msg, print_output=True)
 
 
 def amend():
