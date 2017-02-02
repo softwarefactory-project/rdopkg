@@ -79,7 +79,7 @@ ACTIONS = [
                Action('update_patches',
                       const_args={'require_patches_change': True}),
                Action('update_spec'),
-               Action('commit_distgit_update'),
+               Action('commit_distgit_update', const_args={'amend': True}),
                Action('final_spec_diff'),
            ]),
     Action('new_version', help="update package to new upstream version",

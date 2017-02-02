@@ -28,7 +28,9 @@ def _test_patch(asset, version, dir):
 
         common.assert_spec_version(spec_version, spec_release_parts,
                                    spec_milestone)
-        assert commit_before != commit_after
+        assert commit_before != commit_after, "No commit created"
+        prev = git('rev-parse', 'HEAD~')
+        assert prev == commit_before, "Multiple commits created"
 
 
 def test_patch_milestone(tmpdir):
