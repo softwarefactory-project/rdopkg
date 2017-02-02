@@ -112,8 +112,8 @@ class Spec(object):
     RE_PATCH = r'(?:^|\n)(Patch\d+:)'
     RE_AFTER_SOURCES = r'((?:^|\n)Source\d*:[^\n]*\n\n?)'
     RE_AFTER_PATCHES_BASE = (
-        r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
-        r'\t]*\n)*)\n*')
+        r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n'
+        '(?:#[^\n]*\n)*)\n*')
     RE_MACRO_BASE = r'%global\s+{0}\s+'
 
     def __init__(self, fn=None, txt=None):
