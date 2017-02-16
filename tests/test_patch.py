@@ -1,7 +1,6 @@
 from rdopkg.cli import rdopkg
-from rdopkg.utils.cmd import git, run
+from rdopkg.utils.cmd import git
 from rdopkg.utils import log
-from rdopkg.utils import specfile
 
 import common
 from common import DIST_POSTFIX
