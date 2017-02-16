@@ -381,7 +381,7 @@ class Spec(object):
                     error="Failed to append PatchXXXX: lines")
             i = m.end()
             startnl, endnl = '', ''
-            if self._txt[i-2] != '\n':
+            if self._txt[i - 2] != '\n':
                 startnl += '\n'
             if self._txt[i] != '\n':
                 endnl += '\n'
