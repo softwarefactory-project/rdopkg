@@ -53,4 +53,3 @@ def test_new_version_milestone(tmpdir):
         ('4.0.0', '4.0.0', ('1', '', DIST_POSTFIX), None),
     ]
     _test_new_version('some', tmpdir, steps)
-
