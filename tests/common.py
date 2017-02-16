@@ -5,7 +5,6 @@ import shutil
 
 from rdopkg.utils.cmd import git
 from rdopkg.utils.specfile import Spec
-from rdopkg.utils import log
 
 
 ASSETS_DIR = 'tests/assets'
