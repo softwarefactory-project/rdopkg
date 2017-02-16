@@ -4,6 +4,15 @@ from rdopkg.utils import log
 
 import common
 from common import DIST_POSTFIX
+import pytest
+
+RPM_AVAILABLE = False
+try:
+    import rpm  # NOQA
+    import rpmUtils.miscutils  # NOQA
+    RPM_AVAILABLE = True
+except ImportError:
+    pass
 
 
 def _test_new_version(asset, dir, steps):
@@ -26,6 +35,7 @@ def _test_new_version(asset, dir, steps):
             assert commit_before != commit_after
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_new_version_basic(tmpdir):
     steps = [
         ('3.4.5', '3.4.5', ('1', '', DIST_POSTFIX), None),
@@ -34,6 +44,7 @@ def test_new_version_basic(tmpdir):
     _test_new_version('some', tmpdir, steps)
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_new_version_milestone(tmpdir):
     steps = [
         ('3.4.5', '3.4.5', ('1', '', DIST_POSTFIX), None),
