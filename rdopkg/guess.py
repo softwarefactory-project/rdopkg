@@ -2,11 +2,10 @@ import os
 import re
 
 import exception
-from utils.cmd import run, git, GerritQuery
+from utils.cmd import git, GerritQuery
 from utils import specfile
 from utils import log
 from rdopkg.actionmods import rdoinfo
-from rdopkg.conf import cfg
 
 
 def package(default=exception.CantGuess):
