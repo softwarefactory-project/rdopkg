@@ -80,52 +80,42 @@ def test_get_nvr():
 
 def test_patches_base_add_patched(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
-    spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        spec_before = spec_path.read()
         spec = specfile.Spec()
         ver, np = spec.get_patches_base()
         assert ver is None
         assert np == 0
         spec.set_patches_base('+2')
         spec.save()
-        spec_after = spec_path.read()
     common.assert_distgit(dist_path, 'patched-ex')
 
 
 def test_patches_base_add_empty(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty')
-    spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        spec_before = spec_path.read()
         spec = specfile.Spec()
         ver, np = spec.get_patches_base()
         assert ver is None
         assert np == 0
         spec.set_patches_base_version('+2')
         spec.save()
-        spec_after = spec_path.read()
     common.assert_distgit(dist_path, 'empty-ex')
 
 
 def test_patches_base_noop_weird(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty-weird')
-    spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
-        spec_before = spec_path.read()
         spec = specfile.Spec()
         ver, np = spec.get_patches_base()
         assert ver == 'banana'
         assert np == 2
         spec.set_patches_base_version('banana')
         spec.save()
-        spec_after = spec_path.read()
     common.assert_distgit(dist_path, 'empty-weird')
 
 
 def test_set_commit_ref_macro(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'commit')
-    spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
         spec = specfile.Spec()
         spec.set_commit_ref_macro('86a713c35718520cb3b681260182a8388ac809f3')

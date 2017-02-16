@@ -8,7 +8,6 @@ from common import DIST_POSTFIX
 
 def _test_new_version(asset, dir, steps):
     dist_path = common.prep_spec_test(dir, asset)
-    spec_path = dist_path.join('foo.spec')
     log.log.setLevel(log.WARN)
 
     with dist_path.as_cwd():
