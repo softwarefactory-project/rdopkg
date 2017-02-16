@@ -95,15 +95,16 @@ def get_fedpkg_cli(config=None, flog=None):
 
 def new_build(watch=True):
     modules_check()
-    flog = setup_fedpkg_logger()
+    flog = setup_fedpkg_logger()  # NOQA
     fcmd = get_fedpkg_commands()
-    target = fcmd.target
     task_id = fcmd.build()
 
     if watch:
         print('')
         try:
             cli = get_fedpkg_cli()
+            # TODO: might be good to push this return data back up
+            #       or check the status of the return
             r = cli._watch_koji_tasks(fcmd.kojisession, [task_id])
         except ConfigParser.NoSectionError:
             # <C-C> causes this for some reason
