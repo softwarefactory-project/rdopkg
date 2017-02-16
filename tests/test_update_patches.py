@@ -2,7 +2,7 @@ import shutil
 import pytest
 
 from rdopkg.actions.distgit.actions import update_patches
-from rdopkg.utils.cmd import git, run
+from rdopkg.utils.cmd import git
 from rdopkg.utils import specfile
 import rdopkg.utils.exception
 
