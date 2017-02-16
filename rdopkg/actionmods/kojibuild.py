@@ -3,20 +3,17 @@ Because fedpkg/pyrpkg sucks horribly, this entire file full of hacks is
 needed to interface with it. Disgusting.
 """
 import ConfigParser
-import datetime
 import logging
 import sys
-import time
 import os
 
 from rdopkg import exception
 from rdopkg.utils.log import log
-from rdopkg import guess
 
 
 KOJI_AVAILABLE = False
 try:
-    import koji
+    import koji  # NOQA
     KOJI_AVAILABLE = True
 except ImportError:
     pass
