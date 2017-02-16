@@ -195,7 +195,7 @@ class Spec(object):
 
         try:
             n_commits = int(n_commits)
-        except ValueError as e:
+        except ValueError:
             n_commits = 0
         return patches_base_ref, n_commits
 
