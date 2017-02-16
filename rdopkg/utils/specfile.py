@@ -382,6 +382,8 @@ class Spec(object):
         return False
 
     def set_macro(self, macro, value):
+        if not RPM_AVAILABLE:
+            raise exception.RpmModuleNotAvailable()
         rex = self.RE_MACRO_BASE.format(re.escape(macro))
         rpm.delMacro(macro)
         if value:
