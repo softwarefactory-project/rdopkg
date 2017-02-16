@@ -19,7 +19,6 @@ except ImportError:
 
 def _test_patch(asset, version, dir):
     dist_path = common.prep_spec_test(dir, asset)
-    spec_path = dist_path.join('foo.spec')
     log.log.setLevel(log.WARN)
 
     with dist_path.as_cwd():
@@ -58,7 +57,6 @@ def test_patch_milestone_bug(tmpdir):
 def test_patch_remove(tmpdir):
 
     dist_path = common.prep_spec_test(tmpdir, 'patched')
-    spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
         common.prep_patches_branch()
         common.add_patches()
@@ -78,7 +76,6 @@ def test_patch_remove(tmpdir):
 @pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_add(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
-    spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
         common.prep_patches_branch()
         common.add_patches()
@@ -98,7 +95,6 @@ def test_patch_add(tmpdir):
 @pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_mix(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
-    spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
         common.prep_patches_branch()
         common.add_patches()
@@ -118,7 +114,6 @@ def test_patch_mix(tmpdir):
 
 def test_patch_noop(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
-    spec_path = dist_path.join('foo.spec')
     with dist_path.as_cwd():
         common.prep_patches_branch()
         common.add_patches()
