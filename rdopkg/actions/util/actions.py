@@ -30,7 +30,7 @@ def actions():
 
 def autocomplete():
     try:
-        import argcomplete
+        import argcomplete  # NOQA
         print("argcomplete module is available.")
     except ImportError:
         print(
