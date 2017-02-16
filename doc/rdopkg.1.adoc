@@ -103,13 +103,17 @@ By default, `rdopkg` resets local patches branch to remote patches branch.
 You can skip this this with `--local-patches` to directly use local patches
 branch as is.
 
-Note that `patch` is a high level wrapper of `update-patches` action. If
-you're interested in just updating patches in `.spec` file from local patches
-branch, try using `update-patches` action instead.
-
 Don't forget to `git fetch` before running the action.
 
 After running `rdopkg patch`, new commit will contain the changes.
+
+You can use `-C`/`--changelog` option to select how `rdopkg` detects new/old
+patches and changelog message:
+
+  * `detect`: detect new/old patches using commit hash/subject (default)
+  * `count`: count old and new patches (doesn't work for simultaneous
+     removal & addition of patches and rewriting -patches history)
+  * `plain`: just use generic "- Update patches" message
 
 *Flow:*
 

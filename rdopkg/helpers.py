@@ -1,6 +1,7 @@
 import collections
 import contextlib
 import os
+import re
 import yaml
 
 import exception
@@ -86,6 +87,18 @@ def is_same_hash(h1, h2):
     if h1 is None or h2 is None:
         return False
     if h1 == h2 or h1.startswith(h2) or h2.startswith(h1):
+        return True
+    return False
+
+
+def strip_patch_subject(subj):
+    return re.sub(r'^\[PATCH\]\s+', '', subj.strip())
+
+
+def is_same_subject(s1, s2):
+    if s1 is None or s2 is None:
+        return False
+    if strip_patch_subject(s1) == strip_patch_subject(s2):
         return True
     return False
 

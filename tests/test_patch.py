@@ -59,8 +59,6 @@ def test_patch_remove(tmpdir):
     with dist_path.as_cwd():
         common.prep_patches_branch()
         common.add_patches()
-        # regen patch files in order for hashes to match git
-        rdopkg('update-patches', '--amend')
         commit_before = git('rev-parse', 'HEAD')
         common.remove_patches(1)
         rdopkg('patch', '-l')
@@ -78,8 +76,6 @@ def test_patch_add(tmpdir):
     with dist_path.as_cwd():
         common.prep_patches_branch()
         common.add_patches()
-        # regen patch files in order for hashes to match git
-        rdopkg('update-patches', '--amend')
         commit_before = git('rev-parse', 'HEAD')
         common.add_n_patches(3)
         rdopkg('patch', '-l')
@@ -97,8 +93,6 @@ def test_patch_mix(tmpdir):
     with dist_path.as_cwd():
         common.prep_patches_branch()
         common.add_patches()
-        # regen patch files in order for hashes to match git
-        rdopkg('update-patches', '--amend')
         commit_before = git('rev-parse', 'HEAD')
         common.remove_patches(1)
         common.add_n_patches(3)
@@ -111,17 +105,64 @@ def test_patch_mix(tmpdir):
     assert git_clean, "git not clean after action"
 
 
-def test_patch_noop(tmpdir):
-    dist_path = common.prep_spec_test(tmpdir, 'patched')
+def _test_patch_noop(tmpdir, distgit, cmd):
+    dist_path = common.prep_spec_test(tmpdir, distgit)
     with dist_path.as_cwd():
         common.prep_patches_branch()
         common.add_patches()
         # regen patch files in order for hashes to match git
         rdopkg('update-patches', '--amend')
         commit_before = git('rev-parse', 'HEAD')
-        rdopkg('patch', '-l')
+        rdopkg(*cmd)
         commit_after = git('rev-parse', 'HEAD')
         git_clean = git.is_clean()
-    common.assert_distgit(dist_path, 'patched')
+    common.assert_distgit(dist_path, distgit)
     assert commit_before == commit_after, "New commit created for noop"
     assert git_clean, "git not clean after action"
+
+
+def test_patch_noop(tmpdir):
+    _test_patch_noop(tmpdir, 'patched', ['patch', '-l'])
+
+
+def test_patch_noop_detect(tmpdir):
+    _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '--changelog', 'detect'])
+
+
+def test_patch_noop_count(tmpdir):
+    _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '--changelog', 'count'])
+
+
+def test_patch_noop_plain(tmpdir):
+    _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '-C', 'plain'])
+
+
+def _test_patch_regen(tmpdir, distgit, distgit_after, cmd):
+    dist_path = common.prep_spec_test(tmpdir, distgit)
+    with dist_path.as_cwd():
+        common.prep_patches_branch()
+        common.add_patches()
+        commit_before = git('rev-parse', 'HEAD')
+        rdopkg(*cmd)
+        commit_after = git('rev-parse', 'HEAD')
+        git_clean = git.is_clean()
+        common.norm_changelog()
+    common.assert_distgit(dist_path, distgit_after)
+    assert commit_before != commit_after, "New commit not created after patch regen"
+    assert git_clean, "git not clean after action"
+
+
+def test_patch_regen(tmpdir):
+    _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l'])
+
+
+def test_patch_regen_detect(tmpdir):
+    _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l', '-C', 'detect'])
+
+
+def test_patch_regen_count(tmpdir):
+    _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l', '-C', 'count'])
+
+
+def test_patch_regen_plain(tmpdir):
+    _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l', '--changelog', 'plain'])
