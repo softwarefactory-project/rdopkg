@@ -90,7 +90,7 @@ def add_patches(extra=False, filtered=False, tag=None):
 
 def add_n_patches(n):
     git('checkout', 'master-patches')
-    for i in range(1, n+1):
+    for i in range(1, n + 1):
         do_patch('foofile', "#extra patch %d\n" % i, 'Extra patch %d' % i)
     git('checkout', 'master')
 
