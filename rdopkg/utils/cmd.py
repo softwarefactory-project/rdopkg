@@ -116,7 +116,7 @@ class Git(ShellCommand):
             return
         if remote_branch is None:
             for rbr in self.remote_branches():
-                br = rbr[rbr.find('/')+1:]
+                br = rbr[rbr.find('/') + 1:]
                 if rbr == branch or br == branch:
                     remote_branch = rbr
         elif remote_branch not in self.remote_branches():
@@ -310,7 +310,7 @@ class Git(ShellCommand):
         self("checkout", branch)
 
     def remove(self, hash):
-        self('rebase', '--onto', hash+'^', hash, '--preserve-merges',
+        self('rebase', '--onto', hash + '^', hash, '--preserve-merges',
              '--committer-date-is-author-date')
 
 
