@@ -90,6 +90,14 @@ def is_same_hash(h1, h2):
     return False
 
 
+def is_same_subject(s1, s2):
+    if s1 is None or s2 is None:
+        return False
+    if s1 == s2 or s1 in s2 or s2 in s1:
+        return True
+    return False
+
+
 @contextlib.contextmanager
 def cdir(path):
     prev_cwd = os.getcwd()

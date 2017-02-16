@@ -1,0 +1,16 @@
+From d6aeed799e4f7c7d3c64aa7d741826d4a2eab7c0 Mon Sep 17 00:00:00 2001
+From: Jakub Ruzicka <jruzicka@redhat.com>
+Date: Tue, 28 Mar 2017 11:07:41 +0200
+Subject: [PATCH] Epic bugfix of doom MK2
+
+---
+ foofile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/foofile b/foofile
+index fd11acc..93aa8ad 100644
+--- a/foofile
++++ b/foofile
+@@ -1 +1 @@
+-#huehue, change
++#lol, another change

@@ -486,47 +486,74 @@ def rebase_patches_branch(new_version, local_patches_branch,
 def check_new_patches(version, local_patches_branch,
                       patches_style=None, local_patches=False,
                       patches_branch=None, changes=None,
-                      version_tag_style=None):
+                      version_tag_style=None, changelog=None):
     if not changes:
         changes = []
-    if local_patches or patches_style == 'review':
-        head = local_patches_branch
+    if changelog:
+        changelog = changelog.lower()
     else:
-        if not patches_branch:
-            raise exception.RequiredActionArgumentNotAvailable(
-                action='check_new_patches', arg='patches_branch')
-        head = patches_branch
+        # default changelog format
+        changelog = 'detect'
 
-    version_tag = guess.version2tag(version, version_tag_style)
-    patches = git.get_commit_bzs(version_tag, head)
-    old_patches = specfile.get_patches_from_files()
-    spec = specfile.Spec()
+    if changelog == 'detect' or changelog == 'count':
+        if local_patches or patches_style == 'review':
+            head = local_patches_branch
+        else:
+            if not patches_branch:
+                raise exception.RequiredActionArgumentNotAvailable(
+                    action='check_new_patches', arg='patches_branch')
+            head = patches_branch
 
-    n_git_patches = len(patches)
-    n_ignore_patches = 0
-    ignore_regex = spec.get_patches_ignore_regex()
-    if ignore_regex:
-        patches = (flatten(_partition_patches(patches, ignore_regex)))
-        n_ignore_patches = n_git_patches - len(patches)
+        version_tag = guess.version2tag(version, version_tag_style)
+        patches = git.get_commit_bzs(version_tag, head)
+        old_patches = specfile.get_patches_from_files()
+        spec = specfile.Spec()
 
-    n_skip_patches = spec.get_n_excluded_patches()
-    if n_skip_patches > 0:
-        patches = patches[0:-n_skip_patches]
+        n_git_patches = len(patches)
+        n_ignore_patches = 0
+        ignore_regex = spec.get_patches_ignore_regex()
+        if ignore_regex:
+            patches = (flatten(_partition_patches(patches, ignore_regex)))
+            n_ignore_patches = n_git_patches - len(patches)
 
-    log.debug("Total patches in git:%d skip:%d ignore:%d" % (
-        n_git_patches, n_skip_patches, n_ignore_patches))
+        n_skip_patches = spec.get_n_excluded_patches()
+        if n_skip_patches > 0:
+            patches = patches[0:-n_skip_patches]
 
-    for hash, subj, bzs in patches:
-        new_patch = True
-        for _, old_hash, _ in old_patches:
-            if helpers.is_same_hash(hash, old_hash):
-                new_patch = False
-                break
-        if new_patch:
+        log.debug("Total patches in git:%d skip:%d ignore:%d" % (
+            n_git_patches, n_skip_patches, n_ignore_patches))
+
+        if changelog == 'detect':
+            # detect new/old patches by hash/subject
+            def _patch_filter(c):
+                hash, subj, bzs = c
+                for _, old_hash, old_subj in old_patches:
+                    if helpers.is_same_hash(hash, old_hash):
+                        return False
+                    if helpers.is_same_subject(subj, old_subj):
+                        # maybe more relaxed match on subjects?
+                        return False
+                return True
+            patches = filter(_patch_filter, patches)
+
+        elif changelog == 'count':
+            # assume no removed patches, include new ones in changelog
+            n_base_patches = n_skip_patches + spec.get_n_patches()
+            if n_base_patches > 0:
+                patches = patches[0:-n_base_patches]
+
+        for _, subj, bzs in patches:
             bzstr = ' '.join(map(lambda x: 'rhbz#%s' % x, bzs))
             if bzstr:
                 subj += ' (%s)' % bzstr
             changes.append(subj)
+
+    elif changelog == 'plain':
+        # just leave a generic message without inspecting commits (see below)
+        pass
+    else:
+        raise exception.InvalidUsage(
+            why="Not a valid changelog format: %s" % changelog)
 
     if not changes:
         changes.append('Update patches')
