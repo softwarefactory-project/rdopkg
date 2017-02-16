@@ -6,6 +6,16 @@ from rdopkg.utils import specfile
 import common
 from common import DIST_POSTFIX
 
+import pytest
+
+RPM_AVAILABLE = False
+try:
+    import rpm  # NOQA
+    import rpmUtils.miscutils  # NOQA
+    RPM_AVAILABLE = True
+except ImportError:
+    pass
+
 
 def _test_patch(asset, version, dir):
     dist_path = common.prep_spec_test(dir, asset)
@@ -33,15 +43,18 @@ def _test_patch(asset, version, dir):
         assert prev == commit_before, "Multiple commits created"
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_milestone(tmpdir):
     _test_patch('milestone', ('1.2.3', ('0.4', '%{?milestone}', DIST_POSTFIX), '.0rc2'), tmpdir)
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_milestone_bug(tmpdir):
     # make sure rdopkg removes unwanted '%global milestone %{?milestone}'
     _test_patch('milestone-bug', ('1.2.3', ('0.4', '', DIST_POSTFIX), None), tmpdir)
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_remove(tmpdir):
 
     dist_path = common.prep_spec_test(tmpdir, 'patched')
@@ -62,6 +75,7 @@ def test_patch_remove(tmpdir):
     assert git_clean, "git not clean after action"
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_add(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
     spec_path = dist_path.join('foo.spec')
@@ -81,6 +95,7 @@ def test_patch_add(tmpdir):
     assert git_clean, "git not clean after action"
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_mix(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
     spec_path = dist_path.join('foo.spec')
