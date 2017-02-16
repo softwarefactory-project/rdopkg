@@ -6,6 +6,7 @@ from distutils.spawn import find_executable
 import os
 import subprocess
 
+from rdopkg.utils.exception import ModuleNotAvailable, RpmModuleNotAvailable
 from rdopkg.utils.specfile import spec_fn, Spec
 from rdopkg.utils.log import log
 from rdopkg import guess
@@ -40,9 +41,9 @@ def new_build(profile='cbs', scratch=True):
     # Very ugly: some utilities are only available in koji CLI
     # and not in the koji module
     if not KOJI_AVAILABLE:
-        raise exception.ModuleNotAvailable(module='koji')
+        raise ModuleNotAvailable(module='koji')
     if not RPM_AVAILABLE:
-        raise exception.ModuleNotAvailable(module='rpm')
+        raise RpmModuleNotAvailable()
     import imp
     kojibin = find_executable('koji')
     kojicli = imp.load_source('kojicli', kojibin)
@@ -108,7 +109,7 @@ def create_srpm(dist='el7'):
     dist: set package dist tag (default: el7)
     """
     if not RPM_AVAILABLE:
-        raise exception.ModuleNotAvailable(module='rpm')
+        raise RpmModuleNotAvailable()
     path = os.getcwd()
     try:
         specfile = spec_fn()
