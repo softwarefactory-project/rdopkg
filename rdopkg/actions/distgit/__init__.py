@@ -70,6 +70,9 @@ ACTIONS = [
                    help="top gerrit review id of the patch chain"),
                Arg('force', shortcut='--force', action='store_true',
                    help="use patch even if it was not validated in CI"),
+               Arg('changelog', shortcut='-C',
+                   metavar='STYLE',
+                   help="Changelog style, one of: "),
            ],
            steps=[
                Action('get_package_env'),
