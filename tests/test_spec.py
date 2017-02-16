@@ -3,6 +3,8 @@ from rdopkg.utils import specfile
 
 import common
 
+DEBUG = False
+
 
 def _assert_vparts(version, numeric, rest):
     parts = specfile.version_parts(version)
@@ -63,8 +65,12 @@ def _assert_nvr(nvr, epoch_arg, result):
                 spec_fn='TESTING', error='Pretending Epoch tag not found')
         return "MOCKED-OUT-NVR"
 
+    def _expand_macro(macro):
+        return macro
+
     spec = specfile.Spec()
     spec.get_tag = _get_tag_mock
+    spec.expand_macro = _expand_macro
     nvr = spec.get_nvr(epoch=epoch_arg)
     assert nvr == result
 
