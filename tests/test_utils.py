@@ -25,6 +25,7 @@ def test_url_tidying():
 def test_GerritQuery(monkeypatch):
     mock_result = """{"project":"ironic","branch":"liberty-patches","topic":"p1","id":"Ie0db0345c9d5f9ad3d2ec4880e084cd38d06a6dc","number":"368","subject":"Set default DB location","owner":{"name":"Fabien Boucher","email":"fabien.dot.boucher@gmail.com","username":"morucci"},"url":"http://rpmfactory.beta.rdoproject.org/r/368","commitMessage":"Set default DB location","createdOn":1453933391,"lastUpdated":1456332266,"open":true,"status":"NEW"}
 {"type":"stats","rowCount":1,"runTimeMilliseconds":4,"moreChanges":true}"""
+
     def mock_run(*args, **kwargs):
         return mock_result
     monkeypatch.setattr(utils.cmd, 'run', mock_run)
