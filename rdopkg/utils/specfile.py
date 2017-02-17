@@ -258,7 +258,7 @@ class Spec(object):
         else:
             if v is not None:
                 self._txt = re.sub(
-                    r'(?:\n#)*\s*%s\s*=[^\n]*\n(?:#\n)*' % re.escape(name),
+                    r'(?:\n#)*\s*%s\s*=[^\n]*(?:\n#)*' % re.escape(name),
                     '', self.txt, flags=re.M)
 
     def set_patches_base(self, base):
