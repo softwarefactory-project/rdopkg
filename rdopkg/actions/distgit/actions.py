@@ -576,7 +576,8 @@ def update_spec(branch=None, changes=None,
     else:
         spec.bump_release(milestone=new_milestone)
     if new_patches_base:
-        if new_patches_base == new_rpm_version:
+        new_patches_base_version, _ = guess.tag2version(new_patches_base)
+        if new_patches_base_version == new_rpm_version:
             new_patches_base = None
         changed = spec.set_patches_base_version(new_patches_base)
         if not changed:
