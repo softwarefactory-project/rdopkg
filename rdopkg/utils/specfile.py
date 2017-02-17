@@ -253,7 +253,7 @@ class Spec(object):
         else:
             if v is not None:
                 self._txt = re.sub(
-                    r'(?:\n#)+\s*patches_base\s*=[^\n]*\n(?:#\n)*',
+                    r'(?:\n#)+\s*patches_base\s*=[^\n]*(?:\n#)*',
                     '', self.txt, flags=re.M)
 
     def set_patches_base_version(self, version, ignore_macros=True):
