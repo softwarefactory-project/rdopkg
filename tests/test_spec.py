@@ -147,3 +147,25 @@ def test_get_patches_ignore_regex_fail(tmpdir):
         spec = specfile.Spec()
         regex = spec.get_patches_ignore_regex()
         assert regex is None
+
+
+def test_new_version_patches_base_ignore_load(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'upgrade_patches_ignore_base')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        assert spec.get_patches_ignore_regex().pattern == 'DROP-IN-RPM'
+        assert spec.get_patches_base() == ('1.2.3', 0)
+
+
+def test_new_version_patches_base_ignore_new_version(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'upgrade_patches_ignore_base')
+    with dist_path.as_cwd():
+        spec2 = specfile.Spec()
+        spec2.set_tag('Version', '1.2.4')
+        spec2.set_release('1')
+        spec2.set_patches_base_version(None)
+        spec2.save()
+        spec2 = None
+        spec = specfile.Spec()
+        assert spec.get_patches_ignore_regex().pattern == 'DROP-IN-RPM'
+        assert spec.get_patches_base() == ('1.2.4', 0)
