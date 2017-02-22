@@ -10,11 +10,8 @@ URL:              http://pypi.python.org/pypi/%{name}
 Source0:          http://pypi.python.org/packages/source/f/%{name}/%{name}-%{version}.tar.gz
 
 #
-# patches_ignore=DROP-IN-RPM
-#
-
-#
 # patches_base=+2
+# patches_ignore=DROP-IN-RPM
 #
 Patch0001: 0001-Crazy-first-patch.patch
 Patch0002: 0002-Epic-bugfix-of-doom-MK2.patch

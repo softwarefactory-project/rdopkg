@@ -10,11 +10,8 @@ URL:              http://pypi.python.org/pypi/%{name}
 Source0:          http://pypi.python.org/packages/source/f/%{name}/%{name}-%{version}.tar.gz
 
 #
-# patches_ignore=DROP-IN-RPM
-#
-
-#
 # patches_base=+2
+# patches_ignore=DROP-IN-RPM
 #
 
 BuildArch:        noarch
