@@ -562,7 +562,7 @@ def get_upstream_patches(version, local_patches_branch,
 
 def update_spec(branch=None, changes=None,
                 new_rpm_version=None, new_release=None,
-                new_milestone=None, new_patches_base=None):
+                new_milestone=None, patches_base=None, patches_ignore=None):
     if not changes:
         changes = []
     _ensure_branch(branch)
@@ -582,13 +582,16 @@ def update_spec(branch=None, changes=None,
             spec.set_release(new_release)
     else:
         spec.bump_release(milestone=new_milestone)
-    if new_patches_base:
-        new_patches_base_version, _ = guess.tag2version(new_patches_base)
-        if new_patches_base_version == new_rpm_version:
-            new_patches_base = None
-        changed = spec.set_patches_base_version(new_patches_base)
+    if patches_base:
+        if patches_base == new_rpm_version:
+            patches_base = None
+        changed = spec.set_patches_base_version(patches_base)
+        spec.set_magic_comment('patches_base', patches_base)
         if not changed:
             log.info("Macro detected in patches_base - not touching that.")
+    if patches_ignore:
+        spec.set_magic_comment('patches_ignore', patches_ignore)
+        pass
     spec.new_changelog_entry(user=guess.user(), email=guess.email(),
                              changes=changes)
     spec.save()

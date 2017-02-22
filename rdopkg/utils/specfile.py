@@ -112,8 +112,8 @@ class Spec(object):
     RE_PATCH = r'(?:^|\n)(Patch\d+:)'
     RE_AFTER_SOURCES = r'((?:^|\n)Source\d*:[^\n]*\n\n?)'
     RE_AFTER_PATCHES_BASE = (
-        r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
-        r'\t]*\n)*)\n*')
+        r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n'
+        '(?:#[^\n]*\n)*)\n*')
     RE_MACRO_BASE = r'%global\s+{0}\s+'
 
     def __init__(self, fn=None, txt=None):
@@ -179,23 +179,31 @@ class Spec(object):
             return ''
         return m.group(1)
 
+    def get_magic_comment(self, name, expand_macros=False):
+        """Return a value of # name=value comment in spec or None."""
+        match = re.search(r'^#\s?%s\s?=\s?(\S+)' % re.escape(name),
+                          self.txt, flags=re.M)
+        if not match:
+            return None
+
+        val = match.group(1)
+        if expand_macros and has_macros(val):
+            # don't parse using rpm unless required
+            val = self.expand_macro(val)
+        return val
+
     def get_patches_base(self, expand_macros=False):
         """Return a tuple (version, number_of_commits) that are parsed
         from the patches_base in the specfile.
         """
-        match = re.search(r'(?<=patches_base=)[\w.+?%{}]+', self.txt)
-        if not match:
+        patches_base = self.get_magic_comment('patches_base',
+                                              expand_macros=expand_macros)
+        if not patches_base:
             return None, 0
-
-        patches_base = match.group()
-        if expand_macros and has_macros(patches_base):
-            # don't parse using rpm unless required
-            patches_base = self.expand_macro(patches_base)
         patches_base_ref, _, n_commits = patches_base.partition('+')
-
         try:
             n_commits = int(n_commits)
-        except ValueError as e:
+        except ValueError:
             n_commits = 0
         return patches_base_ref, n_commits
 
@@ -213,29 +221,26 @@ class Spec(object):
         Only a very limited subset of characters are accepted so no fancy stuff
         like matching groups etc.
         """
-        match = re.search(r'# *patches_ignore=([\w *.+?[\]{,}\-_]+)', self.txt)
-        if not match:
-            return None
-        regex_string = match.group(1)
+        regex_string = self.get_magic_comment('patches_ignore')
         try:
             return re.compile(regex_string)
         except:
             return None
 
-    def _create_new_patches_base(self, base):
+    def _create_new_magic_comment(self, name, value):
         self._txt, n = re.subn(
             self.RE_PATCH,
-            r'\n#\n# patches_base=%s\n#\n\g<1>' % base,
+            r'\n#\n# %s=%s\n#\n\g<1>' % (name, value),
             self.txt, count=1, flags=re.M)
         if n != 1:
             self._txt, n = re.subn(
                 self.RE_AFTER_SOURCES,
-                r'\g<1>#\n# patches_base=%s\n#\n\n' % base,
+                r'\g<1>#\n# %s=%s\n#\n\n' % (name, value),
                 self.txt, count=1, flags=re.M)
         if n != 1:
             raise exception.SpecFileParseError(
                 spec_fn=self.fn,
-                error="Unable to create new #patches_base entry.")
+                error="Unable to create new #%s entry." % name)
 
     def set_patches_base(self, base):
         v, _ = self.get_patches_base()
@@ -261,18 +266,34 @@ class Spec(object):
                         error="Unable to set new #patches_base")
                 self._txt = '\n'.join(lines)
 
+    def set_magic_comment(self, name, value):
+        v = self.get_magic_comment(name)
+        if value:
+            if v is None:
+                self._create_new_magic_comment(name, value)
+            else:
+                self._txt, n = re.subn(
+                    r'(#\s?%s\s?=\s?)\S*' % re.escape(name),
+                    r'\g<1>%s' % value, self.txt, flags=re.M)
+                if n != 1:
+                    raise exception.SpecFileParseError(
+                        spec_fn=self.fn,
+                        error="Unable to set new #%s" % name)
         else:
             if v is not None:
                 # Drop magic comment patches_base and following empty comments
                 self._txt = re.sub(
-                    r'(?:^#)+\s*patches_base\s*=[^\n]*\n(?:^#\n)*',
+                    r'(?:\n#)*\s*%s\s*=[^\n]*\n(?:#\n)*' % re.escape(name),
                     '', self.txt, flags=re.M)
+
+#    def set_patches_base(self, base):
+#        self.set_magic_comment('patches_base', base)
 
     def set_patches_base_version(self, version, ignore_macros=True):
         if not version:
             version = ''
         old_pb, n_commits = self.get_patches_base()
-        if (ignore_macros and old_pb and has_macros(old_pb)):
+        if ignore_macros and old_pb and has_macros(old_pb):
             return False
         if n_commits > 0:
             version += ("+%s" % n_commits)

@@ -1,3 +1,4 @@
+# coding=utf-8
 from rdopkg import exception
 from rdopkg.utils import specfile
 
@@ -261,3 +262,18 @@ def test_set_patches_base_case_8_minimal():
     assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
     assert '# patches_base=1.2.3\n' in spec.txt
     assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
+
+
+def test_get_magic_comment(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'patched-filter')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+
+        def _assert_mc(name, exp_val):
+            spec_val = spec.get_magic_comment(name)
+            assert spec_val == exp_val
+
+        _assert_mc('patches_base', '+2')
+        _assert_mc('patches_ignore', 'DROP-IN-RPM')
+        _assert_mc('not_really_there', None)
+        _assert_mc('¯\_(ツ)_/¯', None)
