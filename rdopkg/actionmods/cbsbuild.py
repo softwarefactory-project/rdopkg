@@ -8,7 +8,7 @@ import subprocess
 
 from rdopkg.utils.specfile import spec_fn, Spec
 from rdopkg.utils.log import log
-from rdopkg import guess
+from rdopkg import exception, guess
 
 
 KOJI_AVAILABLE = False
@@ -23,17 +23,6 @@ try:
     RPM_AVAILABLE = True
 except ImportError:
     pass
-
-
-options = None
-
-
-class KojiOpts(object):
-    def __init__(self, **kwargs):
-        for k, v in kwargs.iteritems():
-            if type(v) is str:
-                v = os.path.expanduser(v)
-            setattr(self, k, v)
 
 
 def new_build(profile='cbs', scratch=True):
@@ -52,12 +41,13 @@ def new_build(profile='cbs', scratch=True):
     if not build_target:
         log.warn("failed to identify build tag from branch")
         return
-    options = koji.read_config(profile)
-    opts = KojiOpts(**options)
+    opts = koji.read_config(profile)
+    for k, v in opts.iteritems():
+        opts[k] = os.path.expanduser(v) if type(v) is str else v
     # Note: required to make watch_tasks work
-    kojicli.options, weburl = opts, opts.weburl
-    kojiclient = koji.ClientSession(opts.server)
-    kojiclient.ssl_login(opts.cert, None, opts.serverca)
+    kojicli.options, weburl = opts, opts['weburl']
+    kojiclient = koji.ClientSession(opts['server'])
+    kojiclient.ssl_login(opts['cert'], None, opts['serverca'])
     retrieve_sources()
     srpm = create_srpm()
     opts = {'scratch': scratch}
