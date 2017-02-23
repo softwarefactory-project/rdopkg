@@ -41,12 +41,6 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
         'package': guess.package(),
         'branch': branch,
     }
-    if not release or not dist:
-        _release, _dist = guess.osreleasedist(branch, default=(None, None))
-        if not release and _release:
-            args['release'] = _release
-        if not dist and _dist:
-            args['dist'] = _dist
     osdist = guess.osdist()
     if osdist == 'RHOS':
         log.info("RHOS package detected.")
@@ -70,8 +64,8 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
 
 def show_package_env(package, version,
                      branch, patches_branch, local_patches_branch,
-                     release=None, dist=None, version_tag_style=None,
-                     patches_style=None, gerrit_patches_chain=None):
+                     version_tag_style=None, patches_style=None,
+                     gerrit_patches_chain=None):
     def _putv(title, val):
         print("{t.bold}{title}{t.normal} {val}"
               .format(title=title, val=val, t=log.term))
@@ -112,10 +106,6 @@ def show_package_env(package, version,
     print
     _putv('OS dist:               ', osdist)
     _putv('Patches apply method:  ', patches_apply_method)
-    if osdist == 'RDO':
-        rlsdist = '%s/%s' % (release or 'unknown', dist or 'unknown')
-        _putv('RDO release/dist guess:', rlsdist)
-        print
 
 
 def _print_patch_log(patches, tag, n_excluded):
