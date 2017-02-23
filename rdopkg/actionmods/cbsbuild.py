@@ -25,6 +25,17 @@ except ImportError:
     pass
 
 
+def setup_kojiclient(profile):
+    """Setup koji client session
+    """
+    opts = koji.read_config(profile)
+    for k, v in opts.iteritems():
+        opts[k] = os.path.expanduser(v) if type(v) is str else v
+    kojiclient = koji.ClientSession(opts['server'], opts=opts)
+    kojiclient.ssl_login(opts['cert'], None, opts['serverca'])
+    return kojiclient
+
+
 def new_build(profile='cbs', scratch=True):
     # Very ugly: some utilities are only available in koji CLI
     # and not in the koji module
@@ -37,30 +48,27 @@ def new_build(profile='cbs', scratch=True):
     kojicli = imp.load_source('kojicli', kojibin)
     from kojicli import _unique_path, _progress_callback, watch_tasks
 
+    kojiclient = setup_kojiclient(profile)
+    # Note: required to make watch_tasks work
+    kojicli.options = opts = kojiclient.opts
+
     build_target = guess_build()
     if not build_target:
         log.warn("failed to identify build tag from branch")
         return
-    opts = koji.read_config(profile)
-    for k, v in opts.iteritems():
-        opts[k] = os.path.expanduser(v) if type(v) is str else v
-    # Note: required to make watch_tasks work
-    kojicli.options, weburl = opts, opts['weburl']
-    kojiclient = koji.ClientSession(opts['server'])
-    kojiclient.ssl_login(opts['cert'], None, opts['serverca'])
+
     retrieve_sources()
     srpm = create_srpm()
-    opts = {'scratch': scratch}
     if not srpm:
         log.warn('No srpm available')
         return
     serverdir = _unique_path('cli-build')
     kojiclient.uploadWrapper(srpm, serverdir, callback=_progress_callback)
     source = "%s/%s" % (serverdir, os.path.basename(srpm))
-    task_id = kojiclient.build(source, build_target, opts)
+    task_id = kojiclient.build(source, build_target, {'scratch': scratch})
     print "Created task:", task_id
 
-    print "Task info: {}/taskinfo?taskID={}".format(weburl, task_id)
+    print "Task info: {}/taskinfo?taskID={}".format(opts['weburl'], task_id)
     kojiclient.logout()
     watch_tasks(kojiclient, [task_id])
 
