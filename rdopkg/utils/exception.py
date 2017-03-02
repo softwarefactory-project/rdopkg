@@ -1,15 +1,18 @@
 class RdopkgException(Exception):
     msg_fmt = "An unknown error occurred"
+    exit_code = 1
 
-    def __init__(self, msg=None, **kwargs):
+    def __init__(self, msg=None, exit_code=None, **kwargs):
         self.kwargs = kwargs
         if not msg:
             try:
                 msg = self.msg_fmt % kwargs
             except Exception:
-                # kwargs doesn't mach those in message.
+                # kwargs doesn't match those in message.
                 # Returning this is still better than nothing.
                 msg = self.msg_fmt
+        if exit_code:
+            self.exit_code = exit_code
         super(RdopkgException, self).__init__(msg)
 
 

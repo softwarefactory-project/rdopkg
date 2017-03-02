@@ -111,6 +111,7 @@ def run(action_runner, cargs, version=None):
             exception.UnverifiedPatch,
             KeyboardInterrupt,
     ) as ex:
+        code = getattr(ex, 'exit_code', code)
         print("")
         print log.term.important(str(ex) or type(ex).__name__)
     except exception.NoActionInProgress as ex:
