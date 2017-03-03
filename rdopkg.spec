@@ -14,6 +14,7 @@ BuildRequires:    python-setuptools
 BuildRequires:    python2-devel
 BuildRequires:    PyYAML
 
+Requires:         python-bunch
 Requires:         python-paramiko
 Requires:         python-pymod2pkg >= 0.2.1
 Requires:         python-requests
