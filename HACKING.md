@@ -148,6 +148,30 @@ Either way, make sure *existing unit tests pass* after your change by running
 They need to pass in order for your change to land.
 
 
+running from virtualenv
+-----------------------
+
+You can setup local testing installation of rdopkg using virtualenv:
+
+    git clone https://github.com/openstack-packages/rdopkg
+    cd rdopkg
+    virtualenv --system-site-packages ~/rdopkg-venv
+    source ~/rdopkg-venv/bin/activate
+    python setup.py develop
+    which rdopkg
+    ln `which rdopkg` ~/bin/rdopkg-dev
+
+    rdopkg-dev --version
+
+You should then be able to run `rdopkg-dev` from anywhere and it will use the
+version you have in your virtualenv instead of the RPM version
+
+If you want to test what it's like if you don't have `rpm` python module ommit
+`--system-site-packages` when creating your virtualenv. The tests should pass
+but number of them are skipped when `rpm` and `rpmutil` python modules aren't
+available.
+
+
 update them man pages
 ---------------------
 

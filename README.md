@@ -48,11 +48,25 @@ is underway but not likely to finish before `pwnpkg` split.
 ### from source
 
 If you want to hack `rdopkg` or just have the latest fixes without waiting for
-next release, I suggest using the git repo directly a la
+next release, I suggest using the git repo directly:
 
     git clone https://github.com/openstack-packages/rdopkg
     cd rdopkg
     python setup.py develop --user
+
+You may set the preference over `rdopkg` RPM by correctly positioning
+`~/.local/bin/rdopkg` in your `$PATH`.
+
+Or you can use virtualenv to avoid conflicts with RPM:
+
+    git clone https://github.com/openstack-packages/rdopkg
+    cd rdopkg
+    virtualenv --system-site-packages ~/rdopkg-venv
+    source ~/rdopkg-venv/bin/activate
+    python setup.py develop
+    ln `which rdopkg` ~/bin/rdopkg-dev
+
+    rdopkg-dev --version
 
 Required python modules are listed in
 [requirements.txt](requirements.txt) and also in [rdopkg.spec](rdopkg.spec) as
