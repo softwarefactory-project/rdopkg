@@ -22,6 +22,10 @@ ACTIONS = [
                Action('reqcheck'),
            ],
            optional_args=[
+               Arg('test', shortcut='-t', action='store_true',
+                   help=("inspect test-requirements.txt vs .spec BuildRequires"
+                         " and also compare Python packages in actual virtualenv"
+                         " vs Python RPMs in buildroot")),
                Arg('spec', shortcut='-s', action='store_true',
                    help="output .spec Requires: for easy pasting"),
            ]),

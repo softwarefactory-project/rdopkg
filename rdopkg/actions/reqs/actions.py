@@ -21,7 +21,9 @@ def reqdiff(version_tag_from, version_tag_to):
     _reqs.print_reqdiff(*rdiff)
 
 
-def reqcheck(version, spec=False):
+def reqcheck(version, spec=False, test=False):
+    # This function defines high level interface.
+    # --test is now passed as an argument.
     if version.upper() == 'XXX':
         if 'upstream' in git.remotes():
             current_branch = git.current_branch()
@@ -39,6 +41,14 @@ def reqcheck(version, spec=False):
             log.info("Delorean detected. Using %s" % path)
             check = _reqs.reqcheck_spec(reqs_txt=path)
     else:
+        # Actual functionality is contained within
+        # rdopkg.actionmods.reqs, notably:
+        #
+        #  * reqcheck_spec() to do the diff
+        #  * print_reqcheck() to print the result
+        #
+        # Add your new code to actionmods.reqs and only modify this function
+        # with logic related --test and calling new functionality.
         check = _reqs.reqcheck_spec(ref=version)
     format = None
     if spec:

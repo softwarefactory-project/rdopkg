@@ -1,3 +1,4 @@
+# Most of the new code is expected to live in this module. Look around.
 import re
 import pymod2pkg
 
@@ -187,6 +188,8 @@ def print_reqcheck(met, any_version, wrong_version, missing, format=None):
         helpers.print_list(reqs, pre=pre)
 
 
+# You probably want to copy this function and make it do what you want.
+# Reuse as much of the existing code as it make sense.
 def reqcheck_spec(ref=None, reqs_txt=None):
     if (ref and reqs_txt) or (not ref and not reqs_txt):
         raise exception.InvalidUsage(
