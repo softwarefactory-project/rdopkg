@@ -252,8 +252,9 @@ class Spec(object):
                         error="Unable to set new #patches_base")
         else:
             if v is not None:
+                # Drop magic comment patches_base and following empty comments
                 self._txt = re.sub(
-                    r'(?:\n#)+\s*patches_base\s*=[^\n]*(?:\n#)*',
+                    r'(?:^#)+\s*patches_base\s*=[^\n]*\n(?:^#\n)*',
                     '', self.txt, flags=re.M)
 
     def set_patches_base_version(self, version, ignore_macros=True):
