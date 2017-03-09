@@ -188,3 +188,68 @@ def test_new_version_patches_base_ignore_mangling_minimal_2(tmpdir):
         spec = specfile.Spec()
         spec.set_patches_base_version(None)
         assert spec.get_patches_ignore_regex().pattern == 'DROP-IN-RPM'
+
+
+def test_set_patches_base_case_1_minimal():
+    spec = specfile.Spec(txt='Version:1.2.3\n# patches_base=1.2.3\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert spec.txt == 'Version:1.2.3\nPatch0=foo.patch\n'
+
+
+def test_set_patches_base_case_1_a_minimal():
+    spec = specfile.Spec(txt='Version:1.2.3\n#patches_base=1.2.3\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert spec.txt == 'Version:1.2.3\nPatch0=foo.patch\n'
+
+
+# make sure dropping patches_base with following # is clean
+def test_set_patches_base_case_2_minimal():
+    spec = specfile.Spec(txt='Version:1.2.3\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert spec.txt == 'Version:1.2.3\nPatch0=foo.patch\n'
+
+
+# found bug where following comment mangles prior line when clearing patches_base
+def test_set_patches_base_case_3_minimal():
+    spec = specfile.Spec(txt='Version:1.2.3\n# patches_base=1.2.3\n# foo comment\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert 'Version:1.2.3\n' in spec.txt
+    assert 'patches_base' not in spec.txt
+    assert 'Patch0=foo.patch\n' in spec.txt
+
+
+# make sure multiple whitespace leaves Version line intact (workaround)
+def test_set_patches_base_case_4_minimal():
+    spec = specfile.Spec(txt='Version:1.2.3\n\n# patches_base=1.2.3\n# foo comment\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert 'Version:1.2.3\n' in spec.txt
+    assert 'patches_base' not in spec.txt
+    assert 'Patch0=foo.patch\n' in spec.txt
+
+
+# Eat Trailing #\n comments
+def test_set_patches_base_case_5_minimal():
+    spec = specfile.Spec(txt='Version:1.2.3\n\n# patches_base=1.2.3\n#\n#\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert 'Version:1.2.3\n' in spec.txt
+    assert 'patches_base' not in spec.txt
+    assert 'Patch0=foo.patch\n' in spec.txt
+
+
+# patches_base/patches_ignore
+def test_set_patches_base_case_6_minimal():
+    spec = specfile.Spec(txt='Version:1.2.3\n\n# patches_base=1.2.3\n# patches_ignore=DROP-IN-RPM\n#\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert 'Version:1.2.3\n' in spec.txt
+    assert 'patches_base' not in spec.txt
+    assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
+    assert 'Patch0=foo.patch\n' in spec.txt
+
+# patches_ignore/patches_base
+def test_set_patches_base_case_7_minimal():
+    spec = specfile.Spec(txt='Version:1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert 'Version:1.2.3\n' in spec.txt
+    assert 'patches_base' not in spec.txt
+    assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
+    assert 'Patch0=foo.patch\n' in spec.txt
