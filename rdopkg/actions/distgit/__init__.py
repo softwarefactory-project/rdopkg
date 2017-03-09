@@ -38,7 +38,7 @@ ACTIONS = [
                Arg('gerrit_patches_chain', shortcut='-g',
                    metavar='REVIEW_NUMBER',
                    help="top gerrit review id of the patch chain"),
-               Arg('force', shortcut='--force', action='store_true',
+               Arg('force', shortcut='-f', action='store_true',
                    help="use patch even if it was not validated in CI"),
            ],
            steps=[
@@ -68,7 +68,7 @@ ACTIONS = [
                Arg('gerrit_patches_chain', shortcut='-g',
                    metavar='REVIEW_NUMBER',
                    help="top gerrit review id of the patch chain"),
-               Arg('force', shortcut='--force', action='store_true',
+               Arg('force', shortcut='-f', action='store_true',
                    help="use patch even if it was not validated in CI"),
            ],
            steps=[
