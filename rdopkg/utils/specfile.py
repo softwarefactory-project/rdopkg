@@ -239,17 +239,27 @@ class Spec(object):
 
     def set_patches_base(self, base):
         v, _ = self.get_patches_base()
+
+        if 'patches_ignore' in self.txt and (base is None or base == ''):
+            base = self.get_tag('Version', expand_macros=True)
         if base:
-            if v is None:
+            if v is None and re.search('^#\s*patches_base*', self.txt, flags=re.M) is None:
                 self._create_new_patches_base(base)
             else:
-                self._txt, n = re.subn(
-                    r'(#\s*patches_base\s*=\s*)[\w.+]*',
-                    r'\g<1>%s' % base, self.txt, flags=re.M)
-                if n != 1:
+                lines = self.txt.split('\n')
+                patch_base_regex = re.compile('(#\s*patches_base\s*=\s*)\w*')
+                for idx, line in enumerate(lines):
+                    match = patch_base_regex.match(line)
+                    if match is not None:
+                        out_str = '{0}{1}'.format(match.group(1), base)
+                        lines[idx] = out_str
+                        break
+                else:
                     raise exception.SpecFileParseError(
                         spec_fn=self.fn,
                         error="Unable to set new #patches_base")
+                self._txt = '\n'.join(lines)
+
         else:
             if v is not None:
                 # Drop magic comment patches_base and following empty comments

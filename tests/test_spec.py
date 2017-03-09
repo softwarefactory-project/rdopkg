@@ -252,3 +252,12 @@ def test_set_patches_base_case_7_minimal():
     assert 'Version: 1.2.3\n' in spec.txt
     assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
     assert 'Patch0=foo.patch\n' in spec.txt
+
+
+# patches_ignore/patches_base keep patches_base
+def test_set_patches_base_case_8_minimal():
+    spec = specfile.Spec(txt='Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=\n#\nPatch0=foo.patch\n')
+    spec.set_patches_base_version(None)
+    assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
+    assert '# patches_base=1.2.3\n' in spec.txt
+    assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
