@@ -107,6 +107,8 @@ ACTIONS = [
                    help="don't ask any questions (NOT RECOMMENDED)"),
                Arg('no_push_patches', shortcut='-t', action='store_true',
                    help="don't push patches branch"),
+               Arg('bug', shortcut='-B', metavar='BUG(S)',
+                   help="reference BUG(S) in changelog"),
            ],
            steps=[
                Action('get_package_env'),

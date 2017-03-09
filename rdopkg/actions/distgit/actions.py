@@ -153,7 +153,8 @@ def conf():
 
 def new_version_setup(patches_branch=None, local_patches=False,
                       version=None, new_version=None, version_tag_style=None,
-                      new_sources=None, no_new_sources=None, unattended=False):
+                      new_sources=None, no_new_sources=None, unattended=False,
+                      bug=None):
     args = {}
     if new_version:
         # support both version and tag
@@ -185,7 +186,10 @@ def new_version_setup(patches_branch=None, local_patches=False,
             msg="It seems the package is already at version %s\n\n"
                 "Run new-version anyway?" % version,
             default_yes=False)
-    args['changes'] = ['Update to %s' % new_version]
+    changelog = 'Update to %s' % new_version
+    if bug:
+        changelog += ' (%s)' % bug
+    args['changes'] = [changelog]
     args['new_patches_base'] = new_version_tag
     spec = specfile.Spec()
     rpm_version = spec.get_tag('Version')
