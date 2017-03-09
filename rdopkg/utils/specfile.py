@@ -179,6 +179,19 @@ class Spec(object):
             return ''
         return m.group(1)
 
+    def get_magic_comment(self, name, expand_macros=False):
+        """Return a value of # name=value comment in spec or None."""
+        match = re.search(r'^#\s*?%s\s?=\s?(\S+)' % re.escape(name),
+                          self.txt, flags=re.M)
+        if not match:
+            return None
+
+        val = match.group(1)
+        if expand_macros and has_macros(val):
+            # don't parse using rpm unless required
+            val = self.expand_macro(val)
+        return val
+
     def get_patches_base(self, expand_macros=False):
         """Return a tuple (version, number_of_commits) that are parsed
         from the patches_base in the specfile.

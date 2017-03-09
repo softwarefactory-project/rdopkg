@@ -1,3 +1,4 @@
+# coding=utf-8
 from rdopkg import exception
 from rdopkg.utils import specfile
 
@@ -188,3 +189,64 @@ def test_new_version_patches_base_ignore_mangling_minimal_2(tmpdir):
         spec = specfile.Spec()
         spec.set_patches_base_version(None)
         assert spec.get_patches_ignore_regex().pattern == 'DROP-IN-RPM'
+
+
+def test_get_magic_comment(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'patched-filter')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+
+        def _assert_mc(name, exp_val):
+            spec_val = spec.get_magic_comment(name)
+            assert spec_val == exp_val
+
+        _assert_mc('patches_base', '+2')
+        _assert_mc('patches_ignore', 'DROP-IN-RPM')
+        _assert_mc('not_really_there', None)
+        _assert_mc('¯\_(ツ)_/¯', None)
+
+
+def test_get_magic_comment_minimal_1():
+    spec = specfile.Spec(txt='\n')
+    assert spec.get_magic_comment('foo') is None
+
+
+def test_get_magic_comment_minimal_2():
+    spec = specfile.Spec(txt='# foo=1\n')
+    assert '1' == spec.get_magic_comment('foo')
+
+
+def test_get_magic_comment_minimal_2a():
+    spec = specfile.Spec(txt='#foo=1 \n')
+    assert '1' == spec.get_magic_comment('foo')
+
+
+def test_get_magic_comment_minimal_2b():
+    spec = specfile.Spec(txt='#     foo = 1\n')
+    assert '1' == spec.get_magic_comment('foo')
+
+
+def test_get_magic_comment_minimal_3():
+    spec = specfile.Spec(txt='# foo\n')
+    assert spec.get_magic_comment('foo') is None
+
+
+def test_get_magic_comment_minimal_4():
+    spec = specfile.Spec(txt='# foo=1\n# bar=baz\n')
+    assert 'baz' == spec.get_magic_comment('bar')
+
+
+def test_get_magic_comment_minimal_5():
+    spec = specfile.Spec(txt='#\n#\n# foo=1\n#\n# bar=baz\n#\n\n')
+    assert 'baz' == spec.get_magic_comment('bar')
+
+
+def test_get_magic_comment_minimal_6():
+    spec = specfile.Spec(txt='  # foo=1\n')
+    assert spec.get_magic_comment('foo') is None
+
+
+def test_get_magic_comment_minimal_7():
+    spec = specfile.Spec(txt='# foo=\n')
+    assert '' == spec.get_magic_comment('foo')
+
