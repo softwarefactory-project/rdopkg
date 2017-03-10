@@ -565,13 +565,33 @@ Use `rdopkg pkgenv` to check detected patches branch.
 You can specify remote patches branch by `-p`/`--patches-branch` action
 parameter for actions that use it, such as `patch` and `new-version`.
 
-Previously, now obsolete `update-patches.sh` script required `patches_base`
-comment to be present in spec file which indicated git revision on top of
-which the patches are applied but **this is now optional** with
-`update-patches` action and defaults to .spec Version.
+patches base
+~~~~~~~~~~~~
 
-Most common use of `patches_base` is to specify number of patches on top of
-patches base (which defaults to spec Version) to skip:
+`rdopkg` calculates the git tag on which you are applying patches from
+the `Version` tag in your `.spec` file.  If your `.spec` file contains
+a macro named `milestone`, the value of this macro will be appended to
+the version.  That is, if your spec file has:
+
+    Version: 2014.2.3
+
+Then `rdopkg` will use `2014.2.3` as the base.  If instead your
+`.spec` file has:
+
+    %global milestone rc2
+
+    Version: 2014.2.3
+
+Then `rdopkg` will use `2014.2.3rc2` as the base.
+
+In older versions of `rodpkg`, it was was necessary to explicitly set
+the patch base using a special `patches_base` comment in your spec
+file.  This is now **optional** behavior (the patches base is
+calculated automatically), but you can use this if you need to
+override the automatic behavior.
+
+The most common use of `patches_base` is to specify number of patches
+on top of patches base (which defaults to spec Version) to skip:
 
     # patches_base=+2
 
@@ -579,8 +599,9 @@ You can set an arbitrary git revision as a patches base:
 
     # patches_base=1.2.3+2
 
-You shouldn't need to modify this by hand expect the number of skipped patches
-as `rdopkg` manages `patches_base` as needed.
+You shouldn't need to modify this by hand (other than perhaps the
+number of skipped patches) as `rdopkg` manages `patches_base` as
+needed.
 
 
 [[commit-message]]
