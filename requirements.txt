@@ -3,4 +3,5 @@ paramiko
 PyYAML
 requests
 pymod2pkg
+pytest
 # asciidoc for docs/sdist
