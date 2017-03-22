@@ -838,3 +838,13 @@ def tag_patches_branch(package, local_patches_branch, patches_branch,
         git('push', patches_remote, nvr_tag)
     else:
         print('Not pushing tag. Run "git push patches %s" by hand.' % nvr_tag)
+
+
+def update_patches_deprecated():
+    msg = ("\n{t.warn}DEPRECATION WARNING{t.normal}\n\n"
+           "This is a low-level action for backward "
+           "compatibility with ancient update-patches.sh script.\n\n"
+           "Please use {t.cmd}rdopkg patch [--local-patches]{t.normal} "
+           "instead.\n\n"
+           "This action is deprecated and will be removed eventually.\n")
+    print(msg.format(t=log.term))
