@@ -498,6 +498,10 @@ def check_new_patches(version, local_patches_branch,
         head = patches_branch
 
     version_tag = guess.version2tag(version, version_tag_style)
+    if not git.ref_exists(version_tag):
+        raise exception.ConfigError(
+            msg=("Package is at Version: %s "
+                 "but %s git tag isn't present." % (version, version_tag)))
     patches = git.get_commit_bzs(version_tag, head)
     old_patches = specfile.get_patches_from_files()
     spec = specfile.Spec()
