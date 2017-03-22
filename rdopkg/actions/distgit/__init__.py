@@ -126,8 +126,14 @@ ACTIONS = [
                Action('review_patches_branch')
            ]),
     Action('update_patches', atomic=True,
-           help="update patches from -patches branch",
+           help='[DEPRECATED] update patches from -patches branch',
+           description=(
+               "WARNING: This is a low-level action for backward "
+               "compatibility with ancient update-patches.sh script.\n\n"
+               "Please use `rdopkg patch [--local-patches]` instead.\n\n"
+               "This action is deprecated and will be removed eventually."),
            steps=[
+               Action('update_patches_deprecated'),
                Action('get_package_env'),
                Action('update_patches'),
            ],
