@@ -15,7 +15,7 @@ def test_editor_editor_run_failed(monkeypatch):
 
     with pytest.raises(exception.CommandNotFound) as excinfo:
         helpers.edit('/tmp/foo')
-    assert excinfo.match(r'.*\(foo_editor\).* Please set \$EDITOR .*')
+        assert excinfo.match(r'.*\(foo_editor\).* Please set \$EDITOR .*')
 
 
 def test_editor_no_env(monkeypatch):
@@ -30,4 +30,4 @@ def test_editor_no_env(monkeypatch):
 
     with pytest.raises(exception.CommandNotFound) as excinfo:
         helpers.edit('/tmp/foo')
-    assert excinfo.match(r'.*\(vim\).* Please set \$EDITOR .*')
+        assert excinfo.match(r'.*\(vim\).* Please set \$EDITOR .*')
