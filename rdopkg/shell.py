@@ -33,7 +33,9 @@ def get_action_args(action, args):
 
 
 def get_parser(runner, version=None):
-    parser = argparse.ArgumentParser(prog='rdopkg')
+    parser = argparse.ArgumentParser(
+        prog='rdopkg',
+        formatter_class=argparse.RawDescriptionHelpFormatter)
     subparsers = parser.add_subparsers(help='available actions')
     parser.add_argument('-c', '--continue', action='store_true',
                         help='continue running current action')
@@ -41,8 +43,11 @@ def get_parser(runner, version=None):
         parser.add_argument('--version', action='version', version=version)
     for action in runner.action_manager.actions:
         cmd = action2cmd(action.name)
-        action_parser = subparsers.add_parser(cmd, help=action.help,
-                                              description=action.help)
+        action_parser = subparsers.add_parser(
+            cmd,
+            help=action.help,
+            description=action.description or action.help,
+            formatter_class=argparse.RawDescriptionHelpFormatter)
         for oarg in action.optional_args:
             if oarg.positional:
                 arg_names = [oarg.name]

@@ -23,7 +23,7 @@ class Arg(object):
 class Action(object):
     def __init__(self, name, steps=None, atomic=False, module=None,
                  action_fun=None, required_args=None, optional_args=None,
-                 const_args=None, help=None):
+                 const_args=None, help=None, description=None):
         if not const_args:
             const_args = []
         if not required_args:
@@ -39,6 +39,7 @@ class Action(object):
         self.required_args = required_args
         self.optional_args = optional_args
         self.help = help
+        self.description = description
 
 
 class ActionModule(object):
