@@ -99,13 +99,8 @@ class RdoinfoRepo(repoman.RepoManager):
     def get_info(self, gitrev=None):
         self.ensure_rdoinfo()
         with self.repo_dir():
-            if gitrev:
-                infofile = git.get_file_content(gitrev, self.info_file)
-                info = yaml.load(infofile)
-                self.rdoinfo.parse_info(info, apply_tag=self.apply_tag)
-            else:
-                info = self.rdoinfo.parse_info_file(
-                    self.info_file, apply_tag=self.apply_tag)
+            info = self.rdoinfo.parse_info_file(
+                self.info_file, apply_tag=self.apply_tag)
         return info
 
     @property
