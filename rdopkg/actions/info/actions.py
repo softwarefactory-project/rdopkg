@@ -33,16 +33,20 @@ def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False):
               "{t.normal}".format(t=log.term))
 
 
-def info_tags_diff(local_info=None, apply_tag=None):
+def info_tags_diff(local_info=None, apply_tag=None, buildsys_tags=False):
     if local_info:
         inforepo = rdoinfo.RdoinfoRepo(
             local_repo_path=local_info,
             apply_tag=apply_tag)
     else:
         inforepo = rdoinfo.get_default_inforepo(apply_tag=apply_tag)
+    if buildsys_tags:
+        tagsname = 'buildsys-tags'
+    else:
+        tagsname = 'tags'
     info1 = inforepo.get_info(gitrev='HEAD~')
     info2 = inforepo.get_info()
-    tdiff = rdoinfo.tags_diff(info1, info2)
+    tdiff = rdoinfo.tags_diff(info1, info2, tagsname=tagsname)
     if not tdiff:
         sys.stderr.write("No tag changes detected.\n")
     else:
