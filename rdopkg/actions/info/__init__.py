@@ -18,6 +18,8 @@ ACTIONS = [
            optional_args=[
                Arg('local_info', positional=True, metavar='RDOINFODIR',
                    help="use local rdoinfo repo found in RDOINFODIR"),
+               Arg('buildsys_tags', shortcut='-b', action='store_true',
+                   help="process buildsys-tags instead of regular tags"),
            ]),
     Action('findpkg', atomic=True,
            help="find and show single best matching package in rdoinfo",
