@@ -39,7 +39,7 @@ def filter_pkgs(pkgs, rexen):
     return filter(_filter, pkgs)
 
 
-def tags_diff(info1, info2):
+def tags_diff(info1, info2, tagsname='tags'):
     changedpkgs = []
     for pkg2 in info2["packages"]:
         if pkg2 not in info1["packages"]:
@@ -53,14 +53,14 @@ def tags_diff(info1, info2):
                 break
         updated_tags = []
         if foundpkg:
-            for tag in pkg2.get('tags', {}):
+            for tag in pkg2.get(tagsname, {}):
                 # use address of this function to differentiate
                 # between missing tag and tag: None
-                tag1 = pkg1.get('tags', {}).get(tag, tags_diff)
-                if pkg2['tags'][tag] != tag1:
+                tag1 = pkg1.get(tagsname, {}).get(tag, tags_diff)
+                if pkg2[tagsname][tag] != tag1:
                     updated_tags.append(tag)
         else:
-            updated_tags = pkg2.get('tags').keys()
+            updated_tags = pkg2.get(tagsname).keys()
         if updated_tags:
             diff.append((pkg2['name'], updated_tags))
     return diff
