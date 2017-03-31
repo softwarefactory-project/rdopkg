@@ -149,6 +149,10 @@ class Git(ShellCommand):
         branch = self('rev-parse', '--abbrev-ref', 'HEAD', log_cmd=False)
         return branch
 
+    def current_commit(self):
+        commit = self('rev-parse', 'HEAD', log_cmd=False)
+        return commit
+
     def ref_exists(self, ref):
         o = self('show-ref', '--verify', '--quiet', ref,
                  fatal=False, log_cmd=False, log_fail=False)
