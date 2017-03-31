@@ -100,9 +100,11 @@ class RdoinfoRepo(repoman.RepoManager):
         self.ensure_rdoinfo()
         with self.repo_dir():
             if gitrev:
-                infofile = git.get_file_content(gitrev, self.info_file)
-                info = yaml.load(infofile)
-                self.rdoinfo.parse_info(info, apply_tag=self.apply_tag)
+                commit1 = git.current_commit()
+                git('checkout', gitrev, log_cmd=False)
+                info = self.rdoinfo.parse_info_file(
+                    self.info_file, apply_tag=self.apply_tag)
+                git('checkout', commit1, log_cmd=False)
             else:
                 info = self.rdoinfo.parse_info_file(
                     self.info_file, apply_tag=self.apply_tag)
