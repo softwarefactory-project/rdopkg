@@ -1,6 +1,7 @@
 import collections
 import imp
 import re
+import sys
 import yaml
 
 from rdopkg import exception
@@ -91,19 +92,26 @@ class RdoinfoRepo(repoman.RepoManager):
         self._info = None
 
     def ensure_rdoinfo(self):
-        if self.rdoinfo:
-            return
+        # when running get_info with gitrev, we are modifying rdoinfo module
+        # while runing rdopkg. This seems to be problematic if we are using
+        # the compiled .pyc so i'm forcing to load rdoinfo module from .py
+        sys.dont_write_bytecode = True
         file, path, desc = imp.find_module('rdoinfo', [self.repo_path])
         self.rdoinfo = imp.load_module('rdoinfo', file, path, desc)
+        sys.dont_write_bytecode = False
 
     def get_info(self, gitrev=None):
-        self.ensure_rdoinfo()
         with self.repo_dir():
             if gitrev:
-                infofile = git.get_file_content(gitrev, self.info_file)
-                info = yaml.load(infofile)
-                self.rdoinfo.parse_info(info, apply_tag=self.apply_tag)
+                commit1 = git.current_commit()
+                git('checkout', gitrev, log_cmd=False)
+                self.ensure_rdoinfo()
+                info = self.rdoinfo.parse_info_file(
+                    self.info_file, apply_tag=self.apply_tag)
+                git('checkout', commit1, log_cmd=False)
+                self.ensure_rdoinfo()
             else:
+                self.ensure_rdoinfo()
                 info = self.rdoinfo.parse_info_file(
                     self.info_file, apply_tag=self.apply_tag)
         return info
