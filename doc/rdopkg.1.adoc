@@ -466,15 +466,13 @@ Show rdoinfo tag changes.
 
 will show per-package new/changed tags in rdoinfo between `HEAD~..HEAD`.
 
-For an existing package, a list of changed tags is returned
-
-For a new package, full tags dict is returned.
+For an existing or new package, a list of changed tags is returned
 
 Example:
 
     $ rdopkg info-tags-diff ~/.rdopkg/rdoinfo
     openstack-changed ['newton-uc', 'newton']
-    openstack-new-pkg {'under-review': None}
+    openstack-new-pkg ['under-review']
 
 This is an interface to rdopkg.actionmods.rdoinfo:tags_diff().
 
