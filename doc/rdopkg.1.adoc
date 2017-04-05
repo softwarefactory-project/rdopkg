@@ -153,6 +153,18 @@ much like `rpmdev-bumpspec`:
 
     rdopkg -bn
 
+To note particular bugs in the changelog, use the `-B`/`--bug` option. rdopkg
+will append the supplied string to changelog in brackets. For example:
+
+    rdopkg new-version --bug rhbz#1234,rhbz#5678
+
+will result in following %changelog line:
+
+    Update to 1.1.1 (rhbz#1234,rhbz#5678)
+
+and corresponding `Resolves:` lines in commit message.
+
+
 *Flow:*
 
   * Show diff from previous version, especially changes to `requirements.txt`.
