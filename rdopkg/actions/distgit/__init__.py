@@ -111,7 +111,8 @@ ACTIONS = [
                Arg('no_push_patches', shortcut='-t', action='store_true',
                    help="don't push patches branch"),
                Arg('bug', shortcut='-B', metavar='BUG(S)',
-                   help="reference BUG(S) in changelog"),
+                   help="reference BUG(S) in changelog. (example:"
+                        " --bug rhbz#1234,rhbz#5678)"),
            ],
            steps=[
                Action('get_package_env'),
