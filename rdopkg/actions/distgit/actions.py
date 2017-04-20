@@ -486,7 +486,10 @@ def rebase_patches_branch(new_version, local_patches_branch,
 def check_new_patches(version, local_patches_branch,
                       patches_style=None, local_patches=False,
                       patches_branch=None, changes=None,
-                      version_tag_style=None, changelog=None):
+                      version_tag_style=None, changelog=None,
+                      no_bump=False):
+    if no_bump:
+        return
     if not changes:
         changes = []
     if changelog:
@@ -589,7 +592,11 @@ def get_upstream_patches(version, local_patches_branch,
 
 def update_spec(branch=None, changes=None,
                 new_rpm_version=None, new_release=None,
-                new_milestone=None, new_patches_base=None):
+                new_milestone=None, new_patches_base=None,
+                no_bump=False):
+
+    if no_bump:
+        return
     if not changes:
         changes = []
     _ensure_branch(branch)
@@ -871,7 +878,5 @@ def update_patches_deprecated():
     msg = ("\n{t.warn}DEPRECATION WARNING{t.normal}\n\n"
            "This is a low-level action for backward "
            "compatibility with ancient update-patches.sh script.\n\n"
-           "Please use {t.cmd}rdopkg patch [--local-patches]{t.normal} "
-           "instead.\n\n"
-           "This action is deprecated and will be removed eventually.\n")
+           "Please use {t.cmd}rdopkg patch -lB{t.normal} instead.\n\n")
     print(msg.format(t=log.term))

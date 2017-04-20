@@ -70,6 +70,9 @@ ACTIONS = [
                    help="top gerrit review id of the patch chain"),
                Arg('force', shortcut='-f', action='store_true',
                    help="use patch even if it was not validated in CI"),
+               Arg('no_bump', shortcut='-B', action='store_true',
+                   help="don't bump release and generate changelog "
+                        "(update patches only)"),
                Arg('changelog', shortcut='-C',
                    choices=['detect', 'count', 'plain'],
                    help="how to generate changelog from patches"),
@@ -134,8 +137,7 @@ ACTIONS = [
            description=(
                "WARNING: This is a low-level action for backward "
                "compatibility with ancient update-patches.sh script.\n\n"
-               "Please use `rdopkg patch [--local-patches]` instead.\n\n"
-               "This action is deprecated and will be removed eventually."),
+               "Please use `rdopkg patch -lB` instead.\n\n"),
            steps=[
                Action('update_patches_deprecated'),
                Action('get_package_env'),
