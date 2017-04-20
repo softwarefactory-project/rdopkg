@@ -137,7 +137,11 @@ def test_patch_noop_plain(tmpdir):
     _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '-C', 'plain'])
 
 
-def _test_patch_regen(tmpdir, distgit, distgit_after, cmd):
+def test_patch_noop_no_bump(tmpdir):
+    _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '--no-bump'])
+
+
+def _test_patch_regen(tmpdir, distgit, distgit_after, cmd, norm_changelog=True):
     dist_path = common.prep_spec_test(tmpdir, distgit)
     with dist_path.as_cwd():
         common.prep_patches_branch()
@@ -146,7 +150,8 @@ def _test_patch_regen(tmpdir, distgit, distgit_after, cmd):
         rdopkg(*cmd)
         commit_after = git('rev-parse', 'HEAD')
         git_clean = git.is_clean()
-        common.norm_changelog()
+        if norm_changelog:
+            common.norm_changelog()
     common.assert_distgit(dist_path, distgit_after)
     assert commit_before != commit_after, "New commit not created after patch regen"
     assert git_clean, "git not clean after action"
@@ -166,3 +171,8 @@ def test_patch_regen_count(tmpdir):
 
 def test_patch_regen_plain(tmpdir):
     _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l', '--changelog', 'plain'])
+
+
+def test_patch_regen_no_bump(tmpdir):
+    _test_patch_regen(tmpdir, 'patched', 'patched-regen-no-bump', ['patch', '-l', '--no-bump'],
+                      norm_changelog=False)
