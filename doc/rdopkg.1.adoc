@@ -99,13 +99,15 @@ Introduce new patches to the package.
 
 This action works with patches branch
 (see <<patches-branch,AUTOMAGIC -> patches branch>>).
+
 By default, `rdopkg` resets local patches branch to remote patches branch.
-You can skip this this with `--local-patches` to directly use local patches
-branch as is.
+You can skip this this with `-l`/`--local-patches` to directly use local
+patches branch as is.
 
 Don't forget to `git fetch` before running the action.
 
-After running `rdopkg patch`, new commit will contain the changes.
+After running `rdopkg patch`, new commit will contain the changes if there are
+any.
 
 You can use `-C`/`--changelog` option to select how `rdopkg` detects new/old
 patches and changelog message:
@@ -115,13 +117,21 @@ patches and changelog message:
      removal & addition of patches and rewriting -patches history)
   * `plain`: just use generic "- Update patches" message
 
+Or you can use `-B`/`--no-bump` to skip Release bump and changelog generation
+and only update patch files and their references in the .spec file. This is
+useful when you only need to align distgit with patches branch.
+
 *Flow:*
 
   * Unless `-l`/`--local-patches` was used, reset local patches branch to
     remote patches branch.
-  * Update .spec file: bump Release, create new %changelog entry with new
-    patches' titles and create a commit.
-  * Update patches from local patches branch (`update-patches` action)
+  * Update patch files from local patches branch.
+  * Update .spec file with correct patch files references.
+  * Unless `-B`/`--no-bump` was used, update .spec file: bump Release, create
+    new %changelog entry with new patches' titles depending on
+    `-C`/`--changelog` option.
+  * Create new commit with the changes using %changelog to generate commit
+    message if available.
   * Display the diff.
 
 ACTION: new-version
