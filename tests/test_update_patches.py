@@ -6,7 +6,7 @@ from rdopkg.utils.cmd import git
 from rdopkg.utils import specfile
 import rdopkg.utils.exception
 
-import common
+import test_common as common
 
 
 def test_update_empty(tmpdir):
