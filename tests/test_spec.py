@@ -3,7 +3,7 @@ from rdopkg import exception
 from rdopkg.utils import specfile
 import pytest
 
-import common
+import test_common as common
 
 
 def _assert_vparts(version, numeric, rest):

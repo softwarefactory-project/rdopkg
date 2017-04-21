@@ -2,8 +2,8 @@ from rdopkg.cli import rdopkg
 from rdopkg.utils.cmd import git
 from rdopkg.utils import log
 
-import common
-from common import DIST_POSTFIX
+import test_common as common
+from test_common import DIST_POSTFIX
 
 import pytest
 
