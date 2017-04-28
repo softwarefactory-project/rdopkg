@@ -111,6 +111,7 @@ class ShellCommand(object):
         return run(self.command, *params, **kwargs)
 
 
+
 class GerritQuery(ShellCommand):
         def __init__(self, host, port, log_cmd=True):
             self.host = host

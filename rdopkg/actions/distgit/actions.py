@@ -18,6 +18,7 @@ from rdopkg.actions.reqs.actions import reqdiff
 from rdopkg.utils import log
 from rdopkg.utils.cmd import run
 from rdopkg.utils.git import git
+from rdopkg.utils.git import search_bug_references
 from rdopkg.utils import specfile
 from rdopkg.utils import tidy_ssh_user
 from rdopkg import helpers
@@ -774,8 +775,7 @@ def _commit_message(changes=None, header_file=None, no_bump=False,
     # append Resloves: rhbz#12345 lines mentioned in changes
     fixed_rhbzs = []
     for change in changes:
-        for m in re.finditer(r'rhbz#(\d+)', change):
-            n = m.group(1)
+        for n in search_bug_references(change):
             if n not in fixed_rhbzs:
                 fixed_rhbzs.append(n)
     if fixed_rhbzs:
