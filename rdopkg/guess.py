@@ -239,11 +239,15 @@ def builds(release):
 
 
 def osdist(branch=None):
-    # which OpenStack/packaging distribution?
+    # which package distribution?
     if branch is None:
         branch = current_branch(default='')
     if branch.startswith('rhos-') or branch.startswith('rh-'):
         return 'RHOS'
+    if branch.startswith('ceph-'):
+        return 'RHCEPH'
+    if branch.startswith('rhscon-'):
+        return 'RHSCON'
     # XXX Detect 'Fedora' here? From r'f\d+' branches possibly.
     return 'RDO'
 
@@ -252,7 +256,7 @@ def new_sources(_osdist=None):
     # shall we run `$RPKG new-sources`?
     if not _osdist:
         _osdist = osdist()
-    if _osdist == 'RHOS':
+    if _osdist.startswith('RH'):
         # XXX: Fedora might also benefit from True
         # once osdist() detects it properly.
         return True

@@ -42,8 +42,8 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
         'branch': branch,
     }
     osdist = guess.osdist()
-    if osdist == 'RHOS':
-        log.info("RHOS package detected.")
+    if osdist.startswith('RH'):
+        log.info("RH package detected.")
         args['fedpkg'] = ['rhpkg']
     if not patches_branch:
         patches_branch = guess.patches_branch(branch, pkg=args['package'],

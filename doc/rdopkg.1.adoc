@@ -141,9 +141,10 @@ Don't forget to `git fetch --all` before running the action.
 
 You can use the `-N`/`--new-sources` or `-n`/`--no-new-sources` options to
 control whether `new-version` will run `fedpkg new-sources`
-(`rhpkg new-sources` on RHOS). By default, `rdopkg` will automatically enable
-or disable this step based on the dist-git branch name. RHOS branches
-(`rhos-*` or `rh-*`) default to `-N`. All other branches default to `-n`.
+(`rhpkg new-sources` on Red Hat downstream products). By default, `rdopkg`
+will automatically enable or disable this step based on the dist-git branch
+name. RH dist-git branches (`rhos-*`, `rh-*`, `ceph-*`, `rhscon-*`) default to
+`-N`. All other branches default to `-n`.
 
 After running `rdopkg new-version`, new commit will contain the changes.
 
