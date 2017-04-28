@@ -5,6 +5,7 @@ import re
 from rdopkg import exception
 from rdopkg.utils.cmd import run
 from rdopkg.utils.cmd import ShellCommand
+from rdopkg.utils.issues import search_bug_references
 
 
 @contextlib.contextmanager
@@ -213,11 +214,10 @@ class Git(ShellCommand):
         log = log_out.strip('\n\x1e').split("\x1e")
         log = [row.strip('\n\t ').split("\x1f") for row in log]
         log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in log]
-        BZ_REGEX = r'rhbz#(\d+)'
         result = []
         for commit in log:
-            bzs = re.findall(BZ_REGEX, commit['subject'])
-            bzs.extend(re.findall(BZ_REGEX, commit['body']))
+            bzs = search_bug_references(commit['subject'])
+            bzs.extend(search_bug_references(commit['body']))
             result.append((commit['id'], commit['subject'], bzs))
         return result
 
