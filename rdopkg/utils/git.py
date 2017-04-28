@@ -32,6 +32,14 @@ def git_revision(gitrev):
     else:
         yield
 
+def search_bug_references(text_blob):
+    """Return list of bug refs found for provided txt"""
+
+    if text_blob is None:
+        return []
+
+    return re.findall(r'rhbz#(\d+)', text_blob)
+
 
 class Git(ShellCommand):
     command = "git"
@@ -213,11 +221,10 @@ class Git(ShellCommand):
         log = log_out.strip('\n\x1e').split("\x1e")
         log = [row.strip('\n\t ').split("\x1f") for row in log]
         log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in log]
-        BZ_REGEX = r'rhbz#(\d+)'
         result = []
         for commit in log:
-            bzs = re.findall(BZ_REGEX, commit['subject'])
-            bzs.extend(re.findall(BZ_REGEX, commit['body']))
+            bzs = search_bug_references(commit['subject'])
+            bzs.extend(search_bug_references(commit['body']))
             result.append((commit['id'], commit['subject'], bzs))
         return result
 
