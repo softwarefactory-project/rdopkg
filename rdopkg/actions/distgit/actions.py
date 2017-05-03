@@ -682,7 +682,10 @@ def _commit_message(changes=None):
         _, changes = specfile.Spec().get_last_changelog_entry(strip=True)
         if not changes:
             raise exception.IncompleteChangelog()
-    msg = re.sub(r'\s+\(.*\)\s*$', '', changes[0])
+    if len(changes) == 1:
+        msg = re.sub(r'\s+\(.*\)\s*$', '', changes[0])
+    else:
+        msg = specfile.Spec().get_nvr(epoch=False)
     fixed_rhbzs = set()
     for change in changes:
         for m in re.finditer(r'rhbz#(\d+)', change):
