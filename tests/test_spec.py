@@ -50,8 +50,8 @@ def test_release_parts():
     _assert_rparts('%{ver}', '', '', '%{ver}')
 
 
-def _assert_nvr(nvr, epoch_arg, result):
-    epoch, version, release = nvr
+def _assert_vr(vr, epoch_arg, result):
+    epoch, version, release = vr
 
     def _get_tag_mock(tag, default=None, expand_macros=False):
         if tag == 'Version':
@@ -63,7 +63,7 @@ def _assert_nvr(nvr, epoch_arg, result):
                 return epoch
             raise exception.SpecFileParseError(
                 spec_fn='TESTING', error='Pretending Epoch tag not found')
-        return "MOCKED-OUT-NVR"
+        return "MOCKED-OUT-VR"
 
     def _expand_macro(macro):
         return macro
@@ -71,17 +71,17 @@ def _assert_nvr(nvr, epoch_arg, result):
     spec = specfile.Spec()
     spec.get_tag = _get_tag_mock
     spec.expand_macro = _expand_macro
-    nvr = spec.get_nvr(epoch=epoch_arg)
-    assert nvr == result
+    vr = spec.get_vr(epoch=epoch_arg)
+    assert vr == result
 
 
-def test_get_nvr():
-    _assert_nvr((None, '1.2.3', '0.1'),         None,  '1.2.3-0.1')
-    _assert_nvr((None, '1.2.3', '666%{?dist}'), False, '1.2.3-666')
-    _assert_nvr((None, '1.2.3', ''),            True,  '0:1.2.3')
-    _assert_nvr((23, '1.2.3', ''),              None,  '23:1.2.3')
-    _assert_nvr((23, '1.2.3', '0.1'),           False, '1.2.3-0.1')
-    _assert_nvr((23, '1.2.3', '666%{?dist}'),   True,  '23:1.2.3-666')
+def test_get_vr():
+    _assert_vr((None, '1.2.3', '0.1'),         None,  '1.2.3-0.1')
+    _assert_vr((None, '1.2.3', '666%{?dist}'), False, '1.2.3-666')
+    _assert_vr((None, '1.2.3', ''),            True,  '0:1.2.3')
+    _assert_vr((23, '1.2.3', ''),              None,  '23:1.2.3')
+    _assert_vr((23, '1.2.3', '0.1'),           False, '1.2.3-0.1')
+    _assert_vr((23, '1.2.3', '666%{?dist}'),   True,  '23:1.2.3-666')
 
 
 def test_patches_base_add_patched(tmpdir):

@@ -472,8 +472,8 @@ class Spec(object):
         release = ".".join(numlist)
         return self.set_release(release, milestone=milestone, postfix=postfix)
 
-    def get_nvr(self, epoch=None):
-        """get NVR string from .spec Version, Release and Epoch
+    def get_vr(self, epoch=None):
+        """get VR string from .spec Version, Release and Epoch
 
         epoch is None: prefix epoch if present (default)
         epoch is True: prefix epoch even if not present (0:)
@@ -499,12 +499,16 @@ class Spec(object):
             return '%s-%s' % (version, release)
         return version
 
+    def get_nvr(self, epoch=None):
+        """get NVR string from .spec Name, Version, Release and Epoch"""
+        return '%s-%s' % (self.get_tag('Name'), self.get_vr(epoch=epoch))
+
     def new_changelog_entry(self, user, email, changes=[]):
         changes_str = "\n".join(map(lambda x: "- %s" % x, changes)) + "\n"
         date = time.strftime('%a %b %d %Y')
         # TODO: detect if there is '-' in changelog entries and use it if so
-        nvr = self.get_nvr()
-        head = "* %s %s <%s> %s" % (date, user, email, nvr)
+        vr = self.get_vr()
+        head = "* %s %s <%s> %s" % (date, user, email, vr)
         entry = "%s\n%s\n" % (head, changes_str)
         self._txt = re.sub(r'(%changelog\n)', r'\g<1>%s' % entry, self.txt)
 

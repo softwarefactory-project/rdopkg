@@ -109,11 +109,11 @@ def show_package_env(package, version,
             'unknown'
 
     spec = specfile.Spec()
-    nvr = spec.get_nvr()
+    vr = spec.get_vr()
     patches_apply_method = spec.patches_apply_method()
     print
     _putv('Package:  ', package)
-    _putv('NVR:      ', nvr)
+    _putv('VR:       ', vr)
     _putv('Version:  ', version)
     _putv('Upstream: ', upstream_version)
     _putv('Tag style:', version_tag_style or 'X.Y.Z')
@@ -879,8 +879,8 @@ def make_srpm(package, dist=None, fedpkg=FEDPKG):
 def tag_patches_branch(package, local_patches_branch, patches_branch,
                        force=False, push=False):
     """ Tag the local_patches_branch with this package's NVR. """
-    nvr = specfile.Spec().get_nvr(epoch=False)
-    nvr_tag = package + '-' + nvr
+    vr = specfile.Spec().get_vr(epoch=False)
+    nvr_tag = package + '-' + vr
     tag_cmd = ['tag', nvr_tag, local_patches_branch]
     if force:
         tag_cmd.append('-f')
