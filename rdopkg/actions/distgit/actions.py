@@ -74,11 +74,33 @@ def show_package_env(package, version,
 
     upstream_branch = guess.upstream_branch()
     if not git.ref_exists('refs/remotes/%s' % upstream_branch):
-        upstream_version = 'upstream remote/branch not found'
+        upstream_version = log.term.yellow('upstream remote/branch not found')
     else:
         upstream_version = guess.upstream_version(branch=upstream_branch)
         if not upstream_version:
-            upstream_version = 'no version tag found'
+            upstream_version = log.term.yellow('no version tag found')
+
+    remote_hash = git.get_latest_commit_hash(patches_branch)
+    local_hash = git.get_latest_commit_hash(local_patches_branch)
+    upstream_hash = git.get_latest_commit_hash(upstream_branch)
+    if remote_hash:
+        remote_str = ("{t.green}{hash}{t.normal}"
+                      .format(hash=remote_hash[:6], t=log.term))
+    else:
+        remote_str = log.term.red("not found")
+    if local_hash:
+        color = 'yellow'
+        if local_hash == remote_hash:
+            color = 'green'
+        local_str = (("{t.%s}{hash}{t.normal}" % color)
+                     .format(hash=local_hash[:6], t=log.term))
+    else:
+        local_str = log.term.yellow("not found")
+    if upstream_hash:
+        upstream_str = ("{t.green}{hash}{t.normal}"
+                        .format(hash=upstream_hash[:6], t=log.term))
+    else:
+        upstream_str = log.term.yellow("not found")
 
     if patches_style == 'review':
         if not gerrit_patches_chain:
@@ -98,9 +120,12 @@ def show_package_env(package, version,
     print
     _putv('Patches style:         ', patches_style)
     _putv('Dist-git branch:       ', branch)
-    _putv('Local patches branch:  ', local_patches_branch)
-    _putv('Remote patches branch: ', patches_branch)
-    _putv('Remote upstream branch:', upstream_branch or 'not found')
+    _putv('Local patches branch:  ',
+          '%s : %s' % (local_patches_branch, local_str))
+    _putv('Remote patches branch: ',
+          '%s : %s' % (patches_branch, remote_str))
+    _putv('Remote upstream branch:',
+          '%s : %s' % (upstream_branch, upstream_str))
     if patches_style == 'review':
         _putv('Patches chain:         ', gerrit_review_url)
     print

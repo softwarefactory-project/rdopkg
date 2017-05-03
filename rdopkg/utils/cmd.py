@@ -277,7 +277,7 @@ class Git(ShellCommand):
         cmd = ['log', '-n', '1', '--format=%H']
         if ref:
             cmd.append(ref)
-        out = self(*cmd, log_cmd=False)
+        out = self(*cmd, log_cmd=False, log_fail=False, fatal=False)
         return out
 
     def get_latest_tag(self, branch=None):
