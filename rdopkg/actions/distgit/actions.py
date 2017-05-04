@@ -5,6 +5,7 @@ This is the main rdopkg action module with actions for distgit management.
 import itertools
 import os
 import re
+import sys
 
 from rdopkg.conf import cfg, cfg_files
 from rdopkg import exception
@@ -677,12 +678,20 @@ def new_sources(branch=None, fedpkg=FEDPKG, new_sources=False):
     run(*cmd, direct=True)
 
 
-def _commit_message(changes=None):
+def _commit_message(changes=None, header_file=None):
     if not changes:
         _, changes = specfile.Spec().get_last_changelog_entry(strip=True)
         if not changes:
             raise exception.IncompleteChangelog()
-    if len(changes) == 1:
+    if header_file:
+        try:
+            if header_file == '-':
+                msg = sys.stdin.read()
+            else:
+                msg = open(header_file).read()
+        except IOError as ex:
+            raise exception.FileNotFound(msg=str(ex))
+    elif len(changes) == 1:
         msg = re.sub(r'\s+\(.*\)\s*$', '', changes[0])
     else:
         msg = specfile.Spec().get_nvr(epoch=False)
@@ -700,17 +709,17 @@ def _commit_message(changes=None):
     return msg
 
 
-def commit_distgit_update(branch=None, amend=False):
+def commit_distgit_update(branch=None, amend=False, commit_header_file=None):
     _ensure_branch(branch)
-    msg = _commit_message()
+    msg = _commit_message(header_file=commit_header_file)
     cmd = ['commit', '-a', '-F', '-']
     if amend:
         cmd.append('--amend')
     git(*cmd, input=msg, print_output=True)
 
 
-def amend():
-    msg = _commit_message()
+def amend(commit_header_file=None):
+    msg = _commit_message(header_file=commit_header_file)
     git('commit', '-a', '--amend', '-F', '-', input=msg, print_output=True)
     print("")
     git('--no-pager', 'log', '--name-status', 'HEAD~..HEAD', direct=True)

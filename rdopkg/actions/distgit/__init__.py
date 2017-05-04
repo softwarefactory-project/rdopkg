@@ -73,6 +73,8 @@ ACTIONS = [
                Arg('changelog', shortcut='-C',
                    choices=['detect', 'count', 'plain'],
                    help="how to generate changelog from patches"),
+               Arg('commit_header_file', shortcut='-H', metavar='FILE',
+                   help="start commit message with FILE contents, - for stdin"),
            ],
            steps=[
                Action('get_package_env'),
@@ -113,6 +115,8 @@ ACTIONS = [
                Arg('bug', shortcut='-B', metavar='BUG(S)',
                    help="reference BUG(S) in changelog. (example:"
                         " --bug rhbz#1234,rhbz#5678)"),
+               Arg('commit_header_file', shortcut='-H', metavar='FILE',
+                   help="start commit message with FILE contents, - for stdin"),
            ],
            steps=[
                Action('get_package_env'),
@@ -149,7 +153,11 @@ ACTIONS = [
                    help="local git branch containing patches"),
            ]),
     Action('amend', atomic=True,
-           help="amend last commit and recreate commit message"),
+           help="amend last commit and recreate commit message",
+           optional_args=[
+               Arg('commit_header_file', shortcut='-H', metavar='FILE',
+                   help="start commit message with FILE contents, - for stdin"),
+           ]),
     Action('squash', atomic=True,
            help="squash HEAD into HEAD~ using HEAD~ commit message"),
     Action('get_source', atomic=True, help="fetch source archive",
