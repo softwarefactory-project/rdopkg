@@ -111,6 +111,7 @@ class Spec(object):
 
     RE_PATCH = r'(?:^|\n)(Patch\d+:)'
     RE_AFTER_SOURCES = r'((?:^|\n)Source\d*:[^\n]*\n\n?)'
+    # TODO: this needs adjusted/tweaked to respect any magic comments
     RE_AFTER_PATCHES_BASE = (
         r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
         r'\t]*\n)*)\n*')
@@ -234,11 +235,10 @@ class Spec(object):
         """Return a tuple (version, number_of_commits) that are parsed
         from the patches_base in the specfile.
         """
-        match = re.search(r'(?<=patches_base=)[\w.+?%{}]+', self.txt)
-        if not match:
+        patches_base = self.get_magic_comment('patches_base')
+        if patches_base is None:
             return None, 0
 
-        patches_base = match.group()
         if expand_macros and has_macros(patches_base):
             # don't parse using rpm unless required
             patches_base = self.expand_macro(patches_base)
@@ -264,13 +264,14 @@ class Spec(object):
         Only a very limited subset of characters are accepted so no fancy stuff
         like matching groups etc.
         """
-        match = re.search(r'# *patches_ignore=([\w *.+?[\]{,}\-_]+)', self.txt)
-        if not match:
+        regex_string = self.get_magic_comment('patches_ignore')
+        if regex_string is None:
             return None
-        regex_string = match.group(1)
+
         try:
             return re.compile(regex_string)
         except:
+            # TODO: at least make this a debugable warning that regex is invalid
             return None
 
     def _create_new_patches_base(self, base):
