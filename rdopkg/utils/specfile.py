@@ -244,6 +244,44 @@ class Spec(object):
             val = self.expand_macro(val)
         return val
 
+    def _create_new_magic_comment(self, name, value):
+        # check to see if we have any magic comments in right slot
+        # after SourceX and before Patch Y - if so insert at begining block
+        # otherwise insert a new block as before
+        self._txt, n = re.subn(
+            self.RE_PATCH,
+            r'\n#\n# %s=%s\n#\n\g<1>' % (name, value),
+            self.txt, count=1, flags=re.M)
+        if n != 1:
+            self._txt, n = re.subn(
+                self.RE_AFTER_SOURCES,
+                r'\g<1>#\n# %s=%s\n#\n\n' % (name, value),
+                self.txt, count=1, flags=re.M)
+            if n != 1:
+                raise exception.SpecFileParseError(
+                    spec_fn=self.fn,
+                    error="Unable to create new #%s magic comment entry." % name)
+
+    def set_magic_comment(self, name, value):
+        v = self.get_magic_comment(name)
+        if value is not None:
+            if v is None:
+                self._create_new_magic_comment(name, value)
+            else:
+                self._txt, n = re.subn(
+                    r'(#\s?%s\s?=\s?)\S*' % re.escape(name),
+                    r'\g<1>%s' % value, self.txt, flags=re.M)
+            if n != 1:
+                raise exception.SpecFileParseError(
+                    spec_fn=self.fn,
+                    error="Unable to set new #%s" % name)
+        else:
+            if v is not None:
+                # Drop magic comment patches_base and following empty comments
+                self._txt = re.sub(
+                    r'(?:\n#)*\s*%s\s*=[^\n]*\n(?:#\n)*' % re.escape(name),
+                    '', self.txt, flags=re.M)
+
     def get_patches_base(self, expand_macros=False):
         """Return a tuple (version, number_of_commits) that are parsed
         from the patches_base in the specfile.
