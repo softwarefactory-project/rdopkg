@@ -172,9 +172,11 @@ class Spec(object):
 
     RE_PATCH = r'(?:^|\n)(Patch\d+:)'
     RE_AFTER_SOURCES = r'((?:^|\n)Source\d*:[^\n]*\n\n?)'
-    RE_AFTER_PATCHES_BASE = (
-        r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
+    RE_AFTER_MAGIC_COMMENTS = (
+        r'((?:^|\n)(?:#[ \t]*\n)*#\s*[\D_]*\s*=[^\n]*\n(?:#[ '
         r'\t]*\n)*)\n*')
+    RE_IN_MAGIC_COMMENTS = (
+        r'((?:^|\n)(?:#[ \t]*\n)*)(#\s*[\D_]*\s*=[^\n]*\n)')
     RE_MACRO_BASE = r'%global\s+{0}\s+'
 
     def __init__(self, fn=None, txt=None):
@@ -277,6 +279,14 @@ class Spec(object):
         # check to see if we have any magic comments in right slot
         # after SourceX and before Patch Y - if so insert at begining block
         # otherwise insert a new block as before
+
+        if re.findall(self.RE_IN_MAGIC_COMMENTS, self._txt, flags=re.M):
+            self._txt = re.sub(
+                self.RE_IN_MAGIC_COMMENTS,
+                r'\g<1>\n# %s=%s\n\g<2>' % (name, value),
+                self.txt, count=1, flags=re.M)
+            return
+
         self._txt, n = re.subn(
             self.RE_PATCH,
             r'\n#\n# %s=%s\n#\n\g<1>' % (name, value),
@@ -315,11 +325,10 @@ class Spec(object):
         """Return a tuple (version, number_of_commits) that are parsed
         from the patches_base in the specfile.
         """
-        match = re.search(r'(?<=patches_base=)[\w.+?%{}]+', self.txt)
-        if not match:
+        patches_base = self.get_magic_comment('patches_base')
+        if patches_base is None:
             return None, 0
 
-        patches_base = match.group()
         if expand_macros and has_macros(patches_base):
             # don't parse using rpm unless required
             patches_base = self.expand_macro(patches_base)
@@ -345,13 +354,14 @@ class Spec(object):
         Only a very limited subset of characters are accepted so no fancy stuff
         like matching groups etc.
         """
-        match = re.search(r'# *patches_ignore=([\w *.+?[\]{,}\-_]+)', self.txt)
-        if not match:
+        regex_string = self.get_magic_comment('patches_ignore')
+        if regex_string is None:
             return None
-        regex_string = match.group(1)
+
         try:
             return re.compile(regex_string)
-        except Exception:
+        except:
+            # TODO: at least make this a debugable warning that regex is invalid
             return None
 
     def _create_new_patches_base(self, base):
@@ -492,7 +502,7 @@ class Spec(object):
                 pa += "%%patch%04d -p1\n" % i
         # PatchXXX: lines after Source0 / #patches_base=
         self._txt, n = re.subn(
-            self.RE_AFTER_PATCHES_BASE,
+            self.RE_AFTER_MAGIC_COMMENTS,
             r'\g<1>%s\n' % ps, self.txt, count=1)
 
         if n != 1:
