@@ -2,7 +2,7 @@ from rdopkg.action import Action, Arg
 
 
 ACTIONS = [
-    Action('reqdiff', atomic=True, help="show diff of requirements.txt",
+    Action('reqdiff', help="show diff of requirements.txt",
            steps=[
                Action('get_package_env', module='distgit'),
                Action('get_diff_range', module='distgit'),
@@ -15,7 +15,7 @@ ACTIONS = [
                         "2 args: diff between 1st and 2nd supplied git refs"),
            ],
            ),
-    Action('reqcheck', atomic=True,
+    Action('reqcheck',
            help="inspect requirements.txt vs .spec Requires",
            steps=[
                Action('get_package_env', module='distgit'),
@@ -25,7 +25,7 @@ ACTIONS = [
                Arg('spec', shortcut='-s', action='store_true',
                    help="output .spec Requires: for easy pasting"),
            ]),
-    Action('reqquery', atomic=True,
+    Action('reqquery',
            help="query RDO repos for versions defined in requirements.txt",
            required_args=[
                Arg('filter', positional=True, metavar='RELEASE(/DIST)',
@@ -52,8 +52,8 @@ ACTIONS = [
                Arg('verbose', shortcut='-v', action='store_true',
                    help="print status during queries"),
            ]),
-    Action('query', atomic=True, help="query RDO and distribution repos for "
-                                      "available package versions",
+    Action('query',
+           help="query RDO/dist repos for available package versions",
            optional_args=[
                Arg('filter', positional=True, metavar='RELEASE(/DIST)',
                    help="RDO release(/dist) to query (see `rdopkg info`)"),

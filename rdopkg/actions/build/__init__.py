@@ -2,7 +2,7 @@ from rdopkg.action import Action, Arg
 
 
 ACTIONS = [
-    Action('coprbuild', atomic=True, help="build package in copr-jruzicka",
+    Action('coprbuild', help="build package in copr-jruzicka",
            steps=[
                Action('get_package_env', module='distgit'),
                Action('copr_check'),
@@ -18,12 +18,12 @@ ACTIONS = [
                Arg('fuser', shortcut='-u',
                    help="Fedora user to upload srpm as to fedorapeople.org"),
            ]),
-    Action('kojibuild', atomic=True, help="build package in koji",
+    Action('kojibuild', help="build package in koji",
            steps=[
                Action('get_package_env', module='distgit'),
                Action('koji_build'),
            ]),
-    Action('cbsbuild', atomic=True, help="build package in CBS",
+    Action('cbsbuild', help="build package in CBS",
            steps=[
                Action('get_package_env', module='distgit'),
                Action('cbs_build'),
@@ -32,7 +32,7 @@ ACTIONS = [
                Arg('scratch', action='store_true',
                    help='Perform a scratch build'),
            ]),
-    Action('mockbuild', atomic=True, help="Run fedpkg/rhpkg mockbuild",
+    Action('mockbuild', help="Run fedpkg/rhpkg mockbuild",
            steps=[
                Action('get_package_env', module='distgit'),
                Action('fedpkg_mockbuild'),

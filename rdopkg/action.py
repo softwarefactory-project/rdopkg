@@ -21,7 +21,7 @@ class Arg(object):
 
 
 class Action(object):
-    def __init__(self, name, steps=None, atomic=False, module=None,
+    def __init__(self, name, steps=None, continuable=False, module=None,
                  action_fun=None, required_args=None, optional_args=None,
                  const_args=None, help=None, description=None):
         if not const_args:
@@ -33,7 +33,7 @@ class Action(object):
         self.name = name
         self.module = module
         self.steps = steps
-        self.atomic = atomic
+        self.continuable = continuable
         self.action_fun = action_fun
         self.const_args = const_args
         self.required_args = required_args
@@ -178,7 +178,7 @@ class ActionManager(object):
     def run_action(self, action, args=None):
         if not args:
             args = {}
-        if not action.atomic:
+        if action.continuable:
             log.info(log.term.bold("## %s" % action.name))
         for carg in action.const_args:
             args[carg] = action.const_args[carg]
