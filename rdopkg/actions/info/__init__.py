@@ -2,7 +2,7 @@ from rdopkg.action import Action, Arg
 
 
 ACTIONS = [
-    Action('info', atomic=True, help="show information about RDO packaging",
+    Action('info', help="show information about RDO packaging",
            optional_args=[
                Arg('pkgs', positional=True, nargs='*', metavar='ATTR:REGEX',
                    help="show info about packages with ATTR matching REGEX"),
@@ -13,7 +13,7 @@ ACTIONS = [
                Arg('local_info', shortcut='-l',
                    help="use local rdoinfo repo found in specified path"),
            ]),
-    Action('info_tags_diff', atomic=True,
+    Action('info_tags_diff',
            help="find which tags have changed between HEAD~..HEAD in rdoinfo",
            optional_args=[
                Arg('local_info', positional=True, metavar='RDOINFODIR',
@@ -21,7 +21,7 @@ ACTIONS = [
                Arg('buildsys_tags', shortcut='-b', action='store_true',
                    help="process buildsys-tags instead of regular tags"),
            ]),
-    Action('findpkg', atomic=True,
+    Action('findpkg',
            help="find and show single best matching package in rdoinfo",
            optional_args=[
                Arg('query', positional=True, metavar='PACKAGE/PROJECT/URL',

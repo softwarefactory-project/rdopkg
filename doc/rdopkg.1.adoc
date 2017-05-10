@@ -419,7 +419,7 @@ ACTION: amend
 Amend last git commit with current dist-git changes and (re)generate the commit
 message from %changelog.
 
-This simple atomic action is equivalent to running
+This simple action is equivalent to running
 
     git commit -a --amend -m "$AUTOMAGIC_COMMIT_MESSAGE"
 
@@ -433,7 +433,7 @@ ACTION: squash
 Squash last git commit into previous one. Commit message of previous commit is
 used.
 
-This simple atomic action is a shortcut for
+This simple action is a shortcut for
 
     git reset --soft HEAD~
     git commit --amend --no-edit

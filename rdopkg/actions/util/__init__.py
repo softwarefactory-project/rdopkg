@@ -2,12 +2,12 @@ from rdopkg.action import Action
 
 
 ACTIONS = [
-    Action('status', atomic=True, help="show status of previous action"),
-    Action('conf', atomic=True, help="show rdopkg configuration"),
-    Action('actions', atomic=True,
+    Action('status', help="show status of previous action"),
+    Action('conf', help="show rdopkg configuration"),
+    Action('actions',
            help="list action functions and their availability"),
-    Action('autocomplete', atomic=True,
+    Action('autocomplete',
            help="get TAB completion for rdopkg!"),
-    Action('doctor', atomic=True,
+    Action('doctor',
            help="activate rdopkg psychoanalyst mode"),
 ]

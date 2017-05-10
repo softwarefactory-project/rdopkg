@@ -2,7 +2,7 @@ from rdopkg.action import Action, Arg
 
 
 ACTIONS = [
-    Action('clone', atomic=True,
+    Action('clone',
            help="clone an RDO package distgit and setup remotes",
            required_args=[
                Arg('package', positional=True, metavar='PACKAGE',
@@ -17,17 +17,17 @@ ACTIONS = [
                Arg('review_user', shortcut='-u', metavar='USER',
                    help="gerrit username for reviews"),
            ]),
-    Action('pkgenv', atomic=True, help="show detected package environment",
+    Action('pkgenv', help="show detected package environment",
            steps=[
                Action('get_package_env'),
                Action('show_package_env'),
            ]),
-    Action('patchlog', atomic=True, help="show patches branch log",
+    Action('patchlog', help="show patches branch log",
            steps=[
                Action('get_package_env'),
                Action('show_patch_log'),
            ]),
-    Action('get-patches', atomic=True,
+    Action('get-patches',
            help="setup local patches branch and switch to it",
            optional_args=[
                Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
@@ -55,7 +55,7 @@ ACTIONS = [
                Action('commit_distgit_update'),
                Action('final_spec_diff'),
            ]),
-    Action('patch', atomic=True,
+    Action('patch',
            help="introduce new patches to the package",
            optional_args=[
                Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
@@ -91,7 +91,8 @@ ACTIONS = [
                Action('commit_distgit_update', const_args={'amend': True}),
                Action('final_spec_diff'),
            ]),
-    Action('new_version', help="update package to new upstream version",
+    Action('new_version', continuable=True,
+           help="update package to new upstream version",
            optional_args=[
                Arg('new_version', positional=True, nargs='?',
                    help="version to update to"),
@@ -138,7 +139,7 @@ ACTIONS = [
                Action('final_spec_diff'),
                Action('review_patches_branch')
            ]),
-    Action('update_patches', atomic=True,
+    Action('update_patches',
            help='[DEPRECATED] update patches from -patches branch',
            description=(
                "WARNING: This is a low-level action for backward "
@@ -156,20 +157,20 @@ ACTIONS = [
                    metavar='LOCAL_BRANCH',
                    help="local git branch containing patches"),
            ]),
-    Action('amend', atomic=True,
+    Action('amend',
            help="amend last commit and recreate commit message",
            optional_args=[
                Arg('commit_header_file', shortcut='-H', metavar='FILE',
                    help="start commit message with FILE contents, "
                         "- for stdin"),
            ]),
-    Action('squash', atomic=True,
+    Action('squash',
            help="squash HEAD into HEAD~ using HEAD~ commit message"),
-    Action('get_source', atomic=True, help="fetch source archive",
+    Action('get_source', help="fetch source archive",
            steps=[
                Action('get_source', const_args={'new_sources': True})
            ]),
-    Action('tag_patches', atomic=True,
+    Action('tag_patches',
            help='tag the -patches branch in Git with the current NVR',
            optional_args=[
                Arg('force', shortcut='-f', action='store_true',

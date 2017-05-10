@@ -128,7 +128,6 @@ that's not the case in the time of writing due to legacy reasons.
 Finally, note that some refactoring is expected before action modules
 interface is stable, not limited to:
 
- * rethink atomic=True which now spams most of actions
  * include full action documentation in `__init__.py` as opposed of having
    only short string there and the rest in doc/ - that's sure to desync over
    time.
