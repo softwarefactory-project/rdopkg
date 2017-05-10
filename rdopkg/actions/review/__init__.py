@@ -9,7 +9,7 @@ ACTIONS = [
                    positional=True, nargs='?',
                    help="local patches branch with changes to review"),
            ]),
-    Action('review_spec', atomic=True,
+    Action('review_spec',
            help="send distgit (.spec file) change for review",
            optional_args=[
                Arg('branch', metavar='DISTGIT_BRANCH',

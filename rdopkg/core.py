@@ -28,8 +28,7 @@ class ActionRunner(object):
         self.state_file_path = state_file_path or const.STATE_FILE_FN
 
     def save_state(self):
-        if self.action and self.action[0].atomic:
-            # don't save state for atomic actions
+        if not (self.action and self.action[0].continuable):
             return
         data = {
             'action': self.action_manager.action_serialize(self.action),
@@ -74,7 +73,7 @@ class ActionRunner(object):
                 print("State file removed.")
 
     def _new_action_check(self, new_action):
-        if self.action and not new_action.atomic:
+        if self.action and new_action.continuable:
             action_name = self.action[0].name
             print(log.term.important(
                   "You're in the middle of previous action: %s\n" %
@@ -105,7 +104,7 @@ class ActionRunner(object):
                     break
         if not self.action:
             raise exception.InvalidAction(action=action)
-        if not action.atomic and action.steps:
+        if not action.continuable and action.steps:
             self.save_state()
 
     def print_progress(self):
@@ -177,10 +176,10 @@ class ActionRunner(object):
     def engage(self):
         if not self.action:
             raise exception.NoActionInProgress
-        atomic = self.action[0].atomic
+        continuable = self.action[0].continuable
 
         def _save_state():
-            if not atomic:
+            if continuable:
                 self.save_state()
         self.action_manager.ensure_leaf_action(self.action,
                                                on_change_callback=_save_state)
@@ -198,7 +197,7 @@ class ActionRunner(object):
                 select_next = not ex.kwargs.get('rerun', False)
                 abort = True
             except exception.ActionFinished as ex:
-                self.clear_state(state_file=not atomic)
+                self.clear_state(state_file=continuable)
                 print(ex)
                 return
             except exception.ActionGoto as ex:
@@ -212,11 +211,11 @@ class ActionRunner(object):
             if select_next:
                 self.action = self.action_manager.next_action(self.action)
             if not self.action:
-                if not atomic:
+                if continuable:
                     print("Action finished.")
-                self.clear_state(state_file=not atomic)
+                self.clear_state(state_file=continuable)
                 return
-            if not atomic:
+            if continuable:
                 self.save_state()
             if abort:
                 return
