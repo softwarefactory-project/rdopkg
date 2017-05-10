@@ -314,3 +314,95 @@ def test_get_magic_comment_minimal_6():
 def test_get_magic_comment_minimal_7():
     spec = specfile.Spec(txt='# foo=\n')
     assert '' == spec.get_magic_comment('foo')
+
+
+#def test_set_magic_comment_only_patches_base():
+#    spec = specfile.Spec(txt='# patches_base=1.2.3\n')
+#    spec.set_magic_comment('patches_ignore', 'DROP-IN-RPM')
+#    assert 'DROP-IN-RPM' == spec.get_magic_comment('patches_ignore')
+
+
+def test_set_magic_comment_only_patches_ignore():
+    spec = specfile.Spec(txt='\n# patches_ignore=foo\n\n')
+    spec.set_magic_comment('patches_ignore', 'DROP-IN-RPM')
+    assert 'DROP-IN-RPM' == spec.get_magic_comment('patches_ignore')
+
+
+def test_create_new_magic_comment_foo():
+    spec = specfile.Spec(txt='\nSource0: foo.tgz\n')
+    spec._create_new_magic_comment('foo', 'bar')
+    assert 'bar' == spec.get_magic_comment('foo')
+
+
+def test_create_new_magic_comment_foo_existing_other_magic_comment():
+    spec = specfile.Spec(txt='\nSource0: foo.tgz\n#\n#patches_base=1.2.3\n#\n')
+    spec._create_new_magic_comment('foo', 'bar')
+    assert 'bar' == spec.get_magic_comment('foo')
+
+
+magic_comment_patches_base = '# patches_base=1.2.3'
+magic_comment_foo = '# foo=bar'
+source_leader = 'Source0: foo.tgz'
+patches_leader = 'Patch0: foo.patch'
+
+
+def test_create_new_magic_comment_foo_existing_other_magic_comment_with_ordering():
+    mock_file = '\n'.join(['', source_leader, '#', magic_comment_patches_base, '#', ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    assert magic_comment_patches_base in lines
+    # check ordering
+    assert magic_comment_patches_base in lines[lines.index(magic_comment_foo):]
+
+
+def test_create_new_magic_comment_foo_existing_other_magic_comment_and_patches_with_ordering():
+    mock_file = '\n'.join(['', source_leader, '#', magic_comment_patches_base, '#', patches_leader, ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    assert patches_leader in lines
+    # check ordering
+    assert patches_leader in lines[lines.index(magic_comment_foo):]
+
+
+def test_create_new_magic_comment_foo_source_and_patch():
+
+    mock_file = '\n'.join(['', source_leader, patches_leader, ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+    assert 'bar' == spec.get_magic_comment('foo')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    # check ordering
+    assert patches_leader in lines[lines.index(magic_comment_foo):]
+
+
+def test_create_new_magic_comment_foo_existing_magic_comment_no_extra_lines():
+    mock_file = '\n'.join(['', source_leader, '#', magic_comment_patches_base, '#', ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    assert magic_comment_patches_base in lines
+    # check no-extra lines between
+    assert len(lines[lines.index(magic_comment_foo)+1:lines.index(magic_comment_patches_base)]) == 0
+
+
+def test_create_new_magic_comment_foo_existing_magic_comment_and_patch_no_extra_lines():
+    mock_file = '\n'.join(['', source_leader, '#', magic_comment_patches_base, '#', patches_leader, ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    assert magic_comment_patches_base in lines
+    # check no-extra lines between
+    assert len(lines[lines.index(magic_comment_foo)+1:lines.index(magic_comment_patches_base)]) == 0
+    assert len(lines[lines.index(magic_comment_patches_base)+1:lines.index(magic_comment_foo)]) == 0
