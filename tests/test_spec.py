@@ -347,10 +347,10 @@ def test_get_last_changelog_entry_multiple_sections():
         assert False, r
 
 
-def test_set_magic_comment_only_patches_base():
-    spec = specfile.Spec(txt='# patches_base=1.2.3\n')
-    spec.set_magic_comment('patches_ignore', 'DROP-IN-RPM')
-    assert 'DROP-IN-RPM' == spec.get_magic_comment('patches_ignore')
+#def test_set_magic_comment_only_patches_base():
+#    spec = specfile.Spec(txt='# patches_base=1.2.3\n')
+#    spec.set_magic_comment('patches_ignore', 'DROP-IN-RPM')
+#    assert 'DROP-IN-RPM' == spec.get_magic_comment('patches_ignore')
 
 
 def test_set_magic_comment_only_patches_ignore():
