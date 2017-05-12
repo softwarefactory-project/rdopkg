@@ -590,6 +590,15 @@ Use `rdopkg pkgenv` to check detected patches branch.
 You can specify remote patches branch by `-p`/`--patches-branch` action
 parameter for actions that use it, such as `patch` and `new-version`.
 
+You may explicitly set the name of your patches remote and patches
+branch in your git configuration using the
+`rdopkg.<branch>.patches-remote` and `rdopkg.<branch>.patches-branch`
+options.  For example, if you are working on a `dist-git` branch named
+`rhel-7.4` and you want to use `rhel-7-patches` for your patches
+branch, you would run:
+
+    git config rdopkg.rhel-7.4.patches-branch rhel-7-patches
+
 patches base
 ~~~~~~~~~~~~
 

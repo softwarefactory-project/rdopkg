@@ -91,7 +91,14 @@ def version_tag_style(version=None):
 
 
 def find_patches_branch(distgit, remote):
-    pb = '%s/%s-patches' % (remote, distgit)
+    cfg_branch = git.config_get('rdopkg.%s.patches-branch' % distgit)
+
+    if cfg_branch:
+        # if there is an explicitly configured patches branch, use it.
+        pb = '%s/%s' % (remote, cfg_branch)
+    else:
+        pb = '%s/%s-patches' % (remote, distgit)
+
     if git.ref_exists('refs/remotes/%s' % pb):
         return pb
     parts = distgit.split('-')[:-1]
@@ -104,17 +111,24 @@ def find_patches_branch(distgit, remote):
 
 
 def patches_branch(distgit, pkg=None, osdist='RDO'):
-    remotes = ['patches']
-    # support legacy remote names
-    if osdist == 'RHOS':
-        remotes.append('rhos')
+    cfg_remote = git.config_get('rdopkg.%s.patches-remote' % distgit)
+
+    if cfg_remote:
+        # if there is an explicitly configured remote, just use it.
+        remotes = [cfg_remote]
     else:
-        remotes.append('redhat-openstack')
-    # support patches branch in the same remote
-    remote_branch = git.remote_of_local_branch(distgit) or ''
-    remote = remote_branch.partition('/')[0]
-    if remote:
-        remotes.append(remote)
+        remotes = ['patches']
+        # support legacy remote names
+        if osdist == 'RHOS':
+            remotes.append('rhos')
+        else:
+            remotes.append('redhat-openstack')
+
+        # support patches branch in the same remote
+        remote_branch = git.remote_of_local_branch(distgit) or ''
+        remote = remote_branch.partition('/')[0]
+        if remote:
+            remotes.append(remote)
 
     for remote in remotes:
         pb = find_patches_branch(distgit, remote)
