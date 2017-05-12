@@ -301,8 +301,16 @@ class Git(ShellCommand):
         obj = '%s:%s' % (rev, path)
         return self('show', obj, log_cmd=False)
 
-    def config_get(self, param):
-        return self("config", "--get", param)
+    def config_get(self, param, default=None):
+        '''Return the value of a git configuration option.  This will
+        return the value of the default parameter (which defaults to
+        None) if the given option does not exist.'''
+
+        try:
+            return self("config", "--get", param,
+                        log_fail=False, log_cmd=False)
+        except exception.CommandFailed:
+            return default
 
     def config_set(self, param, value, is_global=False):
         params = [param, value]
