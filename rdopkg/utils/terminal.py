@@ -1,3 +1,9 @@
+try:
+    UNICODE_EXISTS = bool(type(unicode))
+except NameError:
+    from builtins import str as unicode
+
+
 class NullCallableString(unicode):
     """
     This emulates blessings class of same for cases when blessings aren't

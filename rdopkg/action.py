@@ -1,8 +1,9 @@
+from __future__ import print_function
 import inspect
 import pkgutil
 
-import exception
-from utils import log
+from rdopkg import exception
+from rdopkg.utils import log
 
 
 class Arg(object):
@@ -56,7 +57,7 @@ class ActionModule(object):
         if not self._actionsmod:
             astr = self.module.__name__ + '.actions'
             apath = astr.split('.')
-            topmod = __import__(astr, globals(), locals(), [], -1)
+            topmod = __import__(astr, globals(), locals(), [])
             mod = topmod
             for submod in apath[1:]:
                 mod = getattr(mod, submod)

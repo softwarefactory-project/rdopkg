@@ -4,7 +4,7 @@ import os
 import re
 import time
 
-import exception
+from rdopkg import exception
 
 RPM_AVAILABLE = False
 try:
@@ -142,7 +142,7 @@ class Spec(object):
                          os.path.dirname(os.path.realpath(self.fn)))
             try:
                 self._rpmspec = rpm.spec(self.fn)
-            except ValueError, e:
+            except ValueError as e:
                 raise exception.SpecFileParseError(spec_fn=self.fn,
                                                    error=e.args[0])
         return self._rpmspec

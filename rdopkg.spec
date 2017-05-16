@@ -19,6 +19,7 @@ Requires:         python-paramiko
 Requires:         python-pymod2pkg >= 0.2.1
 Requires:         python-requests
 Requires:         python-setuptools
+Requires:         python-six
 Requires:         PyYAML
 Requires:         git-core
 Requires:         git-review

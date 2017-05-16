@@ -2,6 +2,7 @@
 This module implement generic support of Koji through Koji ugly API.
 For now, it's only used for CBS.
 """
+from __future__ import print_function
 from distutils.spawn import find_executable
 import os
 import subprocess
@@ -67,9 +68,9 @@ def new_build(profile='cbs', scratch=True):
     kojiclient.uploadWrapper(srpm, serverdir, callback=_progress_callback)
     source = "%s/%s" % (serverdir, os.path.basename(srpm))
     task_id = kojiclient.build(source, build_target, {'scratch': scratch})
-    print "Created task:", task_id
+    print("Created task:", task_id)
 
-    print "Task info: {}/taskinfo?taskID={}".format(opts['weburl'], task_id)
+    print("Task info: {}/taskinfo?taskID={}".format(opts['weburl'], task_id))
     kojiclient.logout()
     watch_tasks(kojiclient, [task_id])
 
