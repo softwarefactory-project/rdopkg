@@ -1,6 +1,6 @@
+from __future__ import print_function
 import re
 import pymod2pkg
-
 
 from rdopkg.actionmods import rdoinfo
 from rdopkg.actionmods import query

@@ -1,6 +1,6 @@
 import logging
 
-import terminal
+from rdopkg.utils import terminal
 
 
 WARN = logging.WARN

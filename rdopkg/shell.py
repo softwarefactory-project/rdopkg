@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
-
+from __future__ import print_function
 import argparse
 
-import exception
-from utils import log
+from rdopkg import exception
+from rdopkg.utils import log
+
 
 ARGCOMPLETE_AVAILABLE = False
 try:
@@ -118,9 +119,9 @@ def run(action_runner, cargs, version=None):
     ) as ex:
         code = getattr(ex, 'exit_code', code)
         print("")
-        print log.term.important(str(ex) or type(ex).__name__)
+        print(log.term.important(str(ex) or type(ex).__name__))
     except exception.NoActionInProgress as ex:
-        print "%s See `rdopkg -h` for help." % ex
+        print("%s See `rdopkg -h` for help." % ex)
     except exception.CommandFailed as ex:
         # this was logged already
         pass

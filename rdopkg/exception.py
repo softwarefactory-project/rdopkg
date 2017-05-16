@@ -1,18 +1,18 @@
-from utils.exception import RdopkgException
+from rdopkg.utils.exception import RdopkgException
 # TODO before 1.0: merge utils.exception.* here.
 # Legacy reasons to have them separate no longer apply.
-from utils.exception import BranchNotFound  # NOQA
-from utils.exception import BuildArchSanityCheckFailed  # NOQA
-from utils.exception import CommandFailed  # NOQA
-from utils.exception import CommandNotFound  # NOQA
-from utils.exception import DuplicatePatchesBaseError  # NOQA
-from utils.exception import IncompleteChangelog  # NOQA
-from utils.exception import InvalidAction  # NOQA
-from utils.exception import ModuleNotAvailable  # NOQA
-from utils.exception import MultipleSpecFilesFound  # NOQA
-from utils.exception import RpmModuleNotAvailable  # NOQA
-from utils.exception import SpecFileNotFound  # NOQA
-from utils.exception import SpecFileParseError  # NOQA
+from rdopkg.utils.exception import BranchNotFound  # NOQA
+from rdopkg.utils.exception import BuildArchSanityCheckFailed  # NOQA
+from rdopkg.utils.exception import CommandFailed  # NOQA
+from rdopkg.utils.exception import CommandNotFound  # NOQA
+from rdopkg.utils.exception import DuplicatePatchesBaseError  # NOQA
+from rdopkg.utils.exception import IncompleteChangelog  # NOQA
+from rdopkg.utils.exception import InvalidAction  # NOQA
+from rdopkg.utils.exception import ModuleNotAvailable  # NOQA
+from rdopkg.utils.exception import MultipleSpecFilesFound  # NOQA
+from rdopkg.utils.exception import RpmModuleNotAvailable  # NOQA
+from rdopkg.utils.exception import SpecFileNotFound  # NOQA
+from rdopkg.utils.exception import SpecFileParseError  # NOQA
 
 
 class UserAbort(RdopkgException):

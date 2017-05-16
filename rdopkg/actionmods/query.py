@@ -1,3 +1,4 @@
+from __future__ import print_function
 import re
 
 from rdopkg.actionmods import rdoinfo
