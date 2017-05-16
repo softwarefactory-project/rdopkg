@@ -67,9 +67,9 @@ def new_build(profile='cbs', scratch=True):
     kojiclient.uploadWrapper(srpm, serverdir, callback=_progress_callback)
     source = "%s/%s" % (serverdir, os.path.basename(srpm))
     task_id = kojiclient.build(source, build_target, {'scratch': scratch})
-    print "Created task:", task_id
+    print("Created task:", task_id)
 
-    print "Task info: {}/taskinfo?taskID={}".format(opts['weburl'], task_id)
+    print("Task info: {}/taskinfo?taskID={}".format(opts['weburl'], task_id))
     kojiclient.logout()
     watch_tasks(kojiclient, [task_id])
 

@@ -1,9 +1,9 @@
+import json
+import re
 import subprocess
 
-import exception
-import json
-import log
-import re
+from rdopkg import exception
+from rdopkg.utils import log
 
 
 class _CommandOutput(str):

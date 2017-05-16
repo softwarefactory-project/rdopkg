@@ -4,9 +4,9 @@ import os
 import re
 import yaml
 
-import exception
-from utils import log
-from utils.cmd import run
+from rdopkg import exception
+from rdopkg.utils import log
+from rdopkg.utils.cmd import run
 
 
 def confirm(msg, default_yes=True):
@@ -14,7 +14,7 @@ def confirm(msg, default_yes=True):
         options = '[Yn]'
     else:
         options = '[Ny]'
-    print
+    print('')
     i = raw_input(log.term.important("%s %s " % (msg, options))).lower()
     if not i:
         if default_yes:
@@ -23,7 +23,7 @@ def confirm(msg, default_yes=True):
             raise exception.UserAbort()
     if i != 'y' and i != 'yes':
         raise exception.UserAbort()
-    print
+    print('')
 
 
 def download_file(url):
@@ -174,6 +174,6 @@ class DictPrinter(object):
                 continue
             last_items.append((key, dd.pop(key)))
         if dd:
-            print yaml.dump(dd, default_flow_style=False).rstrip()
+            print(yaml.dump(dd, default_flow_style=False).rstrip())
         for key, val in last_items:
             print_keyval(key, val)

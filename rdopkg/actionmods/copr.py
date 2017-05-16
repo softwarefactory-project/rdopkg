@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-import ConfigParser
+from six.moves import configparser
 import datetime
 from functools import wraps
 import json
@@ -85,7 +85,7 @@ def get_copr_conf_fn():
 
 
 def get_copr_user():
-    config = ConfigParser.ConfigParser()
+    config = configParser.ConfigParser()
     config_fn = get_copr_conf_fn()
     if not config.read(config_fn):
         raise exception.CoprError(
@@ -95,14 +95,14 @@ def get_copr_user():
         username = config.get('copr-cli', 'username', None)
         login = config.get('copr-cli', 'login', None)
         token = config.get('copr-cli', 'token', None)
-    except ConfigParser.Error as err:
+    except configParser.Error as err:
         raise exception.CoprError(
             'Bad configuration file %s: %s' % (config_fn, err))
     return {'username': username, 'token': token, 'login': login}
 
 
 def get_copr_url():
-    config = ConfigParser.ConfigParser()
+    config = configParser.ConfigParser()
     config.read(get_copr_conf_fn())
     copr_url = COPR_URL
     if (config.has_section('copr-cli') and

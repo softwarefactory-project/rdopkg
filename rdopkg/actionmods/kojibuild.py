@@ -2,7 +2,7 @@
 Because fedpkg/pyrpkg sucks horribly, this entire file full of hacks is
 needed to interface with it. Disgusting.
 """
-import ConfigParser
+from six.moves import configparser
 import logging
 import sys
 import os
@@ -51,7 +51,7 @@ def setup_fedpkg_logger():
 
 def get_fedpkg_config():
     fedpkg_conf = '/etc/rpkg/fedpkg.conf'
-    config = ConfigParser.SafeConfigParser()
+    config = configparser.SafeConfigParser()
     config.read(fedpkg_conf)
     return config
 
@@ -106,7 +106,7 @@ def new_build(watch=True):
             # TODO: might be good to push this return data back up
             #       or check the status of the return
             r = cli._watch_koji_tasks(fcmd.kojisession, [task_id])
-        except ConfigParser.NoSectionError:
+        except configParser.NoSectionError:
             # <C-C> causes this for some reason
             print('')
         except Exception as ex:
