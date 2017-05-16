@@ -1,10 +1,10 @@
 import os
 import re
 
-import exception
-from utils.cmd import git, GerritQuery
-from utils import specfile
-from utils import log
+from rdopkg import exception
+from rdopkg.utils.cmd import git, GerritQuery
+from rdopkg.utils import specfile
+from rdopkg.utils import log
 from rdopkg.actionmods import rdoinfo
 
 
