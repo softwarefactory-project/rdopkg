@@ -190,12 +190,12 @@ class RdoinfoRepo(repoman.RepoManager):
         return distrepos
 
     def print_releases(self):
-        print "{t.bold}RDO releases & repos:{t.normal}".format(t=log.term)
+        print("{t.bold}RDO releases & repos:{t.normal}".format(t=log.term))
         for rls in self.info['releases']:
             s = "  {t.bold}{rls}{t.normal}".format(t=log.term, rls=rls['name'])
             if 'fedora' in rls:
                 s += '   (Fedora %s)' % rls['fedora']
-            print s
+            print(s)
             for repo in rls['repos']:
                 if 'special' in repo:
                     print ("    {t.bold}{name}{t.normal}: "
@@ -215,8 +215,8 @@ class RdoinfoRepo(repoman.RepoManager):
     def print_pkg_summary(self):
         pkgs = self.info['packages']
         n = len(pkgs)
-        print "{t.bold}{n} RDO packages defined:{t.normal}".format(
-            t=log.term, n=n)
+        print("{t.bold}{n} RDO packages defined:{t.normal}".format(
+            t=log.term, n=n))
         confs = {}
         for pkg in pkgs:
             conf = pkg.get('conf')
@@ -243,7 +243,7 @@ class RdoinfoRepo(repoman.RepoManager):
         if filters:
             pkgs = filter_pkgs(pkgs, rexen=filters)
         if not pkgs:
-            print "No packages match your filter."
+            print("No packages match your filter.")
             return
         print("{t.bold}{n} packages found:{t.normal}".format(t=log.term,
                                                              n=len(pkgs)))

@@ -3,12 +3,12 @@
 import json
 import os
 
-import action as _action
-import actions
-import const
-import exception
-import helpers
-from utils import log
+from rdopkg import action as _action
+from rdopkg import actions
+from rdopkg import const
+from rdopkg import exception
+from rdopkg import helpers
+from rdopkg.utils import log
 
 
 def default_action_manager():

@@ -25,7 +25,7 @@ def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False):
         inforepo.print_pkgs(filters)
     else:
         inforepo.print_summary()
-        print
+        print('')
         print("Supply regex filter(s) to list package details, e.g.:\n{t.cmd}"
               "    rdopkg info nova\n"
               "    rdopkg info conf:client maintainers:jruzicka\n"
