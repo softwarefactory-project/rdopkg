@@ -1,10 +1,11 @@
 """
 This is the main rdopkg action module with actions for distgit management.
 """
-
+from __future__ import print_function
 import itertools
 import os
 import re
+import six
 import sys
 
 from rdopkg.conf import cfg, cfg_files
@@ -18,7 +19,6 @@ from rdopkg.utils.cmd import run, git
 from rdopkg.utils import specfile
 from rdopkg.utils import tidy_ssh_user
 from rdopkg import helpers
-
 
 FEDPKG = ['fedpkg']
 
@@ -112,13 +112,13 @@ def show_package_env(package, version,
     spec = specfile.Spec()
     vr = spec.get_vr()
     patches_apply_method = spec.patches_apply_method()
-    print
+    print('')
     _putv('Package:  ', package)
     _putv('VR:       ', vr)
     _putv('Version:  ', version)
     _putv('Upstream: ', upstream_version)
     _putv('Tag style:', version_tag_style or 'X.Y.Z')
-    print
+    print('')
     _putv('Patches style:         ', patches_style)
     _putv('Dist-git branch:       ', branch)
     _putv('Local patches branch:  ',
@@ -129,7 +129,7 @@ def show_package_env(package, version,
           '%s : %s' % (upstream_branch, upstream_str))
     if patches_style == 'review':
         _putv('Patches chain:         ', gerrit_review_url)
-    print
+    print('')
     _putv('OS dist:               ', osdist)
     _putv('Patches apply method:  ', patches_apply_method)
 
@@ -759,9 +759,9 @@ def _partition_patches(patches, regex):
 
     buckets = []
     stacker = _stacker(buckets)
-    stacker.next()
+    six.next(stacker)
     filter = _filter(take, stacker)
-    filter.next()
+    six.next(filter)
 
     for patch in patches:
         filter.send(patch)
@@ -783,8 +783,9 @@ def update_patches(branch, local_patches_branch,
             action='update_patches',
             arg='version or new_version')
     tag = guess.version2tag(target_version, version_tag_style)
+
     _ensure_branch(local_patches_branch)
-    patches = git.get_commits(tag, local_patches_branch)
+    patches = list(git.get_commits(tag, local_patches_branch))
     n_patches = len(patches)
     _ensure_branch(branch)
     spec = specfile.Spec()
