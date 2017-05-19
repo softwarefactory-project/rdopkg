@@ -174,7 +174,7 @@ def user():
     if not user:
         raise exception.CantGuess(what="user name",
                                   why='git config user.name not set')
-    return user.decode('utf-8')
+    return user
 
 
 def email():
