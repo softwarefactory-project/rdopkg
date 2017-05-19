@@ -1,5 +1,6 @@
 blessings
 bunch
+future
 paramiko
 PyYAML
 requests

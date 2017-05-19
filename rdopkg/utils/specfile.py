@@ -9,10 +9,62 @@ from rdopkg import exception
 RPM_AVAILABLE = False
 try:
     import rpm
-    import rpmUtils.miscutils
     RPM_AVAILABLE = True
 except ImportError:
     pass
+
+
+def split_filename(filename):
+    """
+    Received a standard style rpm fullname and returns
+    name, version, release, epoch, arch
+    Example: foo-1.0-1.i386.rpm returns foo, 1.0, 1, i386
+             1:bar-9-123a.ia64.rpm returns bar, 9, 123a, 1, ia64
+
+    This function replaces rpmUtils.miscutils.splitFilename, see
+    https://bugzilla.redhat.com/1452801
+    """
+
+    # Remove .rpm suffix
+    if filename.endswith('.rpm'):
+        filename = filename.split('.rpm')[0]
+
+    # is there an epoch?
+    components = filename.split(':')
+    if len(components) > 1:
+        epoch = components[0]
+    else:
+        epoch = ''
+
+    # Arch is the last item after .
+    arch = filename.rsplit('.')[-1]
+    remaining = filename.rsplit('.%s' % arch)[0]
+    release = remaining.rsplit('-')[-1]
+    version = remaining.rsplit('-')[-2]
+    name = '-'.join(remaining.rsplit('-')[:-2])
+
+    return name, version, release, epoch, arch
+
+
+def string_to_version(verstring):
+    """
+    Return a tuple of (epoch, version, release) from a version string
+
+    This function replaces rpmUtils.miscutils.stringToVersion, see
+    https://bugzilla.redhat.com/1364504
+    """
+    # is there an epoch?
+    components = verstring.split(':')
+    if len(components) > 1:
+        epoch = components[0]
+    else:
+        epoch = 0
+
+    remaining = components[:2][0].split('-')
+    version = remaining[0]
+    release = remaining[1]
+
+    return (epoch, version, release)
 
 
 def spec_fn(spec_dir='.'):
@@ -32,7 +84,8 @@ def get_patches_from_files(patches_dir='.'):
         return []
     patches = []
     for pfn in patches_fns:
-        txt = codecs.open(pfn, 'r', encoding='utf-8').read()
+        with codecs.open(pfn, 'r', encoding='utf-8') as fp:
+            txt = fp.read()
         hash = None
         m = re.search(r'^From ([a-z0-9]+)', txt, flags=re.M)
         if m:
@@ -84,8 +137,8 @@ def has_macros(s):
 def nvrcmp(nvr1, nvr2):
     if not RPM_AVAILABLE:
         raise exception.RpmModuleNotAvailable()
-    t1 = rpmUtils.miscutils.stringToVersion(nvr1)
-    t2 = rpmUtils.miscutils.stringToVersion(nvr2)
+    t1 = string_to_version(nvr1)
+    t2 = string_to_version(nvr2)
     return rpm.labelCompare(t1, t2)
 
 
@@ -98,9 +151,7 @@ def vcmp(v1, v2):
 
 
 def nvr2version(nvr):
-    if not RPM_AVAILABLE:
-        raise exception.RpmModuleNotAvailable()
-    _, v, _, _, _ = rpmUtils.miscutils.splitFilename(nvr)
+    _, v, _, _, _ = split_filename(nvr)
     return v
 
 
@@ -130,7 +181,8 @@ class Spec(object):
     @property
     def txt(self):
         if not self._txt:
-            self._txt = codecs.open(self.fn, 'r', encoding='utf-8').read()
+            with codecs.open(self.fn, 'r', encoding='utf-8') as fp:
+                self._txt = fp.read()
         return self._txt
 
     @property
@@ -548,7 +600,7 @@ class Spec(object):
         entry = entries[0]
         lines = entry.split("\n")
         if strip:
-            lines = map(lambda x: x.lstrip(" -*\t"), lines)
+            lines = list(map(lambda x: x.lstrip(" -*\t"), lines))
         return lines[0], lines[1:]
 
     def get_requires(self, versions_as_string=False, remove_epoch=True):
