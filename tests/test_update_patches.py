@@ -178,15 +178,18 @@ def test_wipe(tmpdir):
         spec = specfile.Spec()
         spec.wipe_patches()
         spec.save()
-        spec_after = open('foo.spec', 'r').read()
-    spec_exp = open(common.spec_path('empty'), 'r').read()
+        with open('foo.spec', 'r') as fp:
+            spec_after = fp.read()
+    with open(common.spec_path('empty'), 'r') as fp:
+        spec_exp = fp.read()
     assert spec_after == spec_exp
     # second wipe must be a no-op
     with tmpdir.as_cwd():
         spec = specfile.Spec()
         spec.wipe_patches()
         spec.save()
-        spec_after = open('foo.spec', 'r').read()
+        with open('foo.spec', 'r') as fp:
+            spec_after = fp.read()
     assert spec_after == spec_exp
 
 

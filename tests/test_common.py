@@ -106,7 +106,8 @@ def assert_distgit(dg_path, img_dg):
     exp_tree = cfind(img_path)
     assert current_tree == exp_tree
     current_txt = dg_path.join('foo.spec').read()
-    exp_txt = open(os.path.join(img_path, 'foo.spec')).read()
+    with open(os.path.join(img_path, 'foo.spec')) as fp:
+        exp_txt = fp.read()
     assert current_txt == exp_txt
 
 

@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+from builtins import str
+
 import json
 import re
 import subprocess
@@ -53,6 +56,7 @@ def run(cmd, *params, **kwargs):
 
     if input:
         stdin = subprocess.PIPE
+        input = input.encode()
     else:
         stdin = None
 
@@ -75,16 +79,16 @@ def run(cmd, *params, **kwargs):
         if print_stdout:
             log.info(out)
     else:
-        out = ''
+        out = b''
 
     if err:
         err = err.rstrip()
         if print_stderr:
             log.info(err)
     else:
-        err = ''
+        err = b''
 
-    cout = _CommandOutput(out)
+    cout = _CommandOutput(out.decode('utf-8'))
     cout.stderr = err
     cout.return_code = prc.returncode
     cout.cmd = cmd_str
@@ -262,8 +266,9 @@ class Git(ShellCommand):
                        log_cmd=False, fatal=False)
         if not log_out:
             return []
+
         log = log_out.strip('\n\x1e').split("\x1e")
-        log = [row.strip().split("\x1f") for row in log]
+        log = [row.strip('\n\t ').split("\x1f") for row in log]
         log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in log]
         BZ_REGEX = r'rhbz#(\d+)'
         result = []
