@@ -619,7 +619,8 @@ def get_upstream_patches(version, local_patches_branch,
 def update_spec(branch=None, changes=None,
                 new_rpm_version=None, new_release=None,
                 new_milestone=None, new_patches_base=None,
-                no_bump=False):
+                no_bump=False, changelog_user=None,
+                changelog_email=None):
 
     if no_bump:
         return
@@ -649,7 +650,9 @@ def update_spec(branch=None, changes=None,
         changed = spec.set_patches_base_version(new_patches_base)
         if not changed:
             log.info("Macro detected in patches_base - not touching that.")
-    spec.new_changelog_entry(user=guess.user(), email=guess.email(),
+    user = (changelog_user or guess.user())
+    email = (changelog_email or guess.email())
+    spec.new_changelog_entry(user=user, email=email,
                              changes=changes)
     spec.save()
 
