@@ -79,6 +79,10 @@ ACTIONS = [
                Arg('commit_header_file', shortcut='-H', metavar='FILE',
                    help="start commit message with FILE contents, "
                         "- for stdin"),
+               Arg('changelog_user', shortcut='-u', default=None,
+                   help="User to be used in new changelog entry"),
+               Arg('changelog_email', shortcut='-e', default=None,
+                   help="email address to be used in new changelog entry"),
            ],
            steps=[
                Action('get_package_env'),
@@ -123,6 +127,10 @@ ACTIONS = [
                Arg('commit_header_file', shortcut='-H', metavar='FILE',
                    help="start commit message with FILE contents, "
                         "- for stdin"),
+               Arg('changelog_user', shortcut='-u', default=None,
+                   help="User to be used in new changelog entry"),
+               Arg('changelog_email', shortcut='-e', default=None,
+                   help="email address to be used in new changelog entry"),
            ],
            steps=[
                Action('get_package_env'),
