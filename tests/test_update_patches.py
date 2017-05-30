@@ -4,7 +4,7 @@ import pytest
 from rdopkg.actions.distgit.actions import update_patches
 from rdopkg.utils.cmd import git
 from rdopkg.utils import specfile
-import rdopkg.utils.exception
+import rdopkg.exception
 
 import test_common as common
 
@@ -146,7 +146,7 @@ def test_update_git_am_buildarch_fail(tmpdir):
         common.prep_patches_branch()
         commit_before = git('rev-parse', 'HEAD')
         common.add_patches(extra=True)
-        with pytest.raises(rdopkg.utils.exception.BuildArchSanityCheckFailed):
+        with pytest.raises(rdopkg.exception.BuildArchSanityCheckFailed):
             update_patches('master',
                            local_patches_branch='master-patches',
                            version='1.2.3')
@@ -237,7 +237,7 @@ def test_update_double_patches_base(tmpdir):
     with dist_path.as_cwd():
         common.prep_patches_branch()
         commit_before = git('rev-parse', 'HEAD')
-        with pytest.raises(rdopkg.utils.exception.DuplicatePatchesBaseError):
+        with pytest.raises(rdopkg.exception.DuplicatePatchesBaseError):
             update_patches('master',
                            local_patches_branch='master-patches',
                            version='1.2.3')
