@@ -1,5 +1,5 @@
-from rdopkg.utils.exception import CommandFailed
-from rdopkg.utils.exception import RdopkgException
+from rdopkg.exception import CommandFailed
+from rdopkg.exception import RdopkgException
 
 
 def test_exception_default():
