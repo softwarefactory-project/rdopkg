@@ -7,7 +7,7 @@ from distutils.spawn import find_executable
 import os
 import subprocess
 
-from rdopkg.utils.exception import ModuleNotAvailable, RpmModuleNotAvailable
+from rdopkg.exception import ModuleNotAvailable, RpmModuleNotAvailable
 from rdopkg.utils.specfile import spec_fn, Spec
 from rdopkg.utils.log import log
 from rdopkg import exception, guess
