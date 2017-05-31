@@ -3,6 +3,7 @@ import collections
 import contextlib
 import os
 import re
+import sys
 import yaml
 
 from rdopkg import exception
@@ -11,20 +12,26 @@ from rdopkg.utils.cmd import run
 
 
 def confirm(msg, default_yes=True):
-    if default_yes:
-        options = '[Yn]'
+    if sys.stdout.isatty():
+        if default_yes:
+            options = '[Yn]'
+        else:
+            options = '[Ny]'
+        print('')
+        i = raw_input(log.term.important("%s %s " % (msg, options))).lower()
+        if not i:
+            if default_yes:
+                return
+            else:
+                raise exception.UserAbort()
+        if i != 'y' and i != 'yes':
+            raise exception.UserAbort()
+        print('')
     else:
-        options = '[Ny]'
-    print('')
-    i = raw_input(log.term.important("%s %s " % (msg, options))).lower()
-    if not i:
         if default_yes:
             return
         else:
             raise exception.UserAbort()
-    if i != 'y' and i != 'yes':
-        raise exception.UserAbort()
-    print('')
 
 
 def download_file(url):
