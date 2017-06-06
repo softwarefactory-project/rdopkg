@@ -1,5 +1,5 @@
 [gerrit]
-host=review.rdoproject.org
+host=softwarefactory-project.io
 port=29418
 project=rdopkg
 defaultbranch=master

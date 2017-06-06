@@ -8,9 +8,9 @@ you started hacking quickly.
 git repo
 --------
 
-Sources are hosted at review.rdoproject.org and mirrored to github:
+Sources are hosted at softwarefactory-project.org and mirrored to github:
 
-    git clone https://github.com/openstack-packages/rdopkg
+    git clone https://github.com/softwarefactory-project/rdopkg
 
 Submit your changes using
 
@@ -152,7 +152,7 @@ running from virtualenv
 
 You can setup local testing installation of rdopkg using virtualenv:
 
-    git clone https://github.com/openstack-packages/rdopkg
+    git clone https://github.com/softwarefactory-project/rdopkg
     cd rdopkg
     virtualenv --system-site-packages ~/rdopkg-venv
     source ~/rdopkg-venv/bin/activate
