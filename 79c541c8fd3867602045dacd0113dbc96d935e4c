@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_dce4b00e",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-06-06T12:24:21Z",
+      "side": 1,
+      "message": "when will online manual be back up?",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 127
+      },
+      "revId": "79c541c8fd3867602045dacd0113dbc96d935e4c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
