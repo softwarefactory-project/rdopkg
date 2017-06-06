@@ -21,7 +21,7 @@ setuptools.setup(
     description='RDO packaging utility',
     author='Jakub Ruzicka',
     author_email='jruzicka@redhat.com',
-    url='https://github.com/openstack-packages/rdopkg',
+    url='https://github.com/softwarefactory-project/rdopkg',
     # TODO: find better solution than maintaining this redundant list by hand
     packages=[
         'rdopkg',
