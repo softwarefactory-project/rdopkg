@@ -50,7 +50,7 @@ is underway but not likely to finish before `pwnpkg` split.
 If you want to hack `rdopkg` or just have the latest fixes without waiting for
 next release, I suggest using the git repo directly:
 
-    git clone https://github.com/openstack-packages/rdopkg
+    git clone https://github.com/softwarefactory-project/rdopkg
     cd rdopkg
     python setup.py develop --user
 
@@ -59,7 +59,7 @@ You may set the preference over `rdopkg` RPM by correctly positioning
 
 Or you can use virtualenv to avoid conflicts with RPM:
 
-    git clone https://github.com/openstack-packages/rdopkg
+    git clone https://github.com/softwarefactory-project/rdopkg
     cd rdopkg
     virtualenv --system-site-packages ~/rdopkg-venv
     source ~/rdopkg-venv/bin/activate
@@ -86,9 +86,9 @@ a module.
 
 Exhaustive `rdopkg` manual is available, you can:
 
- * not read it online ATM as we're migrating... [sorry about that](https://github.com/openstack-packages/rdopkg/issues/65)
- * read its nice source: [doc/rdopkg.1.adoc](doc/rdopkg.1.adoc)
+ * read it nicely rendered on github: [rdopkg manual](https://github.com/softwarefactory-project/rdopkg/blob/master/doc/rdopkg.1.adoc)
  * run `man rdopkg` if you installed from RPM
+ * render it to HTML/man using `make doc`
 
 You might also be interested in
 [RDO packaging guide](https://www.rdoproject.org/documentation/rdo-packaging)
@@ -98,5 +98,5 @@ which contains some examples of `rdopkg` usage and more.
 ## Bugs
 
 Please use the
-[github Issues](https://github.com/openstack-packages/rdopkg/issues)
+[github Issues](https://github.com/softwarefactory-project/rdopkg/issues)
 to report bugs. I usually fix them within days.
