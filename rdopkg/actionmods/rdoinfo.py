@@ -104,7 +104,7 @@ class RdoinfoRepo(repoman.RepoManager):
     def get_info(self, gitrev=None):
         with self.repo_dir():
             if gitrev:
-                commit1 = git.current_commit()
+                commit1 = git.get_commit()
                 git('checkout', gitrev, log_cmd=False)
                 self.ensure_rdoinfo()
                 info = self.rdoinfo.parse_info_file(
