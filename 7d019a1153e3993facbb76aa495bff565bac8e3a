@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "9aa53dc9_1479e2fc",
+        "filename": "features/environment.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-06-27T21:08:47Z",
+      "side": 1,
+      "message": "hmm this could be an issue if you try to re-use this tempdir for another test and don\u0027t immediately abort or do a forceful cleanup before next test case.",
+      "revId": "7d019a1153e3993facbb76aa495bff565bac8e3a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_74ceee5b",
         "filename": "features/newversion.feature",
         "patchSetId": 4
@@ -13,6 +30,64 @@
       "writtenOn": "2017-06-27T15:55:36Z",
       "side": 1,
       "message": "For readibility should be:\nGiven a release bump in a distgit repo",
+      "revId": "7d019a1153e3993facbb76aa495bff565bac8e3a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_341d06be",
+        "filename": "features/newversion.feature",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-06-27T21:08:47Z",
+      "side": 1,
+      "message": "Actually the given here is more like\n\nGiven a standard-dist-git repo\n\nor even something like\n\nGiven a standard-dist-git repo with version \"2.0.0\" and Release \"0\"",
+      "parentUuid": "9aa53dc9_74ceee5b",
+      "revId": "7d019a1153e3993facbb76aa495bff565bac8e3a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_f47d5ee8",
+        "filename": "features/patch.feature",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-06-27T21:08:47Z",
+      "side": 1,
+      "message": "I think this might need refined slightly to something closer to the following depending on exact definition of standard is:\n\nGiven a standard dist-git\nGiven a standard dist-git with normal tags\nGiven a standard dist-git with no magic comments",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 23
+      },
+      "revId": "7d019a1153e3993facbb76aa495bff565bac8e3a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_d4825ac8",
+        "filename": "features/patch.feature",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-06-27T21:08:47Z",
+      "side": 1,
+      "message": "Scenario: rdopkg patch with existing patches_base\u003d+1\nScenario: rdopkg patch with existing patches_base\u003d1.2.3 and patches_ignore\u003dFOO\nScenario: rdopkg patch with existing patches_base\u003d1.2.3 and normal tags\nScenario: rdopkg patch with existing patches_base\u003dfoo-1.2.3 custom tag",
       "revId": "7d019a1153e3993facbb76aa495bff565bac8e3a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
