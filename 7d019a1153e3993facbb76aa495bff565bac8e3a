@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_74ceee5b",
+        "filename": "features/newversion.feature",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2017-06-27T15:55:36Z",
+      "side": 1,
+      "message": "For readibility should be:\nGiven a release bump in a distgit repo",
+      "revId": "7d019a1153e3993facbb76aa495bff565bac8e3a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
