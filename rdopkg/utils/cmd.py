@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from builtins import str
 
 import json
+import os
 import re
 import subprocess
 
@@ -47,6 +48,13 @@ def run(cmd, *params, **kwargs):
     cmd = [cmd] + list(params)
     cmd_str = ' '.join(cmd)
 
+    env = os.environ.copy()
+    # allows us to run git in isolated mode, avoiding interaction with user
+    # specific config, like ~/.git-templates/hooks (used for testing)
+    if kwargs.get('isolated', False):
+        env['GIT_CONFIG_NOSYSTEM'] = '1'
+        env['GIT_CONFIG_NOGLOBAL'] = '1'
+
     if log_cmd:
         log.command(log.term.cmd(cmd_str))
 
@@ -69,7 +77,7 @@ def run(cmd, *params, **kwargs):
 
     try:
         prc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout,
-                               stderr=stderr)
+                               stderr=stderr, env=env)
     except OSError:
         raise exception.CommandNotFound(cmd=cmd[0])
     out, err = prc.communicate(input=input)

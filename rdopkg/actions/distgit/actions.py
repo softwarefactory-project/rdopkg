@@ -730,7 +730,8 @@ def commit_distgit_update(branch=None, amend=False, commit_header_file=None):
 
 def amend(commit_header_file=None):
     msg = _commit_message(header_file=commit_header_file)
-    git('commit', '-a', '--amend', '-F', '-', input=msg, print_output=True)
+    git('commit', '-a',
+        '--amend', '-F', '-', input=msg, print_output=True)
     print("")
     git('--no-pager', 'log', '--name-status', 'HEAD~..HEAD', direct=True)
 
