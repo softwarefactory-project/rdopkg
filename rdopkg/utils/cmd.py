@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from builtins import str
 
 import json
+import os
 import re
 import subprocess
 
@@ -43,6 +44,7 @@ def run(cmd, *params, **kwargs):
     print_stdout = kwargs.get('print_stdout', False)
     print_stderr = kwargs.get('print_stderr', False)
     print_output = kwargs.get('print_output', False)
+    env = kwargs.get('env', None)
 
     cmd = [cmd] + list(params)
     cmd_str = ' '.join(cmd)
@@ -69,7 +71,7 @@ def run(cmd, *params, **kwargs):
 
     try:
         prc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout,
-                               stderr=stderr)
+                               stderr=stderr, env=env)
     except OSError:
         raise exception.CommandNotFound(cmd=cmd[0])
     out, err = prc.communicate(input=input)
@@ -113,6 +115,16 @@ class ShellCommand(object):
 
 class Git(ShellCommand):
     command = "git"
+
+    def __call__(self, *params, **kwargs):
+        # allows us to run git in isolated mode, avoiding interaction with user
+        # specific config, like ~/.git-templates/hooks (used for testing)
+        if kwargs.get('isolated', False):
+            env = kwargs.get('env', os.environ.copy())
+            env['GIT_CONFIG_NOSYSTEM'] = '1'
+            env['GIT_CONFIG_NOGLOBAL'] = '1'
+            kwargs['env'] = env
+        return run(self.command, *params, **kwargs)
 
     def create_branch_from_remote(self, branch, remote_branch=None):
         lbr = self.local_branches()
