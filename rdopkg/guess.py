@@ -262,6 +262,8 @@ def osdist(branch=None):
         return 'RHCEPH'
     if branch.startswith('rhscon-'):
         return 'RHSCON'
+    if branch.startswith('eng-'):
+        return 'RHENG'
     # XXX Detect 'Fedora' here? From r'f\d+' branches possibly.
     return 'RDO'
 
