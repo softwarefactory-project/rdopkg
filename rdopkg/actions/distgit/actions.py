@@ -722,7 +722,7 @@ def _commit_message(changes=None, header_file=None):
 def commit_distgit_update(branch=None, amend=False, commit_header_file=None):
     _ensure_branch(branch)
     msg = _commit_message(header_file=commit_header_file)
-    cmd = ['commit', '-a', '-F', '-']
+    cmd = ['commit', '--no-verify', '-a', '-F', '-']
     if amend:
         cmd.append('--amend')
     git(*cmd, input=msg, print_output=True)
@@ -730,7 +730,8 @@ def commit_distgit_update(branch=None, amend=False, commit_header_file=None):
 
 def amend(commit_header_file=None):
     msg = _commit_message(header_file=commit_header_file)
-    git('commit', '-a', '--amend', '-F', '-', input=msg, print_output=True)
+    git('commit', '--no-verify', '-a',
+        '--amend', '-F', '-', input=msg, print_output=True)
     print("")
     git('--no-pager', 'log', '--name-status', 'HEAD~..HEAD', direct=True)
 
@@ -858,7 +859,7 @@ def update_patches(branch, local_patches_branch,
         log.info('No patches changed.')
         return
     msg = 'Updated patches from ' + local_patches_branch
-    git('commit', '-a', '-m', msg)
+    git('commit', '--no-verify', '-a', '-m', msg)
     if amend:
         git.squash_last()
 
