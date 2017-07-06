@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_ad542454",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-06T15:34:55Z",
+      "side": 1,
+      "message": "What was the actual issue and why was it failing and why is [:2] the right answer?",
+      "revId": "279bee8ef943a0673f947a3110c147b518ab42db",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
