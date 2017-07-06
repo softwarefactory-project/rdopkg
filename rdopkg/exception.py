@@ -40,6 +40,10 @@ class IncompleteChangelog(RdopkgException):
     msg_fmt = "Description of changes is missing in %%changelog."
 
 
+class MultipleChangelog(RdopkgException):
+    msg_fmt = "Multiple %%changelog sections found. Expected only one."
+
+
 class MultipleSpecFilesFound(RdopkgException):
     msg_fmt = "Multiple .spec files found. Expected only one."
 
