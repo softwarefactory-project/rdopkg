@@ -314,3 +314,26 @@ def test_get_magic_comment_minimal_6():
 def test_get_magic_comment_minimal_7():
     spec = specfile.Spec(txt='# foo=\n')
     assert '' == spec.get_magic_comment('foo')
+
+
+def test_get_last_changelog_entry_0():
+    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n'
+    spec = specfile.Spec(txt=txt)
+    r = spec.get_last_changelog_entry()
+    assert ('', []) == r
+
+
+def test_get_last_changelog_entry_1():
+    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n'
+    changelog = '%changelog\n'
+    spec = specfile.Spec(txt=txt + '%changelog\nfoo')
+    r = spec.get_last_changelog_entry()
+    assert ('foo', []) == r
+
+
+def test_get_last_changelog_entry_2():
+    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n'
+    changelog = '%changelog\n'
+    spec = specfile.Spec(txt=txt + '%changelog\nfoo\n%changelog\nbar\n')
+    r = spec.get_last_changelog_entry()
+    assert ('foo', ['%changelog', 'bar']) == r
