@@ -47,7 +47,8 @@ def prep_spec_test(tmpdir, distgit):
     with dist_path.as_cwd():
         git('init')
         git('add', '.')
-        git('commit', '-m', 'Initial import')
+        git('commit', '-m', 'Initial import',
+            isolated=True)
     return dist_path
 
 
@@ -57,7 +58,8 @@ def prep_patches_branch(tag='1.2.3'):
     f.write("#not really a patch\n")
     f.close()
     git('add', 'foofile')
-    git('commit', '-m', 'Create this test branch')
+    git('commit', '-m', 'Create this test branch',
+        isolated=True)
     if tag:
         git('tag', tag)
     git('checkout', 'master')
@@ -68,7 +70,8 @@ def do_patch(fn, content, msg):
     f.write(content)
     f.close()
     git('add', fn)
-    git('commit', '-m', msg)
+    git('commit', '-m', msg,
+        isolated=True)
 
 
 def add_patches(extra=False, filtered=False, tag=None):
