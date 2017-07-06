@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Integration tests for findpkg
 
 set -e
