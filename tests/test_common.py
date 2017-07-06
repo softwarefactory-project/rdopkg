@@ -124,7 +124,8 @@ def assert_spec_version(version, release_parts, milestone):
 
 def norm_changelog(count=1):
     spec = Spec()
-    txt, chl = spec.txt.split('%changelog\n')
+    regex = re.compile(r"%changelog\n", flags=re.I)
+    txt, chl = regex.split(spec.txt)
     chl, n = re.subn(r'^\* .+\s(\d\S*)$', '* DATE AUTHOR \g<1>', chl, count=count, flags=re.M)
     spec._txt = txt + '%changelog\n' + chl
     spec.save()
