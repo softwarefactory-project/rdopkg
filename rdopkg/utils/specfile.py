@@ -594,8 +594,10 @@ class Spec(object):
         return map(os.path.basename, self.get_source_urls())
 
     def get_last_changelog_entry(self, strip=False):
-        _, changelog = self.txt.split("%changelog\n")
-        changelog = changelog.strip()
+        changelog = ''
+        r = self.txt.split("%changelog\n", 1)
+        if len(r) == 2:
+            changelog = r[1].strip()
         entries = re.split(r'\n\n+', changelog)
         entry = entries[0]
         lines = entry.split("\n")
