@@ -284,7 +284,7 @@ class Spec(object):
         regex_string = match.group(1)
         try:
             return re.compile(regex_string)
-        except:
+        except Exception:
             return None
 
     def _create_new_patches_base(self, base):

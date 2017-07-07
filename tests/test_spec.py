@@ -201,7 +201,8 @@ def test_set_patches_base_case_2_minimal():
     assert spec.txt == 'foo\nbaz\n'
 
 
-# found bug where following comment mangles prior line when clearing patches_base
+# found bug where following comment mangles prior line when clearing
+# patches_base
 def test_set_patches_base_case_3_minimal():
     spec = specfile.Spec(txt='foo\n# patches_base=1.2.3\n# bar\nbaz\n')
     spec.set_patches_base_version(None)
@@ -230,7 +231,7 @@ def test_set_patches_base_case_5_minimal():
 
 # patches_base/patches_ignore
 def test_set_patches_base_case_6_minimal():
-    spec = specfile.Spec(txt='Version: 1.2.3\n\n# patches_base=1.2.3\n# patches_ignore=DROP-IN-RPM\n#\nPatch0=foo.patch\n')
+    spec = specfile.Spec(txt='Version: 1.2.3\n\n# patches_base=1.2.3\n# patches_ignore=DROP-IN-RPM\n#\nPatch0=foo.patch\n')  # noqa
     spec.set_patches_base_version(None)
     assert 'Version: 1.2.3\n' in spec.txt
     assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
@@ -239,7 +240,7 @@ def test_set_patches_base_case_6_minimal():
 
 # patches_ignore/patches_base
 def test_set_patches_base_case_7_minimal():
-    spec = specfile.Spec(txt='Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n')
+    spec = specfile.Spec(txt='Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n')  # noqa
     spec.set_patches_base_version(None)
     assert 'Version: 1.2.3\n' in spec.txt
     assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
@@ -248,7 +249,7 @@ def test_set_patches_base_case_7_minimal():
 
 # patches_ignore/patches_base keep patches_base
 def test_set_patches_base_case_8_minimal():
-    spec = specfile.Spec(txt='Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=\n#\nPatch0=foo.patch\n')
+    spec = specfile.Spec(txt='Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=\n#\nPatch0=foo.patch\n')  # noqa
     spec.set_patches_base_version(None)
     assert '# patches_ignore=DROP-IN-RPM\n' in spec.txt
     assert '# patches_base=1.2.3\n' in spec.txt
@@ -310,7 +311,8 @@ def test_get_magic_comment_minimal_6():
     assert spec.get_magic_comment('foo') is None
 
 
-@pytest.mark.skip('Ignoring eged case until we get more details for expected behavior')
+@pytest.mark.skip(
+    'Ignoring eged case until we get more details for expected behavior')
 def test_get_magic_comment_minimal_7():
     spec = specfile.Spec(txt='# foo=\n')
     assert '' == spec.get_magic_comment('foo')

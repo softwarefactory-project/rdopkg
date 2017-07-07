@@ -47,8 +47,10 @@ def test_new_version_basic(tmpdir):
 def test_new_version_milestone(tmpdir):
     steps = [
         ('3.4.5', '3.4.5', ('1', '', DIST_POSTFIX), None),
-        ('4.0.0.0b1', '4.0.0', ('0.1', '%{?milestone}', DIST_POSTFIX), '.0b1'),
-        ('4.0.0.0rc1', '4.0.0', ('0.2', '%{?milestone}', DIST_POSTFIX), '.0rc1'),
+        ('4.0.0.0b1',
+         '4.0.0', ('0.1', '%{?milestone}', DIST_POSTFIX), '.0b1'),
+        ('4.0.0.0rc1',
+         '4.0.0', ('0.2', '%{?milestone}', DIST_POSTFIX), '.0rc1'),
         ('4.0.0', '4.0.0', ('1', '', DIST_POSTFIX), None),
     ]
     _test_new_version('some', tmpdir, steps)

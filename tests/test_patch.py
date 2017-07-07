@@ -43,13 +43,16 @@ def _test_patch(asset, version, dir):
 
 @pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_milestone(tmpdir):
-    _test_patch('milestone', ('1.2.3', ('0.4', '%{?milestone}', DIST_POSTFIX), '.0rc2'), tmpdir)
+    _test_patch('milestone', ('1.2.3', ('0.4', '%{?milestone}',
+                DIST_POSTFIX), '.0rc2'), tmpdir)
 
 
 @pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_milestone_bug(tmpdir):
     # make sure rdopkg removes unwanted '%global milestone %{?milestone}'
-    _test_patch('milestone-bug', ('1.2.3', ('0.4', '', DIST_POSTFIX), None), tmpdir)
+    _test_patch('milestone-bug',
+                ('1.2.3', ('0.4', '', DIST_POSTFIX), None),
+                tmpdir)
 
 
 @pytest.mark.skipif('RPM_AVAILABLE == False')
@@ -126,11 +129,13 @@ def test_patch_noop(tmpdir):
 
 
 def test_patch_noop_detect(tmpdir):
-    _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '--changelog', 'detect'])
+    _test_patch_noop(tmpdir,
+                     'patched', ['patch', '-l', '--changelog', 'detect'])
 
 
 def test_patch_noop_count(tmpdir):
-    _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '--changelog', 'count'])
+    _test_patch_noop(tmpdir,
+                     'patched', ['patch', '-l', '--changelog', 'count'])
 
 
 def test_patch_noop_plain(tmpdir):
@@ -141,7 +146,8 @@ def test_patch_noop_no_bump(tmpdir):
     _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '--no-bump'])
 
 
-def _test_patch_regen(tmpdir, distgit, distgit_after, cmd, norm_changelog=True):
+def _test_patch_regen(tmpdir, distgit, distgit_after,
+                      cmd, norm_changelog=True):
     dist_path = common.prep_spec_test(tmpdir, distgit)
     with dist_path.as_cwd():
         common.prep_patches_branch()
@@ -153,7 +159,8 @@ def _test_patch_regen(tmpdir, distgit, distgit_after, cmd, norm_changelog=True):
         if norm_changelog:
             common.norm_changelog()
     common.assert_distgit(dist_path, distgit_after)
-    assert commit_before != commit_after, "New commit not created after patch regen"
+    assert commit_before != commit_after, \
+        "New commit not created after patch regen"
     assert git_clean, "git not clean after action"
 
 
@@ -162,16 +169,20 @@ def test_patch_regen(tmpdir):
 
 
 def test_patch_regen_detect(tmpdir):
-    _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l', '-C', 'detect'])
+    _test_patch_regen(tmpdir, 'patched', 'patched-regen',
+                      ['patch', '-l', '-C', 'detect'])
 
 
 def test_patch_regen_count(tmpdir):
-    _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l', '-C', 'count'])
+    _test_patch_regen(tmpdir, 'patched', 'patched-regen',
+                      ['patch', '-l', '-C', 'count'])
 
 
 def test_patch_regen_plain(tmpdir):
-    _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l', '--changelog', 'plain'])
+    _test_patch_regen(tmpdir, 'patched', 'patched-regen',
+                      ['patch', '-l', '--changelog', 'plain'])
 
 
 def test_patch_regen_no_bump(tmpdir):
-    _test_patch_regen(tmpdir, 'patched', 'patched', ['patch', '-l', '--no-bump'], norm_changelog=False)
+    _test_patch_regen(tmpdir, 'patched', 'patched',
+                      ['patch', '-l', '--no-bump'], norm_changelog=False)
