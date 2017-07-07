@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_b16a3e19",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-07T19:06:46Z",
+      "side": 1,
+      "message": "Nice simple approach here.  If we want to overload \u0027\u0027 please adjust unittests to match as well.",
+      "revId": "6d0df0484e45a4dc17e89d7cb98420ae3a885ae4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_d16dc233",
+        "filename": "tests/test_common.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-07T19:06:46Z",
+      "side": 1,
+      "message": "Nice good catch.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 36
+      },
+      "revId": "6d0df0484e45a4dc17e89d7cb98420ae3a885ae4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_317e2ee5",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-07T19:06:46Z",
+      "side": 1,
+      "message": "sane assertion of behavior",
+      "range": {
+        "startLine": 323,
+        "startChar": 4,
+        "endLine": 323,
+        "endChar": 24
+      },
+      "revId": "6d0df0484e45a4dc17e89d7cb98420ae3a885ae4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_11832ace",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-07T19:06:46Z",
+      "side": 1,
+      "message": "sane assertion of behavior",
+      "range": {
+        "startLine": 331,
+        "startChar": 4,
+        "endLine": 331,
+        "endChar": 27
+      },
+      "revId": "6d0df0484e45a4dc17e89d7cb98420ae3a885ae4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_f187a6d5",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-07T19:06:46Z",
+      "side": 1,
+      "message": "This test case is currently failing ... \n\nI\u0027d actually prefer to see an Exception in this case as 2 instances of lines with \"%changelog\\n\" does not make sense for a spec file.",
+      "range": {
+        "startLine": 339,
+        "startChar": 0,
+        "endLine": 339,
+        "endChar": 46
+      },
+      "revId": "6d0df0484e45a4dc17e89d7cb98420ae3a885ae4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
