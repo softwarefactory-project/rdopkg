@@ -93,7 +93,7 @@ def retrieve_sources():
         return
     try:
         specfile = spec_fn()
-    except:
+    except Exception:
         return
 
     cmd = [spectool, "-g", specfile]
@@ -113,7 +113,7 @@ def create_srpm(dist='el7'):
     try:
         specfile = spec_fn()
         spec = Spec(specfile)
-    except:
+    except Exception:
         return
 
     rpmdefines = ["--define 'dist .{}'".format(dist),
