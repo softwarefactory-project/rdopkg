@@ -1,6 +1,10 @@
 #!/bin/sh
-set -ex
+set -exuo pipefail
+
+# avoid possible pytest errors due to precompiled files
+export PYTHONDONTWRITEBYTECODE=1
+find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf || true
 
 PYTHONPATH=. py.test $@
-pep8 rdopkg
+python -m pycodestyle
 ./tests/test_findpkg_integration.sh
