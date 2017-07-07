@@ -243,4 +243,5 @@ def test_update_double_patches_base(tmpdir):
                            version='1.2.3')
         commit_after = git('rev-parse', 'HEAD')
     common.assert_distgit(dist_path, 'double-patches')
-    assert commit_before == commit_after, "Commit created on double patches_base (error)"
+    assert commit_before == commit_after, \
+        "Commit created on double patches_base (error)"

@@ -2,5 +2,5 @@
 set -ex
 
 PYTHONPATH=. py.test $@
-pep8 rdopkg
+pycodestyle
 ./tests/test_findpkg_integration.sh
