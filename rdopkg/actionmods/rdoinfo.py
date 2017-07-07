@@ -199,19 +199,19 @@ class RdoinfoRepo(repoman.RepoManager):
             print(s)
             for repo in rls['repos']:
                 if 'special' in repo:
-                    print ("    {t.bold}{name}{t.normal}: "
-                           "{t.yellow}{special}{t.normal}".format(
-                               t=log.term,
-                               name=repo['name'],
-                               special=repo['special']))
+                    print("    {t.bold}{name}{t.normal}: "
+                          "{t.yellow}{special}{t.normal}".format(
+                              t=log.term,
+                              name=repo['name'],
+                              special=repo['special']))
                 else:
-                    print ("    {t.bold}{name}{t.normal} built in"
-                           " {t.bold}{bs}{t.normal} from"
-                           " {t.bold}{branch}{t.normal} branch".format(
-                               t=log.term,
-                               name=repo['name'],
-                               bs=repo.get('buildsys', '??'),
-                               branch=repo['branch']))
+                    print("    {t.bold}{name}{t.normal} built in"
+                          " {t.bold}{bs}{t.normal} from"
+                          " {t.bold}{branch}{t.normal} branch".format(
+                              t=log.term,
+                              name=repo['name'],
+                              bs=repo.get('buildsys', '??'),
+                              branch=repo['branch']))
 
     def print_pkg_summary(self):
         pkgs = self.info['packages']
