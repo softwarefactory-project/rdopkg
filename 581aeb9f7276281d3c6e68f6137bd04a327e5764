@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_b4ad8c33",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T15:55:59Z",
+      "side": 1,
+      "message": "Adopt pbr for version and setup.py management",
+      "revId": "581aeb9f7276281d3c6e68f6137bd04a327e5764",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_b4746ccf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T15:55:59Z",
+      "side": 1,
+      "message": "I also like minimalism but let\u0027s give all these lines a sentence or two :D Something like:\n\nUse pbr module for versioning and setup.py management as used by upstream OpenStack projects and DLRN.\n\nhttps://docs.openstack.org/pbr/latest/",
+      "revId": "581aeb9f7276281d3c6e68f6137bd04a327e5764",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_d477f0d2",
+        "filename": "rdopkg/__init__.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T15:55:59Z",
+      "side": 1,
+      "message": "I\u0027d steal nice codes from openstackclient :)\nhttps://github.com/openstack/python-openstackclient/blob/master/openstackclient/__init__.py\n\nThis way, version_info is clearly named (unlike _v :-p) and can be used to extract semantic_version() or anything else, really.\n\n__all__ \u003d [\u0027__version__\u0027]\n\nimport pbr.version\n\nversion_info \u003d pbr.version.VersionInfo(\u0027rdopkg\u0027)\ntry:\n    __version__ \u003d version_info.version_string()\nexcept AttributeError:\n    __version__ \u003d None\nVERSION \u003d __version__",
+      "revId": "581aeb9f7276281d3c6e68f6137bd04a327e5764",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_74a70450",
+        "filename": "run_tests.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T15:55:59Z",
+      "side": 1,
+      "message": "This doesn\u0027t belong here, as explained in https://softwarefactory-project.io/r/#/c/8852/1",
+      "revId": "581aeb9f7276281d3c6e68f6137bd04a327e5764",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_5463e01a",
+        "filename": "run_tests.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T15:55:59Z",
+      "side": 1,
+      "message": "How is this related to pbr? What are advantages over `pep8 rdopkg`?",
+      "revId": "581aeb9f7276281d3c6e68f6137bd04a327e5764",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_146d5804",
+        "filename": "setup.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T15:55:59Z",
+      "side": 1,
+      "message": "why these specific requires? DLRN has none of that in setup.py:\nhttps://github.com/softwarefactory-project/DLRN/blob/master/setup.py\n\nonly pbr\u003e\u003d0.5.6 in requirements.txt",
+      "revId": "581aeb9f7276281d3c6e68f6137bd04a327e5764",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_f471d4e1",
+        "filename": "test-requirements.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T15:55:59Z",
+      "side": 1,
+      "message": "right :)",
+      "revId": "581aeb9f7276281d3c6e68f6137bd04a327e5764",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
