@@ -50,6 +50,24 @@
       "revId": "f29452b949a8873fc1e43841f21fc480bb7a18e7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_d4b0108e",
+        "filename": "run_tests.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 450
+      },
+      "writtenOn": "2017-07-10T15:25:25Z",
+      "side": 1,
+      "message": "Really glad to read that, I was afraid that you may say that tox adoption is not desired or that it would be subject to another change.\n\nGive me few minutes to update this with tox adoption too.",
+      "parentUuid": "9aa53dc9_b4a0ec91",
+      "revId": "f29452b949a8873fc1e43841f21fc480bb7a18e7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
