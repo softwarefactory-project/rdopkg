@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_94ade88a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T12:55:08Z",
+      "side": 1,
+      "message": "typo: s/text/test/",
+      "revId": "f29452b949a8873fc1e43841f21fc480bb7a18e7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_548f6023",
+        "filename": "run_tests.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T12:55:08Z",
+      "side": 1,
+      "message": "Yes, I hit this issue few times so that\u0027s useful.",
+      "revId": "f29452b949a8873fc1e43841f21fc480bb7a18e7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_b4a0ec91",
+        "filename": "run_tests.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T12:55:08Z",
+      "side": 1,
+      "message": "No, this doesn\u0027t belong here. Requirements installation and running tests are two separate things which you might want to do in different ways so let\u0027s keep them separate.\n\nI suggest using tox to setup the testing env like upstream and DLRN do. You (or I) can do that in separate patch or you can change this one as you see fit.",
+      "revId": "f29452b949a8873fc1e43841f21fc480bb7a18e7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
