@@ -1,6 +1,7 @@
 #!/bin/sh
 set -ex
 
+pip install -r test-requirements.txt
+python -m pep8 rdopkg
 PYTHONPATH=. py.test $@
-pep8 rdopkg
 ./tests/test_findpkg_integration.sh
