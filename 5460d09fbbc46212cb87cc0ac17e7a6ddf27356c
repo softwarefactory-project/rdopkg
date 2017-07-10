@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_5431a00a",
+        "filename": "rdopkg/utils/cmd.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-10T16:17:29Z",
+      "side": 1,
+      "message": "generic run command is no place for hardcoded GIT_ magicks ;)\n\nPlease move it to the Git class bellow if possible. You can override the constructor like you did here or some python fu, your call.",
+      "revId": "5460d09fbbc46212cb87cc0ac17e7a6ddf27356c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
