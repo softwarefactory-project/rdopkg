@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_97060a1f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-11T18:08:59Z",
+      "side": 1,
+      "message": "Let\u0027s reference the github issue URLs for convenience as rdopkg lives on sf but uses gh tracker for now. Something like:\n\nImprove %changelog handling\n\n* Handle %changelog case insensitively, allowing for %changeLog and other variants.\n* Don\u0027t throw ValueError exception when %changelog isn\u0027t found.\n* Throw new MultipleChangelog exception on multiple changelogs.\n* Provide unit tests for above cases.\n\nFixes: https://github.com/softwarefactory-project/rdopkg/issues/126\nFixes: https://github.com/softwarefactory-project/rdopkg/issues/127",
+      "revId": "8aafc2bdb1f1885b60ddd81dc0a86d09a474cf93",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
