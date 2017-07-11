@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_17e79ae5",
+        "filename": "run_tests.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-11T11:03:11Z",
+      "side": 1,
+      "message": "This doesn\u0027t belong here as discussed in https://softwarefactory-project.io/r/#/c/8852/1 and it also seems unrelated to this change.",
+      "revId": "8e98845f431a0405ebdab838d5e2f7d5580bd363",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_f7eb16af",
+        "filename": "setup.cfg",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-11T11:03:11Z",
+      "side": 1,
+      "message": "extra \\n?",
+      "revId": "8e98845f431a0405ebdab838d5e2f7d5580bd363",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
