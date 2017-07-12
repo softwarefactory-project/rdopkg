@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_c5c4dc93",
+        "filename": "rdopkg/utils/cmd.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-12T11:28:55Z",
+      "side": 1,
+      "message": "let\u0027s not copy() entire os.environ on every run() invocation because of a special case. Actually, is there a reason to copy it at all? It\u0027s not modified in this function...",
+      "revId": "10c2a43820df651faca64d8002ad8055f2deea57",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_a5c1d882",
+        "filename": "rdopkg/utils/cmd.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-12T11:28:55Z",
+      "side": 1,
+      "message": "nice solution, but why the newline here? :)",
+      "revId": "10c2a43820df651faca64d8002ad8055f2deea57",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
