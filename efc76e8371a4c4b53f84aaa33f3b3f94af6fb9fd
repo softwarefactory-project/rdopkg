@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_e5afe092",
+        "filename": "rdopkg/cli.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-12T13:40:16Z",
+      "side": 1,
+      "message": "All right, let\u0027s drop the legacy VERSION and pretend it never existed ;)",
+      "revId": "efc76e8371a4c4b53f84aaa33f3b3f94af6fb9fd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_c595fc40",
+        "filename": "setup.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-12T13:40:16Z",
+      "side": 1,
+      "message": "Manual listing of modules was redundant and error prone, I\u0027m so glad to see it go. Unquestionably, this is an improvement.",
+      "revId": "efc76e8371a4c4b53f84aaa33f3b3f94af6fb9fd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
