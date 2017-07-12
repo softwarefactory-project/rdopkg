@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_45632c1b",
+        "filename": "features/newversion.feature",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 201
+      },
+      "writtenOn": "2017-07-12T22:01:06Z",
+      "side": 1,
+      "message": "This is the current functionality but we might want to revisit it and update # patches_base so that .spec is ready-to-go for downstream patching.?\nIOW why is https://github.com/softwarefactory-project/rdopkg/issues/122 a bug??",
+      "revId": "83fc1d9ad98130d5b56cdf03f4095ee9df8fbb51",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
