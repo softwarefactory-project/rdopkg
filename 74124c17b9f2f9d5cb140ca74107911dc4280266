@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_25eee822",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-12T11:21:13Z",
+      "side": 1,
+      "message": "{{name}}   ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 13,
+        "endLine": 45,
+        "endChar": 16
+      },
+      "revId": "74124c17b9f2f9d5cb140ca74107911dc4280266",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_05f3e40b",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-12T11:21:13Z",
+      "side": 1,
+      "message": "may want to include --no-verify ? from related don\u0027t catch user commit hooks",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 45
+      },
+      "revId": "74124c17b9f2f9d5cb140ca74107911dc4280266",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_c5ddfc71",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-12T11:21:13Z",
+      "side": 1,
+      "message": "is this based on or could be based on the other implementation of this for unittesting?  are we going to use this and just deprecate the other one?",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 62
+      },
+      "revId": "74124c17b9f2f9d5cb140ca74107911dc4280266",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_e5f7e0f3",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-12T11:21:13Z",
+      "side": 1,
+      "message": "Nice, useful abstraction here!",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 19
+      },
+      "revId": "74124c17b9f2f9d5cb140ca74107911dc4280266",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
