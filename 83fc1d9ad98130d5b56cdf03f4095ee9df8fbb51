@@ -16,6 +16,24 @@
       "revId": "83fc1d9ad98130d5b56cdf03f4095ee9df8fbb51",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_80e7e23f",
+        "filename": "features/newversion.feature",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-07-13T10:01:35Z",
+      "side": 1,
+      "message": "Well why put custom string into .spec when not needed? By convention, patches_base \u003d Version so that string isn\u0027t needed unless it differs from Version tag or there are skipped patches in which case, patches_base\u003d+N is sufficient.\n\nWhat would be advantages of always having patches_base\u003d1.2.3?",
+      "parentUuid": "9aa53dc9_45632c1b",
+      "revId": "83fc1d9ad98130d5b56cdf03f4095ee9df8fbb51",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
