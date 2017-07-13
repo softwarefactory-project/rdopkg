@@ -305,8 +305,13 @@ class Spec(object):
     def set_patches_base(self, base):
         v, _ = self.get_patches_base()
 
-        if 'patches_ignore' in self.txt and (base is None or base == ''):
-            base = self.get_tag('Version', expand_macros=True)
+        if re.search("^#\s*patches_ignore\s*=\s*\S+", self.txt, flags=re.M):
+            # This is a temporary hack as patches_ignore currently requires
+            # explicit patches_base. This should be solved with a proper
+            # magic comment parser and using Version in filtration logic
+            # when no patches_base is defined.
+            if not base:
+                base = self.get_tag('Version', expand_macros=True)
         if base:
             regex = r'^#\s*patches_base*'
             if v is None and re.search(regex, self.txt, flags=re.M) is None:
