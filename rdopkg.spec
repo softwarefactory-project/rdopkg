@@ -12,11 +12,13 @@ BuildArch:        noarch
 
 BuildRequires:    python-setuptools
 BuildRequires:    python2-devel
+BuildRequires:    python-pbr
 BuildRequires:    PyYAML
 
 Requires:         python-bunch
 Requires:         python-future
 Requires:         python-paramiko
+Requires:         python-pbr
 Requires:         python-pymod2pkg >= 0.2.1
 Requires:         python-requests
 Requires:         python-setuptools
