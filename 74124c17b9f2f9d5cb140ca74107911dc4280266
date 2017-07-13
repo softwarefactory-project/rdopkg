@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_00cab2a1",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-07-13T10:40:23Z",
+      "side": 1,
+      "message": "I\u0027d actually consider splitting out useful stuff into a separate file regardless.  If the functions look useful enough include it in rdopkg, if not leave it as a test support file.  You can actually use other test python files from the tests folder for unit testing and BDD testing",
+      "parentUuid": "9aa53dc9_c5e73c11",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 62
+      },
+      "revId": "74124c17b9f2f9d5cb140ca74107911dc4280266",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_e5f7e0f3",
         "filename": "features/steps/distgit.py",
         "patchSetId": 5
