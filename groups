@@ -1,7 +1,5 @@
-# UUID Group Name
-global:Registered-Users	Registered Users
-3e9524ec5161dc0bc28a7343d1c54bb9ae4d6d35	Administrators
-global:Anonymous-Users	Anonymous Users
+# UUID                                  	Group Name
+#
 1b06d6f7ac509d34029e1e184753a9e6d83546fe	rdopkg-core
 2f84b90133a703078fbfbfbb2aa5e5ef18b4c666	rdopkg-ptl
-9562193e1f1647ee1c2004b4fb7996e84ae7e717	Non-Interactive Users
+global:Registered-Users                 	Registered Users
