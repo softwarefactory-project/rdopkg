@@ -36,7 +36,7 @@ def autocomplete():
         print(
             "You're missing the argcomplete python module. "
             "Install it using\n\n"
-            "    # yum install -y python-argcomplete\n\n"
+            "    # dnf install -y python-argcomplete\n\n"
             "or\n\n"
             "    # pip install argcomplete\n\n"
             "and run `rdopkg autocomplete` again.")
