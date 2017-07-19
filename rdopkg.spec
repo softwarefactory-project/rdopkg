@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.43
+Version:          0.44
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -65,6 +65,34 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Wed Jul 19 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.44-1
+- Update to 0.44
+- Add BDD feature tests using python-behave
+- Add options to specify user and mail in changelog entry
+- Add support for buildsys-tags in info-tags-diff
+- Adopt pbr for version and setup.py management
+- Avoid prompt on non interactive console
+- Avoid test failure due to git hooks
+- Fix linting
+- Fix output of info-tags-diff for new packages
+- Improve changelog handling
+- Improve patches_ignore detection
+- Migrate to softwarefactory-project.io
+- Python 3 compatibility fixes
+- allow patches remote and branch to be set in git config
+- core: refactor unreasonable default atomic=False
+- distgit: Use NVR for commit title for multiple changelog lines
+- distgit: new -H/--commit-header-file option
+- document new-version's --bug argument
+- guess: return RH osdist for eng- dist-git branches
+- make git.config_get behave more like dict.get
+- new-version: handle RHCEPH and RHSCON products
+- patch: new -B/--no-bump option to only sync patches
+- pkgenv: display color coded hashes for branches
+- refactor: merge legacy rdopkg.utils.exception
+- specfile: fix improper naming: get_nvr, get_vr
+- tests: enable nice py.test diffs for common test code
+
 * Thu Mar 30 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.43-1
 - Update to 0.43
 - new-version: allow fully unattended runs
