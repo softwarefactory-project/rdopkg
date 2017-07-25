@@ -2,8 +2,9 @@ blessings
 bunch
 future
 paramiko
+pbr>=0.5.6
 PyYAML
-requests
 pymod2pkg
+requests
 six
 # asciidoc for docs/sdist
