@@ -14,6 +14,5 @@ except ImportError:
 
 
 setuptools.setup(
-    setup_requires=['pbr>=0.5.6', 'setuptools>=17.1'],
-    pbr=True
-    )
+    setup_requires=['pbr'],
+    pbr=True)
