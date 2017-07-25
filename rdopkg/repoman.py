@@ -42,7 +42,7 @@ class RepoManager(object):
         self.url = tidy_ssh_user(url, self.user)
         self.verbose = verbose
         if local_repo_path:
-            self.repo_path = local_repo_path
+            self.repo_path = os.path.abspath(local_repo_path)
             self.base_path, self.repo_name = \
                 os.path.split(os.path.abspath(local_repo_path))
         else:
