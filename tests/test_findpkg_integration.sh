@@ -8,7 +8,19 @@ WORKSPACE="${WORKSPACE:-/tmp}"
 
 function test_rdopkg_findpkg(){
     PKG_NAME=$(rdopkg findpkg $1 -l ${WORKSPACE}/rdoinfo | awk '/^name/ {print $2}')
-    if [ $2 != $PKG_NAME ]; then
+    if [ $2 != "$PKG_NAME" ]; then
+        echo "$0 FAILED EXPECTED: $@ (GOT: $PKG_NAME)"
+        return 1
+    fi
+    echo -n .
+    return 0
+}
+
+RDOINFO_REL_PATH=$(realpath --relative-to="$PWD" ${WORKSPACE}/rdoinfo)
+
+function test_rdopkg_findpkg_relpath(){
+    PKG_NAME=$(rdopkg findpkg $1 -l ${RDOINFO_REL_PATH}| awk '/^name/ {print $2}')
+    if [ $2 != "$PKG_NAME" ]; then
         echo "$0 FAILED EXPECTED: $@ (GOT: $PKG_NAME)"
         return 1
     fi
@@ -37,5 +49,16 @@ test_rdopkg_findpkg puppet/puppet-glance            puppet-glance
 test_rdopkg_findpkg glanceclient                    python-glanceclient
 test_rdopkg_findpkg openstack/glanceclient-distgit  python-glanceclient
 test_rdopkg_findpkg python-glanceclient             python-glanceclient
+
+echo -n "testing findpkg with relative path for rdoinfo repo"
+
+test_rdopkg_findpkg_relpath glance                          openstack-glance
+test_rdopkg_findpkg_relpath glance-distgit                  openstack-glance
+test_rdopkg_findpkg_relpath openstack-glance                openstack-glance
+test_rdopkg_findpkg_relpath puppet-glance                   puppet-glance
+test_rdopkg_findpkg_relpath puppet/puppet-glance            puppet-glance
+test_rdopkg_findpkg_relpath glanceclient                    python-glanceclient
+test_rdopkg_findpkg_relpath openstack/glanceclient-distgit  python-glanceclient
+test_rdopkg_findpkg_relpath python-glanceclient             python-glanceclient
 
 echo 'OK'
