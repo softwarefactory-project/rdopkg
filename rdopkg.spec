@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.44.0
+Version:          0.44.1
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -65,6 +65,10 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
+* Tue Jul 25 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.44.1-1
+- setup.py: removed versioned requires breaking epel7
+- Add pbr to requirements.txt
+
 * Wed Jul 19 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.44.0-1
 - Update to 0.44.0
 - Add BDD feature tests using python-behave
