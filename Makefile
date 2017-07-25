@@ -11,7 +11,7 @@ doc:
 	make -C doc/
 
 dist:   doc
-	python setup.py sdist bdist_wheel
+	python setup.py sdist
 
 clean:
 	rm -rf dist/ doc/{html,man} rdopkg.egg-info

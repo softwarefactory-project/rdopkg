@@ -1,5 +1,5 @@
 Name:             rdopkg
-Version:          0.44
+Version:          0.44.0
 Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
@@ -65,8 +65,8 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 %{_mandir}/man7
 
 %changelog
-* Wed Jul 19 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.44-1
-- Update to 0.44
+* Wed Jul 19 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.44.0-1
+- Update to 0.44.0
 - Add BDD feature tests using python-behave
 - Add options to specify user and mail in changelog entry
 - Add support for buildsys-tags in info-tags-diff
