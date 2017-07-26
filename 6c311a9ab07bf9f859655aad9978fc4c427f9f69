@@ -1,0 +1,8 @@
+Code-Review+2: Jakub Ružička <jruzicka@redhat.com>
+Workflow+1: Jakub Ružička <jruzicka@redhat.com>
+Verified+2: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-by: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-at: Wed, 26 Jul 2017 16:09:40 +0000
+Reviewed-on: https://softwarefactory-project.io/r/9084
+Project: rdopkg
+Branch: refs/heads/master
