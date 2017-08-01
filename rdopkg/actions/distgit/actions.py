@@ -837,7 +837,8 @@ def update_patches(branch, local_patches_branch,
             start_number = len(patch_fns) + 1
 
             rng = git.rev_range(start_commit + '~', end_commit)
-            format_patch_cmd = ['format-patch', '--no-renames',
+            format_patch_cmd = ['-c', 'core.abbrev=7',
+                                'format-patch', '--no-renames',
                                 '--no-signature', '-N', '--ignore-submodules',
                                 '--start-number', str(start_number), rng]
 
