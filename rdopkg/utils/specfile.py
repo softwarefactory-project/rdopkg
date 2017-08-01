@@ -68,6 +68,9 @@ def string_to_version(verstring):
 
 
 def spec_fn(spec_dir='.'):
+    """
+    Return the filename for a .spec file in this directory.
+    """
     specs = [f for f in os.listdir(spec_dir)
              if os.path.isfile(f) and f.endswith('.spec')]
     if not specs:
@@ -168,18 +171,31 @@ class Spec(object):
     RE_MACRO_BASE = r'%global\s+{0}\s+'
 
     def __init__(self, fn=None, txt=None):
+        """
+        Spec file reader/writer/parser.
+
+        :param  fn: The filename of a spec file. If not provided, we will
+                    select the one in the current working directory.
+        :type   fn: ``str``
+
+        :param txt: The textual contents of a spec file. If not provided, we
+                    will read the contents from disk.
+        :type  txt: ``str``
+        """
         self._fn = fn
         self._txt = txt
         self._rpmspec = None
 
     @property
     def fn(self):
+        """ The filename of this spec file. """
         if not self._fn:
             self._fn = spec_fn()
         return self._fn
 
     @property
     def txt(self):
+        """ The textual contents of this spec file. """
         if not self._txt:
             with codecs.open(self.fn, 'r', encoding='utf-8') as fp:
                 self._txt = fp.read()
@@ -570,6 +586,7 @@ class Spec(object):
         self._txt = re.sub(r'(%changelog\n)', r'\g<1>%s' % entry, self.txt)
 
     def save(self):
+        """ Write the textual contents to disk. """
         if not self.txt:
             # no changes
             return
