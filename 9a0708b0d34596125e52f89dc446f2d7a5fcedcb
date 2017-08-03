@@ -51,6 +51,24 @@
       "revId": "9a0708b0d34596125e52f89dc446f2d7a5fcedcb",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aa745d1_89f5dc84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-03T16:03:38Z",
+      "side": 1,
+      "message": "No, it just means rdopkg is more picky about patches than I thought :)\n\nBut current approach is simple and working most of the time so let\u0027s not complicate things unless we must. (smarter patches analysis and detection is possible but that might be a pain to maintain/test + unexpected behavior)",
+      "parentUuid": "5aa745d1_a9f9b8ca",
+      "revId": "9a0708b0d34596125e52f89dc446f2d7a5fcedcb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
