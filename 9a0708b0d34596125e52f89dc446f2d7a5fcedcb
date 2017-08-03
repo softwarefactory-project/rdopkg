@@ -33,6 +33,24 @@
       "revId": "9a0708b0d34596125e52f89dc446f2d7a5fcedcb",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aa745d1_a9f9b8ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 198
+      },
+      "writtenOn": "2017-08-03T14:25:47Z",
+      "side": 1,
+      "message": "Does that mean there\u0027s a bug there in is_same_hash?",
+      "parentUuid": "5aa745d1_6955f0c4",
+      "revId": "9a0708b0d34596125e52f89dc446f2d7a5fcedcb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
