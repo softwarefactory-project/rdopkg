@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aa745d1_093c2c92",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-03T14:03:22Z",
+      "side": 1,
+      "message": "Very nice descriptive commit message for a one line change ♥",
+      "revId": "9a0708b0d34596125e52f89dc446f2d7a5fcedcb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aa745d1_6955f0c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-03T14:03:22Z",
+      "side": 1,
+      "message": "And I thought it wouldn\u0027t matter as is_same_hash is using startswith()...\nhttps://github.com/softwarefactory-project/rdopkg/blob/master/rdopkg/helpers.py#L94\n\nThis could be fixed in a singificantly more complex way to accomodate .patch deviations, but you did it with one line - nice ;)",
+      "revId": "9a0708b0d34596125e52f89dc446f2d7a5fcedcb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
