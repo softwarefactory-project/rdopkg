@@ -1,0 +1,9 @@
+Code-Review+2: Jakub Ružička <jruzicka@redhat.com>
+Code-Review+2: Haïkel Guémar <hguemar@fedoraproject.org>
+Workflow+1: Haïkel Guémar <hguemar@fedoraproject.org>
+Verified+2: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-by: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-at: Thu, 03 Aug 2017 15:59:50 +0000
+Reviewed-on: https://softwarefactory-project.io/r/9131
+Project: rdopkg
+Branch: refs/heads/master
