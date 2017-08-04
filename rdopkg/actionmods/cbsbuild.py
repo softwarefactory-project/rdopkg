@@ -49,7 +49,11 @@ def new_build(profile='cbs', scratch=True):
     import imp
     kojibin = find_executable('koji')
     kojicli = imp.load_source('kojicli', kojibin)
-    from kojicli import _unique_path, _progress_callback, watch_tasks
+    # Koji 1.13 moves client internal API into another path
+    try:
+        from kojicli import _unique_path, _progress_callback, watch_tasks
+    except ImportError:
+        from koji_cli.lib import _unique_path, _progress_callback, watch_tasks
 
     kojiclient = setup_kojiclient(profile)
     # Note: required to make watch_tasks work
