@@ -474,7 +474,7 @@ class Spec(object):
                                    self.txt, flags=re.M)
             if n < 1:
                 # create new
-                self._txt = '%global {0} {1}\n{2}'.format(
+                self._txt = u'%global {0} {1}\n{2}'.format(
                     macro, value, self.txt)
             rpm.addMacro(macro, value)
         else:
