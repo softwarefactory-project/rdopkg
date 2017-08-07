@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_5c09dd30",
+        "filename": "tox.ini",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-07T16:34:23Z",
+      "side": 1,
+      "message": "Ouch, need to figure out howto make git stop complaining about unset username/email without touching user conf.",
+      "revId": "737005986e6175b9036188a9be8f93d9a75e0ea1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
