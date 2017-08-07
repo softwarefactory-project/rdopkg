@@ -76,12 +76,12 @@ def _assert_vr(vr, epoch_arg, result):
 
 
 def test_get_vr():
-    _assert_vr((None, '1.2.3', '0.1'),         None,  '1.2.3-0.1')
+    _assert_vr((None, '1.2.3', '0.1'), None, '1.2.3-0.1')
     _assert_vr((None, '1.2.3', '666%{?dist}'), False, '1.2.3-666')
-    _assert_vr((None, '1.2.3', ''),            True,  '0:1.2.3')
-    _assert_vr((23, '1.2.3', ''),              None,  '23:1.2.3')
-    _assert_vr((23, '1.2.3', '0.1'),           False, '1.2.3-0.1')
-    _assert_vr((23, '1.2.3', '666%{?dist}'),   True,  '23:1.2.3-666')
+    _assert_vr((None, '1.2.3', ''), True, '0:1.2.3')
+    _assert_vr((23, '1.2.3', ''), None, '23:1.2.3')
+    _assert_vr((23, '1.2.3', '0.1'), False, '1.2.3-0.1')
+    _assert_vr((23, '1.2.3', '666%{?dist}'), True, '23:1.2.3-666')
 
 
 def test_patches_base_add_patched(tmpdir):
