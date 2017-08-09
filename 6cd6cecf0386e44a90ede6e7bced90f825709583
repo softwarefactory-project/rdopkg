@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_626f5293",
+        "filename": "tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-08-09T16:39:34Z",
+      "side": 1,
+      "message": "py27 and py35 are not magical keywords, you still need to tell tox what version of python to actually use. This is done with \"basepython\".\n\nExample: https://github.com/openstack/ara/blob/master/tox.ini#L1-L38",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 31
+      },
+      "revId": "6cd6cecf0386e44a90ede6e7bced90f825709583",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_22694a8c",
+        "filename": "tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-08-09T16:39:34Z",
+      "side": 1,
+      "message": "This is OK for CI but very meh for using on a local machine with a bunch of python things installed everywhere. Maybe there is a workaround ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 19
+      },
+      "revId": "6cd6cecf0386e44a90ede6e7bced90f825709583",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_02052ec1",
+        "filename": "tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-08-09T16:39:34Z",
+      "side": 1,
+      "message": "requirements.txt is implicit because it is installed with setup.py/setup.cfg/pbr when tox installs rdopkg so it\u0027s not required here",
+      "range": {
+        "startLine": 16,
+        "startChar": 7,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "revId": "6cd6cecf0386e44a90ede6e7bced90f825709583",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_a2131a0d",
+        "filename": "tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-08-09T16:39:34Z",
+      "side": 1,
+      "message": "Should integration tests be split in another \"env\" ? i.e, tox -e integration ? So you can run tox -e py27, tox -e py35 just for unit tests.",
+      "range": {
+        "startLine": 21,
+        "startChar": 2,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "6cd6cecf0386e44a90ede6e7bced90f825709583",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
