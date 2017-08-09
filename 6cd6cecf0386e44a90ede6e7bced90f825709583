@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3ab451fb_e23002a1",
+        "filename": "tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-09T16:57:53Z",
+      "side": 1,
+      "message": "Right :) DLRN is also missing this.",
+      "parentUuid": "3ab451fb_626f5293",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 31
+      },
+      "revId": "6cd6cecf0386e44a90ede6e7bced90f825709583",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_22694a8c",
         "filename": "tox.ini",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2017-08-09T16:39:34Z",
       "side": 1,
       "message": "This is OK for CI but very meh for using on a local machine with a bunch of python things installed everywhere. Maybe there is a workaround ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 19
+      },
+      "revId": "6cd6cecf0386e44a90ede6e7bced90f825709583",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_c225065d",
+        "filename": "tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-09T16:57:53Z",
+      "side": 1,
+      "message": "I haven\u0027t found a nice way to only include a single site-package.\n\nDirty workaround that comes to mind: create a directory with symlink to system rpm module and add that to PYTHONPATH. That\u0027s actually so dirty that using site-packages might be better :-p\n\nrpm-python is a constant source of problems, but librpm is so obscure that writing and maintaining pure python parser would be a madness.",
+      "parentUuid": "3ab451fb_22694a8c",
       "range": {
         "startLine": 8,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "3ab451fb_a22afa2a",
+        "filename": "tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-09T16:57:53Z",
+      "side": 1,
+      "message": "Stolen from DLRN, should also be fixed there :)",
+      "parentUuid": "3ab451fb_02052ec1",
+      "range": {
+        "startLine": 16,
+        "startChar": 7,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "revId": "6cd6cecf0386e44a90ede6e7bced90f825709583",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_a2131a0d",
         "filename": "tox.ini",
         "patchSetId": 4
@@ -82,6 +154,30 @@
       "writtenOn": "2017-08-09T16:39:34Z",
       "side": 1,
       "message": "Should integration tests be split in another \"env\" ? i.e, tox -e integration ? So you can run tox -e py27, tox -e py35 just for unit tests.",
+      "range": {
+        "startLine": 21,
+        "startChar": 2,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "6cd6cecf0386e44a90ede6e7bced90f825709583",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_621d120f",
+        "filename": "tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-09T16:57:53Z",
+      "side": 1,
+      "message": "Correct, will fix.",
+      "parentUuid": "3ab451fb_a2131a0d",
       "range": {
         "startLine": 21,
         "startChar": 2,
