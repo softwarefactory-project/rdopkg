@@ -19,6 +19,12 @@ def step_impl(context, version, release):
     context.old_commit = git.current_commit()
 
 
+@given('a distgit at Version {version}')
+def step_impl(context, version):
+    step = u'Given a distgit at Version %s and Release 2' % version
+    context.execute_steps(step)
+
+
 @given('a distgit')
 def step_impl(context):
     context.execute_steps(u'Given a distgit at Version 1.2.3 and Release 2')
@@ -39,6 +45,13 @@ def step_impl(context, version):
     context.execute_steps(
         u'Given a new version %s with 0 patches from patches branch' %
         version)
+
+
+@when('I change .spec file tag {tag} to {value}')
+def step_impl(context, tag, value):
+    spec = specfile.Spec()
+    spec.set_tag(tag, value)
+    spec.save()
 
 
 @then('.spec file tag {tag} is {value}')

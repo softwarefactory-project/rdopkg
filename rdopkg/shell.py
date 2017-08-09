@@ -63,8 +63,6 @@ def get_parser(runner, version=None):
 
 
 def run(action_runner, cargs, version=None):
-    action_runner.load_state_safe()
-
     parser = get_parser(action_runner, version=version)
     if ARGCOMPLETE_AVAILABLE:
         argcomplete.autocomplete(parser)
@@ -79,8 +77,7 @@ def run(action_runner, cargs, version=None):
             action_runner.clear_state(verbose=True)
             return 1
         elif '--continue' in cargs or cargs == ('-c',):
-            # state already loaded
-            pass
+            action_runner.load_state_safe()
         else:
             args = parser.parse_args(cargs)
             action = args.action
