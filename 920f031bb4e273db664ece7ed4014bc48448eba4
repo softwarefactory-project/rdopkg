@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_422fb6a1",
+        "filename": "tox.ini",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-08-10T16:28:10Z",
+      "side": 1,
+      "message": "put them on separate lines",
+      "range": {
+        "startLine": 24,
+        "startChar": 7,
+        "endLine": 24,
+        "endChar": 11
+      },
+      "revId": "920f031bb4e273db664ece7ed4014bc48448eba4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_6222b2bb",
+        "filename": "tox.ini",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-08-10T16:28:10Z",
+      "side": 1,
+      "message": "extra comma here I think",
+      "range": {
+        "startLine": 41,
+        "startChar": 33,
+        "endLine": 41,
+        "endChar": 34
+      },
+      "revId": "920f031bb4e273db664ece7ed4014bc48448eba4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
