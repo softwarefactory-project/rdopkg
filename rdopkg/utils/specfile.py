@@ -185,21 +185,26 @@ class Spec(object):
                 self._txt = fp.read()
         return self._txt
 
+    def load_rpmspec(self):
+        if not RPM_AVAILABLE:
+            raise exception.RpmModuleNotAvailable()
+        rpm.addMacro('_sourcedir',
+                     os.path.dirname(os.path.realpath(self.fn)))
+        try:
+            self._rpmspec = rpm.spec(self.fn)
+        except ValueError as e:
+            raise exception.SpecFileParseError(spec_fn=self.fn,
+                                               error=e.args[0])
+
     @property
     def rpmspec(self):
         if not self._rpmspec:
-            if not RPM_AVAILABLE:
-                raise exception.RpmModuleNotAvailable()
-            rpm.addMacro('_sourcedir',
-                         os.path.dirname(os.path.realpath(self.fn)))
-            try:
-                self._rpmspec = rpm.spec(self.fn)
-            except ValueError as e:
-                raise exception.SpecFileParseError(spec_fn=self.fn,
-                                                   error=e.args[0])
+            self.load_rpmspec()
         return self._rpmspec
 
     def expand_macro(self, macro):
+        if not self._rpmspec:
+            self.load_rpmspec()
         if not RPM_AVAILABLE:
             raise exception.RpmModuleNotAvailable()
         return rpm.expandMacro(macro)
@@ -558,7 +563,9 @@ class Spec(object):
 
     def get_nvr(self, epoch=None):
         """get NVR string from .spec Name, Version, Release and Epoch"""
-        return '%s-%s' % (self.get_tag('Name'), self.get_vr(epoch=epoch))
+        name = self.get_tag('Name', expand_macros=True)
+        vr = self.get_vr(epoch=epoch)
+        return '%s-%s' % (name, vr)
 
     def new_changelog_entry(self, user, email, changes=[]):
         changes_str = "\n".join(map(lambda x: "- %s" % x, changes)) + "\n"
