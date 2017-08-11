@@ -46,17 +46,9 @@ test_rdopkg_findpkg glance-distgit                  openstack-glance
 test_rdopkg_findpkg openstack-glance                openstack-glance
 test_rdopkg_findpkg puppet-glance                   puppet-glance
 test_rdopkg_findpkg puppet/puppet-glance            puppet-glance
-test_rdopkg_findpkg glanceclient                    python-glanceclient
-test_rdopkg_findpkg openstack/glanceclient-distgit  python-glanceclient
-test_rdopkg_findpkg python-glanceclient             python-glanceclient
 
-echo -n "testing findpkg with relative path for rdoinfo repo"
+echo -n "with relative path"
 
-test_rdopkg_findpkg_relpath glance                          openstack-glance
-test_rdopkg_findpkg_relpath glance-distgit                  openstack-glance
-test_rdopkg_findpkg_relpath openstack-glance                openstack-glance
-test_rdopkg_findpkg_relpath puppet-glance                   puppet-glance
-test_rdopkg_findpkg_relpath puppet/puppet-glance            puppet-glance
 test_rdopkg_findpkg_relpath glanceclient                    python-glanceclient
 test_rdopkg_findpkg_relpath openstack/glanceclient-distgit  python-glanceclient
 test_rdopkg_findpkg_relpath python-glanceclient             python-glanceclient
