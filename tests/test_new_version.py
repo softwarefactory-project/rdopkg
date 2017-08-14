@@ -9,7 +9,6 @@ import pytest
 RPM_AVAILABLE = False
 try:
     import rpm  # NOQA
-    import rpmUtils.miscutils  # NOQA
     RPM_AVAILABLE = True
 except ImportError:
     pass
