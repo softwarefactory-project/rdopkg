@@ -34,7 +34,7 @@ class ActionRunner(object):
             'action': self.action_manager.action_serialize(self.action),
             'args': self.args
         }
-        sf = file(self.state_file_path, 'wt')
+        sf = open(self.state_file_path, 'wt')
         json.dump(data, sf)
         sf.close()
 
@@ -43,7 +43,7 @@ class ActionRunner(object):
         self.args = {}
         if not os.path.isfile(self.state_file_path):
             return
-        sf = file(self.state_file_path, 'rt')
+        sf = open(self.state_file_path, 'rt')
         data = json.load(sf)
         action = self.action_manager.action_deserialize(data['action'])
         self.args = data['args']

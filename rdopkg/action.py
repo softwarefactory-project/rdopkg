@@ -120,7 +120,7 @@ class ActionManager(object):
         return ".".join(map(lambda x: x.name, action))
 
     def action_serialize(self, action):
-        return map(lambda x: x.name, action)
+        return list(map(lambda x: x.name, action))
 
     def action_deserialize(self, action_sr):
         action = []
