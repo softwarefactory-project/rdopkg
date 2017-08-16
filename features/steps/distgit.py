@@ -1,4 +1,5 @@
 from behave import *
+import re
 import os
 
 from rdopkg.utils import distgitmagic
@@ -51,6 +52,16 @@ def step_impl(context, version):
 def step_impl(context, tag, value):
     spec = specfile.Spec()
     spec.set_tag(tag, value)
+    spec.save()
+
+
+@when('I add description to .spec chenglog')
+def step_impl(context):
+    spec = specfile.Spec()
+    spec._txt, n = re.subn('(\n%changelog\n\*[^\n]+\n)\n',
+                           '\g<1>- Description of a change\n',
+                           spec.txt)
+    assert n == 1
     spec.save()
 
 
