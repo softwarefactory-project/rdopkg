@@ -47,7 +47,8 @@ ACTIONS = [
                Action('get_patches_branch'),
                Action('checkout_patches_branch'),
            ]),
-    Action('fix', help="change .spec file without introducing new patches",
+    Action('fix', continuable=True,
+           help="change .spec file without introducing new patches",
            steps=[
                Action('get_package_env'),
                Action('update_spec'),
