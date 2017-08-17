@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "3ab451fb_8b72797b",
+        "filename": "features/fix.feature",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2017-08-17T14:09:26Z",
+      "side": 1,
+      "message": "Typo: changelog",
+      "revId": "d504c9c256ee23944039865b715444be6a2bd0c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_ab5c15ee",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2017-08-17T14:09:26Z",
+      "side": 1,
+      "message": "Typo: changelog",
+      "revId": "d504c9c256ee23944039865b715444be6a2bd0c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_cbf2c106",
         "filename": "features/steps/distgit.py",
         "patchSetId": 2
