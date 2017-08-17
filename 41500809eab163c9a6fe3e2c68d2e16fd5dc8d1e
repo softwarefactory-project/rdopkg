@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "3ab451fb_ab02d56d",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-08-17T16:29:09Z",
+      "side": 1,
+      "message": "yep it would be",
+      "parentUuid": "3ab451fb_4bc4713f",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_0b04297c",
         "filename": "features/steps/distgit.py",
         "patchSetId": 1
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "3ab451fb_8bf8397e",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-08-17T16:29:09Z",
+      "side": 1,
+      "message": "did not indent to roll this in",
+      "parentUuid": "3ab451fb_0b04297c",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_eb08dd93",
         "filename": "features/steps/utils.py",
         "patchSetId": 1
@@ -64,6 +100,24 @@
       "writtenOn": "2017-08-17T16:12:23Z",
       "side": 1,
       "message": "I\u0027m missing the smart assert from py.test :-/ Anyway, you can do this by\n\nassert condition, \"explanation string to show when assert fails\"\n\nso you can use\n\nassert re.search(..), \"Did not..\".format(..)\n\nand save the extra check.",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_6bf5ed81",
+        "filename": "features/steps/utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-08-17T16:29:09Z",
+      "side": 1,
+      "message": "that\u0027s a good improvement",
+      "parentUuid": "3ab451fb_eb08dd93",
       "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
