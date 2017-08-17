@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_2bc1252f",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T16:12:23Z",
+      "side": 1,
+      "message": "Handy step.",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_4bc4713f",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T16:12:23Z",
+      "side": 1,
+      "message": "That would be just git(\"stash\"), no? :)",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_0b04297c",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T16:12:23Z",
+      "side": 1,
+      "message": "I\u0027d left this on default step_impl to remove redundancy and allow safe copy\u0026paste. Should you need to use this step, context.execute_steps() can be used as seen in this file.",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_eb08dd93",
+        "filename": "features/steps/utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T16:12:23Z",
+      "side": 1,
+      "message": "I\u0027m missing the smart assert from py.test :-/ Anyway, you can do this by\n\nassert condition, \"explanation string to show when assert fails\"\n\nso you can use\n\nassert re.search(..), \"Did not..\".format(..)\n\nand save the extra check.",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
