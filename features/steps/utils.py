@@ -22,4 +22,6 @@ def step_impl(context):
 
 @then("command output contains '{rex}'")
 def step_impl(context, rex):
+    if not re.search(rex, context.command_output):
+        print("Did not find [{0}] in command output [{1}]".format(rex, context.command_output))
     assert re.search(rex, context.command_output)

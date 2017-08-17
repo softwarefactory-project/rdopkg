@@ -54,6 +54,10 @@ def step_impl(context, tag, value):
     spec.set_tag(tag, value)
     spec.save()
 
+@when(u'I undo all changes')
+def step_impl(context):
+    git.__call__("stash")
+    assert git.is_clean()
 
 @when('I add description to .spec chengelog')
 def step_impl(context):
@@ -66,7 +70,7 @@ def step_impl(context):
 
 
 @then('.spec file tag {tag} is {value}')
-def step_impl(context, tag, value):
+def step_tag_has_value(context, tag, value):
     spec = specfile.Spec()
     assert spec.get_tag(tag) == value
 
@@ -101,3 +105,9 @@ def step_impl(context):
 def step_impl(context):
     new_commit = git.current_commit()
     assert new_commit != context.old_commit
+
+@then(u'no new commit was created')
+def step_impl(context):
+    new_commit = git.current_commit()
+    assert new_commit == context.old_commit
+
