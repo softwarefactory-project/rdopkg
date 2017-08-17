@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3ab451fb_eb645d4a",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-08-17T17:21:39Z",
+      "side": 1,
+      "message": "moved to a separate review",
+      "parentUuid": "3ab451fb_2bc1252f",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_4bc4713f",
         "filename": "features/steps/distgit.py",
         "patchSetId": 1
@@ -83,6 +101,24 @@
       "side": 1,
       "message": "did not indent to roll this in",
       "parentUuid": "3ab451fb_0b04297c",
+      "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_cb59a190",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-08-17T17:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ab451fb_8bf8397e",
       "revId": "41500809eab163c9a6fe3e2c68d2e16fd5dc8d1e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
