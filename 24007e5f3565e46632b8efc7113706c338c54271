@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_8b54b954",
+        "filename": "features/fix.feature",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-08-17T17:26:04Z",
+      "side": 1,
+      "message": "whitespace issues here",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 2
+      },
+      "revId": "24007e5f3565e46632b8efc7113706c338c54271",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
