@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_4b0351b9",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T14:37:18Z",
+      "side": 1,
+      "message": "...select the only .spec file in current directory or throw exception when multiple or no .spec files are present.",
+      "revId": "1ba7fbd9d99444884d9a5cbdba9c396c18dc4e99",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_2b0005aa",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T14:37:18Z",
+      "side": 1,
+      "message": "\".spec file\" for consistency with the rest of the docs (it\u0027s a little bit clearer we\u0027re talking about file with *.spec extension, not a generic file with who-know-what specifications)",
+      "revId": "1ba7fbd9d99444884d9a5cbdba9c396c18dc4e99",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_0b2c2949",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T14:37:18Z",
+      "side": 1,
+      "message": "\".spec file\" for consistency with the rest of the docs",
+      "revId": "1ba7fbd9d99444884d9a5cbdba9c396c18dc4e99",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_eb30dda0",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T14:37:18Z",
+      "side": 1,
+      "message": "Maybe\n\nWrite the textual content (self._txt) to .spec file (self.fn).\n\n? Just a suggestion.",
+      "revId": "1ba7fbd9d99444884d9a5cbdba9c396c18dc4e99",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
