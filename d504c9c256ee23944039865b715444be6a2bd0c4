@@ -98,6 +98,30 @@
       "revId": "d504c9c256ee23944039865b715444be6a2bd0c4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_4b1a3119",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-08-17T14:51:32Z",
+      "side": 1,
+      "message": "ack",
+      "parentUuid": "3ab451fb_2b69258c",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 26
+      },
+      "revId": "d504c9c256ee23944039865b715444be6a2bd0c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
