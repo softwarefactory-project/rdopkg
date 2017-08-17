@@ -23,3 +23,11 @@ Feature: rdopkg fix
         When I run rdopkg --continue
         Then command output contains 'No changes found'
         Then no new commit was created
+
+    Scenario: rdopkg fix - user aborts
+        Given a distgit
+        When I run rdopkg fix
+        When I undo all changes
+        When I run rdopkg --abort
+        Then no new commit was created
+        Then rdopkg state file not present

@@ -4,6 +4,7 @@ import re
 import tempfile
 
 from rdopkg.utils.distgitmagic import run
+from rdopkg.const import STATE_FILE_FN
 
 
 @when('I run rdopkg {args}')
@@ -25,3 +26,9 @@ def step_impl(context, rex):
     if not re.search(rex, context.command_output):
         print("Did not find [{0}] in command output [{1}]".format(rex, context.command_output))
     assert re.search(rex, context.command_output)
+
+@then(u'rdopkg state file not present')
+def step_check_for_rdopkg_state_file_not_present(context):
+    raise Exception("step_check_for_rdopkg_state_file_not_present not yet implemented.")
+    # this does not seem to be a good approach here
+    assert not os.file.exists(STATE_FILE_FN)
