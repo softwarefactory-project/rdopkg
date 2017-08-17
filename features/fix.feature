@@ -15,3 +15,10 @@ Feature: rdopkg fix
         When I run rdopkg --continue
         Then command output contains 'Description of changes is missing in %changelog.'
         Then no new commit was created
+
+    Scenario: rdopkg fix - user reverted all changes
+        Given a distgit
+        When I run rdopkg fix
+        When I undo all changes
+        When I run rdopkg --continue
+        Then no new commit was created
