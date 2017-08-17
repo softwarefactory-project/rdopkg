@@ -54,6 +54,10 @@ def step_impl(context, tag, value):
     spec.set_tag(tag, value)
     spec.save()
 
+@when(u'I undo all changes')
+def step_impl(context):
+    git("stash")
+    assert git.is_clean()
 
 @when('I add description to .spec chengelog')
 def step_impl(context):
