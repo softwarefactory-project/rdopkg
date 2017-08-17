@@ -101,3 +101,9 @@ def step_impl(context):
 def step_impl(context):
     new_commit = git.current_commit()
     assert new_commit != context.old_commit
+
+@then(u'no new commit was created')
+def step_impl(context):
+    new_commit = git.current_commit()
+    assert new_commit == context.old_commit
+
