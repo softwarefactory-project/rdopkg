@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_0b79c9fc",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-08-17T17:01:37Z",
+      "side": 1,
+      "message": "trailing whitespace",
+      "revId": "8f81de927bdf03d814b8be188f815e1b537e395f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
