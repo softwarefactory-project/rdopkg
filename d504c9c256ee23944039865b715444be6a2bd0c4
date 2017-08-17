@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "3ab451fb_0b0549c1",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T14:19:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ab451fb_ab5c15ee",
+      "revId": "d504c9c256ee23944039865b715444be6a2bd0c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_cbf2c106",
         "filename": "features/steps/distgit.py",
         "patchSetId": 2
@@ -47,6 +65,30 @@
       "writtenOn": "2017-08-17T11:28:50Z",
       "side": 1,
       "message": "how is it picking up the right .spec file to modify here?",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 26
+      },
+      "revId": "d504c9c256ee23944039865b715444be6a2bd0c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_2b69258c",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-17T14:19:54Z",
+      "side": 1,
+      "message": "The only .spec in current directory. This simple distgit assumption simplified things **a lot** since rdopkg always operates on a distgit.\n\nYou can pass filename to Spec class, though.",
+      "parentUuid": "3ab451fb_cbf2c106",
       "range": {
         "startLine": 60,
         "startChar": 0,
