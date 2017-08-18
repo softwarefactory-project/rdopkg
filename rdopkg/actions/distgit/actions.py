@@ -721,6 +721,8 @@ def _commit_message(changes=None, header_file=None):
 
 def commit_distgit_update(branch=None, amend=False, commit_header_file=None):
     _ensure_branch(branch)
+    if git.is_clean():
+        raise exception.NoDistgitChangesFound()
     msg = _commit_message(header_file=commit_header_file)
     cmd = ['commit', '-a', '-F', '-']
     if amend:
