@@ -6,6 +6,7 @@ import itertools
 import os
 import re
 import six
+from six.moves import input
 import sys
 
 from rdopkg.conf import cfg, cfg_files
@@ -353,7 +354,7 @@ def diff(version, new_version, bump_only=False, no_diff=False,
         reqdiff(vtag_from, vtag_to)
     except Exception:
         pass
-    raw_input("Press <Enter> to continue after you inspected the diff. ")
+    input("Press <Enter> to continue after you inspected the diff. ")
 
 
 def get_diff_range(diff_range=None, patches_branch=None, branch=None):
@@ -721,6 +722,8 @@ def _commit_message(changes=None, header_file=None):
 
 def commit_distgit_update(branch=None, amend=False, commit_header_file=None):
     _ensure_branch(branch)
+    if git.is_clean():
+        raise exception.NoDistgitChangesFound()
     msg = _commit_message(header_file=commit_header_file)
     cmd = ['commit', '-a', '-F', '-']
     if amend:

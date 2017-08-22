@@ -2,6 +2,7 @@
 from __future__ import print_function
 import json
 import os
+from six.moves import input
 
 from rdopkg import action as _action
 from rdopkg import actions
@@ -56,8 +57,8 @@ class ActionRunner(object):
         except Exception as ex:
             print("Error loading state file '%s':\n    %s" %
                   (self.state_file_path, ex))
-            cnf = raw_input("Do you want to delete this (likely corrupt) "
-                            "state file? [Yn] ")
+            cnf = input("Do you want to delete this (likely corrupt) "
+                        "state file? [Yn] ")
             if cnf == '' or cnf.lower() == 'y':
                 os.remove(self.state_file_path)
                 print("State file removed.")

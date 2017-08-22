@@ -196,3 +196,7 @@ class UnverifiedPatch(RdopkgException):
 
 class NoPatchesChanged(RdopkgException):
     msg_fmt = "No patches changed"
+
+
+class NoDistgitChangesFound(RdopkgException):
+    msg_fmt = "No distgit changes found"

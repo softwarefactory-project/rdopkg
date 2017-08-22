@@ -1,6 +1,7 @@
 from __future__ import print_function
 import inspect
 import pkgutil
+import six
 
 from rdopkg import exception
 from rdopkg.utils import log
@@ -128,7 +129,7 @@ class ActionManager(object):
         for action_name in action_sr:
             found = False
             for step in steps:
-                if unicode(step.name) == action_name:
+                if six.text_type(step.name) == action_name:
                     action.append(step)
                     steps = step.steps or []
                     found = True

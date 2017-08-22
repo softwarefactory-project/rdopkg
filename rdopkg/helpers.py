@@ -3,6 +3,7 @@ import collections
 import contextlib
 import os
 import re
+from six.moves import input
 import sys
 import yaml
 
@@ -18,7 +19,7 @@ def confirm(msg, default_yes=True):
         else:
             options = '[Ny]'
         print('')
-        i = raw_input(log.term.important("%s %s " % (msg, options))).lower()
+        i = input(log.term.important("%s %s " % (msg, options))).lower()
         if not i:
             if default_yes:
                 return
