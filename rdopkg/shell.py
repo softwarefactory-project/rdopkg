@@ -104,6 +104,7 @@ def run(action_runner, cargs, version=None):
             exception.InvalidUsage,
             exception.ManualResolutionNeeded,
             exception.NoPatchesChanged,
+            exception.NoDistgitChangesFound,
             exception.NotADirectory,
             exception.RequiredActionArgumentNotAvailable,
             exception.RequirementNotMet,

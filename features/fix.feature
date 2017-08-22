@@ -28,6 +28,7 @@ Feature: rdopkg fix
         When I run rdopkg fix
         When I undo all changes
         When I run rdopkg --continue
+        Then command output contains 'No distgit changes found'
         Then no new commit was created
         Then rdopkg state file is present
 
