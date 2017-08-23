@@ -19,6 +19,7 @@ Submit your changes using
 and optionally poke `jruzicka` on #rdo @ freeendoe IRC to accelerate the
 review.
 
+
 requirements
 ------------
 
@@ -38,7 +39,8 @@ Top level stuff you should know about:
     ├── doc/          <- man pages/docs in asciidoc
     ├── rdopkg/       <- actual python sources
     ├── rdopkg.spec   <- .spec file to build RPM - don't touch unless asked to
-    └── tests/        <- unit tests!!11one1 run by `./run_tests.sh`
+    ├── tests/        <- unit tests - run `tox -e py2-unit` or `py.test`
+    └── feature/      <- feature tests - run `tox -e py2-feature` or `behave`
 
 
 sources layout
@@ -77,7 +79,6 @@ interesting files:
     └── utils               <- some generic cool stuffs here, see how it's
         ├── __init__.py        used throughout rdopkg
         ├── cmd.py          <- use run() and git() to interact with the world
-        ├── exception.py
         ├── log.py
         ├── specfile.py     <- lots of .spec editation magic here
         └── terminal.py
@@ -134,15 +135,18 @@ interface is stable, not limited to:
  * other quality of life improvements
 
 
-unit tests
-----------
+unit and feature tests
+----------------------
 
-If you're doing non-trivial change, I strongly suggest adding unit tests.
+If you're doing non-trivial change, I strongly suggest adding
 
-Either way, make sure *existing unit tests pass* after your change by running
+ * unit tests (tests/) to cover low level functionality
+ * feature tests  (feature/) to cover high level behavior
 
-    pip install pytest
-    ./run_tests.sh
+Make sure *existing tests pass* after your change by running
+
+    pip install tox
+    tox
 
 They need to pass in order for your change to land.
 
