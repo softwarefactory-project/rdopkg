@@ -21,7 +21,7 @@ def list_projects():
         project = pkg.get('project') or pkg['name']
         print("### " + project)
         print("package: " + pkg['name'])
-        print("code: " + pkg['upstream'])
+        print("code: " + pkg.get('upstream', 'N/A'))
         print("maintainers: " + " ".join(pkg['maintainers']))
         print("")
 
