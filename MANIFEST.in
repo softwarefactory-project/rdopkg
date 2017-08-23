@@ -1,7 +1,6 @@
 include README.md
 include LICENSE
 include requirements.txt
+include test-requirements.txt
+include features/*
 include doc/*.adoc
-include doc/html/*
-include doc/man/*
-include bsources/*.py
