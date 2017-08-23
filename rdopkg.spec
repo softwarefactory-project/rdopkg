@@ -1,3 +1,10 @@
+%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
+
+# Python3 support for Fedora 24+
+%if 0%{?fedora} >= 24
+%global with_python3 1
+%endif
+
 Name:             rdopkg
 Version:          0.44.2
 Release:          1%{?dist}
@@ -5,31 +12,10 @@ Summary:          RPM packaging automation tool
 
 Group:            Development/Languages
 License:          ASL 2.0
-URL:              https://github.com/redhat-openstack/rdopkg.git
-Source0:          https://pypi.python.org/packages/source/r/%{name}/%{name}-%{version}.tar.gz
+URL:              https://github.com/softwarefactory-project/rdopkg/
+Source0:          https://pypi.python.org/packages/source/r/%{name}/%{name}-%{upstream_version}.tar.gz
 
 BuildArch:        noarch
-
-BuildRequires:    python-setuptools
-BuildRequires:    python2-devel
-BuildRequires:    python-pbr
-BuildRequires:    PyYAML
-
-Requires:         python-bunch
-Requires:         python-future
-Requires:         python-paramiko
-Requires:         python-pbr
-Requires:         python-pymod2pkg >= 0.2.1
-Requires:         python-requests
-Requires:         python-setuptools
-Requires:         python-six
-Requires:         PyYAML
-Requires:         git-core
-Requires:         git-review
-Requires:         koji
-# optional but recommended
-Requires:         python-blessings
-
 
 %description
 rdopkg is a tool for automating RPM packaging tasks such as managing patches,
@@ -39,30 +25,134 @@ Although it contains several RDO-specific actions, most of rdopkg
 functionality can be used for any RPM package following conventions
 described in the rdopkg manual.
 
+%package -n python2-rdopkg
+Summary:          RPM packaging automation tool
+%{?python_provide:%python_provide python2-rdopkg}
+
+Provides:         rdopkg == %{version}
+
+BuildRequires:    python2-devel
+BuildRequires:    python-setuptools
+BuildRequires:    python-pbr
+BuildRequires:    PyYAML
+BuildRequires:    git
+# for documentation
+BuildRequires:    asciidoc
+
+Requires:         python-bunch
+Requires:         python-future
+Requires:         python2-koji
+Requires:         python-paramiko
+Requires:         python-pbr
+Requires:         python-pymod2pkg >= 0.2.1
+Requires:         python-requests
+Requires:         python-setuptools
+Requires:         python-six
+Requires:         PyYAML
+Requires:         git-core
+Requires:         git-review
+# optional but recommended
+Requires:         python-blessings
+
+
+%description -n python2-rdopkg
+rdopkg is a tool for automating RPM packaging tasks such as managing patches,
+updating to a new version and much more.
+
+Although it contains several RDO-specific actions, most of rdopkg
+functionality can be used for any RPM package following conventions
+described in the rdopkg manual.
+
+
+%if 0%{?with_python3}
+%package -n python3-rdopkg
+Summary:          RPM packaging automation tool
+%{?python_provide:%python_provide python3-rdopkg}
+
+BuildRequires:    python3-devel
+BuildRequires:    python3-setuptools
+BuildRequires:    python3-pbr
+BuildRequires:    python3-PyYAML
+
+Requires:         python3-future
+Requires:         python3-koji
+Requires:         python3-paramiko
+Requires:         python3-pbr
+Requires:         python3-pymod2pkg >= 0.2.1
+Requires:         python3-requests
+Requires:         python3-setuptools
+Requires:         python3-six
+Requires:         python3-PyYAML
+Requires:         git-core
+Requires:         git-review
+# optional but recommended
+Requires:         python3-blessings
+
+%description -n python3-rdopkg
+rdopkg is a tool for automating RPM packaging tasks such as managing patches,
+updating to a new version and much more.
+
+Although it contains several RDO-specific actions, most of rdopkg
+functionality can be used for any RPM package following conventions
+described in the rdopkg manual.
+%endif
+
 
 %prep
-%setup -q
+%autosetup -n %{name}-%{upstream_version} -S git
+
+# We handle requirements ourselves, pkg_resources only bring pain
+rm -rf requirements.txt test-requirements.txt
 
 %build
-%{__python} setup.py build
+%py2_build
+
+%if 0%{?with_python3}
+%py3_build
+%endif
 
 %install
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%if 0%{?with_python3}
+%py3_install
+mv %{buildroot}%{_bindir}/rdopkg %{buildroot}%{_bindir}/rdopkg-%{python3_version}
+ln -s ./rdopkg-%{python3_version} %{buildroot}%{_bindir}/rdopkg-3
+%endif
+
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
+ln -s ./rdopkg %{buildroot}%{_bindir}/rdopkg-%{python2_version}
+ln -s ./rdopkg %{buildroot}%{_bindir}/rdopkg-2
+
+# docs use asciidoc because rst is ugly
+make doc
 
 # man pages
 install -d -m 755 %{buildroot}%{_mandir}/man{1,7}
 install -p -m 644 doc/man/*.1 %{buildroot}%{_mandir}/man1/
 install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 
-%files
+%files -n python2-rdopkg
 %doc README.md
 %doc doc/*.adoc doc/html
 %license LICENSE
 %{_bindir}/rdopkg
-%{python_sitelib}/rdopkg
-%{python_sitelib}/*.egg-info
-%{_mandir}/man1
-%{_mandir}/man7
+%{_bindir}/rdopkg-2
+%{_bindir}/rdopkg-%{python2_version}
+%{python2_sitelib}/rdopkg
+%{python2_sitelib}/*.egg-info
+%{_mandir}/man1/rdopkg*
+%{_mandir}/man7/rdopkg*
+
+%if 0%{?with_python3}
+%files -n python3-rdopkg
+%doc README.md
+%doc doc/*.adoc doc/html
+%license LICENSE
+%{_bindir}/rdopkg-3
+%{_bindir}/rdopkg-%{python3_version}
+%{python3_sitelib}/rdopkg
+%{python3_sitelib}/*.egg-info
+%endif
+
 
 %changelog
 * Wed Jul 26 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.44.2-1
@@ -132,7 +222,7 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 - Update to 0.42
 - Counter past %{?milestone} bug
 - findpkg: new command to easily find single package
-- specfile: extend BuildArch sanity check to %autosetup
+- specfile: extend BuildArch sanity check to %%autosetup
 - specfile: add a sanity check for double # patches_base
 - tag-patches: ignore RPM Epoch
 - get-source: unbreak after defaults change
@@ -234,7 +324,7 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 - Update to 0.31
 - new-version: auto --bump-only on missing patches branch
 - new-version: only run `fedpkg new-sources` with non-empty sources file
-- update-patches: update the "%commit" macro
+- update-patches: update the "%%commit" macro
 - patchlog: new action to show patches branch log
 - remove unused 'rebase' action
 
