@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import sys
 
 from . import __version__
