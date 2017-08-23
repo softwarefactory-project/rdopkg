@@ -46,7 +46,7 @@ class RepoManager(object):
             self.base_path, self.repo_name = \
                 os.path.split(self.repo_path)
         else:
-            self.base_path = base_path
+            self.base_path = os.path.abspath(base_path)
             self.repo_name = repo_name_from_url(self.url)
             if not self.repo_name:
                 raise exception.RepoError(
