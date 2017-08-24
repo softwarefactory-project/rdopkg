@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_1d17d7ee",
+        "filename": "rdopkg.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2017-08-24T09:43:08Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we increase the release number to reflect the spec update?",
+      "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_7d20134a",
+        "filename": "rdopkg.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2017-08-24T09:43:08Z",
+      "side": 1,
+      "message": "I would use %{version}-%{release} to be safe.",
+      "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_dd303fa1",
+        "filename": "rdopkg.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2017-08-24T09:43:08Z",
+      "side": 1,
+      "message": "The requirements.txt file includes pyOpenSSL \u003e\u003d 16.2.0, I guess it should also be here?",
+      "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3d1a9b18",
+        "filename": "rdopkg.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2017-08-24T09:43:08Z",
+      "side": 1,
+      "message": "Let\u0027s be consistent and use %py2_install here (we use %py3_install above)",
+      "range": {
+        "startLine": 121,
+        "startChar": 1,
+        "endLine": 121,
+        "endChar": 66
+      },
+      "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
