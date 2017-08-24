@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_ddf27f6f",
+        "filename": "rdopkg.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-24T17:48:32Z",
+      "side": 1,
+      "message": "That usually happens in a dedicated release commit, but it\u0027s actually safer so yeah why not :) BTW .spec moving to fedora distgit soon I hope.",
+      "parentUuid": "fabf19d9_1d17d7ee",
+      "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_7d20134a",
         "filename": "rdopkg.spec",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-08-24T09:43:08Z",
       "side": 1,
       "message": "I would use %{version}-%{release} to be safe.",
+      "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_bde7cbab",
+        "filename": "rdopkg.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-24T17:48:32Z",
+      "side": 1,
+      "message": "OK",
+      "parentUuid": "fabf19d9_7d20134a",
       "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_9dec0791",
+        "filename": "rdopkg.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-24T17:48:32Z",
+      "side": 1,
+      "message": "Nice catch.",
+      "parentUuid": "fabf19d9_dd303fa1",
+      "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_3d1a9b18",
         "filename": "rdopkg.spec",
         "patchSetId": 1
@@ -64,6 +118,30 @@
       "writtenOn": "2017-08-24T09:43:08Z",
       "side": 1,
       "message": "Let\u0027s be consistent and use %py2_install here (we use %py3_install above)",
+      "range": {
+        "startLine": 121,
+        "startChar": 1,
+        "endLine": 121,
+        "endChar": 66
+      },
+      "revId": "1ede7be6faac9b1db91e543cec2afa49a8c222d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_7d025340",
+        "filename": "rdopkg.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-08-24T17:48:32Z",
+      "side": 1,
+      "message": "Right!",
+      "parentUuid": "fabf19d9_3d1a9b18",
       "range": {
         "startLine": 121,
         "startChar": 1,
