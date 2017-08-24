@@ -1,0 +1,8 @@
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Workflow+1: Jakub Ružička <jruzicka@redhat.com>
+Verified+2: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-by: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-at: Thu, 24 Aug 2017 17:56:18 +0000
+Reviewed-on: https://softwarefactory-project.io/r/9329
+Project: rdopkg
+Branch: refs/heads/master
