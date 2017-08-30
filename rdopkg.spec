@@ -7,13 +7,13 @@
 
 Name:             rdopkg
 Version:          0.45.0
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          RPM packaging automation tool
 
 Group:            Development/Languages
 License:          ASL 2.0
 URL:              https://github.com/softwarefactory-project/rdopkg/
-Source0:          https://pypi.python.org/packages/source/r/%{name}/%{name}-%{upstream_version}.tar.gz
+Source0:          https://pypi.io/packages/source/r/%{name}/%{name}-%{upstream_version}.tar.gz
 
 BuildArch:        noarch
 
@@ -157,6 +157,9 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 
 
 %changelog
+* Wed Aug 30 2017 Jakub Ružička <jruzicka@redhat.com> 0.45.0-2
+- Correct Source URL
+
 * Wed Aug 30 2017 Jakub Ružička <jruzicka@redhat.com> 0.45.0-1
 - fix: Fix rdo_projects.py example to work with latest rdoinfo
 - fix: Remove obsolete run_tests.sh
