@@ -6,8 +6,8 @@
 %endif
 
 Name:             rdopkg
-Version:          0.44.2
-Release:          2%{?dist}
+Version:          0.44.3
+Release:          1%{?dist}
 Summary:          RPM packaging automation tool
 
 Group:            Development/Languages
@@ -157,6 +157,29 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 
 
 %changelog
+* Wed Aug 30 2017 Jakub Ružička <jruzicka@redhat.com> 0.44.3-1
+- fix: Fix rdo_projects.py example to work with latest rdoinfo
+- fix: Remove obsolete run_tests.sh
+- fix: Use absolute path for base_path when not using local_repo_path
+- fix: cbsbuild: fix compatibility with Koji 1.13
+- fix: core: only load state file on --continue
+- fix: patch: format-patches with a standard abbrev setting
+- fix: restore proper --continue functionality
+- fix: show nice message on no distgit changes and unbreak gate
+- spec: add Python 3 package
+- spec: add docstrings to some methods
+- spec: improve unicode support
+- spec: properly expand macros defined in .spec file
+- tests: Add a rdopkg fix scenario - no changelog update
+- tests: Additional test for --abort clears rdopkg state file
+- tests: add rdopkg fix revert everything scenario
+- tests: enable python 3 testing
+- tests: fix whitespace to make pycodestyle happy
+- tests: speed up findpkg integration test
+- tests: use tox to setup and run tests
+- doc: Update MANIFEST.in
+- doc: update HACKING.md for new test setup
+
 * Thu Aug 24 2017 Jakub Ruzicka <jruzicka@redhat.com> 0.44.2-2
 - Add Python 3 support with python3-rdopkg
 
