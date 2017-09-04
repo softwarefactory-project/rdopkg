@@ -7,8 +7,8 @@
 
 Name:             rdopkg
 Version:          0.45.0
-Release:          2%{?dist}
-Summary:          RPM packaging automation tool
+Release:          3%{?dist}
+Summary:          RPM packaging automation tool CLI
 
 Group:            Development/Languages
 License:          ASL 2.0
@@ -17,19 +17,18 @@ Source0:          https://pypi.io/packages/source/r/%{name}/%{name}-%{upstream_v
 
 BuildArch:        noarch
 
+Requires:         python2-rdopkg == %{version}-%{release}
+
 %description
 rdopkg is a tool for automating RPM packaging tasks such as managing patches,
 updating to a new version and much more.
 
-Although it contains several RDO-specific actions, most of rdopkg
-functionality can be used for any RPM package following conventions
-described in the rdopkg manual.
+This package contains rdopkg executable.
+
 
 %package -n python2-rdopkg
 Summary:          RPM packaging automation tool
 %{?python_provide:%python_provide python2-rdopkg}
-
-Provides:         rdopkg == %{version}-%{release}
 
 BuildRequires:    python2-devel
 BuildRequires:    python-setuptools
@@ -52,8 +51,11 @@ Requires:         python-six
 Requires:         PyYAML
 Requires:         git-core
 Requires:         git-review
-# optional but recommended
+%if 0%{?fedora} || 0%{?rhel} >= 8
+Recommends:       python-blessings
+%else
 Requires:         python-blessings
+%endif
 
 
 %description -n python2-rdopkg
@@ -87,8 +89,11 @@ Requires:         python3-six
 Requires:         python3-PyYAML
 Requires:         git-core
 Requires:         git-review
-# optional but recommended
+%if 0%{?fedora} || 0%{?rhel} >= 8
+Recommends:       python3-blessings
+%else
 Requires:         python3-blessings
+%endif
 
 %description -n python3-rdopkg
 rdopkg is a tool for automating RPM packaging tasks such as managing patches,
@@ -132,11 +137,14 @@ install -d -m 755 %{buildroot}%{_mandir}/man{1,7}
 install -p -m 644 doc/man/*.1 %{buildroot}%{_mandir}/man1/
 install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 
+
+%files -n rdopkg
+%{_bindir}/rdopkg
+
 %files -n python2-rdopkg
 %doc README.md
 %doc doc/*.adoc doc/html
 %license LICENSE
-%{_bindir}/rdopkg
 %{_bindir}/rdopkg-2
 %{_bindir}/rdopkg-%{python2_version}
 %{python2_sitelib}/rdopkg
@@ -157,6 +165,10 @@ install -p -m 644 doc/man/*.7 %{buildroot}%{_mandir}/man7/
 
 
 %changelog
+* Mon Sep 04 2017 Jakub Ružička <jruzicka@redhat.com> 0.45.0-3
+- Split CLI into separate package for easy py2 -> py3 transition
+- Reccomend blessings instead of Require on supported platforms
+
 * Wed Aug 30 2017 Jakub Ružička <jruzicka@redhat.com> 0.45.0-2
 - Correct Source URL
 
