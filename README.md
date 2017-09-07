@@ -69,8 +69,9 @@ Or you can use virtualenv to avoid conflicts with RPM:
     rdopkg-dev --version
 
 Required python modules are listed in
-[requirements.txt](requirements.txt) and also in [rdopkg.spec](rdopkg.spec) as
-RPM requirements.
+[requirements.txt](requirements.txt) and also in
+[rdopkg.spec](https://src.fedoraproject.org/rpms/rdopkg/blob/master/f/rdopkg.spec) as
+RPM Requires.
 
 
 ### from PyPI

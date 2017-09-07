@@ -23,8 +23,7 @@ review.
 requirements
 ------------
 
-Check out `requirements.txt` or `Requires:` in .spec file to see which python
-modules you need.
+`requirements.txt` lists all the python modules you need.
 
 For development, I suggest installing rdopkg like this:
 
@@ -38,7 +37,6 @@ Top level stuff you should know about:
 
     ├── doc/          <- man pages/docs in asciidoc
     ├── rdopkg/       <- actual python sources
-    ├── rdopkg.spec   <- .spec file to build RPM - don't touch unless asked to
     ├── tests/        <- unit tests - run `tox -e py2-unit` or `py.test`
     └── feature/      <- feature tests - run `tox -e py2-feature` or `behave`
 
