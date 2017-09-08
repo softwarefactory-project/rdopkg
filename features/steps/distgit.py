@@ -92,6 +92,16 @@ def step_impl(context):
     assert entry == context.old_changelog_entry
 
 
+@then('.spec file contains new changelog entry with {text}')
+def step_impl(context, text):
+    spec = specfile.Spec()
+    entry = spec.get_last_changelog_entry()
+    changelog_block = '\n'.join(entry[1])
+    assert text in changelog_block, \
+        "[{0}] not found in [{1}]".format(text, changelog_block)
+    assert entry != context.old_changelog_entry
+
+
 @then('.spec file has {n:n} patches defined')
 def step_impl(context, n):
     spec = specfile.Spec()
@@ -114,3 +124,8 @@ def step_impl(context):
 def step_impl(context):
     new_commit = git.current_commit()
     assert new_commit == context.old_commit
+
+
+@then(u'commit message contains {simple_string}')
+def step_impl(context, simple_string):
+    assert simple_string in git.current_commit_message()
