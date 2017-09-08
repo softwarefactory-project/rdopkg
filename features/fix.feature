@@ -81,3 +81,15 @@ Feature: rdopkg fix
         Given a distgit at Version 2.0.0 and Release 0.20170811112938.deadbee%{?dist}
         When I run rdopkg fix
         Then .spec file tag Release is 0.20170811112939%{?dist}
+
+    # Currently Broken test cases
+
+    Scenario: rdopkg fix - DLRN nvr - githash is all numbers
+        Given a distgit at Version 2.0.0 and Release 0.20170811112938.8136333%{?dist}
+        When I run rdopkg fix
+        Then .spec file tag Release is 0.20170811112939%{?dist}
+
+    Scenario: rdopkg fix - post .1 Release bumps correctly
+        Given a distgit at Version 2.0.0 and Release 1.0%{?dist}.1
+        When I run rdopkg fix
+        Then .spec file tag Release is 1.0%{?dist}.2
