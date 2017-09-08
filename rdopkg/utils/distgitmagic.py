@@ -110,6 +110,15 @@ def create_sample_distgit(name, version='1.2.3', release='1', path=None):
     return os.path.abspath(path)
 
 
+def create_commitmsg_file(path, description):
+    '''Create commitfile using provided description'''
+    filename = 'commitmsg'
+    assert os.path.exists(path)
+    with open(os.path.join(path, filename), 'w') as fout:
+        fout.write(description)
+    return os.path.abspath(os.path.join(path, filename))
+
+
 def create_sample_patches_branch(n):
     version = specfile.Spec().get_tag('Version')
     branch = rdopkg.utils.cmd.git.current_branch()
