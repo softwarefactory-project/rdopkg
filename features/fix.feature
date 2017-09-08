@@ -39,3 +39,9 @@ Feature: rdopkg fix
         When I run rdopkg --abort
         Then no new commit was created
         Then rdopkg state file is not present
+
+    Scenario: rdopkg fix
+        Given a distgit at Version 2.0.0 and Release 0.20170828113153.71ad01c%{?dist}.1
+        When I run rdopkg fix
+        Then .spec file tag Version is 2.0.0
+        Then .spec file tag Release is 0.20170828113154%{?dist}
