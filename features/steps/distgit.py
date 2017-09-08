@@ -48,6 +48,12 @@ def step_impl(context, version):
         version)
 
 
+@given(u'a local file {fn} containing "{text}"')
+def step_impl(context, fn, text):
+    with open(os.path.join(context.distgitdir, fn), 'w') as f:
+        f.write(text)
+
+
 @when('I change .spec file tag {tag} to {value}')
 def step_impl(context, tag, value):
     spec = specfile.Spec()
@@ -128,4 +134,6 @@ def step_impl(context):
 
 @then(u'commit message contains {simple_string}')
 def step_impl(context, simple_string):
-    assert simple_string in git.current_commit_message()
+    assert simple_string in git.current_commit_message(), \
+        "{0} not found in {1}".format(simple_string,
+                                      git.current_commit_message())
