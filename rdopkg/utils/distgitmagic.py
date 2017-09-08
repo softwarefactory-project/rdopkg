@@ -59,7 +59,8 @@ It's pretty good stuff for a testing package that doesn't even exist.
 
 # silent run() by default
 def run(*args, **kwargs):
-    kwargs['log_cmd'] = False
+    if 'log_cmd' not in kwargs:
+        kwargs['log_cmd'] = False
     return rdopkg.utils.cmd.run(*args, **kwargs)
 
 
