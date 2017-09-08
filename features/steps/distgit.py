@@ -74,7 +74,8 @@ def step_impl(context):
 @then('.spec file tag {tag} is {value}')
 def step_impl(context, tag, value):
     spec = specfile.Spec()
-    assert spec.get_tag(tag) == value
+    assert spec.get_tag(tag) == value, \
+        "{0} != {1}".format(spec.get_tag(tag), value)
 
 
 @then('.spec file contains new changelog entry with {n:n} lines')
