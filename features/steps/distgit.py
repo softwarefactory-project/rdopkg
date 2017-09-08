@@ -48,6 +48,12 @@ def step_impl(context, version):
         version)
 
 
+@given(u'commitmsg is local file')
+def step_commitmsg_file(context):
+    distgitmagic.create_commitmsg_file(
+        context.distgitdir, 'Imported From RDO foobar-1.2.3 cbs build')
+
+
 @when('I change .spec file tag {tag} to {value}')
 def step_impl(context, tag, value):
     spec = specfile.Spec()
@@ -96,7 +102,8 @@ def step_changelog_contains_bug(context, bug):
     spec = specfile.Spec()
     entry = spec.get_last_changelog_entry()
     changelog_block = '\n'.join(entry[1])
-    assert bug in changelog_block, "[{0}] not found in [{1}]".format(bug, changelog_block)
+    assert bug in changelog_block, \
+        "[{0}] not found in [{1}]".format(bug, changelog_block)
     assert entry != context.old_changelog_entry
 
 
@@ -126,4 +133,6 @@ def step_impl(context):
 
 @then(u'commit message contains {simple_string}')
 def step_check_commit_message(context, simple_string):
-    assert simple_string in git.current_commit_message()
+    assert simple_string in git.current_commit_message(), \
+        "{0} not found in {1}".format(simple_string,
+                                      git.current_commit_message())
