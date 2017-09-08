@@ -169,6 +169,10 @@ class Git(ShellCommand):
         commit = self('rev-parse', 'HEAD', log_cmd=False)
         return commit
 
+    def current_commit_message(self):
+        commit_msg = self('log', '-n1', log_cmd=False)
+        return commit_msg
+
     def ref_exists(self, ref):
         o = self('show-ref', '--verify', '--quiet', ref,
                  fatal=False, log_cmd=False, log_fail=False)
