@@ -369,12 +369,6 @@ ACTION: kojibuild
 
 Build the package in `koji`.
 
-See link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)] for complete
-example of building and submitting packages for RDO.
-
-This is esentaially a wrapper over `fedpkg build` with added value of
-generating update entries for `rdopkg update`.
-
 *Flow:*
 
  * Run equivalent of `fedpkg build` using disgusting `fedpkg` python module.
@@ -389,10 +383,6 @@ ACTION: coprbuild
 ~~~~~~~~~~~~~~~~~
 
 Build the package in `copr-jruzicka`.
-
-See link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)] for complete
-example including instructions how to setup copr, obtain permissions, build,
-submit update, and more.
 
 **Please**, try to do `coprbuild` after successful `kojibuild` to ensure same
 SRPM for both builds. This will be automated further in the future.
@@ -699,7 +689,6 @@ SEE ALSO
 --------
 
 link:rdopkg-adv-new-version.7.html[rdopkg-adv-new-version(7)],
-link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)],
 link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)]
 
 CONTACT
