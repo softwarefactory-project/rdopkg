@@ -2,22 +2,6 @@ from rdopkg.action import Action, Arg
 
 
 ACTIONS = [
-    Action('coprbuild', help="build package in copr-jruzicka",
-           steps=[
-               Action('get_package_env', module='distgit'),
-               Action('copr_check'),
-               Action('make_srpm', module='distgit'),
-               Action('copr_upload'),
-               Action('copr_build'),
-           ],
-           optional_args=[
-               Arg('release', shortcut='-r',
-                   help="OpenStack release (havana, icehouse, ...)"),
-               Arg('dist', shortcut='-d',
-                   help="target distribution (fedora-20, epel-7, ...)"),
-               Arg('fuser', shortcut='-u',
-                   help="Fedora user to upload srpm as to fedorapeople.org"),
-           ]),
     Action('kojibuild', help="build package in koji",
            steps=[
                Action('get_package_env', module='distgit'),

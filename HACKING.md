@@ -52,8 +52,7 @@ interesting files:
     ├── action.py
     ├── actionmods          <- reusable modules containing the low level
     │   ├── __init__.py        functionality needed in rdopkg actions;
-    │   ├── copr.py            feel free to add your own
-    │   ├── nightly.py
+    │   ├── query.py           feel free to add your own
     │   ...
     ├── actions             <- pluggable action modules
     │   ├── build

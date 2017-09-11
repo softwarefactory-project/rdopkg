@@ -135,10 +135,6 @@ class CommandOutputParseError(RdopkgException):
     msg_fmt = "Failed to parse %(tool)s output:\n%(output)s"
 
 
-class CoprError(RdopkgException):
-    msg_fmt = "Copr error: %(error)s"
-
-
 class FileNotFound(RdopkgException):
     msg_fmt = "File not found: %(path)s"
 

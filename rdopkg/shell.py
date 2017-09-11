@@ -92,7 +92,6 @@ def run(action_runner, cargs, version=None):
             exception.BuildArchSanityCheckFailed,
             exception.CantGuess,
             exception.ConfigError,
-            exception.CoprError,
             exception.CommandNotFound,
             exception.DebugAbort,
             exception.DuplicatePatchesBaseError,

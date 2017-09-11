@@ -385,34 +385,6 @@ generating update entries for `rdopkg update`.
     rdopkg kojibuild
 
 
-ACTION: coprbuild
-~~~~~~~~~~~~~~~~~
-
-Build the package in `copr-jruzicka`.
-
-See link:rdopkg-adv-building.7.html[rdopkg-adv-building(7)] for complete
-example including instructions how to setup copr, obtain permissions, build,
-submit update, and more.
-
-**Please**, try to do `coprbuild` after successful `kojibuild` to ensure same
-SRPM for both builds. This will be automated further in the future.
-
-`-r/--release` and `-d/--dist` are autodetected from current branch if
-possible. These are used to select right copr to build in.
-
-*Flow:*
-
- * Create the source RPM from current dist-git.
- * Upload the source RPM to your `fedorapeople.org:~/public_html/copr`.
-   (specify Fedora user with `-u/--fuser`)
- * Submit the source RPM to build in `jruzicka / rdo-$RELEASE-$DIST` copr.
- * Watch the build.
-
-*Example:*
-
-    rdopkg coprbuild
-
-
 ACTION: amend
 ~~~~~~~~~~~~~
 
