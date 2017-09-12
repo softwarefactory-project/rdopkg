@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_a071e0e2",
+        "filename": "features/newversion.feature",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:29:06Z",
+      "side": 1,
+      "message": "typo: parameter name is --bug (without \u0027s\u0027)",
+      "revId": "2fe5a0313fd60e432a866ae755039b220a4513d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_6074e8ce",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:29:06Z",
+      "side": 1,
+      "message": "While it\u0027s bug in this case, please use {text} or other generic name for reusability in other contexts.",
+      "revId": "2fe5a0313fd60e432a866ae755039b220a4513d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_8077fcd3",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:29:06Z",
+      "side": 1,
+      "message": "Please use step_impl() for reduced redundancy. I know it feels weird but the step name is already defined in decorator above.",
+      "revId": "2fe5a0313fd60e432a866ae755039b220a4513d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
