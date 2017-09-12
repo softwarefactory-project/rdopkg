@@ -88,6 +88,7 @@ class RdoinfoRepo(repoman.RepoManager):
     def __init__(self, *args, **kwargs):
         self.info_file = kwargs.pop('info_file', 'rdo.yml')
         self.apply_tag = kwargs.pop('apply_tag', None)
+        self.include_fns = kwargs.pop('include_fns', ['deps.yml'])
         repoman.RepoManager.__init__(self, *args, **kwargs)
         self.rdoinfo = None
         self._info = None
@@ -108,13 +109,15 @@ class RdoinfoRepo(repoman.RepoManager):
                 git('checkout', gitrev, log_cmd=False)
                 self.ensure_rdoinfo()
                 info = self.rdoinfo.parse_info_file(
-                    self.info_file, apply_tag=self.apply_tag)
+                    self.info_file, apply_tag=self.apply_tag,
+                    include_fns=self.include_fns)
                 git('checkout', commit1, log_cmd=False)
                 self.ensure_rdoinfo()
             else:
                 self.ensure_rdoinfo()
                 info = self.rdoinfo.parse_info_file(
-                    self.info_file, apply_tag=self.apply_tag)
+                    self.info_file, apply_tag=self.apply_tag,
+                    include_fns=self.include_fns)
         return info
 
     @property
@@ -253,11 +256,12 @@ class RdoinfoRepo(repoman.RepoManager):
             print_pkg(pkg)
 
 
-def get_default_inforepo(apply_tag=None):
+def get_default_inforepo(apply_tag=None, include_fns=['deps.yml']):
     return RdoinfoRepo(
         cfg['HOME_DIR'],
         cfg['RDOINFO_REPO'],
-        apply_tag=apply_tag)
+        apply_tag=apply_tag,
+        include_fns=include_fns)
 
 
 def print_pkg(pkg):
