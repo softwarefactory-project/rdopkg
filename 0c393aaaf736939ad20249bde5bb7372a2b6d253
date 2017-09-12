@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_209030ec",
+        "filename": "features/newversion.feature",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:15:09Z",
+      "side": 1,
+      "message": "You say just \u0027local file here\u0027...",
+      "revId": "0c393aaaf736939ad20249bde5bb7372a2b6d253",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_00bc0c6b",
+        "filename": "features/newversion.feature",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:15:09Z",
+      "side": 1,
+      "message": "...but suddenlty there\u0027s \"Imported From\". Not transparent.",
+      "revId": "0c393aaaf736939ad20249bde5bb7372a2b6d253",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_e0c0f8e2",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:15:09Z",
+      "side": 1,
+      "message": "Let\u0027s go with \u0027Given a local file {fn} containing {text}\u0027",
+      "revId": "0c393aaaf736939ad20249bde5bb7372a2b6d253",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_c0b5f47e",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:15:09Z",
+      "side": 1,
+      "message": "use step_impl(context, fn, text) like other steps to remove redundancy",
+      "revId": "0c393aaaf736939ad20249bde5bb7372a2b6d253",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_80b01c8d",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:15:09Z",
+      "side": 1,
+      "message": "Let this step be generic and not bound to commitmsg in any way for the sake of reusability.\n\nwith open(fn, \u0027w\u0027) as f:\n    f.write(text)",
+      "revId": "0c393aaaf736939ad20249bde5bb7372a2b6d253",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_20a71051",
+        "filename": "rdopkg/utils/distgitmagic.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-12T14:15:09Z",
+      "side": 1,
+      "message": "No need for so specific function.\n\nGeneral form would be create_file(path, text) which might be easier to do directly with\n\nwith open(path, \u0027w\u0027) as f:\n    f.write(text)\n\ndepending on amout of safety.",
+      "revId": "0c393aaaf736939ad20249bde5bb7372a2b6d253",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
