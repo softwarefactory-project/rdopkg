@@ -29,20 +29,24 @@ interested in writing you own packaging tools such as new
 ## Installation
 
 
-### from RPM repo (default)
+### from Fedora/EPEL repos (default)
 
-The easiest and recommended way to get rdopkg is use [jruzicka/rdopkg
-copr](https://copr.fedoraproject.org/coprs/jruzicka/rdopkg/). The linked
-page contains instructions howto enable the repository:
-
-    dnf copr enable jruzicka/rdopkg
-
-After you've enabled the repo, just
+`rdopkg` is available on **Fedora 25** and newer:
 
     dnf install rdopkg
 
-Note that [Fedora review](https://bugzilla.redhat.com/show_bug.cgi?id=1246199)
-is underway but not likely to finish before `pwnpkg` split.
+On CentOS/RHEL 7, `rdopkg` is available from
+[EPEL](https://fedoraproject.org/wiki/EPEL).
+
+On **CentOS 7**:
+
+    yum install epel-release
+    yum install rdopkg
+
+On **RHEL 7**:
+
+    yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    yum install rdopkg
 
 
 ### from source
@@ -81,6 +85,10 @@ Shop. This should come in handy especially if you want to reuse `rdopkg` as
 a module.
 
     pip install rdopkg
+
+Note that you need to have python2-rpm(resp. python3-rpm) package installed in
+order for RPM macro related featuers to work as it isn't available from
+PyPI.
 
 
 ## The Manual
