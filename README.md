@@ -2,28 +2,41 @@
 
 `rdopkg` is an RPM packaging automation tool. It provides automation for
 package maintenance including git-based patches management and automagic
-rebases to new upstream versions with nice changelogs and commit
-messages. It also contains various functionality we needed for
+rebases to new upstream versions with nice .spec changes, changelogs and
+commit messages for both CLI and CI usage.
+It also contains various functionality we needed for
 [RDO](https://www.rdoproject.org/) packaging, such as advanced
-`requirements.txt` management for python projects.
-
-`rdopkg` is **under constant development**, serving mainly the needs of the
-mighty [RDO](https://www.rdoproject.org/) packager-warriors, but it strives to
-help all RPM packagers.
+`requirements.txt` management for python projects and
+[rdoinfo](https://github.com/redhat-openstack/rdoinfo) integration.
 
 Generic
-[distgit] (https://www.rdoproject.org/documentation/rdo-packaging/#dist-git)
+[distgit](https://www.rdoproject.org/documentation/intro-packaging/#distgit---where-the-spec-file-lives)
 and patches management functionality and conventions provided by `rdopkg`
 proved to be efficient way of packaging fast-moving upstream projects with
-minimal human effort.
+minimal human effort but without losing control over individual packages.
 
-In order to make this functionality conveniently available for packagers, I'm
-slowly yet steadily (re)factoring and refining `rdopkg` features into
-reusable modules with a grand goal of creating modular packaging tools
-framework. This goal is described in
-[pwnpkg](https://github.com/yac/pwnpkg) and you should read it if you're
-interested in writing you own packaging tools such as new
-`fedpkg`/`copr-cli` we deserve.
+`rdopkg` is **under constant development**, serving mainly the needs of the
+mighty [RDO](https://www.rdoproject.org/) packager-warriors and and their
+weapons such as [DLRN](https://github.com/softwarefactory-project/DLRN),
+but it strives to help all RPM packagers. For example, see
+[how you can manage your RPMs with
+rdopkg](https://www.rdoproject.org//blog/2017/03/let-rdopkg-manage-your-RPM-package/).
+
+`rdopkg` uses [software factory](https://softwarefactory-project.io/)
+for CI and every commit goes through automatic unit, feature, and integration
+testing as well as human reviews.
+
+See [open rdopkg reviews](https://softwarefactory-project.io/r/#/q/status:open+project:rdopkg).
+
+`rdopkg` is fully reusable but the goal of also serving as
+packaging CLI tool framework as described in
+[pwnpkg](https://github.com/yac/pwnpkg) proved to be out of scope. However,
+(not only `jruzicka`'s) rants ignited [rpkg2][] project
+which aims to provide exactly that. If you're interested in writing you own
+packaging tools such as new `fedpkg`/`copr-cli` we deserve, [rpkg2][] seems
+like a good place to start and influence with good ideas.
+
+[rpkg2]: https://pagure.io/rpkg2
 
 
 ## Installation
@@ -92,7 +105,7 @@ Exhaustive `rdopkg` manual is available, you can:
  * render it to HTML/man using `make doc`
 
 You might also be interested in
-[RDO packaging guide](https://www.rdoproject.org/documentation/rdo-packaging)
+[RDO packaging intro](https://www.rdoproject.org/documentation/intro-packaging/)
 which contains some examples of `rdopkg` usage and more.
 
 
@@ -100,4 +113,4 @@ which contains some examples of `rdopkg` usage and more.
 
 Please use the
 [github Issues](https://github.com/softwarefactory-project/rdopkg/issues)
-to report bugs. I usually fix them within days.
+to report bugs. I usually fix critical bugs within days.
