@@ -39,3 +39,38 @@ Feature: rdopkg fix
         When I run rdopkg --abort
         Then no new commit was created
         Then rdopkg state file is not present
+
+    Scenario: rdopkg fix - Normal semver nvr bumps consistently
+        Given a distgit at Version 2.0.0 and Release 0.1
+        When I run rdopkg fix
+        Then .spec file tag Release is 0.2%{?dist}
+
+    Scenario: rdopkg fix - Normal semver nvr bumps consistently - with dist macro specified
+        Given a distgit at Version 2.0.0 and Release 0.1%{?dist}
+        When I run rdopkg fix
+        Then .spec file tag Release is 0.2%{?dist}
+
+    Scenario: rdopkg fix - Normal semver nvr bumps consistently
+        Given a distgit at Version 2.0.0 and Release 1%{?dist}
+        When I run rdopkg fix
+        Then .spec file tag Release is 2%{?dist}
+
+    Scenario: rdopkg fix - Normal semver nvr bumps consistently
+        Given a distgit at Version 2.0.0 and Release 15%{?dist}
+        When I run rdopkg fix
+        Then .spec file tag Release is 16%{?dist}
+
+    Scenario: rdopkg fix - Normal semver nvr bumps consistently
+        Given a distgit at Version 2.0.0 and Release 15.0%{?dist}
+        When I run rdopkg fix
+        Then .spec file tag Release is 15.1%{?dist}
+
+    Scenario: rdopkg fix - DLRN nvr bumps consistently
+        Given a distgit at Version 2.0.0 and Release 0.20170811112938.81363ec%{?dist}
+        When I run rdopkg fix
+        Then .spec file tag Release is 0.20170811112939%{?dist}
+
+    Scenario: rdopkg fix - DLRN nvr - githash all letters
+        Given a distgit at Version 2.0.0 and Release 0.20170811112938.deadbee%{?dist}
+        When I run rdopkg fix
+        Then .spec file tag Release is 0.20170811112939%{?dist}

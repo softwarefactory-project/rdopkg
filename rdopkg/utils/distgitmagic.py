@@ -8,7 +8,7 @@ SAMPLE_SPEC = u"""
 Name:             {name}
 Epoch:            1
 Version:          {version}
-Release:          {release}%{{?dist}}
+Release:          {release}
 Summary:          Amazing {name} package
 
 Group:            Development/Languages
@@ -99,6 +99,8 @@ def create_sample_distgit(name, version='1.2.3', release='1', path=None):
     if not path:
         path = name
     assert not os.path.exists(path)
+    if "%{?dist}" not in release:
+        release = release + "%{?dist}"
     os.makedirs(path)
     with helpers.cdir(path):
         txt = SAMPLE_SPEC.format(name=name, version=version, release=release)
