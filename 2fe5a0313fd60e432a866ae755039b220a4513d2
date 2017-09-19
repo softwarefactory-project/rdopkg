@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9abe1de1_ec16afa6",
+        "filename": "features/newversion.feature",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-09-19T17:03:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9abe1de1_a071e0e2",
+      "revId": "2fe5a0313fd60e432a866ae755039b220a4513d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_6074e8ce",
         "filename": "features/steps/distgit.py",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "9abe1de1_ac10b7a9",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-09-19T17:03:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9abe1de1_6074e8ce",
+      "revId": "2fe5a0313fd60e432a866ae755039b220a4513d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_8077fcd3",
         "filename": "features/steps/distgit.py",
         "patchSetId": 2
@@ -47,6 +83,24 @@
       "writtenOn": "2017-09-12T14:29:06Z",
       "side": 1,
       "message": "Please use step_impl() for reduced redundancy. I know it feels weird but the step name is already defined in decorator above.",
+      "revId": "2fe5a0313fd60e432a866ae755039b220a4513d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_cc0beb7c",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-09-19T17:03:10Z",
+      "side": 1,
+      "message": "feels weird to not name it so you can reference it directly.",
+      "parentUuid": "9abe1de1_8077fcd3",
       "revId": "2fe5a0313fd60e432a866ae755039b220a4513d2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
