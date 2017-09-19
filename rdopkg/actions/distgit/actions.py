@@ -714,7 +714,7 @@ def _commit_message(changes=None, header_file=None):
         rhbzs_str = "\n".join(map(lambda x: "Resolves: rhbz#%s" % x,
                                   fixed_rhbzs))
         msg += "\n\n%s" % rhbzs_str
-    if len(changes) > 1:
+    if len(changes) > 0:
         changes_str = "\n".join(map(lambda x: "- %s" % x, changes))
         msg += "\n\nChangelog:\n%s" % changes_str
     return msg
