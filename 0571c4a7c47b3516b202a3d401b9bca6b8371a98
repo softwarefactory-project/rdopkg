@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_63be2d01",
+        "filename": "features/fix.feature",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-09-21T19:59:27Z",
+      "side": 1,
+      "message": "Here is the failing case but using consistent bumping logic.",
+      "range": {
+        "startLine": 80,
+        "startChar": 38,
+        "endLine": 80,
+        "endChar": 60
+      },
+      "revId": "0571c4a7c47b3516b202a3d401b9bca6b8371a98",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
