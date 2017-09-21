@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9abe1de1_e3c91dae",
+        "filename": "features/fix.feature",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-09-21T19:58:37Z",
+      "side": 1,
+      "message": "actually in next patch.",
+      "parentUuid": "9abe1de1_a3afa5e2",
+      "revId": "f923647ef7e87a04963c17baa7b84ad7d3738abd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_435fa90e",
         "filename": "rdopkg/utils/distgitmagic.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-09-21T18:34:27Z",
       "side": 1,
       "message": "This is sligtly better although still can\u0027t test Release without %{?dist} this way... Proper way would be to always explicitly list %{?dist} in tests I guess.",
+      "revId": "f923647ef7e87a04963c17baa7b84ad7d3738abd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_c3ce19b4",
+        "filename": "rdopkg/utils/distgitmagic.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-09-21T19:58:37Z",
+      "side": 1,
+      "message": "ack, was easiest way to slip this in with small rotation",
+      "parentUuid": "9abe1de1_435fa90e",
       "revId": "f923647ef7e87a04963c17baa7b84ad7d3738abd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
