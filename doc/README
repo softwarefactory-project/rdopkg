@@ -8,5 +8,5 @@ Makefile is provided to build man pages
     make man
 
 or HTML manual
-    
+
     make html

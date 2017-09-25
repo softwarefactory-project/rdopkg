@@ -5,7 +5,7 @@ rdopkg-adv-requirements(7)
 
 NAME
 ----
-rdopkg-adv-requirements - rdopkg adventures: requirements management 
+rdopkg-adv-requirements - rdopkg adventures: requirements management
 
 
 SYNOPSIS
@@ -182,7 +182,7 @@ answer these recurring questions.
 
 We can query a specific release/dist:
 
-    $ rdopkg query kilo/f22 python-novaclient    
+    $ rdopkg query kilo/f22 python-novaclient
     kilo/f22
         python-novaclient-2.23.0-1.fc23  @  RDO Kilo f22
         python-novaclient-2.20.0-1.fc22  @  Fedora 22
@@ -221,7 +221,7 @@ CHAPTER 4
 
 `reqquery` queries versions of `requirements.txt` or `.spec` Requires in RDO
 repos and provides colorful report to easily check whether dependencies are
-available and in correct versions. 
+available and in correct versions.
 
 Simplest use case without arguments queries all `requirements.txt` of current
 package version in autodetected release/dist:
@@ -265,7 +265,7 @@ a different requirements source:
  * from current `.spec` file:
 
     $ rdopkg reqquery -s
-    
+
 As it usually takes quite some time to `repoquery` all the repos, we might
 want to run with `-v`/`--verbose`, dump to `requirements.yml` with
 `-d`/`--dump` and then view the report with `-l`/`--load`:

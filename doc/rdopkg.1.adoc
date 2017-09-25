@@ -86,7 +86,7 @@ Make `.spec` file only changes.
     and commit changes to new commit.
 
 *Example:*
-    
+
     cd python-novaclient
     rdopkg fix
     vim python-novaclient.spec
@@ -139,7 +139,7 @@ ACTION: new-version
 
 Update package to new upstream version.
 
-This action works with patches branch 
+This action works with patches branch
 (see <<patches-branch,AUTOMAGIC -> patches branch>>).
 After successful rebase, `rdopkg` will offer to push the
 rebased patches branch.
@@ -195,7 +195,7 @@ and corresponding `Resolves:` lines in commit message.
     rdopkg new-version 2.15.0
     # rebase failed, manually fix using git
     rdopkg -c
-    
+
 
 ACTION: clone
 ~~~~~~~~~~~~~
@@ -220,7 +220,7 @@ ACTION: update-patches
 Update `.spec` file with patches from patches branch.
 
 This is a core low level action used by other actions such as `patch` and
-`new-version` to update dist-git patches from patches branch. 
+`new-version` to update dist-git patches from patches branch.
 See <<patches-branch,AUTOMAGIC -> patches branch>> for explanation.
 
 `update-patches` is a rework of now obsolete `update-patches.sh` script with
@@ -530,7 +530,7 @@ AUTOMAGIC
 ---------
 
 Instead of requiring project config files or endless lists of command line
-arguments, `rdopkg` tries to guess all the neccessary variables. 
+arguments, `rdopkg` tries to guess all the neccessary variables.
 
 
 [[patches-branch]]

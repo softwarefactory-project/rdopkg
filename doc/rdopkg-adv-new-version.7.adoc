@@ -38,14 +38,14 @@ To summarise, above remotes are:
  * **origin**: Fedora dist-git containing .spec & patches +
    (obtained by `fedpkg clone python-swiftclient`)
  * **patches**: github remote with RDO patches branches
- * **openstack**: upstream code repo to cherry-pick backported patch from 
+ * **openstack**: upstream code repo to cherry-pick backported patch from
 
 This is a Havana epel-6 fix, so I'm gonna work with:
 
  * **origin/el6-havana**  dist-git
  * **patches/stable/havana**  patches branch
 
-See `rdopkg info` output for current branch names. 
+See `rdopkg info` output for current branch names.
 
 Before we proceed, let's inspect the patches branch:
 
@@ -57,7 +57,7 @@ Before we proceed, let's inspect the patches branch:
     ...
 
 You can see that there are two commits on top of `1.8.0`. These two patches
-are present in dist-git and applied in `.spec` file: 
+are present in dist-git and applied in `.spec` file:
 
     ...
     Patch0001: 0001-Remove-builtin-requirements-handling.patch
@@ -115,7 +115,7 @@ on `2.0.2` git tag.
 The rebase failed due to a conflict of downstream patches nuking pbr and
 `rdopkg` exited to shell so I can finish the rebase manually.
 
-I modified the conflicting patch and continued the rebase with 
+I modified the conflicting patch and continued the rebase with
 
     git rebase --continue
 
@@ -176,7 +176,7 @@ pseudo-diff of `.spec` file:
     +- Update to upstream 2.0.2
     +
      ...
- 
+
 As you can see, obsolete patch I deleted during rebase is gone.
 
 Commit message and changed files:
@@ -204,7 +204,7 @@ amend` to regenerate commit message from `%changelog`:
 Final commit message:
 
     Update to upstream 2.0.2
-    
+
     Changelog:
     - Update to upstream 2.0.2
     - Switch from pyOpenSSL to python-requests - update dependencies
