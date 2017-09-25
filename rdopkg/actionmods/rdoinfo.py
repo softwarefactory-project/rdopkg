@@ -95,7 +95,7 @@ class RdoinfoRepo(repoman.RepoManager):
 
     def ensure_rdoinfo(self):
         # when running get_info with gitrev, we are modifying rdoinfo module
-        # while runing rdopkg. This seems to be problematic if we are using
+        # while running rdopkg. This seems to be problematic if we are using
         # the compiled .pyc so i'm forcing to load rdoinfo module from .py
         sys.dont_write_bytecode = True
         file, path, desc = imp.find_module('rdoinfo', [self.repo_path])

@@ -101,7 +101,7 @@ This action works with patches branch
 (see <<patches-branch,AUTOMAGIC -> patches branch>>).
 
 By default, `rdopkg` resets local patches branch to remote patches branch.
-You can skip this this with `-l`/`--local-patches` to directly use local
+You can skip this with `-l`/`--local-patches` to directly use local
 patches branch as is.
 
 Don't forget to `git fetch` before running the action.
@@ -423,7 +423,7 @@ Show information about RDO packaging.
 
 Use this command to find out about:
 
- * currently supported RDO OpenStack releses
+ * currently supported RDO OpenStack releases
  * which distros are supported for each release
  * what branch to build from
  * what build system to build in
@@ -530,7 +530,7 @@ AUTOMAGIC
 ---------
 
 Instead of requiring project config files or endless lists of command line
-arguments, `rdopkg` tries to guess all the neccessary variables.
+arguments, `rdopkg` tries to guess all the necessary variables.
 
 
 [[patches-branch]]
@@ -584,7 +584,7 @@ Then `rdopkg` will use `2014.2.3` as the base.  If instead your
 
 Then `rdopkg` will use `2014.2.3rc2` as the base.
 
-In older versions of `rodpkg`, it was was necessary to explicitly set
+In older versions of `rodpkg`, it was necessary to explicitly set
 the patch base using a special `patches_base` comment in your spec
 file.  This is now **optional** behavior (the patches base is
 calculated automatically), but you can use this if you need to
@@ -621,7 +621,7 @@ rhbz#XYZ" is appended to commit message as required by RHOSP workflow.
 If you need to (re)generate commit message after modifying %changelog, use
 **ACTION: amend**.
 
-For example following %changelog entry:
+For example, following %changelog entry:
 
     %changelog
     * Tue Feb 11 2014 Jakub Ruzicka <jruzicka@redhat.com> 0.5.1-2

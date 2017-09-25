@@ -16,7 +16,7 @@ proved to be efficient way of packaging fast-moving upstream projects with
 minimal human effort but without losing control over individual packages.
 
 `rdopkg` is **under constant development**, serving mainly the needs of the
-mighty [RDO](https://www.rdoproject.org/) packager-warriors and and their
+mighty [RDO](https://www.rdoproject.org/) packager-warriors and their
 weapons such as [DLRN](https://github.com/softwarefactory-project/DLRN),
 but it strives to help all RPM packagers. For example, see
 [how you can manage your RPMs with

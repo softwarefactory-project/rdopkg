@@ -292,7 +292,7 @@ class Spec(object):
         This string is parsed from a comment in the specfile that contains the
         word filter-out followed by an equal sign.
 
-        For example a comment as such:
+        For example, a comment as such:
             # patches_ignore=(regex)
 
         would mean this method returns the string '(regex)'

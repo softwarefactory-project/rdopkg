@@ -24,7 +24,7 @@ PROLOGUE
  * `rdopkg query` queries RDO repos for version of a supplied package
  * `rdopkg reqquery` queries RDO repos for versions of `requirements.txt`
 
-This docuemnt will give you some examples of how to use these commands.
+This document will give you some examples of how to use these commands.
 
 Please make sure you have the latest `rdopkg`, at least **0.28**.
 
