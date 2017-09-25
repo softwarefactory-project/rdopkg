@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_b6cec1b2",
+        "filename": "doc/rdopkg-adv-new-version.7.adoc",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-25T15:51:06Z",
+      "side": 0,
+      "message": "This whitespace ought to mean it\u0027s one block but it doesn\u0027t seem to work that way anyway so we can remove it.",
+      "revId": "2a7b2211fe9b7fc4112e315e9068b6a7ffd424fc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
