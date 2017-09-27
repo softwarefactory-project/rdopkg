@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_b9b8f2e6",
+        "filename": "rdopkg/utils/cmd.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-27T16:06:09Z",
+      "side": 1,
+      "message": "search_bug_references(text) (or even search_bug_refs) might be friendlier ;)",
+      "revId": "33cf19cc6382379f6b1349a1a61b73412f51118c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_99ce4e82",
+        "filename": "rdopkg/utils/cmd.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-09-27T16:06:09Z",
+      "side": 1,
+      "message": "It is indeed useful functionality to have factored out for easy reuse and modification (different bug formats come to mind) but in order for it to be useful, it must be used by all the existing code, which currently resides in\n\nrdopkg/actions/distgit/actions.py\n\nAs an offtopic, we might also want to split this file into cmd.py and git.py... not sure.",
+      "revId": "33cf19cc6382379f6b1349a1a61b73412f51118c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
