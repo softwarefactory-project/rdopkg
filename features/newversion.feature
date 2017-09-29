@@ -10,6 +10,13 @@ Feature: rdopkg new-version
         Then .spec file doesn't contain patches_base
         Then .spec file contains new changelog entry with 1 lines
         Then new commit was created
+        Then last commit message matches:
+            """
+            foo-bar-2.1.0-1
+            
+            Changelog:
+            - Update to 2.1.0
+            """
 
     Scenario: rdopkg new-version with upstream patches
         Given a distgit at Version 0.1 and Release 0.1
