@@ -2,6 +2,7 @@ from behave import *
 import re
 import os
 
+from rdopkg.helpers import ascii
 from rdopkg.utils import distgitmagic
 from rdopkg.utils import specfile
 from rdopkg.utils.distgitmagic import git, run
@@ -132,8 +133,16 @@ def step_impl(context):
     assert new_commit == context.old_commit
 
 
-@then(u'commit message contains {simple_string}')
+@then(u'last commit message contains {simple_string}')
 def step_impl(context, simple_string):
-    assert simple_string in git.current_commit_message(), \
-        "{0} not found in {1}".format(simple_string,
-                                      git.current_commit_message())
+    msg = git.current_commit_message()
+    assert simple_string in msg,\
+        ascii(u"'{0}' not found in:\n{1}".format(simple_string, msg))
+
+
+@then(u'last commit message is')
+def step_impl(context):
+    msg = git.current_commit_message()
+    assert context.text == msg, \
+        ascii(u"Commit message differes from expected format.\n"
+              "\n---EXPECTED:---\n{0}\n\n---FOUND:---\n{1}".format(context.text, msg))
