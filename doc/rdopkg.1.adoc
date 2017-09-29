@@ -608,35 +608,45 @@ needed.
 commit message
 ~~~~~~~~~~~~~~
 
-Actions modifying dist-git generate commit message from %changelog.
+Commit messages created by `rdopkg` are generated from `.spec` file `Name`,
+`Version` and `Release` (NVR) as well as last `%changelog` entry.
 
-First line of commit message is first line from latest %changelog entry.
+All `rdopkg` actions that modify distgit use following format:
 
-If there are multiple lines in latest %changelog entry, entire entry is
-listed in the commit message.
+    package-name-1.2.3-4
 
-For each "(rhbz#XYZ)" mentioned in latest %changelog entry, "Resolves:
-rhbz#XYZ" is appended to commit message as required by RHOSP workflow.
+    Changelog:
+    - Doom the World (rhbz#111111)
+    - Fix Impending Doom support
+    - Save the World (rhbz#222222)
 
-If you need to (re)generate commit message after modifying %changelog, use
-**ACTION: amend**.
+    Resolves: rhbz#111111
+    Resolves: rhbz#222222
+    Change-Id: deadbeedeadbeedeadbeedeadbeedeadbeedeadbee
 
-For example, following %changelog entry:
+For each `(rhbz#XYZ)` mentioned in latest `%changelog` entry,
+`Resolves: rhbz#XYZ` line is appended to commit message as required by RHOSP
+workflow.
+
+**protip:** To (re)generate nice commit message after modifying `.spec` file,
+use `rdopkg amend` (see **ACTION: amend** above).
+
+For example, following `%changelog` entry:
 
     %changelog
-    * Tue Feb 11 2014 Jakub Ruzicka <jruzicka@redhat.com> 0.5.1-2
-    - Update to upstream 0.5.1
+    * Tue Feb 11 2014 Jakub Ruzicka <jruzicka@redhat.com> 0.5.0-1
+    - Update to upstream 0.5.0
     - Fix evil Bug of Doom (rhbz#123456)
 
 will generate following commit message:
 
-    Update to upstream 0.5.1
-
-    Resolves: rhbz#123456
+    package-name-0.5.0-1
 
     Changelog:
-    - Update to upstream 0.5.1
+    - Update to upstream 0.5.0
     - Fix evil Bug of Doom (rhbz#123456)
+
+    Resolves: rhbz#123456
 
 
 [[rdoinfo]]

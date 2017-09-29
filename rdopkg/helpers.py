@@ -112,7 +112,7 @@ def is_same_subject(s1, s2):
     return False
 
 
-@contextlib.contextmanager
+@t contextlib.contextmanager
 def cdir(path):
     prev_cwd = os.getcwd()
     os.chdir(path)
