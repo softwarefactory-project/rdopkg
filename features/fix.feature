@@ -9,11 +9,18 @@ Feature: rdopkg fix
     Scenario: rdopkg fix
         Given a distgit
         When I run rdopkg fix
-        When I add description to .spec chengelog
+        When I add description to .spec changelog
         When I run rdopkg --continue
         Then .spec file contains new changelog entry with 1 lines
         Then new commit was created
         Then rdopkg state file is not present
+        Then last commit message is:
+            """
+            foo-bar-1.2.3-3
+
+            Changelog:
+            - Description of a change
+            """
 
     Scenario: rdopkg fix - did not add description of changes
         Given a distgit
