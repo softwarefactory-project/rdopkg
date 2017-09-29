@@ -690,11 +690,8 @@ def new_sources(branch=None, fedpkg=FEDPKG, new_sources=False):
 
 
 def _commit_message(changes=None, header_file=None):
-    if not changes:
-        _, changes = specfile.Spec().get_last_changelog_entry(strip=True)
-        if not changes:
-            raise exception.IncompleteChangelog()
     if header_file:
+        # use supplied header file
         try:
             if header_file == '-':
                 msg = sys.stdin.read()
@@ -702,10 +699,18 @@ def _commit_message(changes=None, header_file=None):
                 msg = open(header_file).read()
         except IOError as ex:
             raise exception.FileNotFound(msg=str(ex))
-    elif len(changes) == 1:
-        msg = re.sub(r'\s+\(.*\)\s*$', '', changes[0])
     else:
+        # use NVR as default commit message header
         msg = specfile.Spec().get_nvr(epoch=False)
+    # append changelog generated from changes argument
+    if not changes:
+        # by default, use last .spec %changelog entry lines
+        _, changes = specfile.Spec().get_last_changelog_entry(strip=True)
+        if not changes:
+            raise exception.IncompleteChangelog()
+    changes_str = "\n".join(map(lambda x: "- %s" % x, changes))
+    msg += "\n\nChangelog:\n%s" % changes_str
+    # append Resloves: rhbz#12345 lines mentioned in changes
     fixed_rhbzs = set()
     for change in changes:
         for m in re.finditer(r'rhbz#(\d+)', change):
@@ -714,9 +719,6 @@ def _commit_message(changes=None, header_file=None):
         rhbzs_str = "\n".join(map(lambda x: "Resolves: rhbz#%s" % x,
                                   fixed_rhbzs))
         msg += "\n\n%s" % rhbzs_str
-    if len(changes) > 1:
-        changes_str = "\n".join(map(lambda x: "- %s" % x, changes))
-        msg += "\n\nChangelog:\n%s" % changes_str
     return msg
 
 
