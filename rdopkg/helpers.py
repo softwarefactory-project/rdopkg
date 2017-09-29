@@ -112,6 +112,11 @@ def is_same_subject(s1, s2):
     return False
 
 
+def ascii(text):
+    """Replace non-ascii characters with '?'."""
+    return ''.join([i if ord(i) < 128 else '?' for i in text])
+
+
 @contextlib.contextmanager
 def cdir(path):
     prev_cwd = os.getcwd()

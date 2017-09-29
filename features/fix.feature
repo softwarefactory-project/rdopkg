@@ -13,7 +13,13 @@ Feature: rdopkg fix
         When I run rdopkg --continue
         Then .spec file contains new changelog entry with 1 lines
         Then new commit was created
-        Then rdopkg state file is not present
+        Then last commit message matches:
+            """
+            foo-bar-1.2.3-3
+            
+            Changelog:
+            - Description of a change
+            """
 
     Scenario: rdopkg fix - did not add description of changes
         Given a distgit
