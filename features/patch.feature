@@ -9,6 +9,17 @@ Feature: rdopkg patch
         Then .spec file doesn't contain patches_base
         Then .spec file contains new changelog entry with 5 lines
         Then new commit was created
+        Then last commit message matches:
+            """
+            foo-bar-[0-9.-]+
+            
+            Changelog:
+            - Original Patch 5
+            - Original Patch 4
+            - Original Patch 3
+            - Original Patch 2
+            - Original Patch 1
+            """
 
     Scenario: rdopkg patch --no-bump
         Given a distgit
@@ -18,3 +29,7 @@ Feature: rdopkg patch
         Then .spec file doesn't contain patches_base
         Then .spec file doesn't contain new changelog entries
         Then new commit was created
+        Then last commit message matches:
+            """
+            Updated patches from master-patches
+            """

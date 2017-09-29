@@ -170,7 +170,7 @@ class Git(ShellCommand):
         return commit
 
     def current_commit_message(self):
-        commit_msg = self('log', '-n1', log_cmd=False)
+        commit_msg = self('log', '-n1', '--pretty=%B', log_cmd=False)
         return commit_msg
 
     def ref_exists(self, ref):
