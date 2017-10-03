@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_aa02d23c",
+        "filename": "features/fix.feature",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-10-03T16:08:00Z",
+      "side": 1,
+      "message": "changelog",
+      "revId": "9628f3652da78281cc8b4c227156125408e19a21",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_caece691",
+        "filename": "features/fix.feature",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-10-03T16:08:00Z",
+      "side": 1,
+      "message": "trailing space",
+      "revId": "9628f3652da78281cc8b4c227156125408e19a21",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_6afcba3e",
+        "filename": "features/newversion.feature",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-10-03T16:08:00Z",
+      "side": 1,
+      "message": "trailing spaces",
+      "revId": "9628f3652da78281cc8b4c227156125408e19a21",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_2a95a2e3",
+        "filename": "features/patch.feature",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-10-03T16:08:00Z",
+      "side": 1,
+      "message": "trailing space",
+      "revId": "9628f3652da78281cc8b4c227156125408e19a21",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_0a9ade14",
+        "filename": "features/steps/distgit.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-10-03T16:08:00Z",
+      "side": 1,
+      "message": "differs",
+      "revId": "9628f3652da78281cc8b4c227156125408e19a21",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
