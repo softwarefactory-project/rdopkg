@@ -38,7 +38,7 @@ Feature: rdopkg new-version
             - Update to 1.0.0
             """
 
-    Scenario: rdopkg new-version --bump-only --bug
+    Scenario: rdopkg new-version --bump-only --bug <id>
         Given a distgit at Version 2.0.0 and Release 3
         When I run rdopkg new-version --bump-only -n 2.1.0 --bug rhbz#12345
         Then command output contains 'Action finished'
@@ -55,10 +55,10 @@ Feature: rdopkg new-version
             Resolves: rhbz#12345
             """
 
-    Scenario: rdopkg new-version --bump-only -H
+    Scenario: rdopkg new-version --bump-only --commit-header-file <file>
         Given a distgit at Version 2.0.0 and Release 3
         Given a local file commitmsg containing "Testing Alternate Commit Header"
-        When I run rdopkg new-version --bump-only -n 2.1.0 -H commitmsg
+        When I run rdopkg new-version --bump-only -n --commit-header-file commitmsg 2.1.0
         Then command output contains 'Action finished'
         Then new commit was created
         Then last commit message is:
@@ -67,4 +67,36 @@ Feature: rdopkg new-version
 
             Changelog:
             - Update to 2.1.0
+            """
+
+    Scenario: rdopkg new-version --bump-only --bug <id> -H <file>
+        Given a distgit at Version 2.0.0 and Release 3
+        Given a local file commitmsg:
+            """
+            Testing
+
+            Multiline
+            Commit
+            Header
+            """
+        When I run rdopkg new-version --bump-only -n --bug rhbz#12345,rhbz#232323 -H commitmsg 2.1.0
+        Then command output contains 'Action finished'
+        Then .spec file contains new changelog entry with rhbz#12345
+        Then .spec file contains new changelog entry with rhbz#232323
+        Then new commit was created
+        Then last commit message contains rhbz#12345
+        Then last commit message contains rhbz#232323
+        Then last commit message is:
+            """
+            Testing
+
+            Multiline
+            Commit
+            Header
+
+            Changelog:
+            - Update to 2.1.0 (rhbz#12345,rhbz#232323)
+
+            Resolves: rhbz#12345
+            Resolves: rhbz#232323
             """
