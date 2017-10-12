@@ -711,10 +711,12 @@ def _commit_message(changes=None, header_file=None):
     changes_str = "\n".join(map(lambda x: "- %s" % x, changes))
     msg += "\n\nChangelog:\n%s" % changes_str
     # append Resloves: rhbz#12345 lines mentioned in changes
-    fixed_rhbzs = set()
+    fixed_rhbzs = []
     for change in changes:
         for m in re.finditer(r'rhbz#(\d+)', change):
-            fixed_rhbzs.add(m.group(1))
+            n = m.group(1)
+            if n not in fixed_rhbzs:
+                fixed_rhbzs.append(n)
     if fixed_rhbzs:
         rhbzs_str = "\n".join(map(lambda x: "Resolves: rhbz#%s" % x,
                                   fixed_rhbzs))
