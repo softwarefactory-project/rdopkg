@@ -19,19 +19,24 @@ def package(default=exception.CantGuess):
     return pkg
 
 
-def current_version(default=exception.CantGuess):
-    version = None
+def patches_base_ref(default=exception.CantGuess):
+    """Return a git reference to patches branch base.
+
+    Returns first part of .spec's patches_base is found,
+    otherwise return Version(+%{milestone}).
+    """
+    ref = None
     try:
         spec = specfile.Spec()
-        version, _ = spec.get_patches_base(expand_macros=True)
-        if version:
-            version, _ = tag2version(version)
+        ref, _ = spec.get_patches_base(expand_macros=True)
+        if ref:
+            ref, _ = tag2version(ref)
         else:
-            version = spec.get_tag('Version', expand_macros=True)
+            ref = spec.get_tag('Version', expand_macros=True)
             milestone = spec.get_milestone()
             if milestone:
-                version += milestone
-        if not version:
+                ref += milestone
+        if not ref:
             raise exception.CantGuess(msg="got empty .spec Version")
     except Exception as ex:
         if default is exception.CantGuess:
@@ -40,7 +45,7 @@ def current_version(default=exception.CantGuess):
                 why=str(ex))
         else:
             return default
-    return version
+    return ref
 
 
 def current_branch(default=exception.CantGuess):
@@ -80,7 +85,7 @@ def version2tag(version, tag_style=None):
 
 def version_tag_style(version=None):
     if not version:
-        version = current_version()
+        version = patches_base_ref()
     if git.ref_exists('refs/tags/' + version):
         return None
     elif git.ref_exists('refs/tags/v' + version):

@@ -87,6 +87,7 @@ ACTIONS = [
            ],
            steps=[
                Action('get_package_env'),
+               Action('ensure_patches_base_ref'),
                Action('ensure_patches_branch'),
                Action('get_patches_branch'),
                Action('check_new_patches'),
@@ -135,6 +136,7 @@ ACTIONS = [
            ],
            steps=[
                Action('get_package_env'),
+               Action('ensure_patches_base_ref'),
                Action('new_version_setup'),
                Action('diff'),
                Action('prep_new_patches_branch'),

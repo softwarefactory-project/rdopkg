@@ -8,8 +8,7 @@ from rdopkg.utils.distgitmagic import git
 from rdopkg.utils.testing import exdiff
 
 
-@given('a distgit at Version {version} and Release {release}')
-def step_impl(context, version, release):
+def _create_distgit(context, version, release, tag=True):
     name = 'foo-bar'
     context.execute_steps(u'Given a temporary directory')
     context.distgitdir = distgitmagic.create_sample_distgit(
@@ -19,6 +18,16 @@ def step_impl(context, version, release):
     spec = specfile.Spec()
     context.old_changelog_entry = spec.get_last_changelog_entry()
     context.old_commit = git.current_commit()
+
+
+@given('a distgit at Version {version} and Release {release} without version git tag')  # noqa
+def step_impl(context, version, release):
+    _create_distgit(context, version, release, version_tag=False)
+
+
+@given('a distgit at Version {version} and Release {release}')
+def step_impl(context, version, release):
+    _create_distgit(context, version, release)
 
 
 @given('a distgit at Version {version}')
@@ -35,6 +44,11 @@ def step_impl(context):
 @given('a patches branch with {n:n} patches')
 def step_impl(context, n):
     distgitmagic.create_sample_patches_branch(n)
+
+
+@given('a patches branch with {n:n} patches without version git tag')
+def step_impl(context, n):
+    distgitmagic.create_sample_patches_branch(n, version_tag=False)
 
 
 @given('a new version {version} with {n:n} patches from patches branch')

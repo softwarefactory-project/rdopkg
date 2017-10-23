@@ -57,7 +57,7 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
     if not local_patches_branch:
         args['local_patches_branch'] = patches_branch.partition('/')[2]
     if not version:
-        version = guess.current_version()
+        version = guess.patches_base_ref()
         args['version'] = version
     args['version_tag_style'] = guess.version_tag_style(version=version)
 
@@ -121,16 +121,16 @@ def show_package_env(package, version,
             n=pbn, t=log.term)
     if not patches_base_str:
         patches_base_str = "N/A"
-    base_ref_str = version
+    patches_base_ref_str = version
     if git.ref_exists('refs/tags/' + version):
-        bref_exists = '{t.green}existing git tag{t.normal}'
+        pbref_exists = '{t.green}existing git tag{t.normal}'
     else:
         ot = git.object_type(version)
         if ot:
-            bref_exists = '{t.green}existing git %s{t.normal}' % ot
+            pbref_exists = '{t.green}existing git %s{t.normal}' % ot
         else:
-            bref_exists = '{t.red}invalid git reference{t.normal}'
-    base_ref_str += ' : ' + bref_exists.format(t=log.term)
+            pbref_exists = '{t.red}invalid git reference{t.normal}'
+    patches_base_ref_str += ' : ' + pbref_exists.format(t=log.term)
 
     print('')
     _putv('Package:  ', package)
@@ -142,7 +142,7 @@ def show_package_env(package, version,
     _putv('Dist-git branch:       ', branch)
     _putv('Patches style:         ', patches_style)
     _putv('Patches base:          ', patches_base_str)
-    _putv('Base git ref:          ', base_ref_str)
+    _putv('Patches base ref:      ', patches_base_ref_str)
     _putv('Local patches branch:  ',
           '%s : %s' % (local_patches_branch, local_str))
     _putv('Remote patches branch: ',
@@ -202,7 +202,7 @@ def conf():
 def new_version_setup(patches_branch=None, local_patches=False,
                       version=None, new_version=None, version_tag_style=None,
                       new_sources=None, no_new_sources=None, unattended=False,
-                      bug=None):
+                      bug=None, bump_only=False):
     args = {}
     if new_version:
         # support both version and tag
@@ -211,6 +211,8 @@ def new_version_setup(patches_branch=None, local_patches=False,
             new_version = ver
             args['new_version'] = new_version
         new_version_tag = guess.version2tag(new_version, version_tag_style)
+        if not bump_only and not git.object_type(new_version_tag):
+            raise exception.InvalidGitRef(ref=new_version_tag)
     else:
         ub = guess.upstream_branch()
         if not git.ref_exists('refs/remotes/%s' % ub):
@@ -268,6 +270,14 @@ def new_version_setup(patches_branch=None, local_patches=False,
     args['new_sources'] = new_sources
 
     return args
+
+
+def ensure_patches_base_ref(bump_only=False):
+    if bump_only:
+        return
+    bref = guess.patches_base_ref()
+    if not git.object_type(bref):
+        raise exception.InvalidPatchesBaseRef(ref=bref)
 
 
 def ensure_patches_branch(patches_branch=None, local_patches=False,

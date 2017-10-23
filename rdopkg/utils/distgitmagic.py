@@ -113,16 +113,18 @@ def create_sample_distgit(name, version='1.2.3', release='1', path=None):
     return os.path.abspath(path)
 
 
-def create_sample_patches_branch(n):
+def create_sample_patches_branch(n, version_tag=True):
     version = specfile.Spec().get_tag('Version')
     branch = rdopkg.utils.cmd.git.current_branch()
-    git('tag', version, fatal=False, log_fail=False)
+    if version_tag:
+        git('tag', version, fatal=False, log_fail=False)
     git('branch', '%s-patches' % branch)
     add_n_patches(n, patch_name="Original Patch %d")
 
 
 def create_sample_upstream_new_version(
-        new_version, n_patches, n_from_patches_branch):
+        new_version, n_patches, n_from_patches_branch,
+        version_tag=True):
     branch = rdopkg.utils.cmd.git.current_branch()
     old_version = specfile.Spec().get_tag('Version')
     git('checkout', '-b', 'upstream', old_version)
@@ -132,5 +134,6 @@ def create_sample_upstream_new_version(
     for i in range(n_from_patches_branch):
         # emulate upstream patches that were backported
         git('cherry-pick', 'master-patches' + i * '~')
-    git('tag', new_version)
+    if version_tag:
+        git('tag', new_version)
     git('checkout', branch)

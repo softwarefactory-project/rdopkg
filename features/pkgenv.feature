@@ -7,7 +7,7 @@ Feature: rdopkg pkgenv
         When I run rdopkg pkgenv
         Then command output contains 'Patches style:\s+branch'
         Then command output contains 'Patches base:\s+N/A'
-        Then command output contains 'Base git ref:\s+1.0.0 : existing git tag'
+        Then command output contains 'Patches base ref:\s+1.0.0 : existing git tag'
         Then command output contains 'Version:\s+1.0.0'
         Then command output contains 'VR:\s+1:1.0.0-0.1'
         Then command output contains 'Local patches branch:\s+master-patches : \w+'
@@ -18,7 +18,7 @@ Feature: rdopkg pkgenv
         When I run rdopkg pkgenv
         Then command output contains 'VR:\s+1:0.1-2'
         Then command output contains 'Patches base:\s+N/A'
-        Then command output contains 'Base git ref:\s+0.1 : invalid git reference'
+        Then command output contains 'Patches base ref:\s+0.1 : invalid git reference'
         Then command output contains 'Local patches branch:\s+master-patches : not found'
 
     Scenario: rdopkg pkgenv with valid patches_base
@@ -29,7 +29,7 @@ Feature: rdopkg pkgenv
         Then command output contains 'Version:\s+23'
         Then command output contains 'VR:\s+1:23-69'
         Then command output contains 'Patches base:\s+\w+\+42'
-        Then command output contains 'Base git ref:\s+\w+ : existing git commit'
+        Then command output contains 'Patches base ref:\s+\w+ : existing git commit'
         Then command output contains 'Local patches branch:\s+master-patches : \w+'
 
     Scenario: rdopkg pkgenv with invalid patches_base
@@ -40,4 +40,4 @@ Feature: rdopkg pkgenv
         Then command output contains 'Version:\s+0'
         Then command output contains 'VR:\s+1:0-0'
         Then command output contains 'Patches base:\s+OVER\+9000'
-        Then command output contains 'Base git ref:\s+OVER : invalid git reference'
+        Then command output contains 'Patches base ref:\s+OVER : invalid git reference'
