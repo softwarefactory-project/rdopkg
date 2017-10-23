@@ -78,6 +78,17 @@ class DuplicatePatchesBaseError(RdopkgException):
                "# patches_base= entry in .spec")
 
 
+class InvalidRef(RdopkgException):
+    msg_fmt = ("Invalid git reference: %(ref)s")
+
+
+class InvalidBaseRef(RdopkgException):
+    msg_fmt = ("Invalid base patches branch git reference: %(ref)s\n\n"
+               "Make sure .spec Version references existing git tag\n"
+               "or select explicitly using #patches_base=ANY_GIT_REF\n\n"
+               "`rdopkg pkgenv` can help you debug this!")
+
+
 class UserAbort(RdopkgException):
     msg_fmt = "Aborted by user."
 

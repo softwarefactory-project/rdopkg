@@ -309,6 +309,17 @@ class Spec(object):
         except Exception:
             return None
 
+    def get_base_ref(self):
+        """Return a git reference to patches branch base.
+
+        Returns first part of .spec's patches_base is found,
+        otherwise return Version.
+        """
+        ref, _ = self.get_patches_base(expand_macros=True)
+        if not ref:
+            ref = self.get_tag('Version', expand_macros=True)
+        return ref
+
     def _create_new_patches_base(self, base):
         self._txt, n = re.subn(
             self.RE_PATCH,

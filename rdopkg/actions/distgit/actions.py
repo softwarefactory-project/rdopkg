@@ -211,6 +211,8 @@ def new_version_setup(patches_branch=None, local_patches=False,
             new_version = ver
             args['new_version'] = new_version
         new_version_tag = guess.version2tag(new_version, version_tag_style)
+        if not git.object_type(new_version_tag):
+            raise exception.InvalidRef(ref=new_version_tag)
     else:
         ub = guess.upstream_branch()
         if not git.ref_exists('refs/remotes/%s' % ub):
@@ -268,6 +270,15 @@ def new_version_setup(patches_branch=None, local_patches=False,
     args['new_sources'] = new_sources
 
     return args
+
+
+def ensure_base_ref(bump_only=False):
+    if bump_only:
+        return
+    spec = specfile.Spec()
+    bref = spec.get_base_ref()
+    if not git.object_type(bref):
+        raise exception.InvalidBaseRef(ref=bref)
 
 
 def ensure_patches_branch(patches_branch=None, local_patches=False,

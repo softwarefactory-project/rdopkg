@@ -33,3 +33,12 @@ Feature: rdopkg patch
             """
             Updated patches from master-patches
             """
+
+
+    Scenario: rdopkg patch without version git tag
+        Given a distgit
+        Given a patches branch with 3 patches without version git tag
+        When I run rdopkg patch -l
+        Then no new commit was created
+        Then rdopkg state file is not present
+        Then command output contains 'Invalid base patches branch git reference: '

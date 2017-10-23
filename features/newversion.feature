@@ -100,3 +100,17 @@ Feature: rdopkg new-version
             Resolves: rhbz#12345
             Resolves: rhbz#232323
             """
+
+    Scenario: rdopkg new-version without starting version git tag
+        Given a distgit at Version 0.1 and Release 0.1
+        Given a patches branch with 2 patches without version git tag
+        When I run rdopkg new-version -l 1.0.0
+        Then no new commit was created
+        Then command output contains 'Invalid base patches branch git reference:
+
+    Scenario: rdopkg new-version without new version git tag
+        Given a distgit at Version 0.1 and Release 0.1
+        Given a patches branch with 2 patches
+        When I run rdopkg new-version -l 2.2.2
+        Then no new commit was created
+        Then command output contains 'Invalid git reference: 2.2.2'
