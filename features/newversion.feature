@@ -68,3 +68,35 @@ Feature: rdopkg new-version
             Changelog:
             - Update to 2.1.0
             """
+
+    Scenario: rdopkg new-version --bump-only --bug <id> -H <file>
+        Given a distgit at Version 2.0.0 and Release 3
+        Given a local file commitmsg:
+            """
+            Testing
+
+            Multiline
+            Commit
+            Header
+            """
+        When I run rdopkg new-version --bump-only -n --bug rhbz#12345,rhbz#232323 -H commitmsg 2.1.0
+        Then command output contains 'Action finished'
+        Then .spec file contains new changelog entry with rhbz#12345
+        Then .spec file contains new changelog entry with rhbz#232323
+        Then new commit was created
+        Then last commit message contains rhbz#12345
+        Then last commit message contains rhbz#232323
+        Then last commit message is:
+            """
+            Testing
+
+            Multiline
+            Commit
+            Header
+
+            Changelog:
+            - Update to 2.1.0 (rhbz#12345,rhbz#232323)
+
+            Resolves: rhbz#12345
+            Resolves: rhbz#232323
+            """

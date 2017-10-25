@@ -55,6 +55,12 @@ def step_impl(context, fn, text):
         f.write(text)
 
 
+@given(u'a local file {fn}')
+def step_impl(context, fn):
+    with open(os.path.join(context.distgitdir, fn), 'w') as f:
+        f.write(context.text)
+
+
 @when('I change .spec file tag {tag} to {value}')
 def step_impl(context, tag, value):
     spec = specfile.Spec()
