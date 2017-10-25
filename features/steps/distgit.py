@@ -4,7 +4,8 @@ import os
 
 from rdopkg.utils import distgitmagic
 from rdopkg.utils import specfile
-from rdopkg.utils.distgitmagic import git, run
+from rdopkg.utils.distgitmagic import git
+from rdopkg.utils.testing import exdiff
 
 
 @given('a distgit at Version {version} and Release {release}')
@@ -143,8 +144,6 @@ def step_impl(context, simple_string):
 @then(u'last commit message is')
 def step_impl(context):
     msg = git.current_commit_message()
-    assert context.text == msg, \
-        (u"Commit message differs from expected format.\n"
-         "\n---EXPECTED:---\n{0}\n"
-         "\n---FOUND:---\n{1}".format(context.text, msg)
-         ).encode('ascii', 'replace')
+    assert context.text == msg, exdiff(
+        context.text, msg,
+        header="Commit message differs from expected format:")
