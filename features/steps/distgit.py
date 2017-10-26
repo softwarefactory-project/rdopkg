@@ -61,6 +61,21 @@ def step_impl(context, fn):
         f.write(context.text)
 
 
+@when(u'I set .spec file patches_base={base}')
+def step_impl(context, base):
+    spec = specfile.Spec()
+    spec.set_patches_base(base)
+    spec.save()
+
+
+@when(u'I set .spec file patches_base to existing commit +{n:n}')
+def step_impl(context, n):
+    pb = git('show-ref', 'master-patches')[:8]
+    if n:
+        pb = '%s+%s' % (pb, n)
+    context.execute_steps(u'When i set .spec file patches_base=%s' % pb)
+
+
 @when('I change .spec file tag {tag} to {value}')
 def step_impl(context, tag, value):
     spec = specfile.Spec()
