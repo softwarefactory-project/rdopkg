@@ -112,16 +112,37 @@ def show_package_env(package, version,
 
     spec = specfile.Spec()
     vr = spec.get_vr()
+    spec_version = spec.get_tag('Version')
     patches_apply_method = spec.patches_apply_method()
+    patches_base, pbn = spec.get_patches_base()
+    patches_base_str = patches_base or ''
+    if pbn:
+        patches_base_str += "{t.magenta}+{n}{t.normal}".format(
+            n=pbn, t=log.term)
+    if not patches_base_str:
+        patches_base_str = "N/A"
+    base_ref_str = version
+    if git.ref_exists('refs/tags/' + version):
+        bref_exists = '{t.green}existing git tag{t.normal}'
+    else:
+        ot = git.object_type(version)
+        if ot:
+            bref_exists = '{t.green}existing git %s{t.normal}' % ot
+        else:
+            bref_exists = '{t.red}invalid git reference{t.normal}'
+    base_ref_str += ' : ' + bref_exists.format(t=log.term)
+
     print('')
     _putv('Package:  ', package)
     _putv('VR:       ', vr)
-    _putv('Version:  ', version)
+    _putv('Version:  ', spec_version)
     _putv('Upstream: ', upstream_version)
     _putv('Tag style:', version_tag_style or 'X.Y.Z')
     print('')
-    _putv('Patches style:         ', patches_style)
     _putv('Dist-git branch:       ', branch)
+    _putv('Patches style:         ', patches_style)
+    _putv('Patches base:          ', patches_base_str)
+    _putv('Base git ref:          ', base_ref_str)
     _putv('Local patches branch:  ',
           '%s : %s' % (local_patches_branch, local_str))
     _putv('Remote patches branch: ',
