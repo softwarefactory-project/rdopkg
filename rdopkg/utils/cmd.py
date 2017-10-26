@@ -181,6 +181,13 @@ class Git(ShellCommand):
     def branch_exists(self, branch):
         return self.ref_exists('refs/heads/%s' % branch)
 
+    def object_type(self, ref):
+        o = self('cat-file', '-t', ref,
+                 fatal=False, log_cmd=False, log_fail=False)
+        if not o:
+            return None
+        return o
+
     def is_clean(self):
         o = self('status', '-uno', '--porcelain', log_cmd=False)
         if o:
