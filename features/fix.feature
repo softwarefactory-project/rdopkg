@@ -72,6 +72,11 @@ Feature: rdopkg fix
         When I run rdopkg fix
         Then .spec file tag Release is 15.1%{?dist}
 
+    Scenario: rdopkg fix - Release with %{?dist} in the middle bumps correctly
+        Given a distgit at Version 2.0.0 and Release 1.0%{?dist}.1
+        When I run rdopkg fix
+        Then .spec file tag Release is 1.1%{?dist}.1
+
     Scenario: rdopkg fix - DLRN nvr bumps consistently
         Given a distgit at Version 2.0.0 and Release 0.20170811112938.81363ec%{?dist}
         When I run rdopkg fix
