@@ -16,7 +16,8 @@ from rdopkg.actionmods import rdoinfo
 from rdopkg.actionmods import rpmfactory
 from rdopkg.actions.reqs.actions import reqdiff
 from rdopkg.utils import log
-from rdopkg.utils.cmd import run, git
+from rdopkg.utils.cmd import run
+from rdopkg.utils.git import git
 from rdopkg.utils import specfile
 from rdopkg.utils import tidy_ssh_user
 from rdopkg import helpers

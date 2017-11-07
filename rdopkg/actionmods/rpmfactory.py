@@ -2,7 +2,8 @@
 
 
 from rdopkg.utils import log
-from rdopkg.utils.cmd import git, GerritQuery
+from rdopkg.utils.cmd import GerritQuery
+from rdopkg.utils.git import git
 from rdopkg import guess, helpers, exception
 
 

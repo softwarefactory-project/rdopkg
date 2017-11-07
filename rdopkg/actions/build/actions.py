@@ -9,7 +9,7 @@ from rdopkg import guess
 from rdopkg.actionmods import cbsbuild
 from rdopkg.actionmods import kojibuild
 from rdopkg.utils import log
-from rdopkg.utils.cmd import git
+from rdopkg.utils.git import git
 from rdopkg.utils.cmd import run
 from rdopkg import helpers
 

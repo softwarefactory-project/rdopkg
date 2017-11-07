@@ -3,7 +3,7 @@ import py
 import re
 import shutil
 
-from rdopkg.utils.cmd import git
+from rdopkg.utils.git import git
 from rdopkg.utils.specfile import Spec
 from rdopkg import exception
 

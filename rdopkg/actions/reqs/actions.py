@@ -11,7 +11,7 @@ from rdopkg import guess
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import reqs as _reqs
 from rdopkg.utils import log
-from rdopkg.utils.cmd import git
+from rdopkg.utils.git import git
 
 
 def reqdiff(version_tag_from, version_tag_to):
