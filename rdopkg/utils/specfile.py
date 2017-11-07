@@ -534,7 +534,7 @@ class Spec(object):
         if postfix is None:
             _, _, postfix = self.get_release_parts()
         release += postfix
-        if not release.endswith('%{?dist}'):
+        if not re.search(r'%{\??dist}', release):
             release += '%{?dist}'
 
         return self.set_tag('Release', release)
