@@ -1,0 +1,9 @@
+Code-Review+1: Ken Dreyer <kdreyer@redhat.com>
+Code-Review+2: Jakub Ružička <jruzicka@redhat.com>
+Workflow+1: Jakub Ružička <jruzicka@redhat.com>
+Verified+2: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-by: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-at: Tue, 07 Nov 2017 18:16:24 +0000
+Reviewed-on: https://softwarefactory-project.io/r/10114
+Project: rdopkg
+Branch: refs/heads/master
