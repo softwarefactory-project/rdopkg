@@ -4,7 +4,7 @@ review workflow actions (rpmfactory, review.rdoproject.org)
 
 from rdopkg import guess
 from rdopkg.actionmods import rpmfactory
-from rdopkg.utils.cmd import git
+from rdopkg.utils.git import git
 
 
 def review_patch(local_patches_branch=None):

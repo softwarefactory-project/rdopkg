@@ -1,6 +1,7 @@
 import os
 from rdopkg import helpers
 import rdopkg.utils.cmd
+import rdopkg.utils.git
 from rdopkg.utils import specfile
 
 
@@ -64,7 +65,7 @@ def run(*args, **kwargs):
     return rdopkg.utils.cmd.run(*args, **kwargs)
 
 
-class SilentGit(rdopkg.utils.cmd.Git):
+class SilentGit(rdopkg.utils.git.Git):
     def __call__(self, *args, **kwargs):
         if kwargs.get('log_cmd', None) is None:
             kwargs['log_cmd'] = False
@@ -86,7 +87,7 @@ def do_patch(fn, content, msg):
 def add_n_patches(n, patch_name='Test Patch %d',
                   branch='master-patches'):
     if branch:
-        old_branch = rdopkg.utils.cmd.git.current_branch()
+        old_branch = rdopkg.utils.git.git.current_branch()
         git('checkout', branch)
     for i in range(1, n + 1):
         pn = patch_name % i
@@ -115,7 +116,7 @@ def create_sample_distgit(name, version='1.2.3', release='1', path=None):
 
 def create_sample_patches_branch(n, version_tag=True):
     version = specfile.Spec().get_tag('Version')
-    branch = rdopkg.utils.cmd.git.current_branch()
+    branch = rdopkg.utils.git.git.current_branch()
     if version_tag:
         git('tag', version, fatal=False, log_fail=False)
     git('branch', '%s-patches' % branch)
@@ -125,7 +126,7 @@ def create_sample_patches_branch(n, version_tag=True):
 def create_sample_upstream_new_version(
         new_version, n_patches, n_from_patches_branch,
         version_tag=True):
-    branch = rdopkg.utils.cmd.git.current_branch()
+    branch = rdopkg.utils.git.git.current_branch()
     old_version = specfile.Spec().get_tag('Version')
     git('checkout', '-b', 'upstream', old_version)
     add_n_patches(n_patches,

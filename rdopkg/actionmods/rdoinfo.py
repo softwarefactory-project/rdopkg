@@ -9,7 +9,7 @@ from rdopkg import exception
 from rdopkg import helpers
 from rdopkg import repoman
 from rdopkg.utils import log
-from rdopkg.utils.cmd import git
+from rdopkg.utils.git import git
 from rdopkg.conf import cfg
 
 

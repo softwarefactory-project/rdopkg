@@ -2,7 +2,8 @@ import os
 import re
 
 from rdopkg import exception
-from rdopkg.utils.cmd import git, GerritQuery
+from rdopkg.utils.cmd import GerritQuery
+from rdopkg.utils.git import git
 from rdopkg.utils import specfile
 from rdopkg.utils import log
 from rdopkg.actionmods import rdoinfo
