@@ -32,13 +32,13 @@ persistence
 
 `rdopkg` provides multi-step actions where each step is (should be) idempotent
 so if something fails along the way or human interaction is required, rdopkg
-drops to shell, let's you rectify and then continue by running
+drops to shell, lets you fix the problem, and then continue by running
 `rdopkg --continue` (`rdopkg -c`).
 
-The state is stored in `.rdopkg.json` file in current directory. Stored action
-can be inspected (`rdopkg status`), continued (`rdopkg --continue`) or aborted
-(`rdopkg --abort`). `rdopkg` will refuse to start new multi-step action if
-state file is present.
+The state is stored in a file named `.rdopkg.json` in the current directory. The
+last stored action can be inspected (`rdopkg status`), continued
+(`rdopkg --continue`) or aborted (`rdopkg --abort`). `rdopkg` will refuse to
+perform a new multi-step action if a state file is present.
 
 
 ACTIONS
@@ -55,12 +55,12 @@ Important actions diagram
                                    |
                                    |
                                    |
-                            build new package
+                            build a new package
                                    |
                                    v
-                            +----------------+
-                           /  what change?  /
-                          +--+-----+-----+-+
+                          +---------------------+
+                         /  what is changing?  /
+                        +----+-----+-----+----+
                              |     |     |
                       +------+     |     +--------+
                       |            |              |
@@ -76,14 +76,14 @@ Important actions diagram
 ACTION: fix
 ~~~~~~~~~~~
 
-Make `.spec` file only changes.
+Apply changes to the `.spec` file.
 
 *Flow:*
 
   * Bump Release, prepare a new %changelog entry header.
-  * Drop to shell, let user edit .spec file.
+  * Drop to shell, let user edit the .spec file.
   * After running `rdopkg`, ensure description was added to %changelog
-    and commit changes to new commit.
+    and commit changes in a new commit.
 
 *Example:*
 
@@ -97,16 +97,16 @@ ACTION: patch
 
 Introduce new patches to the package.
 
-This action works with patches branch
+This action works with the `patches` branch
 (see <<patches-branch,AUTOMAGIC -> patches branch>>).
 
-By default, `rdopkg` resets local patches branch to remote patches branch.
-You can skip this with `-l`/`--local-patches` to directly use local
+By default, `rdopkg` resets the local patches branch to the remote patches branch.
+You can skip this with `-l`/`--local-patches` to directly use the local
 patches branch as is.
 
 Don't forget to `git fetch` before running the action.
 
-After running `rdopkg patch`, new commit will contain the changes if there are
+After running `rdopkg patch`, the new commit will contain the changes if there are
 any.
 
 You can use `-C`/`--changelog` option to select how `rdopkg` detects new/old
@@ -119,12 +119,12 @@ patches and changelog message:
 
 Or you can use `-B`/`--no-bump` to skip Release bump and changelog generation
 and only update patch files and their references in the .spec file. This is
-useful when you only need to align distgit with patches branch.
+useful when you only need to align distgit with the patches branch.
 
 *Flow:*
 
-  * Unless `-l`/`--local-patches` was used, reset local patches branch to
-    remote patches branch.
+  * Unless `-l`/`--local-patches` was used, reset the local patches branch to
+    the remote patches branch.
   * Update patch files from local patches branch.
   * Update .spec file with correct patch files references.
   * Unless `-B`/`--no-bump` was used, update .spec file: bump Release, create
@@ -139,9 +139,9 @@ ACTION: new-version
 
 Update package to new upstream version.
 
-This action works with patches branch
+This action works with the `patches` branch
 (see <<patches-branch,AUTOMAGIC -> patches branch>>).
-After successful rebase, `rdopkg` will offer to push the
+After a successful rebase, `rdopkg` will offer to push the
 rebased patches branch.
 
 Required `new-version` argument is a new version to rebase on, presumably
@@ -156,10 +156,10 @@ will automatically enable or disable this step based on the dist-git branch
 name. RH dist-git branches (`rhos-*`, `rh-*`, `ceph-*`, `rhscon-*`) default to
 `-N`. All other branches default to `-n`.
 
-After running `rdopkg new-version`, new commit will contain the changes.
+After running `rdopkg new-version`, a new commit will contain the changes.
 
 To only update `.spec` without touching patches branch, `-b`/`--bump-only` can
-be used. Along with `-n`/`--no-new-sources` this enables local-only operation,
+be used. Along with `-n`/`--no-new-sources` this enables local-only operations,
 much like `rpmdev-bumpspec`:
 
     rdopkg -bn
@@ -178,14 +178,15 @@ and corresponding `Resolves:` lines in commit message.
 
 *Flow:*
 
-  * Show diff from previous version, especially changes to `requirements.txt`.
-  * Reset local patches branch to remote patches branch
-  * Rebase local patches branch on `$NEW_VERSION` tag.
+  * Show changes between the previous version and the current one, especially
+    modifications to `requirements.txt`.
+  * Reset the local patches branch to the remote patches branch
+  * Rebase the local patches branch on `$NEW_VERSION` tag.
   * Update `.spec` file: set `Version`, `Release` and `patches_base` to
-    appropriate values and create new %changelog entry.
+    appropriate values and create a new %changelog entry.
   * Download source tarball.
   * Run `fedpkg new-sources` (`rhpkg new-sources`).
-  * Update patches from local patches branch (`update-patches` action)
+  * Update patches from the local patches branch (`update-patches` action)
   * Display the diff.
 
 *Example:*
@@ -217,13 +218,13 @@ If your github username differs from your `$USER`, use `-u`/`--review-user`.
 ACTION: update-patches
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Update `.spec` file with patches from patches branch.
+Update `.spec` file with patches from the `patches` branch.
 
 This is a core low level action used by other actions such as `patch` and
-`new-version` to update dist-git patches from patches branch.
-See <<patches-branch,AUTOMAGIC -> patches branch>> for explanation.
+`new-version` to update dist-git patches from the `patches` branch.
+See <<patches-branch,AUTOMAGIC -> patches branch>> for further details.
 
-`update-patches` is a rework of now obsolete `update-patches.sh` script with
+`update-patches` is a rework of the now obsolete `update-patches.sh` script with
 less restrictions and more features such as optional #patches_base, support
 for `git am %{patches}` method of applying patches and smart patches branch
 detection.
@@ -232,7 +233,7 @@ detection.
 
 `update-patches` also supports filtering out patches based on matching a
 regex provided by a magic #patches_ignore comment in the spec file. This is
-useful, for example, in case the patches branch contains changes that are
+useful, for example, in case the `patches` branch contains changes that are
 related to the CI/code review infra, that are useful to keep around but don't
 need to end up in the RPM.
 
@@ -249,7 +250,7 @@ file.
 
 *Flow:*
 
- * Export patches from patches branch using `git format-patch`
+ * Export patches from the `patches` branch using `git format-patch`
  * Add these patches to dist-git and edit `.spec` file to apply them
  * Create new commit with the change (or amend previous with `-a`/`--amend`)
  * If a "%global commit asdf1234" macro declaration is present, rewrite
@@ -271,7 +272,7 @@ Query RDO/distro repos for available package versions.
 See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for
 complete example of `query` and other requirements management actions.
 
-This action uses `repoquery` to discover latest package versions available
+This action uses `repoquery` to discover the latest package versions available
 from RDO and other repos available on a supported distibution.
 
 See output of `rdopkg info` for supported releases and distros.
@@ -290,15 +291,15 @@ ACTION: reqquery
 
 Query RDO/distro repos for versions defined in requirements.txt.
 
-See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for
+See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for a
 complete example of `reqquery` and other requirements management actions.
 
 This action essentially runs `rdopkg query` on every module/package defined in
-`requirements.txt` and prints colorful report to quickly find unmet
+`requirements.txt` and prints a colorful report to quickly find unmet
 dependencies. It accepts the same RELEAESE/DIST filter as `rdopkg query`.
 
 Python module names listed in `requirements.txt` are mapped to package names
-using `rdopkg.actionmods.pymod2pkg` module.
+using the `rdopkg.actionmods.pymod2pkg` module.
 
 *Query `requirements.txt` from `2015.1` tag:*
 
@@ -326,8 +327,8 @@ Inspect `requirements.txt` vs `.spec` Requires.
 See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for
 complete example of `reqcheck` and other requirements management actions.
 
-This action parses current `requirements.txt` from git and checks whether
-they're met in the `.spec` file. Simple report is printed.
+This action parses the current `requirements.txt` from git and checks whether
+they're met in the `.spec` file. A simple report is produced.
 
 Python module names listed in `requirements.txt` are mapped to package names
 using `rdopkg.actionmods.pymod2pkg` module.
@@ -346,7 +347,7 @@ ACTION: reqdiff
 
 Show pretty diff of `requirements.txt`.
 
-See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for
+See link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)] for a
 complete example of `reqdiff` and other requirements management actions.
 
 Use this to see how requirements changed between versions.
@@ -396,8 +397,8 @@ for more information about the generated commit message.
 ACTION: squash
 ~~~~~~~~~~~~~~
 
-Squash last git commit into previous one. Commit message of previous commit is
-used.
+Squash last git commit into previous one. The commit message of the previous
+commit is used.
 
 This simple action is a shortcut for
 
@@ -469,9 +470,9 @@ This is an interface to rdopkg.actionmods.rdoinfo:tags_diff().
 ACTION: findpkg
 ~~~~~~~~~~~~~~~
 
-Find and show single best matching package in <<rdoinfo,rdoinfo>>.
+Find and show the single best matching package in <<rdoinfo,rdoinfo>>.
 
-This command produces same output as `rdopkg info` but
+This command produces the same output as `rdopkg info` but
 
  * smart search is performed on package name, project name and upstream URL
  * only a single matching package is shown
@@ -537,13 +538,13 @@ arguments, `rdopkg` tries to guess all the necessary variables.
 patches branch
 ~~~~~~~~~~~~~~
 
-`update-patches` is a core lower level action for updating dist-git `.spec`
+`update-patches` is a core lower level action for updating the dist-git `.spec`
 file with patches from associated patches branch. `rdopkg` tries hard to
 detect the patches branch automagically, it's usually `$BRANCH-patches` for
 `$BRANCH` dist-git but one patches branch per multiple dist-gits is also
 supported.
 
-Best illustrated by example, following are all valid patches branches for
+Best illustrated by example, the following are all valid patches branches for
 `rhos-5.0-rhel-7` dist-git and they're searched in that order:
 
  * rhos-5.0-rhel-7-patches
@@ -667,8 +668,8 @@ and more.
 
 You can view the `rdoinfo` metada using `rdopkg info`.
 
-`rdopkg.actionmods.rdoinfo` module provides convenient interface to `rdoinfo`
-should you want to integrate it into your codez.
+`rdopkg.actionmods.rdoinfo` module provides a convenient interface to `rdoinfo`
+should you want to integrate it into your own codez.
 
 
 SEE ALSO
