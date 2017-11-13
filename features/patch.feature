@@ -9,6 +9,7 @@ Feature: rdopkg patch
         Then .spec file has 5 patches defined
         Then .spec file doesn't contain patches_base
         Then .spec file contains new changelog entry with 5 lines
+        Then .spec file tag Release is 4%{?dist}
         Then new commit was created
         Then git is clean
         Then last commit message is:
@@ -24,13 +25,14 @@ Feature: rdopkg patch
             """
 
     Scenario: rdopkg patch --no-bump
-        Given a distgit at Version 1.0 and Release 23
+        Given a distgit at Version 1.20.0 and Release 3
         Given a patches branch with 3 patches
         When I run rdopkg patch --no-bump -l
-        Then .spec file tag Release is 23%{?dist}
+        Then .spec file tag Release is 3%{?dist}
         Then .spec file has 3 patches defined
         Then .spec file doesn't contain patches_base
         Then .spec file doesn't contain new changelog entries
+        Then .spec file tag Release is 3%{?dist}
         Then new commit was created
         Then git is clean
         Then last commit message is:
@@ -38,6 +40,14 @@ Feature: rdopkg patch
             Updated patches from master-patches
             """
 
+    Scenario: rdopkg patch --release-bump-index
+        Given a distgit at Version 1.20.0 and Release 1.2.3.lul
+        Given a patches branch with 1 patches
+        When I run rdopkg patch -l --release-bump-index MINOR
+        Then .spec file has 1 patches defined
+        Then .spec file contains new changelog entry with 1 lines
+        Then .spec file tag Release is 1.3.3.lul%{?dist}
+        Then new commit was created
 
     Scenario: rdopkg patch without version git tag
         Given a distgit

@@ -115,3 +115,30 @@ Feature: rdopkg fix
         Given a distgit at Version 2.0.0 and Release 0.20170811112938.deadbee%{?dist}
         When I run rdopkg fix
         Then .spec file tag Release is 0.20170811112939%{?dist}
+
+    Scenario Outline: rdopkg fix --release-bump-index <index>
+        Given a distgit at Version 10.20.30 and Release <old release>
+        When I run rdopkg fix --release-bump-index <index>
+        Then .spec file tag Release is <new release>
+
+        Examples: correct bump-Nth-part indexes
+            | index | old release   | new release       |
+            | major | 0.1.2         | 1.1.2%{?dist}     |
+            | MINOR | 10.20.30      | 10.21.30%{?dist}  |
+            | PaTcH | 0.0.0%{?dist} | 0.0.1%{?dist}     |
+            | 1     | 1000%{?dist}  | 1001%{?dist}      |
+            | 2     | 10.20%{?dist} | 10.21%{?dist}     |
+            | 3     | 1.2.3.4.5     | 1.2.4.4.5%{?dist} |
+            | 5     | 1.2.3.4.5     | 1.2.3.4.6%{?dist} |
+
+    Scenario Outline: rdopkg fix --release-bump-index <index> - invalid indexes
+        Given a distgit at Version 10 and Release <release>
+        When I run rdopkg fix -R <index>
+        Then command output contains '<error>'
+
+        Examples: invalid strategies
+            | index | release | error |
+            | 0     | 1       | Invalid Release bump index: 0 \(positive integer required\) |
+            | minor | 1.lul.1 | Invalid Release bump index: 2. part of Release '\S+' isn't numeric: lul |
+            | PATCH | 1.2     | Invalid Release bump index: 3 |
+            | 1337  | 1.2.3   | Invalid Release bump index: 1337 \(Release: 1.2.3\) |

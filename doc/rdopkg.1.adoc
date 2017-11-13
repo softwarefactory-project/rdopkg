@@ -619,6 +619,28 @@ Note: these lines should be directly above any Patch000X lines in your .spec
 file.
 
 
+[[release-bumping]]
+Release bumping
+~~~~~~~~~~~~~~~
+
+`rdopkg fix` and `rdopkg patch` bump the `Release` tag in `.spec` file.
+
+By default, last numeric only part of `Release` is bumped:
+
+    1.1.1.a.b.c -> 1.1.2.a.b.c
+
+You can override this using `-R`/`--release-bump-index` argument which
+expects `MAJOR`/`MINOR`/`PATCH` or integer index of release part to bump,
+starting at 1 from the left:
+
+    -R 1 / -R MAJOR: 1.1.1 -> 2.1.1
+    -R 2 / -R MINOR: 1.1.1 -> 1.2.1
+    -R 3 / -R PATCH: 1.1.1 -> 1.1.2
+    -R 4: 1.1.1.1 -> 1.1.1.2
+    -R 5: 1.1.1.1.1 -> 1.1.1.1.2
+    ...
+
+
 [[commit-message]]
 commit message
 ~~~~~~~~~~~~~~

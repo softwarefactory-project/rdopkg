@@ -36,7 +36,7 @@ def get_action_args(action, args):
 def get_parser(runner, version=None):
     parser = argparse.ArgumentParser(
         prog='rdopkg',
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        formatter_class=argparse.RawTextHelpFormatter)
     subparsers = parser.add_subparsers(help='available actions')
     parser.add_argument('-c', '--continue', action='store_true',
                         help='continue running current action')
@@ -48,7 +48,7 @@ def get_parser(runner, version=None):
             cmd,
             help=action.help,
             description=action.description or action.help,
-            formatter_class=argparse.RawDescriptionHelpFormatter)
+            formatter_class=argparse.RawTextHelpFormatter)
         for oarg in action.optional_args:
             if oarg.positional:
                 arg_names = [oarg.name]
@@ -100,6 +100,7 @@ def run(action_runner, cargs, version=None):
             exception.InvalidPatchesBaseRef,
             exception.InvalidPackageFilter,
             exception.InvalidRDOPackage,
+            exception.InvalidReleaseBumpIndex,
             exception.InvalidGitRef,
             exception.InvalidQuery,
             exception.InvalidUsage,

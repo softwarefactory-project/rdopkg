@@ -653,7 +653,7 @@ def update_spec(branch=None, changes=None,
                 new_rpm_version=None, new_release=None,
                 new_milestone=None, new_patches_base=None,
                 no_bump=False, changelog_user=None,
-                changelog_email=None):
+                changelog_email=None, release_bump_index=None):
 
     if no_bump:
         return
@@ -675,7 +675,8 @@ def update_spec(branch=None, changes=None,
                      '- assuming custom milestone management.')
             spec.set_release(new_release)
     else:
-        spec.bump_release(milestone=new_milestone)
+        spec.bump_release(milestone=new_milestone,
+                          index=release_bump_index)
     if new_patches_base:
         new_patches_base_version, _ = guess.tag2version(new_patches_base)
         if new_patches_base_version == new_rpm_version:

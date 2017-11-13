@@ -14,6 +14,13 @@ except ImportError:
     pass
 
 
+RELEASE_PARTS_SEMVER = {
+    'MAJOR': 1,
+    'MINOR': 2,
+    'PATCH': 3,
+}
+
+
 def split_filename(filename):
     """
     Received a standard style rpm fullname and returns
@@ -539,16 +546,48 @@ class Spec(object):
 
         return self.set_tag('Release', release)
 
-    def bump_release(self, milestone=None):
-        numbers, _milestone, postfix = self.get_release_parts()
+    def bump_release(self, milestone=None, index=None):
         if not milestone:
             milestone = self.get_milestone()
-        numlist = numbers.split('.')
-        i = -1
-        if numbers[-1] == '.':
-            i = -2
-        numlist[i] = str(int(numlist[i]) + 1)
-        release = ".".join(numlist)
+        numbers, _milestone, postfix = self.get_release_parts()
+        if index:
+            # case insensitive MAJOR/minor/Patch
+            index = index.upper()
+        if index is None or index == 'LAST-NUMERIC':
+            # bump last numeric only Release part by default
+            numlist = numbers.split('.')
+            i = -1
+            if numbers[-1] == '.':
+                i = -2
+            numlist[i] = str(int(numlist[i]) + 1)
+            release = ".".join(numlist)
+        else:
+            # bump Nth Release part as specified
+            if index in RELEASE_PARTS_SEMVER:
+                n = RELEASE_PARTS_SEMVER[index]
+            else:
+                try:
+                    n = int(index)
+                except ValueError:
+                    raise exception.InvalidReleaseBumpIndex(what=index)
+                if n < 1:
+                    raise exception.InvalidReleaseBumpIndex(
+                        what="%s (positive integer required)" % index)
+            # index from 1
+            i = n - 1
+            release = numbers + _milestone
+            parts = release.split('.')
+            try:
+                parts[i] = str(int(parts[i]) + 1)
+            except ValueError:
+                raise exception.InvalidReleaseBumpIndex(
+                    what="%s. part of Release '%s' isn't numeric: %s" % (
+                        n, release, parts[i]))
+            except IndexError:
+                raise exception.InvalidReleaseBumpIndex(
+                    what="%s (Release: %s)" % (
+                        n, release))
+            release = ".".join(parts)
         return self.set_release(release, milestone=milestone, postfix=postfix)
 
     def get_vr(self, epoch=None):

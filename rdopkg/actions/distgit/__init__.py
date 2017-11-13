@@ -1,6 +1,18 @@
 from rdopkg.action import Action, Arg
 
 
+_SHARED_HELP = {
+    'release_bump_index':
+        ("specify which Release part to bump:\n"
+         "-R MAJOR/-R MINOR/-R PATCH\n"
+         "   to bump selected in MAJOR.MINOR.PATCH\n"
+         "-R 1/-R 2/-R 3/-R 4/-R N\n"
+         "   to bump 1./2./3./4./N. part (numeric index)\n"
+         "-R last-numeric\n"
+         "   to bump last numeric only Release part (default)"),
+}
+
+
 ACTIONS = [
     Action('clone',
            help="clone an RDO package distgit and setup remotes",
@@ -49,6 +61,10 @@ ACTIONS = [
            ]),
     Action('fix', continuable=True,
            help="change .spec file without introducing new patches",
+           optional_args=[
+               Arg('release_bump_index', shortcut='-R', metavar='INDEX',
+                   help=_SHARED_HELP['release_bump_index']),
+           ],
            steps=[
                Action('get_package_env'),
                Action('update_spec'),
@@ -73,6 +89,8 @@ ACTIONS = [
                    help="top gerrit review id of the patch chain"),
                Arg('force', shortcut='-f', action='store_true',
                    help="use patch even if it was not validated in CI"),
+               Arg('release_bump_index', shortcut='-R', metavar='INDEX',
+                   help=_SHARED_HELP['release_bump_index']),
                Arg('no_bump', shortcut='-B', action='store_true',
                    help="don't bump release and generate changelog "
                         "(update patches only)"),
