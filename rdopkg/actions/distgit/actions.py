@@ -27,7 +27,8 @@ FEDPKG = ['fedpkg']
 
 def get_package_env(version=None, release=None, dist=None, branch=None,
                     patches_branch=None, local_patches_branch=None,
-                    patches_style=None, gerrit_patches_chain=None):
+                    patches_style=None, gerrit_patches_chain=None,
+                    release_bump_index=None):
     if not branch:
         branch = git.current_branch()
     if branch.endswith('-patches'):
@@ -55,6 +56,8 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
         patches_style = guess.patches_style(gerrit_patches_chain)
     args['patches_style'] = patches_style
     args['patches_branch'] = patches_branch
+    if release_bump_index is None:
+        args['release_bump_index'] = guess.release_bump_index()
     if not local_patches_branch:
         args['local_patches_branch'] = patches_branch.partition('/')[2]
     if not version:
@@ -67,6 +70,7 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
 
 def show_package_env(package, version,
                      branch, patches_branch, local_patches_branch,
+                     release_bump_index,
                      version_tag_style=None, patches_style=None,
                      gerrit_patches_chain=None):
     def _putv(title, val):
@@ -133,12 +137,23 @@ def show_package_env(package, version,
             pbref_exists = '{t.red}invalid git reference{t.normal}'
     patches_base_ref_str += ' : ' + pbref_exists.format(t=log.term)
 
+    release = spec.get_tag('Release')
+    release_style = guess.release_style()
+    for name, i in specfile.RELEASE_PARTS_SEMVER.items():
+        if release_bump_index == str(i):
+            # show release part name as well if available (MAJOR/MINOR/PATCH)
+            release_bump_index = '%s / %s' % (release_bump_index, name)
+            break
+
     print('')
-    _putv('Package:  ', package)
-    _putv('VR:       ', vr)
-    _putv('Version:  ', spec_version)
-    _putv('Upstream: ', upstream_version)
-    _putv('Tag style:', version_tag_style or 'X.Y.Z')
+    _putv('Package:       ', package)
+    _putv('VR:            ', vr)
+    _putv('Version:       ', spec_version)
+    _putv('Upstream:      ', upstream_version)
+    _putv('Release:       ', release)
+    _putv('Release style: ', release_style)
+    _putv('Rls bump index:', release_bump_index)
+    _putv('Tag style:     ', version_tag_style or 'X.Y.Z')
     print('')
     _putv('Dist-git branch:       ', branch)
     _putv('Patches style:         ', patches_style)

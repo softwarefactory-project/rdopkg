@@ -10,6 +10,8 @@ Feature: rdopkg pkgenv
         Then command output contains 'Patches base ref:\s+1.0.0 : existing git tag'
         Then command output contains 'Version:\s+1.0.0'
         Then command output contains 'VR:\s+1:1.0.0-0.1'
+        Then command output contains 'Release style:\s+generic'
+        Then command output contains 'Rls bump index:\s+last-numeric'
         Then command output contains 'Local patches branch:\s+master-patches : \w+'
         Then no new commit was created
 
@@ -41,3 +43,21 @@ Feature: rdopkg pkgenv
         Then command output contains 'VR:\s+1:0-0'
         Then command output contains 'Patches base:\s+OVER\+9000'
         Then command output contains 'Patches base ref:\s+OVER : invalid git reference'
+
+    Scenario Outline: rdopkg pkgenv - DLRN Release <fmt>.date.hash - <case> hash
+        Given a distgit at Version 2.0.0 and Release <release>
+        When I run rdopkg pkgenv
+        Then command output contains 'Release style:\s+DLRN <fmt>.date.hash'
+        Then command output contains 'Rls bump index:\s+2 / MINOR'
+
+        Examples: 0.date.hash
+            | fmt | case        | release                          |
+            | 0   | mixed       | 0.20170811112938.81363ec%{?dist} |
+            | 0   | all letters | 0.20170811112938.deadbee         |
+            | 0   | all numbers | 0.20170811112938.8136333%{?dist} |
+
+        Examples: 0.1.date.hash
+            | fmt | case        | release                             |
+            | 0.1 | mixed       | 0.1.20170811112938.81363ec%{?dist}  |
+            | 0.1 | all letters | 0.1.20170811112938.deadbee%{?dist}  |
+            | 0.1 | all numbers | 0.22.20170811112938.8136333         |
