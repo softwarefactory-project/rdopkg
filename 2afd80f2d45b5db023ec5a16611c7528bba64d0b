@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_98d539bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-11-13T20:39:45Z",
+      "side": 1,
+      "message": "I would always have to look it up that way ... either {X|Y|Z} or 1.y or major/minor/patch  ... pbr nomenclature?",
+      "range": {
+        "startLine": 12,
+        "startChar": 14,
+        "endLine": 12,
+        "endChar": 19
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_78db7dee",
+        "filename": "features/fix.feature",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-11-13T20:39:45Z",
+      "side": 1,
+      "message": "is this intended to handle 1.2%{dist}.1  style Relase entries?\n\nexample from rhel 7.4-z\n\npython-cryptography-1.7.2-1.el7_4.1",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 60
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
