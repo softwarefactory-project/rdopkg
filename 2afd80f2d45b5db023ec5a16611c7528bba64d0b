@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_b8e7d5ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 442
+      },
+      "writtenOn": "2017-11-13T22:31:05Z",
+      "side": 1,
+      "message": "I tend to agree here, it would be nice if we could use nomenclature here instead of an index.",
+      "parentUuid": "5ad0253b_98d539bb",
+      "range": {
+        "startLine": 12,
+        "startChar": 14,
+        "endLine": 12,
+        "endChar": 19
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_78db7dee",
         "filename": "features/fix.feature",
         "patchSetId": 1
@@ -41,6 +65,52 @@
         "startChar": 0,
         "endLine": 99,
         "endChar": 60
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_78025d40",
+        "filename": "rdopkg/actions/distgit/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 442
+      },
+      "writtenOn": "2017-11-13T22:31:05Z",
+      "side": 1,
+      "message": "Should we consider calling this release_bump_location to be more explicit that an index is being used?",
+      "range": {
+        "startLine": 53,
+        "startChar": 33,
+        "endLine": 53,
+        "endChar": 41
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_98ec1991",
+        "filename": "rdopkg/actions/distgit/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 442
+      },
+      "writtenOn": "2017-11-13T22:31:05Z",
+      "side": 1,
+      "message": "You may want to include some examples, similar to the test to give a user a better idea of the indexing that is being used.",
+      "range": {
+        "startLine": 54,
+        "startChar": 26,
+        "endLine": 56,
+        "endChar": 62
       },
       "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
