@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_184b69b2",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-11-13T18:35:41Z",
+      "side": 1,
+      "message": "\u0027difference with x\u0027 isn\u0027t right. Difference between X and Y. I\u0027d go with \"Show diff against ...\"|",
+      "revId": "6fbe796cadf2a746ff7b1c29e3e77a8470fdef40",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_f8c66d15",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 1
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-11-13T18:35:41Z",
+      "side": 1,
+      "message": "That was an intended typo but OK :)",
+      "revId": "6fbe796cadf2a746ff7b1c29e3e77a8470fdef40",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
