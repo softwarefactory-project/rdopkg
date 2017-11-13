@@ -49,6 +49,12 @@ ACTIONS = [
            ]),
     Action('fix', continuable=True,
            help="change .spec file without introducing new patches",
+           optional_args=[
+               Arg('release_bump_strategy', shortcut='-R', metavar='N',
+                   help=("specify which Release part to bump with a number "
+                         "(bump Nth part) or 'last-numeric' to bump last "
+                         "numeric only Release part (default)")),
+           ],
            steps=[
                Action('get_package_env'),
                Action('update_spec'),
@@ -71,6 +77,10 @@ ACTIONS = [
                    help="top gerrit review id of the patch chain"),
                Arg('force', shortcut='-f', action='store_true',
                    help="use patch even if it was not validated in CI"),
+               Arg('release_bump_strategy', shortcut='-R', metavar='N',
+                   help=("specify which Release part to bump with a number "
+                         "(bump Nth part) or 'last-numeric' to bump last "
+                         "numeric only Release part (default)")),
                Arg('no_bump', shortcut='-B', action='store_true',
                    help="don't bump release and generate changelog "
                         "(update patches only)"),

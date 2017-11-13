@@ -539,16 +539,42 @@ class Spec(object):
 
         return self.set_tag('Release', release)
 
-    def bump_release(self, milestone=None):
-        numbers, _milestone, postfix = self.get_release_parts()
+    def bump_release(self, milestone=None, strategy=None):
         if not milestone:
             milestone = self.get_milestone()
-        numlist = numbers.split('.')
-        i = -1
-        if numbers[-1] == '.':
-            i = -2
-        numlist[i] = str(int(numlist[i]) + 1)
-        release = ".".join(numlist)
+        numbers, _milestone, postfix = self.get_release_parts()
+        if strategy is None or strategy == 'last-numeric':
+            # bump last numeric only Release part by default
+            numlist = numbers.split('.')
+            i = -1
+            if numbers[-1] == '.':
+                i = -2
+            numlist[i] = str(int(numlist[i]) + 1)
+            release = ".".join(numlist)
+        else:
+            # bump Nth Release part as specified
+            try:
+                n = int(strategy)
+            except ValueError:
+                raise exception.InvalidReleaseBumpStrategy(what=strategy)
+            if n < 1:
+                raise exception.InvalidReleaseBumpStrategy(
+                    what="%s (positive integer required)" % strategy)
+            # index from 1
+            i = n - 1
+            release = numbers + _milestone
+            parts = release.split('.')
+            try:
+                parts[i] = str(int(parts[i]) + 1)
+            except ValueError:
+                raise exception.InvalidReleaseBumpStrategy(
+                    what="%s. part of Release '%s' isn't numeric: %s" % (
+                        n, release, parts[i]))
+            except IndexError:
+                raise exception.InvalidReleaseBumpStrategy(
+                    what="Invalid Release part index: %s (Release: %s)" % (
+                        n, release))
+            release = ".".join(parts)
         return self.set_release(release, milestone=milestone, postfix=postfix)
 
     def get_vr(self, epoch=None):

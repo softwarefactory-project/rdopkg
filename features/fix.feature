@@ -86,3 +86,26 @@ Feature: rdopkg fix
         Given a distgit at Version 2.0.0 and Release 0.20170811112938.deadbee%{?dist}
         When I run rdopkg fix
         Then .spec file tag Release is 0.20170811112939%{?dist}
+
+    Scenario Outline: rdopkg fix --release-bump-strategy <strategy>
+        Given a distgit at Version 10.20.30 and Release <old release>
+        When I run rdopkg fix --release-bump-strategy <strategy>
+        Then .spec file tag Release is <new release>
+
+        Examples: correct bump-Nth-part strategies
+            | strategy | old release   | new release       |
+            | 3        | 1.2.3.4.5     | 1.2.4.4.5%{?dist} |
+            | 2        | 10.20%{?dist} | 10.21%{?dist}     |
+            | 1        | 1000%{?dist}  | 1001%{?dist}      |
+
+    Scenario Outline: rdopkg fix --release-bump-strategy <strategy> - invalid strategies
+        Given a distgit at Version 10 and Release <release>
+        When I run rdopkg fix -R <strategy>
+        Then command output contains '<error>'
+
+        Examples: invalid strategies
+            | strategy | release | error             |
+            | 0        | 1       | Invalid release bump strategy: 0 \(positive integer required\) |
+            | 2        | 1.lul.1 | Invalid release bump strategy: 2. part of Release '\S+' isn't numeric: lul |
+            | 3        | 1.2     | Invalid Release part index: 3    |
+            | 1337     | 1.2.3   | Invalid Release part index: 1337 |

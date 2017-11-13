@@ -604,6 +604,24 @@ number of skipped patches) as `rdopkg` manages `patches_base` as
 needed.
 
 
+[[release-bumping]]
+Release bumping
+~~~~~~~~~~~~~~~
+
+`rdopkg fix` and `rdopkg patch` bump the `Release` tag in `.spec` file.
+
+By default, last numeric only part of `Release` is bumped:
+
+    1.1.1.a.b.c -> 1.1.2.a.b.c
+
+You can override this using `-R`/`--release-bump-strategy` argument which
+expects integer index of release part to bump, starting at 1:
+
+    -R 1 : 1.1.1 -> 2.1.1
+    -R 2 : 1.1.1 -> 1.2.1
+    -R 3 : 1.1.1 -> 1.1.2
+
+
 [[commit-message]]
 commit message
 ~~~~~~~~~~~~~~

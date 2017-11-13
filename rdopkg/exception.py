@@ -126,6 +126,10 @@ class InvalidPackageFilter(RdopkgException):
     msg_fmt = "Invalid package filter: %(why)s"
 
 
+class InvalidReleaseBumpStrategy(RdopkgException):
+    msg_fmt = "Invalid release bump strategy: %(what)s"
+
+
 class CantGuess(RdopkgException):
     msg_fmt = "Unable to determine %(what)s: %(why)s"
 

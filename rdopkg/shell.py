@@ -100,6 +100,7 @@ def run(action_runner, cargs, version=None):
             exception.InvalidPatchesBaseRef,
             exception.InvalidPackageFilter,
             exception.InvalidRDOPackage,
+            exception.InvalidReleaseBumpStrategy,
             exception.InvalidGitRef,
             exception.InvalidQuery,
             exception.InvalidUsage,
