@@ -77,15 +77,22 @@ Feature: rdopkg fix
         When I run rdopkg fix
         Then .spec file tag Release is 1.1%{?dist}.1
 
-    Scenario: rdopkg fix - DLRN nvr bumps consistently
-        Given a distgit at Version 2.0.0 and Release 0.20170811112938.81363ec%{?dist}
+    Scenario Outline: rdopkg fix - DLRN Release <fmt>.date.hash - <case> hash
+        Given a distgit at Version 2.0.0 and Release <old release>
         When I run rdopkg fix
-        Then .spec file tag Release is 0.20170811112939%{?dist}
+        Then .spec file tag Release is <new release>
 
-    Scenario: rdopkg fix - DLRN nvr - githash all letters
-        Given a distgit at Version 2.0.0 and Release 0.20170811112938.deadbee%{?dist}
-        When I run rdopkg fix
-        Then .spec file tag Release is 0.20170811112939%{?dist}
+        Examples: 0.date.hash
+            | fmt | case        | old release                      | new release                      |
+            | 0   | mixed       | 0.20170811112938.81363ec%{?dist} | 0.20170811112939.81363ec%{?dist} |
+            | 0   | all letters | 0.20170811112938.deadbee%{?dist} | 0.20170811112939.deadbee%{?dist} |
+            | 0   | all numbers | 0.20170811112938.8136333%{?dist} | 0.20170811112939.8136333%{?dist} |
+
+        Examples: 0.1.date.hash
+            | fmt | case        | old release                         | new release                         |
+            | 0.1 | mixed       | 0.1.20170811112938.81363ec%{?dist}  | 0.2.20170811112938.81363ec%{?dist}  |
+            | 0.1 | all letters | 0.1.20170811112938.deadbee%{?dist}  | 0.2.20170811112938.deadbee%{?dist}  |
+            | 0.1 | all numbers | 0.22.20170811112938.8136333%{?dist} | 0.23.20170811112938.8136333%{?dist} |
 
     Scenario Outline: rdopkg fix --release-bump-strategy <strategy>
         Given a distgit at Version 10.20.30 and Release <old release>

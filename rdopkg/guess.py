@@ -96,6 +96,35 @@ def version_tag_style(version=None):
     return None
 
 
+def release_style(release=None):
+    if not release:
+        release = specfile.Spec().get_tag('Release')
+    if re.match(r'0\.\d{14}\.[a-fA-F0-9]{7}', release):
+        return 'DLRN 0.date.hash'
+    elif re.match(r'0\.\d+\.\d{14}\.[a-fA-F0-9]{7}', release):
+        return 'DLRN 0.1.date.hash'
+    else:
+        return 'generic'
+
+
+def release_style2bump_strategy(style):
+    if style == 'DLRN 0.date.hash':
+        # bumping date timestamp is the legacy of old DLRN style
+        return '2'
+    elif style == 'DLRN 0.1.date.hash':
+        # bump second release part a la Fedora for new DLRN style
+        return '2'
+    else:
+        return 'last-numeric'
+
+
+def release_bump_strategy(release=None):
+    if not release:
+        release = specfile.Spec().get_tag('Release')
+    style = release_style(release=release)
+    return release_style2bump_strategy(style=style)
+
+
 def find_patches_branch(distgit, remote):
     cfg_branch = git.config_get('rdopkg.%s.patches-branch' % distgit)
 

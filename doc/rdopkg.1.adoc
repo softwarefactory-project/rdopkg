@@ -621,6 +621,9 @@ expects integer index of release part to bump, starting at 1:
     -R 2 : 1.1.1 -> 1.2.1
     -R 3 : 1.1.1 -> 1.1.2
 
+DLRN `0.date.hash` and `0.1.date.hash` formats are detected and default
+to bumping 2nd Release part (`-R 2`).
+
 
 [[commit-message]]
 commit message
