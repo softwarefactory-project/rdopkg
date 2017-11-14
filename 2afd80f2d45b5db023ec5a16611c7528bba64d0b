@@ -258,6 +258,30 @@
       "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_7b96d795",
+        "filename": "rdopkg/actions/distgit/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2017-11-14T14:34:43Z",
+      "side": 1,
+      "message": "Right, but that\u0027s not what we are writing in the help text. We could just avoid using \"last-numeric\" altogether, and say that it is the default behavior when nothing is specified.",
+      "parentUuid": "5ad0253b_bb08ef29",
+      "range": {
+        "startLine": 81,
+        "startChar": 19,
+        "endLine": 83,
+        "endChar": 65
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
