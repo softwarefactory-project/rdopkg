@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_fbfe6704",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-11-14T13:25:54Z",
+      "side": 1,
+      "message": "That is not universal, what if you want to bump last part of 0.2.foo.1?\n\nBut I can add support for both {\u0027X\u0027:1, \u0027Y\u0027:2, \u0027Z\u0027:3} and {\u0027major\u0027:1, \u0027minor\u0027:2, \u0027patch\u0027:3} being aliases for respective index.\n\nAlso I was thinking for a long time whether this should be 1 or 0 based index... 1 for \"1.part of release\" makes sense, no?",
+      "parentUuid": "5ad0253b_98d539bb",
+      "range": {
+        "startLine": 12,
+        "startChar": 14,
+        "endLine": 12,
+        "endChar": 19
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_78db7dee",
         "filename": "features/fix.feature",
         "patchSetId": 1
@@ -60,6 +84,30 @@
       "writtenOn": "2017-11-13T20:39:45Z",
       "side": 1,
       "message": "is this intended to handle 1.2%{dist}.1  style Relase entries?\n\nexample from rhel 7.4-z\n\npython-cryptography-1.7.2-1.el7_4.1",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 60
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_db03ab0c",
+        "filename": "features/fix.feature",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-11-14T13:25:54Z",
+      "side": 1,
+      "message": "It can only bump pre-%{?dist} digits. I guess it should be universal, I\u0027ll revise this including a test case in next patch set.",
+      "parentUuid": "5ad0253b_78db7dee",
       "range": {
         "startLine": 99,
         "startChar": 0,
@@ -95,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_5b10bb4e",
+        "filename": "rdopkg/actions/distgit/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-11-14T13:25:54Z",
+      "side": 1,
+      "message": "location is a weird way to reference individual release part... what about being even more explicit with\n\nrelease_bump_index?",
+      "parentUuid": "5ad0253b_78025d40",
+      "range": {
+        "startLine": 53,
+        "startChar": 33,
+        "endLine": 53,
+        "endChar": 41
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_98ec1991",
         "filename": "rdopkg/actions/distgit/__init__.py",
         "patchSetId": 1
@@ -118,6 +190,30 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_1b1a436f",
+        "filename": "rdopkg/actions/distgit/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-11-14T13:25:54Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ll reword wrt the X.Y.Z aliases.",
+      "parentUuid": "5ad0253b_98ec1991",
+      "range": {
+        "startLine": 54,
+        "startChar": 26,
+        "endLine": 56,
+        "endChar": 62
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_983f79d6",
         "filename": "rdopkg/actions/distgit/__init__.py",
         "patchSetId": 1
@@ -129,6 +225,30 @@
       "writtenOn": "2017-11-14T12:41:42Z",
       "side": 1,
       "message": "The help text says that the default value is \"last-numeric\", but we\u0027re not setting that default anywhere, are we?",
+      "range": {
+        "startLine": 81,
+        "startChar": 19,
+        "endLine": 83,
+        "endChar": 65
+      },
+      "revId": "2afd80f2d45b5db023ec5a16611c7528bba64d0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_bb08ef29",
+        "filename": "rdopkg/actions/distgit/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-11-14T13:25:54Z",
+      "side": 1,
+      "message": "Due to way how arguments are handled between action steps, None usually signifies default and default is defined in the individual functions, in this case specfile.bump_release():\n\nif strategy is None or strategy \u003d\u003d \u0027last-numeric\u0027:\n    # old behavior\nelse:\n    # select by index",
+      "parentUuid": "5ad0253b_983f79d6",
       "range": {
         "startLine": 81,
         "startChar": 19,
