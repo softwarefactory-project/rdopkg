@@ -22,6 +22,30 @@
       "revId": "f1085c57cb58a876992073c0207f619c1370a206",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_582201bb",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 1
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2017-11-14T12:46:59Z",
+      "side": 1,
+      "message": "I would add some clarification about what that \"bumping the 2nd Relase part\" means for each format.",
+      "parentUuid": "5ad0253b_38e505a8",
+      "range": {
+        "startLine": 624,
+        "startChar": 0,
+        "endLine": 625,
+        "endChar": 37
+      },
+      "revId": "f1085c57cb58a876992073c0207f619c1370a206",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
