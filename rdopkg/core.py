@@ -99,20 +99,31 @@ class ActionRunner(object):
             raise exception.ActionInProgress(action=action_name)
 
     def new_action(self, action, args=None):
-        self._new_action_check(action)
-        if args:
-            self.args = args
+        new_action = None
+        new_args = {}
         if isinstance(action, _action.Action):
-            self.action = [action]
+            new_action = action
         else:
-            self.action = []
             for a in self.action_manager.actions:
                 if a.name == action:
-                    self.action = [a]
+                    new_action = a
                     break
-        if not self.action:
+        if not new_action:
             raise exception.InvalidAction(action=action)
-        if action.continuable and action.steps:
+        if new_action.alias:
+            for a in self.action_manager.actions:
+                if a.name == new_action.alias:
+                    # const_args of alias action are passed as args
+                    new_args = new_action.const_args or {}
+                    new_action = a
+                    break
+        self._new_action_check(new_action)
+        self.action = [new_action]
+        if args:
+            new_args.update(args)
+        self.args = new_args
+
+        if not new_action.continuable and new_action.steps:
             self.save_state()
 
     def print_progress(self):

@@ -23,9 +23,9 @@ class Arg(object):
 
 
 class Action(object):
-    def __init__(self, name, steps=None, continuable=False, module=None,
-                 action_fun=None, required_args=None, optional_args=None,
-                 const_args=None, help=None, description=None):
+    def __init__(self, name, steps=None, alias=None, continuable=False,
+                 required_args=None, optional_args=None, const_args=None,
+                 help=None, description=None, module=None, action_fun=None):
         if not const_args:
             const_args = []
         if not required_args:
@@ -35,6 +35,7 @@ class Action(object):
         self.name = name
         self.module = module
         self.steps = steps
+        self.alias = alias
         self.continuable = continuable
         self.action_fun = action_fun
         self.const_args = const_args
@@ -116,6 +117,23 @@ class ActionManager(object):
             self.add_actions_module(mod, name=modname)
             added += modname
         return added
+
+    def fill_aliases(self):
+        def _fill_alias(dst, src):
+            for attr in ['help',
+                         'description',
+                         'optional_args',
+                         'required_args']:
+                src_val = getattr(src, attr)
+                if not getattr(dst, attr) and src_val:
+                    setattr(dst, attr, src_val)
+
+        for a in self.actions:
+            if not a.alias:
+                continue
+            for b in self.actions:
+                if a.alias == b.name:
+                    _fill_alias(a, b)
 
     def action_str(self, action):
         return ".".join(map(lambda x: x.name, action))

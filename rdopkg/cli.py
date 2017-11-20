@@ -14,6 +14,7 @@ def rdopkg_runner():
     aman = ActionManager()
     # assume all actions.* modules are action modules
     aman.add_actions_modules(actions)
+    aman.fill_aliases()
     # additional rdopkg action module logic should go here
     return ActionRunner(action_manager=aman)
 
