@@ -6,7 +6,7 @@ import time
 from rdopkg import exception
 from rdopkg.conf import cfg
 from rdopkg.utils import log
-from rdopkg.utils import cmd
+from rdopkg.utils.git import git
 from rdopkg.utils import tidy_ssh_user
 from rdopkg import helpers
 
@@ -68,7 +68,7 @@ class RepoManager(object):
                          url=self.url,
                          path=self.repo_path))
         with helpers.cdir(self.base_path):
-            cmd.git('clone', self.url, self.repo_name, log_cmd=self.verbose)
+            git('clone', self.url, self.repo_name, log_cmd=self.verbose)
 
     def _fetch(self, force=False):
         need_fetch = True
@@ -86,25 +86,24 @@ class RepoManager(object):
                 if self.verbose:
                     log.info("Fetching %s repo: %s" % (
                         self.repo_desc, self.repo_path))
-                cmd.git('fetch', 'origin', log_cmd=self.verbose)
-                cmd.git('checkout', '-f', 'master', log_cmd=self.verbose)
-                cmd.git('reset', '--hard', 'origin/master',
-                        log_cmd=self.verbose)
+                git('fetch', 'origin', log_cmd=self.verbose)
+                git('checkout', '-f', 'master', log_cmd=self.verbose)
+                git('reset', '--hard', 'origin/master', log_cmd=self.verbose)
 
     def setup_review(self):
         with self.repo_dir():
             with helpers.setenv(USERNAME=self.user):
-                cmd.git('review', '-s', direct=True)
+                git('review', '-s', direct=True)
 
     def review(self):
         with self.repo_dir():
             with helpers.setenv(USERNAME=self.user):
-                cmd.git('review', direct=True)
+                git('review', direct=True)
 
     def get_review(self, review_id):
         with self.repo_dir():
             with helpers.setenv(USERNAME=self.user):
-                cmd.git('review', '-d', str(review_id), direct=True)
+                git('review', '-d', str(review_id), direct=True)
 
     def repo_dir(self):
         return helpers.cdir(self.repo_path)
@@ -112,7 +111,7 @@ class RepoManager(object):
     def git_check_remote(self):
         assert(self.url)
         with self.repo_dir():
-            remotes = cmd.git('remote', '-v', log_cmd=False)
+            remotes = git('remote', '-v', log_cmd=False)
         pattern = '^origin\s+%s\s+\(fetch\)$' % re.escape(self.url)
         if not re.search(pattern, remotes, re.MULTILINE):
             raise exception.RepoError(what="origin isn't set to expected URL: "
