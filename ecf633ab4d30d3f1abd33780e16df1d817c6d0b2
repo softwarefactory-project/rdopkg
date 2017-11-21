@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fae47921_32f2d09b",
+        "filename": "doc/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-11-21T18:12:45Z",
+      "side": 1,
+      "message": "This is a debug command I forgot to remove ... Let me know if you want me to clean that up, it\u0027s otherwise innocuous",
+      "revId": "ecf633ab4d30d3f1abd33780e16df1d817c6d0b2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
