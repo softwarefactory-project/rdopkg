@@ -5,6 +5,7 @@
 
 /doc/man
 /doc/html
+/doc/rdopkg-feature-*.7.adoc
 /dist
 /rls.py
 /build
