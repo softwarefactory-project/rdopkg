@@ -92,6 +92,8 @@ Apply changes to the `.spec` file.
     vim python-novaclient.spec
     rdopkg -c
 
+More use cases can be found in link:fix.feature.7.html[rdopkg_fix(7)].
+
 ACTION: patch
 ~~~~~~~~~~~~~
 
@@ -133,6 +135,8 @@ useful when you only need to align distgit with the patches branch.
   * Create new commit with the changes using %changelog to generate commit
     message if available.
   * Display the diff.
+
+More use cases can be found in link:patch.feature.7.html[rdopkg_patch(7)].
 
 ACTION: new-version
 ~~~~~~~~~~~~~~~~~~~
@@ -197,6 +201,7 @@ and corresponding `Resolves:` lines in commit message.
     # rebase failed, manually fix using git
     rdopkg -c
 
+More use cases can be found in link:newversion.feature.7.html[rdopkg_new-version(7)].
 
 ACTION: clone
 ~~~~~~~~~~~~~
@@ -676,7 +681,12 @@ SEE ALSO
 --------
 
 link:rdopkg-adv-new-version.7.html[rdopkg-adv-new-version(7)],
-link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)]
+link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)],
+link:actions.feature.7.html[rdopkg_actions(7)],
+link:fix.feature.7.html[rdopkg_fix(7)],
+link:newversion.feature.7.html[rdopkg_newversion(7)],
+link:patch.feature.7.html[rdopkg_patch(7)],
+link:pkgenv.feature.7.html[rdopkg_pkgenv(7)],
 
 CONTACT
 -------
