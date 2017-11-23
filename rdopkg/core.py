@@ -39,17 +39,23 @@ class ActionRunner(object):
         json.dump(data, sf)
         sf.close()
 
+    def get_state(self):
+        if not os.path.isfile(self.state_file_path):
+            return None
+        sf = open(self.state_file_path, 'rt')
+        data = json.load(sf)
+        sf.close()
+        return data
+
     def load_state(self):
         self.action = []
         self.args = {}
+        data = self.get_state()
         if not os.path.isfile(self.state_file_path):
             return
-        sf = open(self.state_file_path, 'rt')
-        data = json.load(sf)
         action = self.action_manager.action_deserialize(data['action'])
         self.args = data['args']
         self.action = action
-        sf.close()
 
     def load_state_safe(self):
         try:
@@ -74,8 +80,9 @@ class ActionRunner(object):
                 print("State file removed.")
 
     def _new_action_check(self, new_action):
-        if self.action and new_action.continuable:
-            action_name = self.action[0].name
+        state = self.get_state()
+        if new_action.continuable and state:
+            action_name = state['action'][0]
             print(log.term.important(
                   "You're in the middle of previous action: %s\n" %
                   action_name))
@@ -87,8 +94,7 @@ class ActionRunner(object):
                 "{t.cmd}rdopkg -c{t.normal}\n\n"
                 " a) Abort the previous action:\n"
                 "    {t.cmd}rdopkg --abort{t.normal}"
-            ).format(t=log.term)
-            )
+            ).format(t=log.term))
             raise exception.ActionInProgress(action=action_name)
 
     def new_action(self, action, args=None):
@@ -105,7 +111,7 @@ class ActionRunner(object):
                     break
         if not self.action:
             raise exception.InvalidAction(action=action)
-        if not action.continuable and action.steps:
+        if action.continuable and action.steps:
             self.save_state()
 
     def print_progress(self):
