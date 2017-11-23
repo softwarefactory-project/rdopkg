@@ -182,3 +182,8 @@ def step_impl(context):
     assert context.text == msg, exdiff(
         context.text, msg,
         header="Commit message differs from expected format:")
+
+
+@then(u'git is clean')
+def step_impl(context):
+    assert git.is_clean(), git('status').encode('ascii', 'replace')

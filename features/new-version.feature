@@ -10,6 +10,7 @@ Feature: rdopkg new-version
         Then .spec file doesn't contain patches_base
         Then .spec file contains new changelog entry with 1 lines
         Then new commit was created
+        Then git is clean
         Then last commit message is:
             """
             foo-bar-2.1.0-1
@@ -30,6 +31,7 @@ Feature: rdopkg new-version
         Then .spec file has 3 patches defined
         Then .spec file contains new changelog entry with 1 lines
         Then new commit was created
+        Then git is clean
         Then last commit message is:
             """
             foo-bar-1.0.0-1
@@ -44,6 +46,7 @@ Feature: rdopkg new-version
         Then command output contains 'Action finished'
         Then .spec file contains new changelog entry with rhbz#12345
         Then new commit was created
+        Then git is clean
         Then last commit message contains rhbz#12345
         Then last commit message is:
             """
@@ -61,6 +64,7 @@ Feature: rdopkg new-version
         When I run rdopkg new-version --bump-only -n --commit-header-file commitmsg 2.1.0
         Then command output contains 'Action finished'
         Then new commit was created
+        Then git is clean
         Then last commit message is:
             """
             Testing Alternate Commit Header
@@ -84,6 +88,7 @@ Feature: rdopkg new-version
         Then .spec file contains new changelog entry with rhbz#12345
         Then .spec file contains new changelog entry with rhbz#232323
         Then new commit was created
+        Then git is clean
         Then last commit message contains rhbz#12345
         Then last commit message contains rhbz#232323
         Then last commit message is:
@@ -106,6 +111,7 @@ Feature: rdopkg new-version
         Given a patches branch with 2 patches without version git tag
         When I run rdopkg new-version -l 1.0.0
         Then no new commit was created
+        Then git is clean
         Then command output contains 'Invalid base patches branch git reference:'
 
     Scenario: rdopkg new-version without new version git tag
@@ -113,4 +119,5 @@ Feature: rdopkg new-version
         Given a patches branch with 2 patches
         When I run rdopkg new-version -l 2.2.2
         Then no new commit was created
+        Then git is clean
         Then command output contains 'Invalid git reference: 2.2.2'

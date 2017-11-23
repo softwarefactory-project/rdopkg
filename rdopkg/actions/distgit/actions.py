@@ -721,7 +721,9 @@ def new_sources(branch=None, fedpkg=FEDPKG, new_sources=False):
     run(*cmd, direct=True)
 
 
-def _commit_message(changes=None, header_file=None):
+def _commit_message(changes=None, header_file=None, no_bump=False,
+                    local_patches_branch=None):
+    msg = None
     if header_file:
         # use supplied header file
         try:
@@ -732,8 +734,19 @@ def _commit_message(changes=None, header_file=None):
         except IOError as ex:
             raise exception.FileNotFound(msg=str(ex))
     else:
-        # use NVR as default commit message header
-        msg = specfile.Spec().get_nvr(epoch=False)
+        if no_bump:
+            # generic message for changes that don't generate changelog
+            if local_patches_branch:
+                msg = 'Updated patches from %s' % local_patches_branch
+            else:
+                msg = 'Updated patches'
+        else:
+            # use NVR as default commit message header
+            msg = specfile.Spec().get_nvr(epoch=False)
+
+    if no_bump:
+        # no new changelog entry for this change
+        return msg
     # append changelog generated from changes argument
     if not changes:
         # by default, use last .spec %changelog entry lines
@@ -756,11 +769,14 @@ def _commit_message(changes=None, header_file=None):
     return msg
 
 
-def commit_distgit_update(branch=None, amend=False, commit_header_file=None):
+def commit_distgit_update(branch=None, local_patches_branch=None,
+                          amend=False, no_bump=False, commit_header_file=None):
     _ensure_branch(branch)
     if git.is_clean():
         raise exception.NoDistgitChangesFound()
-    msg = _commit_message(header_file=commit_header_file)
+    msg = _commit_message(header_file=commit_header_file,
+                          no_bump=no_bump,
+                          local_patches_branch=local_patches_branch)
     cmd = ['commit', '-a', '-F', '-']
     if amend:
         cmd.append('--amend')
@@ -814,9 +830,8 @@ def flatten(list_of_lists):
     return list(itertools.chain(*list_of_lists))
 
 
-def update_patches(branch, local_patches_branch,
-                   version=None, new_version=None, version_tag_style=None,
-                   amend=False, bump_only=False, require_patches_change=False):
+def update_patches(branch, local_patches_branch, bump_only=False,
+                   version=None, new_version=None, version_tag_style=None):
     if bump_only:
         return
     target_version = new_version or version
@@ -841,7 +856,7 @@ def update_patches(branch, local_patches_branch,
 
     patch_fns = spec.get_patch_fns()
     for pfn in patch_fns:
-        git('rm', '--ignore-unmatch', pfn)
+        git('rm', '-f', '--ignore-unmatch', pfn)
     patch_fns = []
 
     if n_excluded > 0:
@@ -892,15 +907,12 @@ def update_patches(branch, local_patches_branch,
     patches_branch_ref = git('rev-parse', local_patches_branch)
     spec.set_commit_ref_macro(patches_branch_ref)
     spec.save()
+
+
+def ensure_patches_changed():
     if git.is_clean():
-        if require_patches_change:
-            raise exception.NoPatchesChanged()
-        log.info('No patches changed.')
-        return
-    msg = 'Updated patches from ' + local_patches_branch
-    git('commit', '-a', '-m', msg)
-    if amend:
-        git.squash_last()
+        raise exception.NoDistgitChangesFound(
+            msg="No changes to patches found")
 
 
 def squash():
@@ -953,11 +965,3 @@ def tag_patches_branch(package, local_patches_branch, patches_branch,
         git('push', patches_remote, nvr_tag)
     else:
         print('Not pushing tag. Run "git push patches %s" by hand.' % nvr_tag)
-
-
-def update_patches_deprecated():
-    msg = ("\n{t.warn}DEPRECATION WARNING{t.normal}\n\n"
-           "This is a low-level action for backward "
-           "compatibility with ancient update-patches.sh script.\n\n"
-           "Please use {t.cmd}rdopkg patch -lB{t.normal} instead.\n\n")
-    print(msg.format(t=log.term))
