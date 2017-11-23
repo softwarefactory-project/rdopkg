@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fae47921_dbe15fd2",
+        "filename": "rdopkg/core.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2017-11-23T13:30:42Z",
+      "side": 1,
+      "message": "Why not using with/context?",
+      "revId": "e401796b959f5b6f35aca6f0cdaacf9697d64775",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fae47921_bbe69be6",
+        "filename": "rdopkg/core.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2017-11-23T13:30:42Z",
+      "side": 1,
+      "message": "+1",
+      "revId": "e401796b959f5b6f35aca6f0cdaacf9697d64775",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
