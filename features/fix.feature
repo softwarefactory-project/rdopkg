@@ -47,6 +47,35 @@ Feature: rdopkg fix
         Then no new commit was created
         Then rdopkg state file is not present
 
+    Scenario: rdopkg fix - user reruns
+        Given a distgit
+        When I run rdopkg fix
+        When I run rdopkg fix
+        Then command output contains 'You're in the middle of previous action: fix'
+        Then command output contains 'Please `--continue` or `--abort`'
+        Then no new commit was created
+        Then rdopkg state file is present
+
+    Scenario: rdopkg fix - user aborts and reruns
+        Given a distgit
+        When I run rdopkg fix
+        When I run rdopkg fix
+        When I undo all changes
+        When I run rdopkg --abort
+        When I run rdopkg fix
+        When I add description to .spec changelog
+        When I run rdopkg --continue
+        Then .spec file contains new changelog entry with 1 lines
+        Then new commit was created
+        Then rdopkg state file is not present
+        Then last commit message is:
+            """
+            foo-bar-1.2.3-3
+
+            Changelog:
+            - Description of a change
+            """
+
     Scenario: rdopkg fix - Normal semver nvr bumps consistently
         Given a distgit at Version 2.0.0 and Release 0.1
         When I run rdopkg fix
