@@ -25,7 +25,7 @@ def step_impl(context):
 def step_impl(context, rex):
     assert re.search(rex, context.command_output), \
         "Did not find [{0}] in command output [{1}]".format(
-            rex, context.command_output)
+            rex, context.command_output.encode('ascii', 'replace'))
 
 
 @then(u'rdopkg state file is present')

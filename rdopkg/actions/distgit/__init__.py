@@ -59,6 +59,8 @@ ACTIONS = [
     Action('patch',
            help="introduce new patches to the package",
            optional_args=[
+               Arg('amend', shortcut='-a', action='store_true',
+                   help="amend previous commit"),
                Arg('patches_branch', shortcut='-p', metavar='REMOTE/BRANCH',
                    help="remote git branch containing patches"),
                Arg('local_patches_branch', shortcut='-P',
@@ -91,12 +93,23 @@ ACTIONS = [
                Action('ensure_patches_branch'),
                Action('get_patches_branch'),
                Action('check_new_patches'),
-               Action('update_patches',
-                      const_args={'require_patches_change': True}),
+               Action('update_patches'),
+               Action('ensure_patches_changed'),
                Action('update_spec'),
-               Action('commit_distgit_update', const_args={'amend': True}),
+               Action('commit_distgit_update'),
                Action('final_spec_diff'),
            ]),
+    Action('update_patches',
+           alias='patch',
+           help='Alias for `rdopkg patch --local-patches --no-bump`',
+           description=(
+               "A legacy backward compatibility"
+               "with ancient update-patches.sh script."
+           ),
+           const_args={
+               'local_patches': True,
+               'no_bump': True,
+           }),
     Action('new_version', continuable=True,
            help="update package to new upstream version",
            optional_args=[
@@ -142,31 +155,13 @@ ACTIONS = [
                Action('prep_new_patches_branch'),
                Action('get_patches_branch'),
                Action('rebase_patches_branch'),
-               Action('update_spec'),
                Action('get_source'),
                Action('new_sources'),
+               Action('update_patches'),
+               Action('update_spec'),
                Action('commit_distgit_update'),
-               Action('update_patches', const_args={'amend': True}),
                Action('final_spec_diff'),
                Action('review_patches_branch')
-           ]),
-    Action('update_patches',
-           help='[DEPRECATED] update patches from -patches branch',
-           description=(
-               "WARNING: This is a low-level action for backward "
-               "compatibility with ancient update-patches.sh script.\n\n"
-               "Please use `rdopkg patch -lB` instead.\n\n"),
-           steps=[
-               Action('update_patches_deprecated'),
-               Action('get_package_env'),
-               Action('update_patches'),
-           ],
-           optional_args=[
-               Arg('amend', shortcut='-a', action='store_true',
-                   help="amend previous commit"),
-               Arg('local_patches_branch', shortcut='-P',
-                   metavar='LOCAL_BRANCH',
-                   help="local git branch containing patches"),
            ]),
     Action('amend',
            help="amend last commit and recreate commit message",
