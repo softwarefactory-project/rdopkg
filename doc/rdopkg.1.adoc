@@ -683,10 +683,10 @@ CONTACT
 
 `rdopkg` is maintained by Jakub Ruzicka <jruzicka@redhat.com>.
 
-Bugs are tracked in Red Hat Bugzilla:
+Bugs are tracked as github Issues:
 
-https://bugzilla.redhat.com/buglist.cgi?component=rdopkg
+https://github.com/softwarefactory-project/rdopkg/issues
 
 To report a new bug:
 
-https://bugzilla.redhat.com/enter_bug.cgi?product=RDO&component=rdopkg
+https://github.com/softwarefactory-project/rdopkg/issues/new
