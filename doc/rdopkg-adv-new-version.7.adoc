@@ -5,7 +5,7 @@ rdopkg-adv-new-version(7)
 
 NAME
 ----
-rdopkg-new-version - rdopkg adventures: new-version
+rdopkg-adv-new-version - rdopkg adventures: new-version
 
 
 SYNOPSIS
