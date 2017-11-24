@@ -675,7 +675,7 @@ should you want to integrate it into your own codez.
 SEE ALSO
 --------
 
-link:rdopkg-adv-new-version.7.html[rdopkg-adv-new-version(7)],
+link:rdopkg-adv-newversion.7.html[rdopkg-adv-newversion(7)],
 link:rdopkg-adv-requirements.7.html[rdopkg-adv-requirements(7)]
 
 CONTACT
