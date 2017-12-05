@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad58531_b398006c",
+        "filename": "tests/test_update_patches.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2017-12-05T16:14:57Z",
+      "side": 0,
+      "message": "why so much churn on tests in a feature patch? are we changing behavior? and does this match least un-expected path of behavior?",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 48
+      },
+      "revId": "6d0e6314ff1615fb6c2b23b214f2fc7d104f1d76",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
