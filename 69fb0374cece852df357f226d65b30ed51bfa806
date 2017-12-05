@@ -25,6 +25,52 @@
     },
     {
       "key": {
+        "uuid": "5ad58531_13efd4b1",
+        "filename": "features/steps/utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 442
+      },
+      "writtenOn": "2017-12-05T17:06:02Z",
+      "side": 1,
+      "message": "Note you may want to use the re.UNICODE flag if context.command_output is unicode, otherwise ascii is assumed.",
+      "range": {
+        "startLine": 26,
+        "startChar": 11,
+        "endLine": 26,
+        "endChar": 48
+      },
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad58531_f32a08e7",
+        "filename": "features/steps/utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 442
+      },
+      "writtenOn": "2017-12-05T17:06:02Z",
+      "side": 1,
+      "message": "You may want to use \u0027utf-8\u0027 here unless you feel that most people are using ascii terminals.",
+      "range": {
+        "startLine": 28,
+        "startChar": 48,
+        "endLine": 28,
+        "endChar": 54
+      },
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad58531_d3938c4e",
         "filename": "rdopkg/actions/distgit/actions.py",
         "patchSetId": 4
