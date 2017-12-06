@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5ad58531_93af4494",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-12-06T14:14:43Z",
+      "side": 1,
+      "message": "accepts",
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad58531_53a0bc90",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -19,6 +36,23 @@
         "endLine": 23,
         "endChar": 53
       },
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad58531_7395f83e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-12-06T14:14:43Z",
+      "side": 1,
+      "message": "information",
       "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
