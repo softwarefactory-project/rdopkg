@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ae2911b_8f803948",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T19:16:20Z",
+      "side": 1,
+      "message": "While actions.py is only supposed to contain glue with functionality being in different modules, this one is too big already and I\u0027d very much like to evade adding globals here, especially ones related to low level stuff.\n\nI\u0027d rather move this to the function where it\u0027s used and if you suspect this data would be useful outside, we need to move it to another module.",
+      "revId": "02bc64f6afb8fa6c9edbfcea1455aff7bba7bc22",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_af7bf57a",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T19:16:20Z",
+      "side": 1,
+      "message": "amendables processing might be worth its own function, actually. We could use `rdpokg.utils.git` module but it\u0027s not that generic functionality so having it close to _commit_message() here is OK unless you need globals :)\n\nSomething like\n\nif amend:\n    msg +\u003d _amendables()\n\nor\n\nif amend:\n    msg +\u003d git.get_amendables()",
+      "revId": "02bc64f6afb8fa6c9edbfcea1455aff7bba7bc22",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_0fb6893d",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T19:16:20Z",
+      "side": 1,
+      "message": "Since you\u0027re not modifying cmd before calling it, I\u0027d go directly with\n\nprevious_commit \u003d git(\u0027log\u0027, \u0027--format\u003d%B\u0027, \u0027-n\u003d1\u0027)\n\nand as a matter of fact, that\u0027s exactly what recently added\n\nrdopkg.utils.git.current_commit_message()\n\nreturns so I suggest using that. I\u0027m also glad to have that command double-checked ;)",
+      "revId": "02bc64f6afb8fa6c9edbfcea1455aff7bba7bc22",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_ef81fd4e",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T19:16:20Z",
+      "side": 1,
+      "message": "log.warn() to use more visible color. This shouldn\u0027t happen but raising exception is an overkill indeed.",
+      "revId": "02bc64f6afb8fa6c9edbfcea1455aff7bba7bc22",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_6f962d96",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T19:16:20Z",
+      "side": 1,
+      "message": "Nice approach. \n\nNote that with multiple entries in _AMENDABLES, we might get problems with dict returning its keys in undefined order which would lead to different ordering of preserved values. We either want to preserve ordering from original commit or at least have set ordering of our own in the sake of determinism.\n\nThat means either using list or OrderedDict(which is basically a list of doubles)? We can also worry about that once we have more than one entry, but I\u0027m still mentioning it ;)",
+      "revId": "02bc64f6afb8fa6c9edbfcea1455aff7bba7bc22",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_4f9371a4",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T19:16:20Z",
+      "side": 1,
+      "message": "Hardcode. Let\u0027s just maintain one sane behavior until it turns out different people want different things that are exclusive. Sane hardcode is better than unneeded customization options that increase complexity.",
+      "revId": "02bc64f6afb8fa6c9edbfcea1455aff7bba7bc22",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_cf864165",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T19:16:20Z",
+      "side": 1,
+      "message": "I\u0027d pass amend\u003damend directly here and proccess amendables in _commit_message() with the rest.",
+      "revId": "02bc64f6afb8fa6c9edbfcea1455aff7bba7bc22",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
