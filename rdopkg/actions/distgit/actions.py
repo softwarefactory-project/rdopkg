@@ -722,7 +722,7 @@ def new_sources(branch=None, fedpkg=FEDPKG, new_sources=False):
 
 
 def _commit_message(changes=None, header_file=None, no_bump=False,
-                    local_patches_branch=None):
+                    local_patches_branch=None, amend=False):
     msg = None
     if header_file:
         # use supplied header file
@@ -766,6 +766,30 @@ def _commit_message(changes=None, header_file=None, no_bump=False,
         rhbzs_str = "\n".join(map(lambda x: "Resolves: rhbz#%s" % x,
                                   fixed_rhbzs))
         msg += "\n\n%s" % rhbzs_str
+    if amend:
+        amendables = ['Change-Id', ]
+        return _add_amendables(msg, amendables)
+    return msg
+
+
+def _add_amendables(msg, amendables):
+    # Rather than go with an OrderedDict, keep it simple with a list
+    AMENDABLES_ORDER = ['Change-Id', ]
+    changeid_regex = 'Change-Id: (?P<id>I[a-fA-F0-9]+)'
+    AMENDABLES = {'Change-Id': {'regex': re.compile(changeid_regex),
+                                'msg': '%(msg)s\n\nChange-Id: %(id)s\n'}, }
+
+    previous_commit = git.current_commit_message()
+    for unknown in (set(amendables).difference(AMENDABLES_ORDER)):
+        log.warn('"%s" is not a valid amendable field' % unknown)
+    for a in AMENDABLES_ORDER:
+        if a not in amendables:
+            continue
+        regex = AMENDABLES[a]['regex']
+        if regex.search(previous_commit):
+            rdict = regex.search(previous_commit).groupdict()
+            rdict['msg'] = msg
+            msg = AMENDABLES[a]['msg'] % rdict
     return msg
 
 
@@ -776,7 +800,8 @@ def commit_distgit_update(branch=None, local_patches_branch=None,
         raise exception.NoDistgitChangesFound()
     msg = _commit_message(header_file=commit_header_file,
                           no_bump=no_bump,
-                          local_patches_branch=local_patches_branch)
+                          local_patches_branch=local_patches_branch,
+                          amend=amend)
     cmd = ['commit', '-a', '-F', '-']
     if amend:
         cmd.append('--amend')
@@ -784,7 +809,7 @@ def commit_distgit_update(branch=None, local_patches_branch=None,
 
 
 def amend(commit_header_file=None):
-    msg = _commit_message(header_file=commit_header_file)
+    msg = _commit_message(header_file=commit_header_file, amend=True)
     git('commit', '-a', '--amend', '-F', '-', input=msg, print_output=True)
     print("")
     git('--no-pager', 'log', '--name-status', 'HEAD~..HEAD', direct=True)
