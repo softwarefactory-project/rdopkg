@@ -25,6 +25,11 @@ from rdopkg import helpers
 FEDPKG = ['fedpkg']
 
 
+changeid_regex = 'Change-Id: (?P<id>I[a-eA-E0-9]+)'
+_AMENDABLES = {'Change-Id': {'regex': re.compile(changeid_regex),
+                             'msg': '%(msg)s\n\nChange-Id: %(id)s\n'}, }
+
+
 def get_package_env(version=None, release=None, dist=None, branch=None,
                     patches_branch=None, local_patches_branch=None,
                     patches_style=None, gerrit_patches_chain=None):
@@ -722,8 +727,12 @@ def new_sources(branch=None, fedpkg=FEDPKG, new_sources=False):
 
 
 def _commit_message(changes=None, header_file=None, no_bump=False,
-                    local_patches_branch=None):
+                    local_patches_branch=None, amendables=None):
     msg = None
+    if not amendables:
+        amendables = []
+    if isinstance(amendables, basestring):
+        amendables = [amendables, ]
     if header_file:
         # use supplied header file
         try:
@@ -766,6 +775,20 @@ def _commit_message(changes=None, header_file=None, no_bump=False,
         rhbzs_str = "\n".join(map(lambda x: "Resolves: rhbz#%s" % x,
                                   fixed_rhbzs))
         msg += "\n\n%s" % rhbzs_str
+    if not amendables:
+        return msg
+
+    cmd = ['log', '--format=%B', '-n=1']
+    previous_commit = git(*cmd)
+    for a in amendables:
+        if a not in _AMENDABLES:
+            log.info('"%s" is not a valid amendable field' % a)
+            continue
+        regex = _AMENDABLES[a]['regex']
+        if regex.search(previous_commit):
+            rdict = regex.search(previous_commit).groupdict()
+            rdict['msg'] = msg
+            msg = _AMENDABLES[a]['msg'] % rdict
     return msg
 
 
@@ -774,9 +797,14 @@ def commit_distgit_update(branch=None, local_patches_branch=None,
     _ensure_branch(branch)
     if git.is_clean():
         raise exception.NoDistgitChangesFound()
+    amendables = []
+    if amend:
+        # TODO should this be hardcoded or left to the user to decide ?
+        amendables = ['Change-Id', ]
     msg = _commit_message(header_file=commit_header_file,
                           no_bump=no_bump,
-                          local_patches_branch=local_patches_branch)
+                          local_patches_branch=local_patches_branch,
+                          amendables=amendables)
     cmd = ['commit', '-a', '-F', '-']
     if amend:
         cmd.append('--amend')
@@ -784,7 +812,7 @@ def commit_distgit_update(branch=None, local_patches_branch=None,
 
 
 def amend(commit_header_file=None):
-    msg = _commit_message(header_file=commit_header_file)
+    msg = _commit_message(header_file=commit_header_file, amend=True)
     git('commit', '-a', '--amend', '-F', '-', input=msg, print_output=True)
     print("")
     git('--no-pager', 'log', '--name-status', 'HEAD~..HEAD', direct=True)
