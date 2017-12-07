@@ -41,6 +41,14 @@ def step_impl(context):
     context.execute_steps(u'Given a distgit at Version 1.2.3 and Release 2')
 
 
+@given('a distgit with Change-Id {changeid}')
+def step_impl(context, changeid):
+    context.execute_steps(u'Given a distgit at Version 1.2.3 and Release 2')
+    git('commit', '--amend', '-m',
+        context.old_commit + '\n\nChange-Id: %s' % changeid)
+    context.old_commit = git.current_commit()
+
+
 @given('a patches branch with {n:n} patches')
 def step_impl(context, n):
     distgitmagic.create_sample_patches_branch(n)
