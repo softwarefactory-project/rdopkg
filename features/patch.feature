@@ -75,3 +75,27 @@ Feature: rdopkg patch
         Then git is clean
         Then rdopkg state file is not present
         Then command output contains 'No changes to patches found'
+
+    Scenario: rdopkg patch --amend
+        Given a distgit with Change-Id Ideadbeef1234
+        Given a patches branch with 5 patches
+        When I run rdopkg patch -l --amend
+        Then .spec file tag Release is 3%{?dist}
+        Then .spec file has 5 patches defined
+        Then .spec file doesn't contain patches_base
+        Then .spec file contains new changelog entry with 5 lines
+        Then new commit was created
+        Then git is clean
+        Then last commit message is:
+            """
+            foo-bar-1.2.3-3
+
+            Changelog:
+            - Original Patch 5
+            - Original Patch 4
+            - Original Patch 3
+            - Original Patch 2
+            - Original Patch 1
+
+            Change-Id: Ideadbeef1234
+            """
