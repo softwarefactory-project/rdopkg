@@ -22,6 +22,30 @@
       "revId": "6d0e6314ff1615fb6c2b23b214f2fc7d104f1d76",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_cf788192",
+        "filename": "tests/test_update_patches.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T18:14:56Z",
+      "side": 0,
+      "message": "Good question.\n\nThese unit tests test the update_patches function directly which is just a one step of update-patches action. I factored it to be more reusable by moving the \"commit the changes\" to a dedicated step.\n\nSo a behavior of the whole doesn\u0027t change, only update_patches step now does ONLY what the name says. Note that all the changes in this file are just dropped checks for the new commit.\n\nFinally, I only keep these shady unit tests for better coverage and to make sure I don\u0027t break some ancient behavior but feature tests are much better at testing this already and also much easier to maintain, so this is likely to be removed in the future and unit tests will only test low level functions as they should.",
+      "parentUuid": "5ad58531_b398006c",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 48
+      },
+      "revId": "6d0e6314ff1615fb6c2b23b214f2fc7d104f1d76",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }

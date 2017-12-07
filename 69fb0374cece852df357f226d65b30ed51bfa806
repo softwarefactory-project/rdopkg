@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3ae2911b_cf9f61b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T18:14:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ad58531_93af4494",
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad58531_53a0bc90",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -30,6 +48,30 @@
       "writtenOn": "2017-12-05T16:14:57Z",
       "side": 1,
       "message": "I see this is the functionality change for the tests churn",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 53
+      },
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_ef9a1dc5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T18:14:56Z",
+      "side": 1,
+      "message": "Correct :)",
+      "parentUuid": "5ad58531_53a0bc90",
       "range": {
         "startLine": 23,
         "startChar": 0,
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "3ae2911b_afa41508",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T18:14:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ad58531_7395f83e",
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad58531_13efd4b1",
         "filename": "features/steps/utils.py",
         "patchSetId": 4
@@ -70,6 +130,30 @@
       "writtenOn": "2017-12-05T17:06:02Z",
       "side": 1,
       "message": "Note you may want to use the re.UNICODE flag if context.command_output is unicode, otherwise ascii is assumed.",
+      "range": {
+        "startLine": 26,
+        "startChar": 11,
+        "endLine": 26,
+        "endChar": 48
+      },
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_0f5fa90f",
+        "filename": "features/steps/utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T18:14:56Z",
+      "side": 1,
+      "message": "Oh, that is really conveniet. Not. Thanks for the tip, though ;)",
+      "parentUuid": "5ad58531_13efd4b1",
       "range": {
         "startLine": 26,
         "startChar": 11,
@@ -105,6 +189,30 @@
     },
     {
       "key": {
+        "uuid": "3ae2911b_8f7279ac",
+        "filename": "features/steps/utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T18:14:56Z",
+      "side": 1,
+      "message": "I got problems when raising exceptions with unicode chars in behave tests. Didn\u0027t have time to investigate back then so I converted to ascii which works.\n\nThis isn\u0027t in scope of this patch so I created a separate issue:\n\nhttps://github.com/softwarefactory-project/rdopkg/issues/149",
+      "parentUuid": "5ad58531_f32a08e7",
+      "range": {
+        "startLine": 28,
+        "startChar": 48,
+        "endLine": 28,
+        "endChar": 54
+      },
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad58531_d3938c4e",
         "filename": "rdopkg/actions/distgit/actions.py",
         "patchSetId": 4
@@ -116,6 +224,30 @@
       "writtenOn": "2017-12-05T16:14:57Z",
       "side": 1,
       "message": "why the -f ?",
+      "range": {
+        "startLine": 859,
+        "startChar": 0,
+        "endLine": 859,
+        "endChar": 48
+      },
+      "revId": "69fb0374cece852df357f226d65b30ed51bfa806",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_2f4b855b",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 859,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-07T18:14:56Z",
+      "side": 1,
+      "message": "To make sure the files are removed regardless of git stage.\nNew internal update_patches doesn\u0027t commit its changes anymore so this command failed when calling it multiple times. While I could change the test, I realized this would also be a problem with certain amend scenarios so a fix is in place. Do you suggest separate commit for this one line? :)",
+      "parentUuid": "5ad58531_d3938c4e",
       "range": {
         "startLine": 859,
         "startChar": 0,
