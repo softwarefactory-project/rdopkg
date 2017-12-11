@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ae2911b_925bbc2e",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-11T11:55:41Z",
+      "side": 1,
+      "message": "As a personal code style note only, I\u0027d go with\n\nif amend:\n    amendables \u003d [\u0027Change-Id\u0027, ]\n    return _add_amendables(msg, amendables)\nreturn msg\n\nwhich saves unneeded negation and one \"else\" :)\n\nJust saying, this is of course equivalent.",
+      "revId": "e38cf65340d6c21263072305b28d3629c3de8c84",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_b256b804",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2017-12-11T11:55:41Z",
+      "side": 1,
+      "message": "AMENDABLES_ORDER is more fitting name without abbrevation?",
+      "revId": "e38cf65340d6c21263072305b28d3629c3de8c84",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
