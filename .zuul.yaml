@@ -1,0 +1,71 @@
+---
+- builder:
+    name: prepare-rdopkg
+    builders:
+      - shell: |
+          git config --global user.email "jenkins@softwarefactory-project.io"
+          git config --global user.name "CI Test Bot"
+
+- job:
+    name: 'rdopkg-py2-centos-7'
+    builders:
+      - prepare-workspace
+      - prepare-rdopkg
+      - shell: |
+          set +e
+          cd $ZUUL_PROJECT
+          tox -e py2-unit,py2-feature
+    publishers:
+      - console-log
+    node: dib-centos-7
+
+- job:
+    name: 'rdopkg-py3-fedora-25'
+    builders:
+      - prepare-workspace
+      - prepare-rdopkg
+      - shell: |
+          set +e
+          sudo dnf install -y python3-rpm
+          cd $ZUUL_PROJECT
+          tox -e py3-unit,py3-feature
+    publishers:
+      - console-log
+    node: dib-fedora-25
+
+- job:
+    name: 'rdopkg-integration'
+    builders:
+      - prepare-workspace
+      - shell: |
+          set +e
+          cd $ZUUL_PROJECT
+          tox -e integration
+    publishers:
+      - console-log
+    node: dib-centos-7
+
+- job:
+    name: 'rdopkg-pycodestyle'
+    builders:
+      - prepare-workspace
+      - shell: |
+          set +e
+          cd $ZUUL_PROJECT
+          tox -e pycodestyle
+    publishers:
+      - console-log
+    node: dib-fedora-25
+
+- project:
+    name: rdopkg
+    check:
+     - rdopkg-py2-centos-7
+     - rdopkg-py3-fedora-25
+     - rdopkg-integration
+     - rdopkg-pycodestyle
+    gate:
+     - rdopkg-py2-centos-7
+     - rdopkg-py3-fedora-25
+     - rdopkg-integration
+     - rdopkg-pycodestyle
