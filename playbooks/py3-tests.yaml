@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Run unit and feature tests on python3
+      shell:
+        cmd: |
+          tox -e py3-unit,py3-feature
+        chdir: "{{ zuul.project.src_dir }}"

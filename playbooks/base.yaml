@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Configure git user for testing
+      command: "{{ item }}"
+      with_items:
+        - git config --global user.email zuul@softwarefactory-project.io
+        - git config --global user.name 'CI Test Bot'
