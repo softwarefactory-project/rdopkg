@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars:
+    working_dir: '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/'
+  tasks:
+    - name: Run integration tests
+      shell:
+        cmd: |
+          tox -e integration
+        chdir: "{{ working_dir }}/rdopkg"

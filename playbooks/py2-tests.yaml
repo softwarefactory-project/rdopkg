@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars:
+    working_dir: '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/'
+  tasks:
+    - name: Run unit and feature tests on python2
+      shell:
+        cmd: |
+          tox -e py2-unit,py2-feature
+        chdir: "{{ working_dir }}/rdopkg"
