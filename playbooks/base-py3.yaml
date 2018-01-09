@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+    - name: Install required dependencies for python3
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+      - git
+      - mock
+      - python3
+      - python3-rpm
+      - python3-tox
+      become: true

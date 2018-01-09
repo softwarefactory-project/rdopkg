@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - name: Install required dependencies for python2
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+      - git
+      - mock
+      - python2-rpm
+      - python2-tox
+      become: true
