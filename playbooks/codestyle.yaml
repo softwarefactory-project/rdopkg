@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Run integration tests
+      shell:
+        cmd: |
+          tox -e pycodestyle
+        chdir: "{{ zuul.project.src_dir }}"
