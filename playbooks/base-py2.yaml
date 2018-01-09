@@ -1,0 +1,11 @@
+---
+- hosts: all
+  tasks:
+    - name: Install dependencies for python2
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+      - rpm-python
+      - python-tox
+      become: true

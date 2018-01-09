@@ -1,0 +1,62 @@
+---
+- job:
+    name: rdopkg-base
+    parent: base
+    run: playbooks/base.yaml
+
+- job:
+    name: rdopkg-base-py2
+    parent: rdopkg-base
+    run: playbooks/base-py2.yaml
+    nodeset:
+      nodes:
+        - name: test-node
+          label: dib-centos-7
+
+- job:
+    name: rdopkg-base-py3
+    parent: rdopkg-base
+    run: playbooks/base-py3.yaml
+    nodeset:
+      nodes:
+        - name: test-node
+          label: dib-fedora-27
+
+- job:
+    name: rdopkg-py2-centos-7
+    parent: rdopkg-base-py2
+    description: rdopkg unit and feature tests on python2
+    run: playbooks/py2-tests.yaml
+
+- job:
+    name: rdopkg-py3-fedora-27
+    parent: rdopkg-base-py3
+    description: rdopkg unit and feature tests on python3
+    run: playbooks/py3-tests.yaml
+
+- job:
+    name: rdopkg-integration
+    parent: rdopkg-base-py2
+    description: rdopkg integration tests
+    run: playbooks/integration.yaml
+
+- job:
+    name: rdopkg-codestyle
+    parent: rdopkg-base-py2
+    description: rdopkg code style checks
+    run: playbooks/codestyle.yaml
+
+- project:
+    name: rdopkg
+    check:
+      jobs:
+        - rdopkg-py2-centos-7
+        - rdopkg-py3-fedora-27
+        - rdopkg-integration
+        - rdopkg-codestyle
+    gate:
+      jobs:
+        - rdopkg-py2-centos-7
+        - rdopkg-py3-fedora-27
+        - rdopkg-integration
+        - rdopkg-codestyle
