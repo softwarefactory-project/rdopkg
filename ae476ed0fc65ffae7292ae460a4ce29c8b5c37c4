@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_120589c1",
+        "filename": "playbooks/codestyle.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-17T17:14:52Z",
+      "side": 1,
+      "message": "Do you really need to set that var ? I think you can use {{ zuul.project.src_dir }} directly in the chdir below.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 69
+      },
+      "revId": "ae476ed0fc65ffae7292ae460a4ce29c8b5c37c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_d20ed1e4",
+        "filename": "playbooks/integration.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-17T17:14:52Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "ae476ed0fc65ffae7292ae460a4ce29c8b5c37c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_72f605d9",
+        "filename": "playbooks/py2-tests.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-17T17:14:52Z",
+      "side": 1,
+      "message": "Same",
+      "revId": "ae476ed0fc65ffae7292ae460a4ce29c8b5c37c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_520301b9",
+        "filename": "playbooks/py3-tests.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-17T17:14:52Z",
+      "side": 1,
+      "message": "Same",
+      "revId": "ae476ed0fc65ffae7292ae460a4ce29c8b5c37c4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
