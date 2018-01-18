@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_c5816dfd",
+        "filename": "playbooks/py2-tests.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-01-18T14:38:29Z",
+      "side": 1,
+      "message": "You\u0027re missing a task to configure git, it is in the previous jobs:\n\n  git config --global user.email jenkins@softwarefactory-project.io\n  git config --global user.name \u0027CI Test Bot\u0027",
+      "revId": "9437572069d69f7db6c6054681b1586cb6553daf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_e58c7137",
+        "filename": "playbooks/py2-tests.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-01-18T14:38:29Z",
+      "side": 1,
+      "message": "{{ zuul.project.src_dir }} should be enough, see\n\nhttps://softwarefactory-project.io/logs/66/10766/7/check/rdopkg-py2-centos-7/4d5d395/zuul-info/inventory.yaml",
+      "revId": "9437572069d69f7db6c6054681b1586cb6553daf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
