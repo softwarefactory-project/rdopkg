@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install epel
+      command: yum install -y epel-release
+
+    - name: Update system
+      command: yum update -y
+
+    - name: Install rdopkg
+      command: yum install -y rdopkg
+
+    - name: Check
+      command: rdopkg --help
