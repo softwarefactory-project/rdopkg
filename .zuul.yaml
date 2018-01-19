@@ -2,25 +2,23 @@
 - job:
     name: rdopkg-base
     parent: base
-    run: playbooks/base.yaml
+    pre-run: playbooks/base.yaml
 
 - job:
     name: rdopkg-base-py2
     parent: rdopkg-base
-    run: playbooks/base-py2.yaml
     nodeset:
       nodes:
         - name: test-node
-          label: dib-centos-7
+          label: centos-oci
 
 - job:
     name: rdopkg-base-py3
     parent: rdopkg-base
-    run: playbooks/base-py3.yaml
     nodeset:
       nodes:
         - name: test-node
-          label: dib-fedora-27
+          label: f27-oci
 
 - job:
     name: rdopkg-py2-centos-7
