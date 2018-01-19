@@ -1,17 +1,8 @@
 ---
 - hosts: all
   tasks:
-    - name: Install base dependencies
-      package:
-        name: "{{ item }}"
-        state: present
-      with_items:
-      - git
-      become: true
-
     - name: Configure git user for testing
-      shell:
-        cmd: |
-            git config --global user.email zuul@softwarefactory-project.io
-            git config --global user.name 'CI Test Bot'
-        chdir: "{{ zuul.project.src_dir }}"
+      command: "{{ item }}"
+      with_items:
+        - git config --global user.email zuul@softwarefactory-project.io
+        - git config --global user.name 'CI Test Bot'

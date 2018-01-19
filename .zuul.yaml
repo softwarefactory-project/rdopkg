@@ -2,25 +2,23 @@
 - job:
     name: rdopkg-base
     parent: base
-    run: playbooks/base.yaml
+    pre-run: playbooks/base.yaml
 
 - job:
     name: rdopkg-base-py2
     parent: rdopkg-base
-    run: playbooks/base-py2.yaml
     nodeset:
       nodes:
         - name: test-node
-          label: dib-centos-7
+          label: centos-oci
 
 - job:
     name: rdopkg-base-py3
     parent: rdopkg-base
-    run: playbooks/base-py3.yaml
     nodeset:
       nodes:
         - name: test-node
-          label: dib-fedora-27
+          label: f27-oci
 
 - job:
     name: rdopkg-py2-centos-7
@@ -46,6 +44,15 @@
     description: rdopkg code style checks
     run: playbooks/codestyle.yaml
 
+- job:
+    name: rdopkg-install-epel-7
+    description: install rdopkg with epel-7
+    run: playbooks/install-test-epel-7.yaml
+    nodeset:
+      nodes:
+        - name: test-node
+          label: dib-centos-7
+
 - project:
     name: rdopkg
     check:
@@ -60,3 +67,9 @@
         - rdopkg-py3-fedora-27
         - rdopkg-integration
         - rdopkg-codestyle
+    periodic:
+      jobs:
+        - rdopkg-install-epel-7
+    release:
+      jobs:
+        - upload-pypi
