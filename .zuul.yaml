@@ -11,7 +11,7 @@
     nodeset:
       nodes:
         - name: test-node
-          label: dib-centos-7
+          label: centos-oci
 
 - job:
     name: rdopkg-base-py3
@@ -20,7 +20,7 @@
     nodeset:
       nodes:
         - name: test-node
-          label: dib-fedora-27
+          label: f27-oci
 
 - job:
     name: rdopkg-py2-centos-7
