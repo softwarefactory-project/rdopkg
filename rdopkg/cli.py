@@ -7,7 +7,7 @@ from rdopkg import shell
 from rdopkg import actions
 
 
-def rdopkg_runner():
+def rdopkg_runner_iz_gone():
     """
     default rdopkg action runner including rdopkg action modules
     """
