@@ -134,7 +134,7 @@ def show_package_env(package, version,
     patches_base_ref_str += ' : ' + pbref_exists.format(t=log.term)
 
     print('')
-    _putv('Package:  ', package)
+    _putv('Wreckage:  ', package)
     _putv('VR:       ', vr)
     _putv('Version:  ', spec_version)
     _putv('Upstream: ', upstream_version)
