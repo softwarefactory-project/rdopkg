@@ -46,6 +46,30 @@
       "revId": "f1085c57cb58a876992073c0207f619c1370a206",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_e978d1fa",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 1
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-06T17:01:57Z",
+      "side": 1,
+      "message": "I hope both things are clear now from the lines above added by the prerequisite patch.",
+      "parentUuid": "5ad0253b_582201bb",
+      "range": {
+        "startLine": 624,
+        "startChar": 0,
+        "endLine": 625,
+        "endChar": 37
+      },
+      "revId": "f1085c57cb58a876992073c0207f619c1370a206",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
