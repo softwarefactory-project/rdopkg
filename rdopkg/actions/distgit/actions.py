@@ -953,7 +953,9 @@ def update_patches(branch, local_patches_branch, bump_only=False,
 def ensure_patches_changed():
     if git.is_clean():
         raise exception.NoDistgitChangesFound(
-            msg="No changes to patches found")
+            msg="No changes to patches found",
+            # `rdopkg patch` is a success even on no new patches
+            exit_code=0)
 
 
 def squash():
@@ -964,9 +966,11 @@ def final_spec_diff(branch=None):
     _ensure_branch(branch)
     print("Important distgit changes:")
     spec = specfile.Spec()
-    git('--no-pager', 'diff', 'HEAD~..HEAD', '--', spec.fn, direct=True)
+    git('--no-pager', 'diff', 'HEAD~..HEAD', '--', spec.fn,
+        direct=True, fatal=False)
     print("")
-    git('--no-pager', 'log', '--name-status', 'HEAD~..HEAD', direct=True)
+    git('--no-pager', 'log', '--name-status', 'HEAD~..HEAD',
+        direct=True, fatal=False)
     print("\nRequested distgit update finished, see last commit.")
 
 

@@ -5,6 +5,7 @@ Feature: rdopkg patch
         Given a distgit at Version 1.20.0 and Release 3
         Given a patches branch with 5 patches
         When I run rdopkg patch -l
+        Then command return code is 0
         Then .spec file tag Release is 4%{?dist}
         Then .spec file has 5 patches defined
         Then .spec file doesn't contain patches_base
@@ -29,6 +30,7 @@ Feature: rdopkg patch
         Given a patches branch with 3 patches
         When I run rdopkg patch --no-bump -l
         Then .spec file tag Release is 3%{?dist}
+        Then command return code is 0
         Then .spec file has 3 patches defined
         Then .spec file doesn't contain patches_base
         Then .spec file doesn't contain new changelog entries
@@ -53,6 +55,7 @@ Feature: rdopkg patch
         Given a distgit
         Given a patches branch with 3 patches without version git tag
         When I run rdopkg patch -l
+        Then command return code is 1
         Then no new commit was created
         Then git is clean
         Then rdopkg state file is not present
@@ -63,6 +66,7 @@ Feature: rdopkg patch
         Given a distgit at Version 1.0 and Release 23
         Given a patches branch with 3 patches
         When I run rdopkg update-patches
+        Then command return code is 0
         Then .spec file tag Release is 23%{?dist}
         Then .spec file has 3 patches defined
         Then .spec file doesn't contain new changelog entries
@@ -81,6 +85,7 @@ Feature: rdopkg patch
         Given a distgit
         Given a patches branch with 0 patches
         When I run rdopkg update-patches
+        Then command return code is 0
         Then no new commit was created
         Then git is clean
         Then rdopkg state file is not present
@@ -90,6 +95,7 @@ Feature: rdopkg patch
         Given a distgit with Change-Id Ideadbeef1234
         Given a patches branch with 5 patches
         When I run rdopkg patch -l --amend
+        Then command return code is 0
         Then .spec file tag Release is 3%{?dist}
         Then .spec file has 5 patches defined
         Then .spec file doesn't contain patches_base
