@@ -22,6 +22,30 @@
       "revId": "49542e1894a7d6b371dd4f842eef68eab51f15c3",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_4fc12580",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-08T12:15:10Z",
+      "side": 1,
+      "message": "One line above:\n\nindex \u003d index.upper()\n\nUpper case here only because MAJOR/MINOR/PATCH are uppercase in RELEASE_PARTS_SEMVER so it\u0027s easiest like that. It\u0027s case insensitive as such.\n\nThis is usually done with lower() and all lowercase but it\u0027s the same thing.",
+      "parentUuid": "7a016987_8f803d48",
+      "range": {
+        "startLine": 556,
+        "startChar": 37,
+        "endLine": 556,
+        "endChar": 52
+      },
+      "revId": "49542e1894a7d6b371dd4f842eef68eab51f15c3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
