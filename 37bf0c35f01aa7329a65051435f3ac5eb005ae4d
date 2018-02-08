@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_cf863565",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-02-08T09:34:22Z",
+      "side": 1,
+      "message": "Ok, now I get it. Thanks!",
+      "range": {
+        "startLine": 632,
+        "startChar": 0,
+        "endLine": 641,
+        "endChar": 7
+      },
+      "revId": "37bf0c35f01aa7329a65051435f3ac5eb005ae4d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
