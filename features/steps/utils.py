@@ -28,6 +28,13 @@ def step_impl(context, rex):
             rex, context.command_output.encode('ascii', 'replace'))
 
 
+@then("command return code is {n:n}")
+def step_impl(context, n):
+    rc = context.command_output.return_code
+    assert n == rc, \
+        "Command return code is %s but should be %s" % (rc, n)
+
+
 @then(u'rdopkg state file is present')
 def step_check_for_rdopkg_state_file_not_present(context):
     assert os.path.exists(os.path.join(context.distgitdir, STATE_FILE_FN))
