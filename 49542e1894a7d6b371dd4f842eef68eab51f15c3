@@ -46,6 +46,30 @@
       "revId": "49542e1894a7d6b371dd4f842eef68eab51f15c3",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_4f48052e",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-02-08T13:09:51Z",
+      "side": 1,
+      "message": "Ouch, /me needs coffee :)",
+      "parentUuid": "7a016987_4fc12580",
+      "range": {
+        "startLine": 556,
+        "startChar": 37,
+        "endLine": 556,
+        "endChar": 52
+      },
+      "revId": "49542e1894a7d6b371dd4f842eef68eab51f15c3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
