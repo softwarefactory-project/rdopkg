@@ -70,6 +70,30 @@
       "revId": "49542e1894a7d6b371dd4f842eef68eab51f15c3",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_efa0d1a7",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-08T16:32:51Z",
+      "side": 1,
+      "message": "Can\u0027t blame you, it\u0027s a little unusual inverted pattern :)\n\nI actually tried changing it to LAST-NUMERIC in doc but it looked weird and I thought it better stays distinguished from MAJOR/MINOR/PATCH (those are upper case in semantic version document, so I just kept the convention) so I left it at lowercase in the end :)",
+      "parentUuid": "7a016987_4f48052e",
+      "range": {
+        "startLine": 556,
+        "startChar": 37,
+        "endLine": 556,
+        "endChar": 52
+      },
+      "revId": "49542e1894a7d6b371dd4f842eef68eab51f15c3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
