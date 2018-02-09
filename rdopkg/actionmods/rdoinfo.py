@@ -49,7 +49,9 @@ def tags_diff(info1, info2, tagsname='tags'):
     for pkg2 in changedpkgs:
         foundpkg = False
         for pkg1 in info1["packages"]:
-            if pkg1['name'] == pkg2['name']:
+            if pkg1['project'] == pkg2['project']:
+                print(pkg1)
+                print(pkg2)
                 foundpkg = True
                 break
         updated_tags = []
