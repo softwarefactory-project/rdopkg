@@ -16,6 +16,24 @@
       "revId": "a5cf51faf0d6a644bfee308b504bafd781f26459",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_008f7a24",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-14T14:14:09Z",
+      "side": 1,
+      "message": "Yeah I don\u0027t like haveing the regex bellow in two places but it\u0027s the most readable solution. I was considering creating a local function in get_requires but it was harder to read.\n\nSimilarly, putting the duplicated strings into a variable made it significantly less readable so I allowed this redundancy as an exception :)",
+      "parentUuid": "7a016987_8095aa41",
+      "revId": "a5cf51faf0d6a644bfee308b504bafd781f26459",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
