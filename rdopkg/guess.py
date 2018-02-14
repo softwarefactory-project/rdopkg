@@ -303,13 +303,21 @@ def osdist(branch=None):
     return 'RDO'
 
 
+def is_fedora_distgit():
+    origin = git('remote', 'get-url', 'origin',
+                 fatal=False, log_cmd=False, log_error=False)
+    if origin and 'pkgs.fedoraproject.org' in origin:
+        return True
+    return False
+
+
 def new_sources(_osdist=None):
     # shall we run `$RPKG new-sources`?
     if not _osdist:
         _osdist = osdist()
     if _osdist.startswith('RH'):
-        # XXX: Fedora might also benefit from True
-        # once osdist() detects it properly.
+        return True
+    if is_fedora_distgit():
         return True
     # we don't use `$RPKG new-sources` in RDO anymore
     return False
