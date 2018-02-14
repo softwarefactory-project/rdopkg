@@ -80,9 +80,10 @@ def get_reqs_from_path(path):
     return parse_reqs_txt(o)
 
 
-def get_reqs_from_spec(as_objects=False):
+def get_reqs_from_spec(as_objects=False, normalize_py23=False):
     spec = specfile.Spec()
-    reqs = spec.get_requires(versions_as_string=True)
+    reqs = spec.get_requires(versions_as_string=True,
+                             normalize_py23=normalize_py23)
     if as_objects:
         creqs = []
         for name in sorted(reqs):
@@ -196,7 +197,7 @@ def reqcheck_spec(ref=None, reqs_txt=None):
     else:
         reqs_txt = get_reqs_from_path(reqs_txt)
     map_reqs2pkgs(reqs_txt, 'epel')
-    spec_reqs = get_reqs_from_spec()
+    spec_reqs = get_reqs_from_spec(normalize_py23=True)
     return reqcheck(reqs_txt, spec_reqs)
 
 

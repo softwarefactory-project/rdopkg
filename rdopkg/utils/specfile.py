@@ -676,7 +676,8 @@ class Spec(object):
             lines = list(map(lambda x: x.lstrip(" -*\t"), lines))
         return lines[0], lines[1:]
 
-    def get_requires(self, versions_as_string=False, remove_epoch=True):
+    def get_requires(self, versions_as_string=False, remove_epoch=True,
+                     normalize_py23=False):
         reqs = defaultdict(set)
         for pkg in self.rpmspec.packages:
             pkg_reqs = pkg.header.dsFromHeader('requirename')
@@ -690,9 +691,13 @@ class Spec(object):
                         _, sep, rest = ver.partition(':')
                         if sep:
                             ver = rest
+                    if normalize_py23:
+                        name = re.sub(r'^python[23]-', 'python-', name)
                     reqs[name].add(eq + ' ' + ver)
                 else:
                     name = req.N()
+                    if normalize_py23:
+                        name = re.sub(r'^python[23]-', 'python-', name)
                     reqs[name]
         if versions_as_string:
             for name in reqs:
