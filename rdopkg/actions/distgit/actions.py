@@ -270,7 +270,7 @@ def new_version_setup(patches_branch=None, local_patches=False,
             args['new_release'] = '0.1'
         else:
             args['new_release'] = '1'
-    if not local_patches:
+    if not local_patches and not bump_only:
         if not patches_branch or \
            not git.ref_exists('refs/remotes/' + patches_branch):
             log.warn("Patches branch '%s' not found. Running in --bump-only "
