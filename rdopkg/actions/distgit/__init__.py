@@ -173,10 +173,10 @@ ACTIONS = [
                Action('prep_new_patches_branch'),
                Action('get_patches_branch'),
                Action('rebase_patches_branch'),
-               Action('get_source'),
-               Action('new_sources'),
                Action('update_patches'),
                Action('update_spec'),
+               Action('get_source'),
+               Action('new_sources'),
                Action('commit_distgit_update'),
                Action('final_spec_diff'),
                Action('review_patches_branch')
