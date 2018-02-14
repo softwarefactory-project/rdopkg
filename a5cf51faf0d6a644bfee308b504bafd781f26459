@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_8095aa41",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2018-02-14T14:03:39Z",
+      "side": 1,
+      "message": "Not found of the code duplication, but I have no better solution.\nI was thinking about replacing the boolean by a function which solves duplication, so default would be identity function (no normalization).\nPros: if we change normalization, it happens in one place\nCons: API is slightly less nicer, but mitigation would be providing a method with different default (using functools.partial)\n\nThis is just me thinking aloud, not really a request.",
+      "revId": "a5cf51faf0d6a644bfee308b504bafd781f26459",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
