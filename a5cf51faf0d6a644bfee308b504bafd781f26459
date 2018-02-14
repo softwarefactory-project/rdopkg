@@ -1,0 +1,10 @@
+Code-Review+2: Haïkel Guémar <hguemar@fedoraproject.org>
+Code-Review+1: Jon Schlueter <jschluet@redhat.com>
+Code-Review+1: Jakub Ružička <jruzicka@redhat.com>
+Workflow+1: Jakub Ružička <jruzicka@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Wed, 14 Feb 2018 16:11:59 +0000
+Reviewed-on: https://softwarefactory-project.io/r/11231
+Project: rdopkg
+Branch: refs/heads/master
