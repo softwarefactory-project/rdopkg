@@ -190,9 +190,12 @@ Don't forget to `git fetch --all` before running the action.
 You can use the `-N`/`--new-sources` or `-n`/`--no-new-sources` options to
 control whether `new-version` will run `fedpkg new-sources`
 (`rhpkg new-sources` on Red Hat downstream products). By default, `rdopkg`
-will automatically enable or disable this step based on the dist-git branch
-name. RH dist-git branches (`rhos-*`, `rh-*`, `ceph-*`, `rhscon-*`) default to
-`-N`. All other branches default to `-n`.
+will automatically enable this step in following scenarios:
+
+* Fedora distgit detected from `origin` git remote (`pkgs.fedoraproject.org`)
+* RH distgit detected from git branch (`rhos-*`, `rh-*`, `ceph-*`, `rhscon-*`)
+
+Otherwise, `fedpkg new-sources` is disabled (`-n`).
 
 After running `rdopkg new-version`, a new commit will contain the changes.
 
