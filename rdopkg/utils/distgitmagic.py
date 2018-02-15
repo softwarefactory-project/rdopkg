@@ -50,6 +50,8 @@ It's pretty good stuff for a testing package that doesn't even exist.
 
 * Tue Mar 23 2016 Jakub Ruzicka <jruzicka@redhat.com> 1.2.2-1
 - Update to upstream 1.2.2
+- Escape macros in %%changelog
+- Counter %%{{?milestone}} bug
 
 * Tue Jun 23 2015 Jakub Ruzicka <jruzicka@redhat.com> 1.1.1-1
 - Update to upstream 1.1.1

@@ -630,7 +630,8 @@ class Spec(object):
         vr = self.get_vr()
         head = "* %s %s <%s> %s" % (date, user, email, vr)
         entry = "%s\n%s\n" % (head, changes_str)
-        self._txt = re.sub(r'(%changelog\n)', r'\g<1>%s' % entry, self.txt)
+        self._txt = re.sub(r'(^%changelog\n)', r'\g<1>%s' % entry,
+                           self.txt, count=1, flags=re.M)
 
     def save(self):
         """ Write the textual content (self._txt) to .spec file (self.fn). """
