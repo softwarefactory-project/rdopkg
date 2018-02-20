@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_434b395a",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 442
+      },
+      "writtenOn": "2018-02-20T15:25:46Z",
+      "side": 1,
+      "message": "Note that findall is being used here instead of the finditer implementation as before.",
+      "range": {
+        "startLine": 778,
+        "startChar": 17,
+        "endLine": 778,
+        "endChar": 46
+      },
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_8341313c",
+        "filename": "rdopkg/utils/git.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 442
+      },
+      "writtenOn": "2018-02-20T15:25:46Z",
+      "side": 1,
+      "message": "No real reason to use a local variable here.",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 28
+      },
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_23483d5b",
+        "filename": "tests/test_bug_number_grabbing.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 442
+      },
+      "writtenOn": "2018-02-20T15:25:46Z",
+      "side": 1,
+      "message": "It would be nice to see a test where no bug data was found so we can test the code flows for no data found.",
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
