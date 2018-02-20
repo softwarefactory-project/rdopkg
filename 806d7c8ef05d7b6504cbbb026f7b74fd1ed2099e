@@ -25,6 +25,23 @@
     },
     {
       "key": {
+        "uuid": "7a016987_63acf5ed",
+        "filename": "rdopkg/utils/git.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-20T16:19:19Z",
+      "side": 1,
+      "message": "I wonder whether git is the right module for this. search_bug_references isn\u0027t strictly a git related function, so I\u0027m not sure whether pollute this module\u0027s global namespace, especially as it just recently split from its bloated parent.\n\nOTOH utils.spec has utils for .spec parsing so it makes sense for utils.git to have utils for git parsing.\n\nHowever, maybe it\u0027d be better to have a dedicated module for pasring bugs/rhbz related strings, such as utils.bugs or utils.bugparse. I reckon this code might be pretty useful to reuse so having it properly isolated might be worth the effort. bugs parsing code is currently all over the place, having a dedicated module would be a singnificant improvement to modularity as well as supporting different bug schemes in the future.\n\nWhat do you think?\n\nAnyway, this can be done after this patch so I guess it\u0027s OK for this to stay here for now ;)",
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a016987_8341313c",
         "filename": "rdopkg/utils/git.py",
         "patchSetId": 3
@@ -48,6 +65,30 @@
     },
     {
       "key": {
+        "uuid": "7a016987_e39fc5b2",
+        "filename": "rdopkg/utils/git.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-20T16:19:19Z",
+      "side": 1,
+      "message": "Agreed, I suggest to make it a oneliner. It\u0027s most readable to see the regex in place instead of a reference elsewhere.",
+      "parentUuid": "7a016987_8341313c",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 28
+      },
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a016987_23483d5b",
         "filename": "tests/test_bug_number_grabbing.py",
         "patchSetId": 3
@@ -59,6 +100,57 @@
       "writtenOn": "2018-02-20T15:25:46Z",
       "side": 1,
       "message": "It would be nice to see a test where no bug data was found so we can test the code flows for no data found.",
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_e3d46548",
+        "filename": "tests/test_bug_number_grabbing.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-20T16:19:19Z",
+      "side": 1,
+      "message": "consider naming this file a little bit more generic like `test_bug_number_parsing.py` so that it may be extended with other rhbz related tests as well.",
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_c3c969ae",
+        "filename": "tests/test_bug_number_grabbing.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-20T16:19:19Z",
+      "side": 1,
+      "message": "\u0027data\u0027 isn\u0027t used, is this forgotten?",
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_63dab57a",
+        "filename": "tests/test_bug_number_grabbing.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-20T16:19:19Z",
+      "side": 1,
+      "message": "I\u0027d assert entire list here, extra items must not be returned.",
       "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
