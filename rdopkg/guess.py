@@ -46,7 +46,8 @@ def patches_base_ref(default=exception.CantGuess):
                 why=str(ex))
         else:
             return default
-    return ref
+    tag_style = version_tag_style(ref)
+    return version2tag(ref, tag_style=tag_style)
 
 
 def current_branch(default=exception.CantGuess):

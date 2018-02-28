@@ -61,7 +61,8 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
     if not local_patches_branch:
         args['local_patches_branch'] = patches_branch.partition('/')[2]
     if not version:
-        version = guess.patches_base_ref()
+        base_ref = guess.patches_base_ref()
+        version, _ = guess.tag2version(base_ref)
         args['version'] = version
     args['version_tag_style'] = guess.version_tag_style(version=version)
 
@@ -126,11 +127,12 @@ def show_package_env(package, version,
             n=pbn, t=log.term)
     if not patches_base_str:
         patches_base_str = "N/A"
-    patches_base_ref_str = version
-    if git.ref_exists('refs/tags/' + version):
+    patches_base_tag = guess.version2tag(version, version_tag_style)
+    patches_base_ref_str = patches_base_tag
+    if git.ref_exists('refs/tags/' + patches_base_tag):
         pbref_exists = '{t.green}existing git tag{t.normal}'
     else:
-        ot = git.object_type(version)
+        ot = git.object_type(patches_base_tag)
         if ot:
             pbref_exists = '{t.green}existing git %s{t.normal}' % ot
         else:
