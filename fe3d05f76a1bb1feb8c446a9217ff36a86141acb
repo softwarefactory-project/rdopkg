@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa32b979_683f1726",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-28T21:02:26Z",
+      "side": 1,
+      "message": "patches_base_ref says\n\n\"\"\"Return a git reference to patches branch base.\n\nBut indeed, it returns project version, not a git reference.\n\nI forgot about this distinction during the refactor :-/\n\nSo the comment needs to be updated and the name probably too. \"upstream version\" is already used to reference current upstream project version, so this could be \"project version\" or slightly ambiguous \"version\" as it was named previously.\n\nAlso a new function is needed that really returns git patches base git reference. Something like \n\nguess.version() or guess.project_version() with current behavior\n\nand\n\nguess.patches_base_ref() that really returns git ref using  version2tag(version()) or whatever is needed.",
+      "revId": "fe3d05f76a1bb1feb8c446a9217ff36a86141acb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa32b979_c8398343",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-28T21:02:26Z",
+      "side": 1,
+      "message": "That means vX.Y.Z needs coverage in feature tests.\n\nI created an RFE: https://github.com/softwarefactory-project/rdopkg/issues/154",
+      "revId": "fe3d05f76a1bb1feb8c446a9217ff36a86141acb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa32b979_4846d3c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-02-28T21:02:26Z",
+      "side": 1,
+      "message": "Assumptions are now broken, but the naming is still bad :) This sure raises a TODO for me.",
+      "revId": "fe3d05f76a1bb1feb8c446a9217ff36a86141acb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
