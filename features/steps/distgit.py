@@ -8,11 +8,11 @@ from rdopkg.utils.distgitmagic import git
 from rdopkg.utils.testing import exdiff
 
 
-def _create_distgit(context, version, release, tag=True):
+def _create_distgit(context, version, release, magic_comments=None):
     name = 'foo-bar'
     context.execute_steps(u'Given a temporary directory')
     context.distgitdir = distgitmagic.create_sample_distgit(
-        name, version=version, release=release)
+        name, version=version, release=release, magic_comments=magic_comments)
     os.chdir(context.distgitdir)
     # collect .spec state to compare against after actions
     spec = specfile.Spec()
@@ -20,9 +20,9 @@ def _create_distgit(context, version, release, tag=True):
     context.old_commit = git.current_commit()
 
 
-@given('a distgit at Version {version} and Release {release} without version git tag')  # noqa
+@given('a distgit at Version {version} and Release {release} with magic comments')  # noqa
 def step_impl(context, version, release):
-    _create_distgit(context, version, release, version_tag=False)
+    _create_distgit(context, version, release, magic_comments=context.text)
 
 
 @given('a distgit at Version {version} and Release {release}')
@@ -52,6 +52,12 @@ def step_impl(context, changeid):
 @given('a patches branch with {n:n} patches')
 def step_impl(context, n):
     distgitmagic.create_sample_patches_branch(n)
+
+
+@given('a patches branch with following patches')
+def step_impl(context):
+    patches = context.text.splitlines()
+    distgitmagic.create_sample_patches_branch(patches=patches)
 
 
 @given('a patches branch with {n:n} patches without version git tag')
@@ -162,6 +168,18 @@ def step_impl(context, n):
 def step_impl(context):
     spec = specfile.Spec()
     assert spec.get_patches_base() == (None, 0)
+
+
+@then('.spec file contains /{rex}/')
+def step_impl(context, rex):
+    spec = specfile.Spec()
+    assert re.search(rex, spec.txt), "/%s/ not found in .spec" % rex
+
+
+@then('.spec file contains {text}')
+def step_impl(context, text):
+    spec = specfile.Spec()
+    assert text in spec.txt, "%s not found in .spec" % text
 
 
 @then('new commit was created')

@@ -2,6 +2,7 @@ import os
 from rdopkg import helpers
 import rdopkg.utils.cmd
 import rdopkg.utils.git
+from rdopkg.utils.git import git_branch
 from rdopkg.utils import specfile
 
 
@@ -16,6 +17,8 @@ Group:            Development/Languages
 License:          ASL 2.0
 URL:              http://pypi.python.org/pypi/%{{name}}
 Source0:          http://pypi.python.org/lul/%{{name}}/%{{name}}-%{{version}}.tar.gz
+
+{magic_comments}
 
 BuildArch:        noarch
 BuildRequires:    python-setuptools
@@ -86,27 +89,36 @@ def do_patch(fn, content, msg):
     git('commit', '-m', msg)
 
 
-def add_n_patches(n, patch_name='Test Patch %d',
-                  branch='master-patches'):
-    if branch:
-        old_branch = rdopkg.utils.git.git.current_branch()
-        git('checkout', branch)
+def add_patches(patches):
+    if not patches:
+        return
+    for pn in patches:
+        fn = pn.replace('\s', '_')
+        do_patch(fn, pn + '\n', pn)
+
+
+def add_n_patches(n, patch_name='Test Patch %d'):
+    if not n:
+        return
     for i in range(1, n + 1):
         pn = patch_name % i
-        do_patch(pn, pn + '\n', pn)
-    if branch:
-        git('checkout', old_branch)
+        fn = pn.lower().replace(' ', '_')
+        do_patch(fn, pn + '\n', pn)
 
 
-def create_sample_distgit(name, version='1.2.3', release='1', path=None):
+def create_sample_distgit(name, version='1.2.3', release='1', path=None,
+                          magic_comments=None):
     if not path:
         path = name
     assert not os.path.exists(path)
     if "%{?dist}" not in release:
         release = release + "%{?dist}"
     os.makedirs(path)
+    if not magic_comments:
+        magic_comments = ''
     with helpers.cdir(path):
-        txt = SAMPLE_SPEC.format(name=name, version=version, release=release)
+        txt = SAMPLE_SPEC.format(name=name, version=version, release=release,
+                                 magic_comments=magic_comments)
         spec = specfile.Spec(fn='%s.spec' % name, txt=txt)
         spec.set_tag('Name', name)
         spec.save()
@@ -116,13 +128,15 @@ def create_sample_distgit(name, version='1.2.3', release='1', path=None):
     return os.path.abspath(path)
 
 
-def create_sample_patches_branch(n, version_tag=True):
+def create_sample_patches_branch(n=0, patches=None, version_tag=True):
     version = specfile.Spec().get_tag('Version')
-    branch = rdopkg.utils.git.git.current_branch()
+    branch = git.current_branch()
     if version_tag:
         git('tag', version, fatal=False, log_fail=False)
-    git('branch', '%s-patches' % branch)
+    git('checkout', '-b', '%s-patches' % branch)
+    add_patches(patches)
     add_n_patches(n, patch_name="Original Patch %d")
+    git('checkout', branch)
 
 
 def create_sample_upstream_new_version(
@@ -132,8 +146,7 @@ def create_sample_upstream_new_version(
     old_version = specfile.Spec().get_tag('Version')
     git('checkout', '-b', 'upstream', old_version)
     add_n_patches(n_patches,
-                  patch_name='Upstream Commit %d',
-                  branch=None)
+                  patch_name='Upstream Commit %d')
     for i in range(n_from_patches_branch):
         # emulate upstream patches that were backported
         git('cherry-pick', 'master-patches' + i * '~')
