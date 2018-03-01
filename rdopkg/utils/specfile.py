@@ -307,7 +307,7 @@ class Spec(object):
         Only a very limited subset of characters are accepted so no fancy stuff
         like matching groups etc.
         """
-        match = re.search(r'# *patches_ignore=([\w *.+?[\]{,}\-_]+)', self.txt)
+        match = re.search(r'# *patches_ignore=([\w *.+?[\]|{,}\-_]+)', self.txt)
         if not match:
             return None
         regex_string = match.group(1)

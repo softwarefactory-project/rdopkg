@@ -40,6 +40,37 @@ Feature: rdopkg new-version
             - Update to 1.0.0
             """
 
+    Scenario: rdopkg new-version with patches_ignore filtering
+        Given a distgit at Version 0.1 and Release 0.1 with magic comments:
+            """
+            # patches_ignore=DROP-IN-RPM|Wololo
+            # patches_base=0.1
+            """
+        Given a patches branch with following patches:
+            """
+            Banana Patch DROP-IN-RPM
+            Mango Patch
+            Wololo Patch
+            Kiwi Patch
+            """
+        Given a new version 1.0.0
+        When I run rdopkg new-version -ltU 1.0.0
+        Then command output contains 'Action finished'
+        Then .spec file tag Version is 1.0.0
+        Then .spec file tag Release is 1%{?dist}
+        Then .spec file has 2 patches defined
+        Then .spec file contains patches_base=1.0.0
+        Then .spec file contains new changelog entry with 1 lines
+        Then new commit was created
+        Then git is clean
+        Then last commit message is:
+            """
+            foo-bar-1.0.0-1
+
+            Changelog:
+            - Update to 1.0.0
+            """
+
     Scenario: rdopkg new-version --bump-only --bug <id>
         Given a distgit at Version 2.0.0 and Release 3
         When I run rdopkg new-version --bump-only -n 2.1.0 --bug rhbz#12345
