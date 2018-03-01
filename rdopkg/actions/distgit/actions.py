@@ -957,7 +957,7 @@ def update_patches(branch, local_patches_branch, bump_only=False,
             git('add', pfn)
 
     spec.set_new_patches(patch_fns)
-    patches_branch_ref = git('rev-parse', local_patches_branch)
+    patches_branch_ref = git('rev-parse', local_patches_branch, log_cmd=False)
     spec.set_commit_ref_macro(patches_branch_ref)
     spec.save()
 

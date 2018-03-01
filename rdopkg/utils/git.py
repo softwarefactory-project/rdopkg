@@ -254,7 +254,7 @@ class Git(ShellCommand):
         return self("config", *params)
 
     def checkout(self, branch):
-        self("checkout", branch)
+        self("checkout", branch, log_cmd=False)
 
     def remove(self, hash):
         self('rebase', '--onto', hash + '^', hash, '--preserve-merges',
