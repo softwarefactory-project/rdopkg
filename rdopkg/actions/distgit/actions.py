@@ -890,10 +890,11 @@ def update_patches(branch, local_patches_branch, bump_only=False,
     spec.sanity_check()
     patches_base, n_excluded = spec.get_patches_base()
     ignore_regex = spec.get_patches_ignore_regex()
-    if not ignore_regex:
-        log.info('No valid patch filtering regex found in the spec file.')
     if ignore_regex and patches_base is None:
+        # TODO: patches_base and patches_ignore should be independent
+        # patches_ignore feature tests should help with this a lot
         raise exception.OnlyPatchesIgnoreUsed()
+        pass
 
     patch_fns = spec.get_patch_fns()
     for pfn in patch_fns:
@@ -911,6 +912,14 @@ def update_patches(branch, local_patches_branch, bump_only=False,
         filtered_patches = flatten(ranges)
     n_filtered_out = len(patches) - len(filtered_patches)
 
+    if ignore_regex:
+        fmt = ('\nUsing {t.bold}patches_ignore={t.normal}{t.magenta}%s'
+               '{t.normal} regexp to filter out patches.'
+               ) % ignore_regex.pattern
+    else:
+        fmt = ('\nNo valid {t.bold}patches_ignore{t.normal} '
+               'filtering regex found in the .spec file.')
+    log.info(fmt.format(t=log.term))
     log.info(
         "\n{t.bold}{n} patches{t.normal} on top of {t.bold}{tag}{t.normal}"
         ", {t.bold}{ne}{t.normal} excluded by base"
@@ -925,6 +934,7 @@ def update_patches(branch, local_patches_branch, bump_only=False,
         for hsh, title in reversed(filtered_patches):
             log.info("%s  %s" % (log.term.green(hsh), title))
 
+        log.info("")
         patch_fns = []
         for patch_range in ranges:
             start_commit, _title = patch_range[0]

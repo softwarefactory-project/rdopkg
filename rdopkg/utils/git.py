@@ -1,9 +1,23 @@
+import contextlib
 import os
 import re
 
 from rdopkg import exception
 from rdopkg.utils.cmd import run
 from rdopkg.utils.cmd import ShellCommand
+
+
+@contextlib.contextmanager
+def git_branch(branch):
+    if branch:
+        old_branch = git.current_branch()
+        git('checkout', branch)
+        try:
+            yield
+        finally:
+            git('checkout', old_branch)
+    else:
+        yield
 
 
 class Git(ShellCommand):
