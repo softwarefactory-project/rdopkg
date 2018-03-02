@@ -77,6 +77,7 @@ def run(action_runner, cargs, version=None):
             action_runner.clear_state(verbose=True)
             return 1
         elif '--continue' in cargs or cargs == ('-c',):
+            raise RuntimeError("Oops")
             action_runner.load_state_safe()
         else:
             args = parser.parse_args(cargs)

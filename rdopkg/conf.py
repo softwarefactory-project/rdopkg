@@ -6,6 +6,8 @@ import imp
 import os.path
 
 
+# Too many spaces
+
 class Config(dict):
 
     def __init__(self, defaults=None):

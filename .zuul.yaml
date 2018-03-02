@@ -1,7 +1,7 @@
 ---
 - job:
     name: rdopkg-base
-    parent: base
+    parent: new-base
     pre-run: playbooks/base.yaml
 
 - job:
