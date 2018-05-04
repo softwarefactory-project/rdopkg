@@ -52,8 +52,8 @@ def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
              verbose=False):
     if not (reqs_ref or reqs_file or spec or load or load_file):
         reqs_ref = guess.patches_base_ref()
-    if not (bool(reqs_ref) ^ bool(reqs_file) ^ bool(spec) ^
-            bool(load) ^ bool(load_file)):
+    if not (bool(reqs_ref) ^ bool(reqs_file) ^ bool(spec)
+            ^ bool(load) ^ bool(load_file)):
         raise exception.InvalidUsage(
             why="Only one requirements source (-r/-R/-s/-l/-L) can be "
                 "selected.")
