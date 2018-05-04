@@ -266,8 +266,8 @@ def new_version_setup(patches_branch=None, local_patches=False,
     args['new_rpm_version'] = new_rpm_version
     if new_milestone:
         args['new_milestone'] = new_milestone
-    if (rpm_version != new_rpm_version or
-            bool(new_milestone) != bool(rpm_milestone)):
+    if (rpm_version != new_rpm_version
+            or bool(new_milestone) != bool(rpm_milestone)):
         if new_milestone:
             args['new_release'] = '0.1'
         else:
