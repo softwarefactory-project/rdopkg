@@ -947,6 +947,7 @@ def update_patches(branch, local_patches_branch, bump_only=False,
             format_patch_cmd = ['-c', 'core.abbrev=7',
                                 'format-patch', '--no-renames',
                                 '--no-signature', '-N', '--ignore-submodules',
+                                '--stat=80', '--summary',
                                 '--start-number', str(start_number), rng]
 
             o = git(*format_patch_cmd)
