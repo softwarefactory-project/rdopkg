@@ -37,6 +37,8 @@ class Config(dict):
 cfg = Config({
     'HOME_DIR': os.path.expanduser("~/.rdopkg"),
     'RDOINFO_REPO': 'https://github.com/redhat-openstack/rdoinfo.git',
+    'RDOINFO_RAW_URL': ('https://raw.githubusercontent.com/'
+                        'redhat-openstack/rdoinfo/master/'),
     'FETCH_PERIOD': 600,
 })
 cfg_files = []
