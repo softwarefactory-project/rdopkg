@@ -1,4 +1,5 @@
 from __future__ import print_function
+from distroinfo.query import get_distrepos
 import re
 import pymod2pkg
 
@@ -251,8 +252,8 @@ def color_matched_required_vers(matches):
 
 
 def reqquery(reqs, release, dist=None, module2pkg=True, verbose=False):
-    info = rdoinfo.get_default_inforepo()
-    distrepos = info.get_distrepos(release=release, dist=dist)
+    ri = rdoinfo.get_rdoinfo().get_info()
+    distrepos = get_distrepos(ri, release=release, dist=dist)
     r = []
     for rls, dist, repos in distrepos:
         packages = []

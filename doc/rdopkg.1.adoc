@@ -475,7 +475,7 @@ Use `-s`/`--strict` to disable magic substring search and only match whole
 fields.
 
 This command is a human interface to
-`rdopkg.actionmods.rdoinfo.find_package()` helper function.
+`distroinfo.query.find_package()` function.
 
 *Examples of usage:*
 
@@ -709,9 +709,6 @@ https://github.com/redhat-openstack/rdoinfo
 and more.
 
 You can view the `rdoinfo` metada using `rdopkg info`.
-
-`rdopkg.actionmods.rdoinfo` module provides a convenient interface to `rdoinfo`
-should you want to integrate it into your own codez.
 
 
 SEE ALSO

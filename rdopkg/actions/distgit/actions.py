@@ -2,6 +2,7 @@
 This is the main rdopkg action module with actions for distgit management.
 """
 from __future__ import print_function
+from distroinfo.query import get_package
 import itertools
 import os
 import re
@@ -320,9 +321,9 @@ def clone(
         use_master_distgit=False,
         gerrit_remotes=False,
         review_user=None):
-    inforepo = rdoinfo.get_default_inforepo()
-    inforepo.init(force_fetch=force_fetch)
-    pkg = inforepo.get_package(package)
+    rdo = rdoinfo.get_rdoinfo()
+    ri = rdo.get_info()
+    pkg = get_package(ri, package)
     if not pkg:
         raise exception.InvalidRDOPackage(package=package)
     if use_master_distgit:

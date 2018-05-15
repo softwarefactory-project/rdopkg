@@ -1,4 +1,5 @@
 from __future__ import print_function
+from distroinfo.query import get_distrepos
 import re
 
 from rdopkg.actionmods import rdoinfo
@@ -37,10 +38,10 @@ def query_repos(distrepos, package, verbose=False):
 
 
 def query_rdo(rlsdist, package, verbose=False):
-    inforepo = rdoinfo.get_default_inforepo()
-    inforepo.init()
+    rdo = rdoinfo.get_rdoinfo()
+    ri = rdo.get_info()
     _release, _, _dist = rlsdist.partition('/')
-    rds = inforepo.get_distrepos(_release, _dist)
+    rds = get_distrepos(ri, _release, _dist)
     results = []
     for release, dist, distrepos in rds:
         r = query_repos(distrepos, package, verbose=verbose)

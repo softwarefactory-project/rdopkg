@@ -226,9 +226,8 @@ def fuser():
 
 
 def _get_rdoinfo():
-    inforepo = rdoinfo.get_default_inforepo()
-    inforepo.init(force_fetch=False)
-    return inforepo.get_info()
+    rdo = rdoinfo.get_rdoinfo()
+    return rdo.get_info()
 
 
 def osreleasedist_rdoinfo(branch):

@@ -20,6 +20,19 @@ def git_branch(branch):
         yield
 
 
+@contextlib.contextmanager
+def git_revision(gitrev):
+    if gitrev:
+        old_gitrev = git.current_commit()
+        git.checkout(gitrev)
+        try:
+            yield
+        finally:
+            git.checkout(old_gitrev)
+    else:
+        yield
+
+
 class Git(ShellCommand):
     command = "git"
 
