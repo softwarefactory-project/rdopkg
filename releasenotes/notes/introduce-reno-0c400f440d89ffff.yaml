@@ -1,0 +1,13 @@
+---
+prelude: >
+    This rdopkg release brings support for distroinfo and reno.
+features:
+  - Use distroinfo module to access rdoinfo. distroinfo was created by forking
+    rdoinfo parsing code from rdopkg and rdoinfo itself into a generic module.
+  - Try using reno module to maintain release notes.
+  - Allow '|' in patches_ignore regex.
+  - Reworked ``rdopkg doctor`` with rainbows.
+fixes:
+  - Fix version to tag translations for vX.Y.Z tag style.
+  - Prevent unneeded patch file changes using extra format-patch parameters.
+  - Improve Python 3 compatibility.
