@@ -1,0 +1,8 @@
+---
+prelude: >
+    This rdopkg release brings support for distroinfo and reno.
+features:
+  - distroinfo module is now used to access rdoinfo. distroinfo was created by
+    forking rdoinfo parsing code from rdopkg and rdoinfo itself into a generic
+    module.
+  - try using reno module to maintain release notes.
