@@ -9,13 +9,8 @@ INFO = logging.INFO
 VERBOSE = (logging.INFO + logging.DEBUG) / 2
 DEBUG = logging.DEBUG
 
-log = logging.getLogger('rdopkg')
-log.setLevel(logging.INFO)
-if len(log.handlers) < 1:
-    formatter = logging.Formatter(fmt='%(message)s')
-    handler = logging.StreamHandler()
-    handler.setFormatter(formatter)
-    log.addHandler(handler)
+logging.basicConfig(format='%(message)s', level=logging.INFO)
+log = logging.getLogger()
 
 
 class LogTerminal(terminal.Terminal):
