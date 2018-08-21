@@ -12,7 +12,8 @@ from rdopkg.utils import log
 
 def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False):
     if local_info:
-        di = DistroInfo(local_info=local_info)
+        di = DistroInfo(rdoinfo.RDO_INFO_FILES,
+                        local_info=local_info)
     else:
         di = rdoinfo.get_rdoinfo()
         if force_fetch:
@@ -40,7 +41,7 @@ def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False):
 
 def info_tags_diff(local_info, buildsys_tags=False):
     # TODO: support custom info files as an optional argument
-    di = DistroInfo('rdo-full.yml', local_info=local_info)
+    di = DistroInfo(rdoinfo.RDO_INFO_FILES, local_info=local_info)
     if buildsys_tags:
         tagsname = 'buildsys-tags'
     else:
@@ -59,7 +60,7 @@ def info_tags_diff(local_info, buildsys_tags=False):
 
 def findpkg(query, strict=False, local_info=None, force_fetch=False):
     if local_info:
-        di = DistroInfo('rdo-full.yml', local_info=local_info)
+        di = DistroInfo(rdoinfo.RDO_INFO_FILES, local_info=local_info)
     else:
         di = rdoinfo.get_rdoinfo()
     info = di.get_info()

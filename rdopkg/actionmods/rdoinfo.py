@@ -9,6 +9,9 @@ from rdopkg.utils import log
 from rdopkg.conf import cfg
 
 
+RDO_INFO_FILES = 'rdo-full.yml'
+
+
 def print_releases(info):
     print("{t.bold}RDO releases & repos:{t.normal}".format(t=log.term))
     for rls in info['releases']:
@@ -85,7 +88,7 @@ def print_pkg(pkg):
 
 
 def get_rdoinfo():
-    return DistroInfo('rdo-full.yml', remote_info=cfg['RDOINFO_RAW_URL'])
+    return DistroInfo(RDO_INFO_FILES, remote_info=cfg['RDOINFO_RAW_URL'])
 
 
 def get_default_inforepo(apply_tag=None, include_fns=None):
