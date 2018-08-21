@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d6fa2ae1_530a18e0",
+        "filename": "rdopkg/actions/info/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-08-21T15:15:54Z",
+      "side": 1,
+      "message": "YES, good catch. My head doesn\u0027t work too well in this apocalyptic heat.",
+      "parentUuid": "642047b3_5bb38a35",
+      "range": {
+        "startLine": 44,
+        "startChar": 20,
+        "endLine": 44,
+        "endChar": 34
+      },
+      "revId": "6cc7ccdd4f2fe5e2acfc57a7e074eae45fd984f1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "575216ba_c789c11a",
         "filename": "rdopkg/actions/info/actions.py",
         "patchSetId": 1
