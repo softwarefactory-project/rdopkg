@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "642047b3_5bb38a35",
+        "filename": "rdopkg/actions/info/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-08-21T14:59:52Z",
+      "side": 1,
+      "message": "Should we change it here to rdoinfo.RDO_INFO_FILES for consistency?",
+      "range": {
+        "startLine": 44,
+        "startChar": 20,
+        "endLine": 44,
+        "endChar": 34
+      },
+      "revId": "6cc7ccdd4f2fe5e2acfc57a7e074eae45fd984f1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "575216ba_c789c11a",
+        "filename": "rdopkg/actions/info/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-08-21T14:59:52Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "6cc7ccdd4f2fe5e2acfc57a7e074eae45fd984f1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
