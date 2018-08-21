@@ -12,7 +12,8 @@ from rdopkg.utils import log
 
 def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False):
     if local_info:
-        di = DistroInfo(local_info=local_info)
+        di = DistroInfo(rdoinfo.RDO_INFO_FILES,
+                        local_info=local_info)
     else:
         di = rdoinfo.get_rdoinfo()
         if force_fetch:
