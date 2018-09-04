@@ -1,0 +1,39 @@
+---
+- hosts: all
+  tasks:
+    - name: Install required dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+      - git
+      - createrepo
+      - python-virtualenv
+      - mock
+      - gcc
+      - redhat-rpm-config
+      - rpmdevtools
+      - libffi-devel
+      - openssl-devel
+      - yum-utils
+      - policycoreutils
+      become: true
+
+    - name: Set up mock configuration
+      shell:
+        cmd: |
+          cat << EOF | tee /etc/mock/site-defaults.cfg
+          config_opts['plugin_conf']['tmpfs_enable'] = True
+          config_opts['plugin_conf']['tmpfs_opts'] = {}
+          config_opts['plugin_conf']['tmpfs_opts']['required_ram_mb'] = 2048
+          config_opts['plugin_conf']['tmpfs_opts']['max_fs_size'] = '4g'
+          config_opts['plugin_conf']['tmpfs_opts']['mode'] = '0755'
+          config_opts['plugin_conf']['tmpfs_opts']['keep_mounted'] = True
+          EOF
+      become: true
+
+    - name: Add user to mock group
+      user: name="{{ ansible_user }}"
+            groups=mock
+            append=yes
+      become: true
