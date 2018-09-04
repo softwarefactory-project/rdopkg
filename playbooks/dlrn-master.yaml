@@ -1,0 +1,26 @@
+---
+- hosts: all
+  vars:
+    working_dir: '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/..'
+  tasks:
+    - name: Prepare virtualenv to test DLRN master
+      shell:
+        cmd: |
+          tox -e py27 --notest
+        chdir: "{{ working_dir }}/DLRN"
+    - name: Inject rdopkg into DLRN master virtualenv
+      shell:
+        cmd: |
+          . ../DLRN/.tox/py27/bin/activate
+          python setup.py install
+        chdir: "{{ working_dir }}/rdopkg"
+    - name: Run DLRN master tests with rdopkg
+      shell:
+        cmd: |
+          timeout --signal=SIGKILL 3600 ./scripts/run_tests.sh http://review.rdoproject.org/r/p/rdoinfo.git
+        chdir: "{{ working_dir }}/DLRN"
+    - name: Copy DLRN logs for collection
+      shell:
+        cmd: |
+          cp -r DLRN/logs rdopkg/logs
+        chdir: "{{ working_dir }}"
