@@ -53,6 +53,12 @@
         - name: test-node
           label: dib-centos-7
 
+- job:
+    name: dlrn-master
+    parent: rdopkg-base-py2
+    description: DLRN master integartion tests
+    run: playbooks/dlrn-master.yaml
+
 - project:
     name: rdopkg
     check:
@@ -61,12 +67,14 @@
         - rdopkg-py3-fedora-27
         - rdopkg-integration
         - rdopkg-codestyle
+        - dlrn-master
     gate:
       jobs:
         - rdopkg-py2-centos-7
         - rdopkg-py3-fedora-27
         - rdopkg-integration
         - rdopkg-codestyle
+        - dlrn-master
     periodic:
       jobs:
         - rdopkg-install-epel-7
