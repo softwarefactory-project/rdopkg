@@ -21,6 +21,17 @@
           label: f27-oci
 
 - job:
+    name: dlrn-base
+    parent: base
+    pre-run: playbooks/dlrn-base.yaml
+    irrelevant-files:
+      - ^doc/.*$
+    nodeset:
+      nodes:
+        - name: test-node
+          label: dib-centos-7
+
+- job:
     name: rdopkg-py2-centos-7
     parent: rdopkg-base-py2
     description: rdopkg unit and feature tests on python2
@@ -53,6 +64,12 @@
         - name: test-node
           label: dib-centos-7
 
+- job:
+    name: dlrn-master
+    parent: dlrn-base
+    description: DLRN master integration tests
+    run: playbooks/dlrn-master.yaml
+
 - project:
     name: rdopkg
     check:
@@ -61,12 +78,14 @@
         - rdopkg-py3-fedora-27
         - rdopkg-integration
         - rdopkg-codestyle
+        - dlrn-master
     gate:
       jobs:
         - rdopkg-py2-centos-7
         - rdopkg-py3-fedora-27
         - rdopkg-integration
         - rdopkg-codestyle
+        - dlrn-master
     periodic:
       jobs:
         - rdopkg-install-epel-7
