@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5f7d45c_b69a07b5",
+        "filename": ".zuul.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-09-05T08:40:33Z",
+      "side": 1,
+      "message": "typo :)",
+      "range": {
+        "startLine": 59,
+        "startChar": 29,
+        "endLine": 59,
+        "endChar": 40
+      },
+      "revId": "362201c0bf217ad855137a7b0efa6af27ec30f40",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "532a9cbc_f52b5aec",
+        "filename": ".zuul.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-09-05T08:40:33Z",
+      "side": 1,
+      "message": "The job is missing some preparation steps as a pre-run, see https://github.com/softwarefactory-project/DLRN/blob/master/playbooks/prepare.yaml",
+      "revId": "362201c0bf217ad855137a7b0efa6af27ec30f40",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
