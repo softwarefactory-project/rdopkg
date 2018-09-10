@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ec51dd09_eedd8650",
+        "filename": "playbooks/dlrn-master.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-09-10T14:31:39Z",
+      "side": 1,
+      "message": "This is not needed now, since DLRN is in required-projects",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "1c2381ac9782f3aa056d706bdb2260905ebc6d95",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
