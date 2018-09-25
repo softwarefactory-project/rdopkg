@@ -6,51 +6,57 @@ import pytest
 import test_common as common
 
 
-def _assert_vparts(version, numeric, rest):
+@pytest.mark.parametrize('version,numeric,rest', [
+    ('', '', ''),
+    ('1', '1', ''),
+    ('1.2.3', '1.2.3', ''),
+    ('1.2.3.0b1', '1.2.3', '.0b1'),
+    ('10.10.10.0rc2', '10.10.10', '.0rc2'),
+    ('a', 'a', ''),
+    ('a.b', 'a.b', ''),
+    ('1.b42', '1', '.b42'),
+    ('1.0.b4.2', '1.0', '.b4.2'),
+    ('1.2.3.a.b-c.d', '1.2.3', '.a.b-c.d'),
+])
+def test_version_parts(version, numeric, rest):
     parts = specfile.version_parts(version)
     assert parts == (numeric, rest)
 
 
-def test_version_parts():
-    _assert_vparts('', '', '')
-    _assert_vparts('1', '1', '')
-    _assert_vparts('1.2.3', '1.2.3', '')
-    _assert_vparts('1.2.3.0b1', '1.2.3', '.0b1')
-    _assert_vparts('10.10.10.0rc2', '10.10.10', '.0rc2')
-    _assert_vparts('a', 'a', '')
-    _assert_vparts('a.b', 'a.b', '')
-    _assert_vparts('1.b42', '1', '.b42')
-    _assert_vparts('1.0.b4.2', '1.0', '.b4.2')
-    _assert_vparts('1.2.3.a.b-c.d', '1.2.3', '.a.b-c.d')
-
-
-def _assert_rparts(release, nums, milestone, macros):
+@pytest.mark.parametrize('release,nums,milestone,macros', [
+    ('1', '1', '', ''),
+    ('0.1.2', '0.1.2', '', ''),
+    ('1.b1', '1', '.b1', ''),
+    ('0.1.rc2', '0.1', '.rc2', ''),
+    ('0.1%{?dist}', '0.1', '', '%{?dist}'),
+    ('0.1.b1%{?dist}', '0.1', '.b1', '%{?dist}'),
+    ('0.1.b1.%{?dist}', '0.1', '.b1', '.%{?dist}'),
+    ('0.1%{m1}%{m2}', '0.1', '', '%{m1}%{m2}'),
+    ('0.1.%m1%m2', '0.1', '', '.%m1%m2'),
+    ('0.1.0rc1%{m}', '0.1', '.0rc1', '%{m}'),
+    ('0.1.0.0b2%m', '0.1.0', '.0b2', '%m'),
+    ('0.1.0.000a000', '0.1.0', '.000a000', ''),
+    ('10.10.10.%{?milestone}', '10.10.10', '.%{?milestone}', ''),
+    ('10.10.10.%{?milestone}%{foo}',
+     '10.10.10', '.%{?milestone}', '%{foo}'),
+    ('0.0.0%{?milestone}.%bar',
+     '0.0.0', '%{?milestone}', '.%bar'),
+    ('%{ver}', '', '', '%{ver}'),
+])
+def test_release_parts(release, nums, milestone, macros):
     parts = specfile.release_parts(release)
     assert parts == (nums, milestone, macros)
 
 
-def test_release_parts():
-    _assert_rparts('1', '1', '', '')
-    _assert_rparts('0.1.2', '0.1.2', '', '')
-    _assert_rparts('1.b1', '1', '.b1', '')
-    _assert_rparts('0.1.rc2', '0.1', '.rc2', '')
-    _assert_rparts('0.1%{?dist}', '0.1', '', '%{?dist}')
-    _assert_rparts('0.1.b1%{?dist}', '0.1', '.b1', '%{?dist}')
-    _assert_rparts('0.1.b1.%{?dist}', '0.1', '.b1', '.%{?dist}')
-    _assert_rparts('0.1%{m1}%{m2}', '0.1', '', '%{m1}%{m2}')
-    _assert_rparts('0.1.%m1%m2', '0.1', '', '.%m1%m2')
-    _assert_rparts('0.1.0rc1%{m}', '0.1', '.0rc1', '%{m}')
-    _assert_rparts('0.1.0.0b2%m', '0.1.0', '.0b2', '%m')
-    _assert_rparts('0.1.0.000a000', '0.1.0', '.000a000', '')
-    _assert_rparts('10.10.10.%{?milestone}', '10.10.10', '.%{?milestone}', '')
-    _assert_rparts('10.10.10.%{?milestone}%{foo}',
-                   '10.10.10', '.%{?milestone}', '%{foo}')
-    _assert_rparts('0.0.0%{?milestone}.%bar',
-                   '0.0.0', '%{?milestone}', '.%bar')
-    _assert_rparts('%{ver}', '', '', '%{ver}')
-
-
-def _assert_vr(vr, epoch_arg, result):
+@pytest.mark.parametrize('vr,epoch_arg,result', [
+    ((None, '1.2.3', '0.1'), None, '1.2.3-0.1'),
+    ((None, '1.2.3', '666%{?dist}'), False, '1.2.3-666'),
+    ((None, '1.2.3', ''), True, '0:1.2.3'),
+    ((23, '1.2.3', ''), None, '23:1.2.3'),
+    ((23, '1.2.3', '0.1'), False, '1.2.3-0.1'),
+    ((23, '1.2.3', '666%{?dist}'), True, '23:1.2.3-666'),
+])
+def test_get_vr(vr, epoch_arg, result):
     epoch, version, release = vr
 
     def _get_tag_mock(tag, default=None, expand_macros=False):
@@ -73,15 +79,6 @@ def _assert_vr(vr, epoch_arg, result):
     spec.expand_macro = _expand_macro
     vr = spec.get_vr(epoch=epoch_arg)
     assert vr == result
-
-
-def test_get_vr():
-    _assert_vr((None, '1.2.3', '0.1'), None, '1.2.3-0.1')
-    _assert_vr((None, '1.2.3', '666%{?dist}'), False, '1.2.3-666')
-    _assert_vr((None, '1.2.3', ''), True, '0:1.2.3')
-    _assert_vr((23, '1.2.3', ''), None, '23:1.2.3')
-    _assert_vr((23, '1.2.3', '0.1'), False, '1.2.3-0.1')
-    _assert_vr((23, '1.2.3', '666%{?dist}'), True, '23:1.2.3-666')
 
 
 def test_patches_base_add_patched(tmpdir):
