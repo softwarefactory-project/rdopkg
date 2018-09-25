@@ -581,7 +581,7 @@ Then `rdopkg` will use `2014.2.3` as the base.  If instead your
 
 Then `rdopkg` will use `2014.2.3rc2` as the base.
 
-In older versions of `rodpkg`, it was necessary to explicitly set
+In older versions of `rdopkg`, it was necessary to explicitly set
 the patch base using a special `patches_base` comment in your spec
 file.  This is now **optional** behavior (the patches base is
 calculated automatically), but you can use this if you need to
