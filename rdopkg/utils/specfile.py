@@ -124,6 +124,10 @@ def version_parts(version):
 def release_parts(version):
     """
     Split RPM Release string into (numeric X.Y.Z part, milestone, rest).
+
+    :returns: a three-element tuple (number, milestone, rest). If we cannot
+              determine the "milestone" or "rest", those will be an empty
+              string.
     """
     numver, tail = version_parts(version)
     if numver and not re.match('\d', numver):
