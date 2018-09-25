@@ -492,7 +492,13 @@ class Spec(object):
         return release_parts(release)
 
     def recognized_release(self):
+        """
+        Check if this Release value is something we can parse.
+        :rtype: bool
+        """
         _, _, rest = self.get_release_parts()
+        # If "rest" is not a well-known value here, then this package is
+        # using a Release value pattern we cannot recognize.
         if rest == '' or re.match('%{\??dist}', rest):
             return True
         return False
