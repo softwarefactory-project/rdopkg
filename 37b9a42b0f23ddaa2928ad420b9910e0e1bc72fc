@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "91ff96b9_57652bdf",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 198
+      },
+      "writtenOn": "2018-09-26T16:48:22Z",
+      "side": 1,
+      "message": "This is a real Git tag from ceph-ansible.",
+      "revId": "37b9a42b0f23ddaa2928ad420b9910e0e1bc72fc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
