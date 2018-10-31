@@ -1,17 +1,16 @@
 from __future__ import print_function
-from past.builtins import basestring
 import collections
 import contextlib
 import os
 import re
 from six.moves import input
+from six import string_types
 import sys
 import yaml
 
 from rdopkg import exception
 from rdopkg.utils import log
 from rdopkg.utils.cmd import run
-
 
 def confirm(msg, default_yes=True):
     if sys.stdout.isatty():
@@ -148,7 +147,7 @@ def print_keyval(key, val, kb=True, vb=False):
         fmt += '{val}'
     if not isinstance(
             val,
-            basestring) and isinstance(
+            string_types) and isinstance(
             val,
             collections.Iterable):
         vals = "\n" + "\n".join(map(lambda x: '- ' + str(x), val))
