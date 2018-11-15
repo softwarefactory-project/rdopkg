@@ -145,7 +145,11 @@ def release_parts(version):
 
 
 def has_macros(s):
-    return s.find('%{') != -1
+    # detect escaping (%%)
+    rex = r".*(?<!%)%[\w{].*"
+    if re.match(rex, s):
+        return True
+    return False
 
 
 def nvrcmp(nvr1, nvr2):

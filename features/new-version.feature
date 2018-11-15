@@ -152,3 +152,23 @@ Feature: rdopkg new-version
         Then no new commit was created
         Then git is clean
         Then command output contains 'Invalid git reference: 2.2.2'
+
+    Scenario: rdopkg new-version --bump-only with macro in Name
+        Given a distgit at Version 2.0.0 and Release 3
+        When I prepend .spec file with:
+            """
+            %global lib foo
+            """
+        When I change .spec file tag Name to python-%lib-%{lib}
+        When I run rdopkg new-version --bump-only -n 2.1.0
+        Then command output contains 'Action finished'
+        Then new commit was created
+        Then git is clean
+        Then last commit message contains python-foo-foo
+        Then last commit message is:
+            """
+            python-foo-foo-2.1.0-1
+
+            Changelog:
+            - Update to 2.1.0
+            """
