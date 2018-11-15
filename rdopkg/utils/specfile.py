@@ -145,7 +145,7 @@ def release_parts(version):
 
 
 def has_macros(s):
-    return s.find('%{') != -1
+    return '%' in s
 
 
 def nvrcmp(nvr1, nvr2):

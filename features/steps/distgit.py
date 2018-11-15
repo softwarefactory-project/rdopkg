@@ -111,6 +111,13 @@ def step_impl(context, tag, value):
     spec.save()
 
 
+@when(u'I prepend .spec file with')
+def step_impl(context):
+    spec = specfile.Spec()
+    spec._txt = context.text + spec.txt
+    spec.save()
+
+
 @when(u'I undo all changes')
 def step_impl(context):
     git("stash")
