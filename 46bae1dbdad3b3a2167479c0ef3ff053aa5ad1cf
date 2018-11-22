@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "993f55d6_7846f41f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T20:09:59Z",
+      "side": 1,
+      "message": "clone: add support for custom *info\n\nwould be more consistent with format I use and also less specific ^^",
+      "revId": "46bae1dbdad3b3a2167479c0ef3ff053aa5ad1cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "516d2bd0_d958ced2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T20:09:59Z",
+      "side": 1,
+      "message": "Add -d/--distro \u003cDISTRO\u003e option to `rdopkg clone` (default is \u0027rdo\u0027)",
+      "revId": "46bae1dbdad3b3a2167479c0ef3ff053aa5ad1cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "421ad824_8e3f14c6",
+        "filename": "rdopkg/actionmods/rdoinfo.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T20:09:59Z",
+      "side": 1,
+      "message": "local function variables are lowercase in python\n\n-\u003e distro_raw_url",
+      "revId": "46bae1dbdad3b3a2167479c0ef3ff053aa5ad1cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b1a86b6_2fd2fe4b",
+        "filename": "rdopkg/actionmods/rdoinfo.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T20:09:59Z",
+      "side": 1,
+      "message": "In order to get meaningful message on missing config option:\n\n    from rdopkg import exception\n\n...\n\n    distro_raw_url \u003d distro.upper() + \u0027INFO_RAW_URL\u0027\n    try:\n        remote_info \u003d cfg[distro_raw_url]\n    except KeyError:\n        raise exception.InvalidUsage(\n            why\u003d\"Couldn\u0027t find config option %s for distro: %s\"\n                % (distro_raw_url, distro))\n    return DistroInfo(RDO_INFO_FILES, remote_info\u003dremote_info)",
+      "revId": "46bae1dbdad3b3a2167479c0ef3ff053aa5ad1cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
