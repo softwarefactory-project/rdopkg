@@ -320,8 +320,9 @@ def clone(
         force_fetch=False,
         use_master_distgit=False,
         gerrit_remotes=False,
-        review_user=None):
-    rdo = rdoinfo.get_rdoinfo()
+        review_user=None,
+        config='rdo'):
+    rdo = rdoinfo.get_distroinfo(config)
     ri = rdo.get_info()
     pkg = get_package(ri, package)
     if not pkg:

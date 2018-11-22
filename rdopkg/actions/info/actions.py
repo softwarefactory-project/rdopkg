@@ -15,7 +15,7 @@ def info(pkgs=None, local_info=None, apply_tag=None, force_fetch=False):
         di = DistroInfo(rdoinfo.RDO_INFO_FILES,
                         local_info=local_info)
     else:
-        di = rdoinfo.get_rdoinfo()
+        di = rdoinfo.get_distroinfo()
         if force_fetch:
             di.fetcher.cache_ttl = 0
     info = di.get_info(apply_tag=apply_tag)
@@ -62,7 +62,7 @@ def findpkg(query, strict=False, local_info=None, force_fetch=False):
     if local_info:
         di = DistroInfo(rdoinfo.RDO_INFO_FILES, local_info=local_info)
     else:
-        di = rdoinfo.get_rdoinfo()
+        di = rdoinfo.get_distroinfo()
     info = di.get_info()
     pkg = distroinfo.query.find_package(info, query, strict=strict)
     if not pkg:

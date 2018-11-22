@@ -225,13 +225,13 @@ def fuser():
     return os.environ['USER']
 
 
-def _get_rdoinfo():
-    rdo = rdoinfo.get_rdoinfo()
+def _get_distroinfo():
+    rdo = rdoinfo.get_distroinfo()
     return rdo.get_info()
 
 
 def osreleasedist_rdoinfo(branch):
-    info = _get_rdoinfo()
+    info = _get_distroinfo()
     for rls in info['releases']:
         for repo in rls['repos']:
             if repo['branch'] == branch:
@@ -272,7 +272,7 @@ def dist(branch=None, default=exception.CantGuess):
 
 
 def builds(release):
-    info = _get_rdoinfo()
+    info = _get_distroinfo()
     b = []
     for rls in info['releases']:
         if rls['name'] != release:

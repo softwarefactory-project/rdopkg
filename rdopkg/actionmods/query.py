@@ -38,7 +38,7 @@ def query_repos(distrepos, package, verbose=False):
 
 
 def query_rdo(rlsdist, package, verbose=False):
-    rdo = rdoinfo.get_rdoinfo()
+    rdo = rdoinfo.get_distroinfo()
     ri = rdo.get_info()
     _release, _, _dist = rlsdist.partition('/')
     rds = get_distrepos(ri, _release, _dist)

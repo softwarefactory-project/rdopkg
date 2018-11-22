@@ -9,7 +9,7 @@ from rdopkg.actionmods import rdoinfo
 
 
 def list_projects():
-    inforepo = rdoinfo.get_rdoinfo()
+    inforepo = rdoinfo.get_distroinfo()
     info = inforepo.get_info()
     pkgs = info['packages']
 

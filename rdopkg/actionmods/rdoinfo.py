@@ -87,10 +87,14 @@ def print_pkg(pkg):
     dp(pkg)
 
 
-def get_rdoinfo():
-    return DistroInfo(RDO_INFO_FILES, remote_info=cfg['RDOINFO_RAW_URL'])
+def get_distroinfo(config='rdo'):
+    """Retrieve distroinfo (default is RDO)
+    """
+    DISTRO_RAW_URL = config.upper() + 'INFO_RAW_URL'
+    remote_info = cfg[DISTRO_RAW_URL]
+    return DistroInfo(RDO_INFO_FILES, remote_info=remote_info)
 
 
 def get_default_inforepo(apply_tag=None, include_fns=None):
     raise DeprecationWarning("rdopkg >= 0.47.0 uses distroinfo, please use "
-                             "`get_rdoinfo` instead.")
+                             "`get_distroinfo` instead.")

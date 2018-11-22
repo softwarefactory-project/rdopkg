@@ -252,7 +252,7 @@ def color_matched_required_vers(matches):
 
 
 def reqquery(reqs, release, dist=None, module2pkg=True, verbose=False):
-    ri = rdoinfo.get_rdoinfo().get_info()
+    ri = rdoinfo.get_distroinfo().get_info()
     distrepos = get_distrepos(ri, release=release, dist=dist)
     r = []
     for rls, dist, repos in distrepos:
