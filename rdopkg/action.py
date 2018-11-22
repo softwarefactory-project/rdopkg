@@ -6,6 +6,11 @@ import six
 from rdopkg import exception
 from rdopkg.utils import log
 
+if six.PY2:
+    inspect_getargspec = inspect.getargspec
+else:
+    inspect_getargspec = inspect.getfullargspec
+
 
 class Arg(object):
     def __init__(self, name, **kwargs):
@@ -210,7 +215,7 @@ class ActionManager(object):
                     action=action.name, module=action.module)
             action.action_fun = action_fun
 
-        argspec = inspect.getargspec(action_fun)
+        argspec = inspect_getargspec(action_fun)
         fun_args = []
         if argspec.defaults:
             n_defaults = len(argspec.defaults)

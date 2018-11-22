@@ -1,8 +1,8 @@
 from __future__ import print_function
-import collections
 import contextlib
 import os
 import re
+import six
 from six.moves import input
 from six import string_types
 import sys
@@ -11,6 +11,11 @@ import yaml
 from rdopkg import exception
 from rdopkg.utils import log
 from rdopkg.utils.cmd import run
+
+if six.PY2:
+    from collections import Iterable
+else:
+    from collections.abc import Iterable
 
 
 def confirm(msg, default_yes=True):
@@ -150,7 +155,7 @@ def print_keyval(key, val, kb=True, vb=False):
             val,
             string_types) and isinstance(
             val,
-            collections.Iterable):
+            Iterable):
         vals = "\n" + "\n".join(map(lambda x: '- ' + str(x), val))
     else:
         vals = str(val)
