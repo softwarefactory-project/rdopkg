@@ -28,6 +28,8 @@ ACTIONS = [
                         "'gerrit-origin' and 'gerrit-patches'"),
                Arg('review_user', shortcut='-u', metavar='USER',
                    help="gerrit username for reviews"),
+               Arg('distro', shortcut='-d', metavar='DISTRO',
+                   help="distroinfo configuration"),
            ]),
     Action('pkgenv', help="show detected package environment",
            steps=[
