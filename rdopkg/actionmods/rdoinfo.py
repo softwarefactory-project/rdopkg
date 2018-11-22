@@ -4,12 +4,9 @@ import distroinfo
 import distroinfo.query
 from distroinfo.info import DistroInfo
 
-from rdopkg import helpers
+from rdopkg import exception, helpers
 from rdopkg.utils import log
 from rdopkg.conf import cfg
-
-
-RDO_INFO_FILES = 'rdo-full.yml'
 
 
 def print_releases(info):
@@ -87,10 +84,32 @@ def print_pkg(pkg):
     dp(pkg)
 
 
+def get_distroinfo(distro='rdo'):
+    """Retrieve distroinfo (default is 'rdo')
+    """
+    info_url_conf = distro.upper() + 'INFO_RAW_URL'
+    info_files_conf = distro.upper() + '_INFO_FILES'
+    try:
+        remote_info = cfg[info_url_conf]
+    except KeyError:
+        raise exception.InvalidUsage(
+            why="Couldn't find config option %s for distro: %s"
+                % (info_url_conf, distro))
+    try:
+        info_files = cfg[info_files_conf]
+    except KeyError:
+        raise exception.InvalidUsage(
+            why="Couldn't find config option %s for distro: %s"
+                % (info_files_conf, distro))
+    return DistroInfo(info_files, remote_info=remote_info)
+
+
 def get_rdoinfo():
-    return DistroInfo(RDO_INFO_FILES, remote_info=cfg['RDOINFO_RAW_URL'])
+    """Compat function
+    """
+    return get_distroinfo(distro='rdo')
 
 
 def get_default_inforepo(apply_tag=None, include_fns=None):
     raise DeprecationWarning("rdopkg >= 0.47.0 uses distroinfo, please use "
-                             "`get_rdoinfo` instead.")
+                             "`get_distroinfo` instead.")
