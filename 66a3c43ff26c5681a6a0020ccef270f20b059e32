@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "650ae7d1_b218658e",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2018-11-22T23:41:55Z",
+      "side": 1,
+      "message": "This change has one unwanted side-effect, not detecting escaping.\n\nI suggest using this snippet instead:\nimport re\nexpr\u003dr\".*(?\u003c!%)%[\\w{].*\"\nreturn True if re.match(expr, s) else False\n\ne.g: input \"%%foo\" would be detected as a macro by the changeset, while the regex above would correctly reject it.",
+      "revId": "66a3c43ff26c5681a6a0020ccef270f20b059e32",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
