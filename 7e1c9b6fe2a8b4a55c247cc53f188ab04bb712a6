@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e624d7e_5e745bf5",
+        "filename": "examples/rdo_projects.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "get_distroinfo() isn\u0027t taking any arguments here, thus I\u0027d leave this at `get_rdoinfo`",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "794b035c_0ac5108f",
+        "filename": "rdopkg/actionmods/query.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "get_distroinfo() isn\u0027t taking any arguments here, thus I\u0027d leave this at `get_rdoinfo`",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ae54431_bcaa0975",
+        "filename": "rdopkg/actionmods/rdoinfo.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "Because this is rdoinfo specific module and for the sake of backward compatibility, I\u0027d also add\n\ndef get_rdoinfo():\n    retrun get_distroinfo(config\u003d\u0027rdo\u0027)\n\nhere and use that from code that relies on rdoinfo specifically.\n\nI\u0027d only use get_distroinfo() from code that supports other infos (such as the one you\u0027re adding) and leave the rest at get_rdoinfo() so we can easily tell that code is rdoinfo specific.",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ebac9eac_3ab6ab31",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "get_distroinfo() isn\u0027t taking any arguments here, thus I\u0027d leave this at `get_rdoinfo`",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7757cc8d_ae1bb78a",
+        "filename": "rdopkg/actions/distgit/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "1) \u0027config\u0027 is too generic name for this I think. Consider somehow getting \"distro\" string in, such as \u0027distro-config\u0027 or just \u0027distro\u0027.\n\n2) -c is reserved for `rdopkg --continue`, need to use other shortcut. -d is currently only used for `rdopkg new-verison -d/--no-diff` which is pretty shady TBH and can (even should) be changed so we can use that alongside 1)",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4f6c76b5_2e068ab3",
+        "filename": "rdopkg/actions/distgit/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "here get_distroinfo is taking argument so it makes sense to use it as opposed to using get_rdoinfo.\n\nbut it\u0027s kwarg, so explicit get_distroinfo(config\u003dconfig) is preferred. with a better name that is :)",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4fcee5da_e4b3a5a0",
+        "filename": "rdopkg/actions/info/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "get_distroinfo() isn\u0027t taking any arguments here, thus I\u0027d leave this at `get_rdoinfo`",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d74b7719_e090ad78",
+        "filename": "rdopkg/actions/info/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "get_distroinfo() isn\u0027t taking any arguments here, thus I\u0027d leave this at `get_rdoinfo`",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e1037c8e_152d33d2",
+        "filename": "rdopkg/guess.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "you think \n\nrdoinfo.get_distroinfo().get_info()\n\nis too dense?",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4cbdde83_273258b4",
+        "filename": "rdopkg/guess.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "get_distroinfo() isn\u0027t taking any arguments here, thus I\u0027d leave this at `get_rdoinfo`",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0bc67a03_f92f1afc",
+        "filename": "rdopkg/guess.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 1,
+      "message": "get_distroinfo() isn\u0027t taking any arguments here, thus I\u0027d leave this at `get_rdoinfo`",
+      "revId": "7e1c9b6fe2a8b4a55c247cc53f188ab04bb712a6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

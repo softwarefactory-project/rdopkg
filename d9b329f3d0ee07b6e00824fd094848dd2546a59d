@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "77d55dc4_4668787f",
+        "filename": "examples/rdo_projects.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-22T14:22:54Z",
+      "side": 0,
+      "message": "Nice!",
+      "revId": "d9b329f3d0ee07b6e00824fd094848dd2546a59d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
