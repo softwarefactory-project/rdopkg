@@ -16,6 +16,24 @@
       "revId": "66a3c43ff26c5681a6a0020ccef270f20b059e32",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8bcb852_e8e7e500",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-26T15:24:45Z",
+      "side": 1,
+      "message": "Hah! I knew it\u0027s a good idea to bother you with this one :)\n\nI got a feeling this outght to have some side-effect but I didn\u0027t figure out which.",
+      "parentUuid": "650ae7d1_b218658e",
+      "revId": "66a3c43ff26c5681a6a0020ccef270f20b059e32",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
