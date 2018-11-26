@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "723e8c8e_f8a1b34a",
+        "filename": "rdopkg/actionmods/rdoinfo.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-26T15:39:54Z",
+      "side": 1,
+      "message": "On noes, I realized other infos will have different info_files, so that probably needs to go into config like\n*INFO_RAW_URL and get same handling.\n\nRDOINFO_RAW_URL\nRDOINFO_INFO_FILES (RDO_INFO_FILES is kinda ambiguous)\n\nI suggest adding RDOINFO_INFO_FILES to rdopkg/conf.py defaults and use that.",
+      "revId": "492b5eda0fe65d09bf0f37b6251c9559b272dfaa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
