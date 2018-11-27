@@ -14,24 +14,50 @@
     nodeset: centos-latest-runc
 
 - job:
+    name: rdopkg-base-coverage-py2
+    parent: rdopkg-base-py2
+    post-run: playbooks/fetch-coverage.yaml
+    success-url: coverage/index.html
+
+- job:
     name: rdopkg-base-py3
     parent: rdopkg-base
     abstract: true
     nodeset: fedora-latest-runc
 
 - job:
-    name: rdopkg-py2-centos
-    parent: rdopkg-base-py2
-    description: rdopkg unit and feature tests on python2
-    vars:
-      tox_envlist: py2-unit,py2-feature
+    name: rdopkg-base-coverage-py3
+    parent: rdopkg-base-py3
+    post-run: playbooks/fetch-coverage.yaml
+    success-url: coverage/index.html
 
 - job:
-    name: rdopkg-py3-fedora
-    parent: rdopkg-base-py3
-    description: rdopkg unit and feature tests on python3
+    name: rdopkg-py2-unit
+    parent: rdopkg-base-coverage-py2
+    description: rdopkg unit tests on python2
+    vars:
+      tox_envlist: py2-unit
+
+- job:
+    name: rdopkg-py2-feature
+    parent: rdopkg-base-coverage-py2
+    description: rdopkg feature tests on python2
+    vars:
+      tox_envlist: py2-feature
+
+- job:
+    name: rdopkg-py3-unit
+    parent: rdopkg-base-coverage-py3
+    description: rdopkg unit tests on python3
     vars:
       tox_envlist: py3-unit,py3-feature
+
+- job:
+    name: rdopkg-py3-feature
+    parent: rdopkg-base-coverage-py3
+    description: rdopkg feature tests on python3
+    vars:
+      tox_envlist: py3-feature
 
 - job:
     name: rdopkg-py2-integration
@@ -72,16 +98,20 @@
     name: rdopkg
     check:
       jobs:
-        - rdopkg-py2-centos
-        - rdopkg-py3-fedora
+        - rdopkg-py2-unit
+        - rdopkg-py3-unit
+        - rdopkg-py2-feature
+        - rdopkg-py3-feature
         - rdopkg-py2-integration
         - rdopkg-py3-integration
         - rdopkg-codestyle
         - rdopkg-dlrn-master
     gate:
       jobs:
-        - rdopkg-py2-centos
-        - rdopkg-py3-fedora
+        - rdopkg-py2-unit
+        - rdopkg-py3-unit
+        - rdopkg-py2-feature
+        - rdopkg-py3-feature
         - rdopkg-py2-integration
         - rdopkg-py3-integration
         - rdopkg-codestyle
