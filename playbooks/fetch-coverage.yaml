@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+    - name: Fetch coverage report if any
+      ignore_errors: yes
+      synchronize:
+        src: "{{ zuul.project.src_dir }}/htmlcov/"
+        mode: pull
+        dest: "{{ zuul.executor.log_root }}/coverage/"

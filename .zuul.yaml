@@ -2,6 +2,8 @@
 - job:
     name: rdopkg-base
     pre-run: playbooks/base.yaml
+    post-run: playbooks/fetch-coverage.yaml
+    success-url: coverage/index.html
     parent: tox
     abstract: true
     required-projects:
