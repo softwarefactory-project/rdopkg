@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - name: Generage coverate report
+      command: coverage html
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Fetch coverage report if any
+      synchronize:
+        src: "{{ zuul.project.src_dir }}/htmlcov/"
+        mode: pull
+        dest: "{{ zuul.executor.log_root }}/coverage/"
