@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ff17a4f_f7886171",
+        "filename": "rdopkg/actionmods/rdoinfo.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-11-29T17:07:27Z",
+      "side": 1,
+      "message": "info_url_conf \u003d distro.upper() + \u0027INFO_RAW_URL\u0027\ninfo_files_conf \u003d distro.upper() + \u0027_INFO_FILES\u0027\ntry:\n    remote_info \u003d cfg[info_url_conf]\nexcept KeyError:\n    ...\ntry:\n    info_files \u003d cfg[info_files_conf]\nexcept KeyError:\n    # similar error for missing info_files_conf\n\n\nthere should probably be a helper function to do this \"get config option with prefix from config or fail with proper error\" but we can do that in future patch once we have more generic distroinfo support and see what\u0027s really required.",
+      "revId": "404f1ab39257545eec533348e0dd7f9feef9342d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
