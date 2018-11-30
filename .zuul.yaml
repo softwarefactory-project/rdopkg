@@ -72,12 +72,13 @@
     name: rdopkg
     check:
       jobs:
-        - rdopkg-py2-centos
+          #        - rdopkg-py2-centos
         - rdopkg-py3-fedora
-        - rdopkg-py2-integration
+          #        - rdopkg-py2-integration
         - rdopkg-py3-integration
-        - rdopkg-codestyle
-        - rdopkg-dlrn-master
+          #        - rdopkg-codestyle
+          #        - rdopkg-dlrn-master
+        - rdopkg-install-epel
     gate:
       jobs:
         - rdopkg-py2-centos
