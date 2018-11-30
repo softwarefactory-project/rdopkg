@@ -1,12 +1,16 @@
 ---
 - job:
     name: rdopkg-base
-    parent: base
     pre-run: playbooks/base.yaml
+    parent: tox
+    abstract: true
+    required-projects:
+      - distroinfo
 
 - job:
     name: rdopkg-base-py2
     parent: rdopkg-base
+    abstract: true
     nodeset:
       nodes:
         - name: test-node
@@ -15,6 +19,7 @@
 - job:
     name: rdopkg-base-py3
     parent: rdopkg-base
+    abstract: true
     nodeset:
       nodes:
         - name: test-node
@@ -24,25 +29,29 @@
     name: rdopkg-py2-centos-7
     parent: rdopkg-base-py2
     description: rdopkg unit and feature tests on python2
-    run: playbooks/py2-tests.yaml
+    vars:
+      tox_envlist: py2-unit,py2-feature
 
 - job:
     name: rdopkg-py3-fedora-27
     parent: rdopkg-base-py3
     description: rdopkg unit and feature tests on python3
-    run: playbooks/py3-tests.yaml
+    vars:
+      tox_envlist: py3-unit,py3-feature
 
 - job:
     name: rdopkg-integration
     parent: rdopkg-base-py2
     description: rdopkg integration tests
-    run: playbooks/integration.yaml
+    vars:
+      tox_envlist: integration
 
 - job:
     name: rdopkg-codestyle
     parent: rdopkg-base-py2
     description: rdopkg code style checks
-    run: playbooks/codestyle.yaml
+    vars:
+      tox_envlist: pycodestyle
 
 - job:
     name: rdopkg-install-epel-7
