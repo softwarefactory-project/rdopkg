@@ -40,11 +40,18 @@
       tox_envlist: py3-unit,py3-feature
 
 - job:
-    name: rdopkg-integration
+    name: rdopkg-py2-integration
     parent: rdopkg-base-py2
-    description: rdopkg integration tests
+    description: rdopkg integration tests on python2
     vars:
-      tox_envlist: integration
+      tox_envlist: py2-integration
+
+- job:
+    name: rdopkg-py3-integration
+    parent: rdopkg-base-py3
+    description: rdopkg integration tests on python3
+    vars:
+      tox_envlist: py3-integration
 
 - job:
     name: rdopkg-codestyle
@@ -76,14 +83,16 @@
       jobs:
         - rdopkg-py2-centos-7
         - rdopkg-py3-fedora-27
-        - rdopkg-integration
+        - rdopkg-py2-integration
+        - rdopkg-py3-integration
         - rdopkg-codestyle
         - rdopkg-dlrn-master
     gate:
       jobs:
         - rdopkg-py2-centos-7
         - rdopkg-py3-fedora-27
-        - rdopkg-integration
+        - rdopkg-py2-integration
+        - rdopkg-py3-integration
         - rdopkg-codestyle
         - rdopkg-dlrn-master
     periodic:
