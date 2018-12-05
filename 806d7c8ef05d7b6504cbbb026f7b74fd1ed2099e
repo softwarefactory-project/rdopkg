@@ -84,6 +84,24 @@
     },
     {
       "key": {
+        "uuid": "35ba3ff3_0f73ed3c",
+        "filename": "rdopkg/utils/git.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2018-12-05T17:13:59Z",
+      "side": 1,
+      "message": "going for initial small refactor to extract logic from the code and use this as a holding place until a module is created that would handle this.",
+      "parentUuid": "7a016987_033781b1",
+      "revId": "806d7c8ef05d7b6504cbbb026f7b74fd1ed2099e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a016987_8341313c",
         "filename": "rdopkg/utils/git.py",
         "patchSetId": 3
