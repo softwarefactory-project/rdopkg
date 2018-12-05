@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "391cc3ac_9b8e1427",
+        "filename": "tests/test_bug_number_parsing.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2018-12-05T17:13:59Z",
+      "side": 1,
+      "message": "good idea",
+      "parentUuid": "d52d40ff_a9211976",
+      "revId": "44a796aacc803428e623ea32edc61f8115ede27d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "705e399b_434da8c6",
         "filename": "tests/test_bug_number_parsing.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2018-12-05T17:05:52Z",
       "side": 1,
       "message": "Do we really want to skip this?",
+      "revId": "44a796aacc803428e623ea32edc61f8115ede27d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9c804289_58caa1ec",
+        "filename": "tests/test_bug_number_parsing.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2018-12-05T17:13:59Z",
+      "side": 1,
+      "message": "This is to capture other forms that are currently not handled by rdopkg but would be good to be able to be handled in the future.",
+      "parentUuid": "705e399b_434da8c6",
       "revId": "44a796aacc803428e623ea32edc61f8115ede27d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
