@@ -1,0 +1,8 @@
+Code-Review+2: Jakub Ružička <jruzicka@redhat.com>
+Workflow+1: Jakub Ružička <jruzicka@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Wed, 05 Dec 2018 16:07:44 +0000
+Reviewed-on: https://softwarefactory-project.io/r/14453
+Project: rdopkg
+Branch: refs/heads/master
