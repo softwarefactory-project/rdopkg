@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a09d5ce_bc5e20bd",
+        "filename": "rdopkg/utils/git.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2018-12-10T13:56:22Z",
+      "side": 1,
+      "message": "Feels like a wrong module as there nothing git specific about this. Consider moving this to rdopkg.helpers ?",
+      "revId": "2f41c13477d4866812eb22869e4be213d18eba60",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
