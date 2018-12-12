@@ -16,6 +16,24 @@
       "revId": "2f41c13477d4866812eb22869e4be213d18eba60",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fbdf35a0_9b1a4e33",
+        "filename": "rdopkg/utils/git.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-12-12T16:57:52Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "5a09d5ce_bc5e20bd",
+      "revId": "2f41c13477d4866812eb22869e4be213d18eba60",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
