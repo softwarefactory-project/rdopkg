@@ -65,19 +65,6 @@ class InvalidAction(RdopkgException):
     msg_fmt = "Invalid action: %(action)s"
 
 
-class BuildArchSanityCheckFailed(RdopkgException):
-    msg_fmt = ("Due to mysterious ways of rpm, BuildArch needs to be placed "
-               "AFTER SourceX and PatchX lines in .spec file, "
-               "otherwise %%{patches} macro will be empty "
-               "and both %%autosetup and `git am %%{patches}` will fail.\n\n"
-               "Please move BuildArch AFTER SourceX and PatchX.")
-
-
-class DuplicatePatchesBaseError(RdopkgException):
-    msg_fmt = ("Please make sure to only have one "
-               "# patches_base= entry in .spec")
-
-
 class InvalidGitRef(RdopkgException):
     msg_fmt = "Invalid git reference: %(ref)s"
 
@@ -211,3 +198,12 @@ class NoPatchesChanged(RdopkgException):
 
 class NoDistgitChangesFound(RdopkgException):
     msg_fmt = "No distgit changes found"
+
+
+class InvalidLintCheck(RdopkgException):
+    msg_fmt = "Invalid lint check: %(check)s"
+
+
+class LintProblemsFound(RdopkgException):
+    exit_code = 23
+    msg_fmt = "Lint problems detected."
