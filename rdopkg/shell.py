@@ -89,12 +89,10 @@ def run(action_runner, cargs, version=None):
     except (
             exception.ActionInProgress,
             exception.BranchNotFound,
-            exception.BuildArchSanityCheckFailed,
             exception.CantGuess,
             exception.ConfigError,
             exception.CommandNotFound,
             exception.DebugAbort,
-            exception.DuplicatePatchesBaseError,
             exception.FileNotFound,
             exception.IncompleteChangelog,
             exception.InvalidPatchesBaseRef,

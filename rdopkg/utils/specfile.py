@@ -5,6 +5,7 @@ import re
 import time
 
 from rdopkg import exception
+from rdopkg.utils import lint
 
 RPM_AVAILABLE = False
 try:
@@ -433,10 +434,9 @@ class Spec(object):
             raise exception.DuplicatePatchesBaseError()
 
     def sanity_check(self):
-        method = self.patches_apply_method()
-        if method in ['git-am', 'autosetup']:
-            self.sanity_check_buildarch()
-        self.sanity_check_patches_base()
+        # TODO: replace with new lint functionality
+        hints = lint.lint(self.fn, checks=['sanity'])
+        lint.lint_report(hints, error_level='E')
 
     def patches_apply_method(self):
         if '\ngit am %{patches}' in self.txt:
