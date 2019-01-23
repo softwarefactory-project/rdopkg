@@ -5,6 +5,7 @@ import re
 import time
 
 from rdopkg import exception
+from rdopkg.utils import lint
 
 RPM_AVAILABLE = False
 try:
@@ -408,35 +409,9 @@ class Spec(object):
     def wipe_patches(self):
         self._txt = re.sub(r'\n+(?:(?:Patch|.patch)\d+[^\n]*)', '', self.txt)
 
-    def sanity_check_buildarch(self):
-        # make sure BuildArch is AFTER SourceX and PatchX lines,
-        # otherwise %{patches} macro is empty which causes trouble
-        bm = re.search('^BuildArch:', self.txt, flags=re.M)
-        if not bm:
-            return
-        bi = bm.start()
-        sm = re.search('^Source\d+:', self.txt, flags=re.M)
-        if sm:
-            si = sm.start()
-            if bi < si:
-                raise exception.BuildArchSanityCheckFailed()
-        pm = re.search('^Patch\d+:', self.txt, flags=re.M)
-        if pm:
-            pi = pm.start()
-            if bi < pi:
-                raise exception.BuildArchSanityCheckFailed()
-
-    def sanity_check_patches_base(self):
-        # duplicate patches_base might lead to unexpected behavior
-        bases = re.findall('^#\s*patches_base', self.txt, flags=re.M)
-        if len(bases) > 1:
-            raise exception.DuplicatePatchesBaseError()
-
     def sanity_check(self):
-        method = self.patches_apply_method()
-        if method in ['git-am', 'autosetup']:
-            self.sanity_check_buildarch()
-        self.sanity_check_patches_base()
+        hints = lint.lint(self.fn, checks=['sanity'])
+        lint.lint_report(hints, error_level='E')
 
     def patches_apply_method(self):
         if '\ngit am %{patches}' in self.txt:
