@@ -112,25 +112,25 @@ class ShellCommand(object):
 
 
 class GerritQuery(ShellCommand):
-        def __init__(self, host, port, log_cmd=True):
-            self.host = host
-            self.port = port
-            self.log_cmd = log_cmd
+    def __init__(self, host, port, log_cmd=True):
+        self.host = host
+        self.port = port
+        self.log_cmd = log_cmd
 
-        def __call__(self, *params, **kwargs):
-            if 'log_cmd' not in kwargs:
-                kwargs['log_cmd'] = self.log_cmd
-            results = run('ssh', '-p', self.port, self.host,
-                          'gerrit', 'query', '--format=JSON',
-                          *params, **kwargs)
-            # gerrit sends stats that we need to discard
-            result = results.split('}\n{')[0]
-            try:
-                j = json.loads(result + '}')
-            except ValueError:
-                j = json.loads(result)
-            if j.get('type') in ['error', 'stats']:
-                # we have no results, just the query stats
-                return None
-            else:
-                return j
+    def __call__(self, *params, **kwargs):
+        if 'log_cmd' not in kwargs:
+            kwargs['log_cmd'] = self.log_cmd
+        results = run('ssh', '-p', self.port, self.host,
+                      'gerrit', 'query', '--format=JSON',
+                      *params, **kwargs)
+        # gerrit sends stats that we need to discard
+        result = results.split('}\n{')[0]
+        try:
+            j = json.loads(result + '}')
+        except ValueError:
+            j = json.loads(result)
+        if j.get('type') in ['error', 'stats']:
+            # we have no results, just the query stats
+            return None
+        else:
+            return j

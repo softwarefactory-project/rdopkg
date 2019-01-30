@@ -20,9 +20,8 @@ echo 'testing `rdopkg info -l LOCAL`'
 pushd ${WORKSPACE}
 rm -rf rdoinfo
 git clone "$RDOINFO_URL" rdoinfo
-sed -i -e 's/- project: nova$/- project: testnova/' rdoinfo/rdo.yml
-rdopkg info -l ${WORKSPACE}/rdoinfo project:testnova \
-    | grep 'name: openstack-testnova'
+rdopkg info -l ${WORKSPACE}/rdoinfo project:nova \
+    | grep 'name: openstack-nova'
 rm -rf "${WORKSPACE}/rdoinfo"
 popd
 echo "...OK!"
