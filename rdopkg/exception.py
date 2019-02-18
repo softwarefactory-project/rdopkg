@@ -211,3 +211,12 @@ class NoPatchesChanged(RdopkgException):
 
 class NoDistgitChangesFound(RdopkgException):
     msg_fmt = "No distgit changes found"
+
+
+class InvalidLintCheck(RdopkgException):
+    msg_fmt = "Invalid lint check: %(check)s"
+
+
+class LintProblemsFound(RdopkgException):
+    exit_code = 23
+    msg_fmt = "Lint problems detected."
