@@ -104,6 +104,7 @@ def run(action_runner, cargs, version=None):
             exception.InvalidGitRef,
             exception.InvalidQuery,
             exception.InvalidUsage,
+            exception.LintProblemsFound,
             exception.ManualResolutionNeeded,
             exception.NoPatchesChanged,
             exception.NoDistgitChangesFound,
