@@ -241,6 +241,33 @@ and corresponding `Resolves:` lines in commit message.
 More use cases can be found in
 link:rdopkg-feature-new-version.7.html[rdopkg-feature-new-version(7)].
 
+
+ACTION: lint
+~~~~~~~~~~~~
+
+Run checks for errors in current distgit.
+
+Available checks selectable with `--lint-checks`:
+
+* `sanity`: internal rdopkg sanity checks on the .spec
+* `rpmlint`: run `rpmlint` tool on the .spec
+* `all`: run all available checks (default)
+
+Available error levels selectable with `--error-level` affect the exit code:
+
+* `E`: exit with code 23 when linting error is found (default)
+* `W`: exit with code 23 when linttng error or warning is found
+* `-`: only print errors/warnings, always returns 0
+
+*Most of the time you probably want just:*
+
+    rdopkg lint
+
+*Example of only running rpmlint with `W` error level:*
+
+    rdopkg lint --lint-checks rpmlint --error-level W
+
+
 ACTION: clone
 ~~~~~~~~~~~~~
 
