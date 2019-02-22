@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "344160d4_f84eeff2",
+        "filename": "rdopkg/actions/lint/__init__.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-02-22T14:32:51Z",
+      "side": 1,
+      "message": "It would be nice to mark the default here, just like in the docs.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 70
+      },
+      "revId": "94f0134f415e624969afa304cc8335dc52a1d5c8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "532bf3cb_03196a03",
+        "filename": "rdopkg/shell.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-02-22T14:32:51Z",
+      "side": 1,
+      "message": "What about InvalidLintCheck, is it not needed here?",
+      "revId": "94f0134f415e624969afa304cc8335dc52a1d5c8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3861dd69_9d052473",
+        "filename": "rdopkg/utils/lint.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-02-22T14:32:51Z",
+      "side": 1,
+      "message": "We are leaking the txt file descriptor here. In general it shouldn\u0027t be an issue, but we could make it a bit cleaner.",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 16
+      },
+      "revId": "94f0134f415e624969afa304cc8335dc52a1d5c8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
