@@ -130,7 +130,7 @@ def release_parts(version):
               string.
     """
     numver, tail = version_parts(version)
-    if numver and not re.match('\d', numver):
+    if numver and not re.match(r'\d', numver):
         # entire release is macro a la %{release}
         tail = numver
         numver = ''
@@ -146,7 +146,7 @@ def release_parts(version):
 
 def has_macros(s):
     # detect escaping (%%)
-    rex = r".*(?<!%)%[\w{].*"
+    rex = r'.*(?<!%)%[\w{].*'
     if re.match(rex, s):
         return True
     return False
@@ -243,7 +243,7 @@ class Spec(object):
 
     def get_tag(self, tag, default=exception.SpecFileParseError,
                 expand_macros=False):
-        m = re.search('^%s:\s+(\S.*)$' % tag, self.txt, re.M)
+        m = re.search(r'^%s:\s+(\S.*)$' % tag, self.txt, re.M)
         if not m:
             if default != exception.SpecFileParseError:
                 return default
@@ -343,7 +343,7 @@ class Spec(object):
     def set_patches_base(self, base):
         v, _ = self.get_patches_base()
 
-        if re.search("^#\s*patches_ignore\s*=\s*\S+", self.txt, flags=re.M):
+        if re.search(r'^#\s*patches_ignore\s*=\s*\S+', self.txt, flags=re.M):
             # This is a temporary hack as patches_ignore currently requires
             # explicit patches_base. This should be solved with a proper
             # magic comment parser and using Version in filtration logic
@@ -356,7 +356,7 @@ class Spec(object):
                 self._create_new_patches_base(base)
             else:
                 lines = self.txt.split('\n')
-                patch_base_regex = re.compile('(#\s*patches_base\s*=\s*)\w*')
+                patch_base_regex = re.compile(r'(#\s*patches_base\s*=\s*)\w*')
                 for idx, line in enumerate(lines):
                     match = patch_base_regex.match(line)
                     if match is not None:
@@ -411,16 +411,16 @@ class Spec(object):
     def sanity_check_buildarch(self):
         # make sure BuildArch is AFTER SourceX and PatchX lines,
         # otherwise %{patches} macro is empty which causes trouble
-        bm = re.search('^BuildArch:', self.txt, flags=re.M)
+        bm = re.search(r'^BuildArch:', self.txt, flags=re.M)
         if not bm:
             return
         bi = bm.start()
-        sm = re.search('^Source\d+:', self.txt, flags=re.M)
+        sm = re.search(r'^Source\d+:', self.txt, flags=re.M)
         if sm:
             si = sm.start()
             if bi < si:
                 raise exception.BuildArchSanityCheckFailed()
-        pm = re.search('^Patch\d+:', self.txt, flags=re.M)
+        pm = re.search(r'^Patch\d+:', self.txt, flags=re.M)
         if pm:
             pi = pm.start()
             if bi < pi:
@@ -428,7 +428,7 @@ class Spec(object):
 
     def sanity_check_patches_base(self):
         # duplicate patches_base might lead to unexpected behavior
-        bases = re.findall('^#\s*patches_base', self.txt, flags=re.M)
+        bases = re.findall(r'^#\s*patches_base', self.txt, flags=re.M)
         if len(bases) > 1:
             raise exception.DuplicatePatchesBaseError()
 
@@ -503,7 +503,7 @@ class Spec(object):
         _, _, rest = self.get_release_parts()
         # If "rest" is not a well-known value here, then this package is
         # using a Release value pattern we cannot recognize.
-        if rest == '' or re.match('%{\??dist}', rest):
+        if rest == '' or re.match(r'%{\??dist}', rest):
             return True
         return False
 
@@ -514,7 +514,7 @@ class Spec(object):
         rpm.delMacro(macro)
         if value:
             # replace
-            self._txt, n = re.subn(r'^(%s).*$' % rex, '\g<1>%s' % value,
+            self._txt, n = re.subn(r'^(%s).*$' % rex, r'\g<1>%s' % value,
                                    self.txt, flags=re.M)
             if n < 1:
                 # create new
@@ -523,7 +523,7 @@ class Spec(object):
             rpm.addMacro(macro, value)
         else:
             # remove
-            self._txt = re.sub(r'(^|\n)%s[^\n]+\n?' % rex, '\g<1>', self.txt)
+            self._txt = re.sub(r'(^|\n)%s[^\n]+\n?' % rex, r'\g<1>', self.txt)
 
     def get_macro(self, macro, expanded=False):
         if expanded:
