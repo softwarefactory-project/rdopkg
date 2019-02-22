@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "10fcabf6_ac746bc2",
+        "filename": "rdopkg/actions/lint/__init__.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2019-02-22T16:00:05Z",
+      "side": 1,
+      "message": "Right!",
+      "parentUuid": "344160d4_f84eeff2",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 70
+      },
+      "revId": "94f0134f415e624969afa304cc8335dc52a1d5c8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "532bf3cb_03196a03",
         "filename": "rdopkg/shell.py",
         "patchSetId": 3
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "2bf610d5_76b4bd65",
+        "filename": "rdopkg/shell.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2019-02-22T16:00:05Z",
+      "side": 1,
+      "message": "Keen eye ;)",
+      "parentUuid": "532bf3cb_03196a03",
+      "revId": "94f0134f415e624969afa304cc8335dc52a1d5c8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3861dd69_9d052473",
         "filename": "rdopkg/utils/lint.py",
         "patchSetId": 3
@@ -53,6 +95,30 @@
       "writtenOn": "2019-02-22T14:32:51Z",
       "side": 1,
       "message": "We are leaking the txt file descriptor here. In general it shouldn\u0027t be an issue, but we could make it a bit cleaner.",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 16
+      },
+      "revId": "94f0134f415e624969afa304cc8335dc52a1d5c8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7307587f_04c2cdc2",
+        "filename": "rdopkg/utils/lint.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 421
+      },
+      "writtenOn": "2019-02-22T16:00:05Z",
+      "side": 1,
+      "message": "you mean the file object created by open(spec_fn, \u0027r\u0027)?\n\nI believe it is freed automatically after the function ends as there is no reference to it. txt is also freed as no reference to it is returned.",
+      "parentUuid": "3861dd69_9d052473",
       "range": {
         "startLine": 85,
         "startChar": 0,
