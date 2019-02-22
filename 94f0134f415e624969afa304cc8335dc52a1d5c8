@@ -128,6 +128,30 @@
       "revId": "94f0134f415e624969afa304cc8335dc52a1d5c8",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "31465be4_c5f896a9",
+        "filename": "rdopkg/utils/lint.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-02-22T16:32:51Z",
+      "side": 1,
+      "message": "Yes, that\u0027s what I meant. I\u0027m not a huge fan of relying on garbage collection for that (it might be interpreter-dependant), but as I said it shouldn\u0027t be an issue.",
+      "parentUuid": "7307587f_04c2cdc2",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 16
+      },
+      "revId": "94f0134f415e624969afa304cc8335dc52a1d5c8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
