@@ -1,7 +1,7 @@
 blessings
 bunch
-# needed for `rdopkg info` to work after rdoinfo reorg
-distroinfo>=0.2.0
+# `rdopkg info` is slow with older distroinfo
+distroinfo>=0.3.0
 future
 paramiko
 pbr>=0.5.6
