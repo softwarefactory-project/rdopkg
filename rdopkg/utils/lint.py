@@ -21,6 +21,22 @@ class LintHint(object):
         return ('%s: %s: %s' %
                 (self.location, self.level, self.msg))
 
+    def pretty_str(self):
+        fmt = "{loc}: {t.%s}{lvl}{t.normal}: {t.bold}{msg1}{t.normal} {msg2}"
+        if self.level == 'W':
+            color = 'yellow'
+        else:
+            color = 'red'
+        fmt = fmt % color
+        msg1, _, msg2 = self.msg.partition(' ')
+        return fmt.format(
+            loc=self.location,
+            lvl=self.level,
+            msg1=msg1,
+            msg2=msg2,
+            t=log.term
+        )
+
 
 RE_RPMLINT_HINT = r'(.*):\s+([EW]):\s+(.+)$'
 RE_RPMLINT_SUMMARY = (r'\d+ packages and \d+ specfiles checked; '
@@ -76,7 +92,7 @@ def sanity_check_buildarch(txt):
 
 def sanity_check_patches_base(txt):
     # duplicate patches_base might lead to unexpected behavior
-    bases = re.findall('^#\s*patches_base', txt, flags=re.M)
+    bases = re.findall(r'^#\s*patches_base', txt, flags=re.M)
     if len(bases) > 1:
         return False
     return True
@@ -96,8 +112,8 @@ def sanity_check(spec_fn):
             "buildarch-before-sources: Due to mysterious"
             "ways of rpm, BuildArch needs to be placed "
             "AFTER SourceX and PatchX lines in .spec file, "
-            "otherwise %%{patches} macro will be empty "
-            "and both %%autosetup and `git am %%{patches}` will fail. "
+            "otherwise %{patches} macro will be empty "
+            "and both %autosetup and `git am %{patches}` will fail. "
             "Please move BuildArch AFTER SourceX and PatchX lines.")))
     if not sanity_check_patches_base(txt):
         hints.append(LintHint(spec_fn, 'E', (
@@ -139,19 +155,22 @@ def lint_report(hints, error_level=None):
     errors = hint_dict.get('E', [])
     n_errors = len(errors)
     if errors:
-        print("\n%d ERRORS found:" % n_errors)
+        print("\n{t.red}{n} ERRORS found:{t.normal}".format(
+            n=n_errors, t=log.term))
         for e in errors:
-            print(e)
+            print(e.pretty_str())
 
     warns = hint_dict.get('W', [])
     n_warns = len(warns)
     if warns:
-        print("\n%d WARNINGS found:" % n_warns)
+        print("\n{t.yellow}{n} WARNINGS found:{t.normal}".format(
+            n=n_warns, t=log.term))
         for e in warns:
-            print(e)
+            print(e.pretty_str())
 
     if n_errors == 0 and n_warns == 0:
-        print('no linting errors found \o/')
+        print("\n{t.green}no linting errors found \\o/{t.normal}".format(
+            t=log.term))
         return
 
     critical_error = False
