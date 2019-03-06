@@ -34,6 +34,24 @@
       "revId": "2f41c13477d4866812eb22869e4be213d18eba60",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3fc5e7d3_3a922cf3",
+        "filename": "rdopkg/utils/git.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-03-06T19:52:53Z",
+      "side": 1,
+      "message": "ack good idea. done",
+      "parentUuid": "fbdf35a0_9b1a4e33",
+      "revId": "2f41c13477d4866812eb22869e4be213d18eba60",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
