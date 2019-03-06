@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "243ab5e1_3e3dfc06",
+        "filename": "tests/test_bug_number_parsing.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-03-06T19:58:13Z",
+      "side": 1,
+      "message": "I was getting conflicts with fixtures when I tried to do this refactor.",
+      "parentUuid": "d52d40ff_a9211976",
+      "revId": "44a796aacc803428e623ea32edc61f8115ede27d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "705e399b_434da8c6",
         "filename": "tests/test_bug_number_parsing.py",
         "patchSetId": 4
