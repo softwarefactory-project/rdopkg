@@ -10,7 +10,7 @@ from rdopkg.conf import cfg
 
 
 def print_releases(info):
-    print("{t.bold}RDO releases & repos:{t.normal}".format(t=log.term))
+    print("{t.bold}releases & repos:{t.normal}".format(t=log.term))
     for rls in info['releases']:
         s = "  {t.bold}{rls}{t.normal}".format(t=log.term, rls=rls['name'])
         if 'fedora' in rls:
@@ -36,7 +36,7 @@ def print_releases(info):
 def print_pkg_summary(info):
     pkgs = info['packages']
     n = len(pkgs)
-    print("{t.bold}{n} RDO packages defined:{t.normal}".format(
+    print("{t.bold}{n} packages defined:{t.normal}".format(
         t=log.term, n=n))
     confs = {}
     for pkg in pkgs:
@@ -84,24 +84,36 @@ def print_pkg(pkg):
     dp(pkg)
 
 
+def info_file(distro='rdo'):
+    """Return default distroinfo info file(s)"""
+    info_file_conf = distro.upper() + 'INFO_FILE'
+    try:
+        return cfg[info_file_conf]
+    except KeyError:
+        raise exception.InvalidUsage(
+            why="Couldn't find config option %s for distro: %s"
+                % (info_file_conf, distro))
+
+
 def get_distroinfo(distro='rdo'):
-    """Retrieve distroinfo (default is 'rdo')
-    """
-    info_url_conf = distro.upper() + 'INFO_RAW_URL'
-    info_files_conf = distro.upper() + '_INFO_FILES'
+    """Get DistroInfo initialized from configuration"""
+    _info_file = info_file(distro)
+    # prefer git fetcher if available
+    git_info_url_conf = distro.upper() + 'INFO_REPO'
     try:
-        remote_info = cfg[info_url_conf]
+        remote_git_info = cfg[git_info_url_conf]
+        return DistroInfo(_info_file, remote_git_info=remote_git_info)
+    except KeyError:
+        pass
+    # try raw remote fetcher
+    remote_info_url_conf = distro.upper() + 'INFO_RAW_URL'
+    try:
+        remote_info = cfg[remote_info_url_conf]
+        return DistroInfo(_info_file, remote_info=remote_info)
     except KeyError:
         raise exception.InvalidUsage(
-            why="Couldn't find config option %s for distro: %s"
-                % (info_url_conf, distro))
-    try:
-        info_files = cfg[info_files_conf]
-    except KeyError:
-        raise exception.InvalidUsage(
-            why="Couldn't find config option %s for distro: %s"
-                % (info_files_conf, distro))
-    return DistroInfo(info_files, remote_info=remote_info)
+            why="Couldn't find config option %s or %s for distro: %s"
+                % (git_info_url_conf, remote_info_url_conf, distro))
 
 
 def get_rdoinfo():
