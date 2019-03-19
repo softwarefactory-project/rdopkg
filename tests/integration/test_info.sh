@@ -15,13 +15,15 @@ popd
 echo "...OK!"
 
 
-echo 'testing `rdopkg info -l LOCAL`'
+echo 'testing `rdopkg info -l LOCAL -i INFO_FILE`'
 
 pushd ${WORKSPACE}
 rm -rf rdoinfo
 git clone "$RDOINFO_URL" rdoinfo
-rdopkg info -l ${WORKSPACE}/rdoinfo project:nova \
-    | grep 'name: openstack-nova'
+# move the info file to test -i/--info-file
+mv rdoinfo/rdo-full.yml rdoinfo/custom-info.yml
+rdopkg info -l ${WORKSPACE}/rdoinfo -i custom-info.yml \
+    project:nova | grep 'name: openstack-nova'
 rm -rf "${WORKSPACE}/rdoinfo"
 popd
 echo "...OK!"
