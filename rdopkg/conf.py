@@ -36,7 +36,7 @@ class Config(dict):
 
 cfg = Config({
     'HOME_DIR': os.path.expanduser("~/.rdopkg"),
-    'RDO_INFO_FILES': 'rdo-full.yml',
+    'RDOINFO_FILE': 'rdo-full.yml',
     'RDOINFO_REPO': 'https://github.com/redhat-openstack/rdoinfo.git',
     'RDOINFO_RAW_URL': ('https://raw.githubusercontent.com/'
                         'redhat-openstack/rdoinfo/master/'),
