@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "77bd8820_009f0c2c",
+        "filename": "rdopkg/actions/info/actions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-03-20T14:18:08Z",
+      "side": 1,
+      "message": "pycodestyle is complaining about this blank line at the end of the file.",
+      "revId": "2b8e13e4cfe7802e881ca29eeb5d0a564a425162",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
