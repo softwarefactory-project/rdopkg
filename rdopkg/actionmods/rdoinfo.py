@@ -84,8 +84,10 @@ def print_pkg(pkg):
     dp(pkg)
 
 
-def info_file(distro='rdo'):
+def info_file(distro=None):
     """Return default distroinfo info file"""
+    if not distro:
+        distro = cfg['DISTRO']
     info_file_conf = distro.upper() + 'INFO_FILE'
     try:
         return cfg[info_file_conf]
@@ -95,8 +97,10 @@ def info_file(distro='rdo'):
                 % (info_file_conf, distro))
 
 
-def get_distroinfo(distro='rdo'):
+def get_distroinfo(distro=None):
     """Get DistroInfo initialized from configuration"""
+    if not distro:
+        distro = cfg['DISTRO']
     _info_file = info_file(distro)
     # prefer git fetcher if available
     git_info_url_conf = distro.upper() + 'INFO_REPO'
