@@ -35,7 +35,10 @@ def rdopkg(*cargs):
         $> rdopkg new-version 1.2.3
     """
     runner = rdopkg_runner()
-    return shell.run(runner, cargs=cargs, version=__version__)
+    return shell.run(runner,
+                     cargs=cargs,
+                     prog='rdopkg',
+                     version=__version__)
 
 
 def main():

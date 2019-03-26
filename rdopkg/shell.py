@@ -33,9 +33,9 @@ def get_action_args(action, args):
     return aargs
 
 
-def get_parser(runner, version=None):
+def get_parser(runner, prog='rdopkg', version=None):
     parser = argparse.ArgumentParser(
-        prog='rdopkg',
+        prog=prog,
         formatter_class=argparse.RawTextHelpFormatter)
     subparsers = parser.add_subparsers(help='available actions')
     parser.add_argument('-c', '--continue', action='store_true',
@@ -62,8 +62,8 @@ def get_parser(runner, version=None):
     return parser
 
 
-def run(action_runner, cargs, version=None):
-    parser = get_parser(action_runner, version=version)
+def run(action_runner, cargs, prog='rdopkg', version=None):
+    parser = get_parser(action_runner, prog=prog, version=version)
     if ARGCOMPLETE_AVAILABLE:
         argcomplete.autocomplete(parser)
 
