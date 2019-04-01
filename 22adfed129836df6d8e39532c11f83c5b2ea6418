@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "efecf800_23aa4921",
+        "filename": "rdopkg/action.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-04-01T15:20:04Z",
+      "side": 1,
+      "message": "under-indented, according to pycodestyle.",
+      "revId": "22adfed129836df6d8e39532c11f83c5b2ea6418",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
