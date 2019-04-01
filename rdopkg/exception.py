@@ -65,6 +65,14 @@ class InvalidAction(RdopkgException):
     msg_fmt = "Invalid action: %(action)s"
 
 
+class InvalidActionModule(RdopkgException):
+    msg_fmt = "Invalid action module: %(why)s"
+
+
+class DuplicateAction(RdopkgException):
+    msg_fmt = "Duplicate action '%(action)s' in modules: %(mod1)s, %(mod2)s"
+
+
 class InvalidGitRef(RdopkgException):
     msg_fmt = "Invalid git reference: %(ref)s"
 
