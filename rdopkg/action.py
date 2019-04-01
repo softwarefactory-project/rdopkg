@@ -49,6 +49,9 @@ class Action(object):
         self.help = help
         self.description = description
 
+    def __repr__(self):
+        return "ACTION: %s" % self.name
+
 
 class ActionModule(object):
     def __init__(self, module, name=None):
@@ -84,13 +87,19 @@ class ActionManager(object):
             adict[action.name] = action.module
         return adict
 
-    def add_actions_module(self, module, name=None):
-        def _assign_module(action):
-            if not action.module:
+    def add_actions_module(self, module, name=None, override=True):
+        def _assign_module(action, override=False):
+            if override or not action.module:
                 action.module = name
             if action.steps:
                 for step in action.steps:
                     _assign_module(step)
+
+        def _override_action(action):
+            for i, _action in enumerate(self.actions):
+                if _action.name == action.name:
+                    self.actions[i] = action
+                    break
 
         if not name:
             _, _, name = module.__name__.rpartition('.')
@@ -100,13 +109,22 @@ class ActionManager(object):
                 module=module.__name__, why="missing ACTIONS description")
         for action in module.ACTIONS:
             if action.name in adict:
-                raise exception.DuplicateAction(
-                    action=action.name, mod1=adict[action.name], mod2=name)
-            _assign_module(action)
-        self.actions += module.ACTIONS
+                # existing action
+                if override:
+                    _assign_module(action, override=True)
+                    log.debug("overriding %s (module: %s -> %s)" %
+                              (action, adict[action.name], name))
+                    _override_action(action)
+                else:
+                    raise exception.DuplicateAction(
+                        action=action.name, mod1=adict[action.name], mod2=name)
+            else:
+                # new action
+                _assign_module(action, override=True)
+                self.actions.append(action)
         self.modules.append(ActionModule(module, name))
 
-    def add_actions_modules(self, package):
+    def add_actions_modules(self, package, override=True):
         added = []
         for importer, modname, ispkg in pkgutil.iter_modules(package.__path__):
             modpath = '%s.%s' % (package.__name__, modname)
@@ -119,7 +137,7 @@ class ActionManager(object):
                 continue
             if not hasattr(mod, 'ACTIONS'):
                 continue
-            self.add_actions_module(mod, name=modname)
+            self.add_actions_module(mod, name=modname, override=override)
             added += modname
         return added
 
