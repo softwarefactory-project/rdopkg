@@ -98,7 +98,7 @@ def run(action_runner, cargs, prog='rdopkg', version=None):
             exception.InvalidLintCheck,
             exception.InvalidPatchesBaseRef,
             exception.InvalidPackageFilter,
-            exception.InvalidRDOPackage,
+            exception.InvalidPackage,
             exception.InvalidReleaseBumpIndex,
             exception.InvalidGitRef,
             exception.InvalidQuery,

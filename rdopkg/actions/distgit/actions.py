@@ -327,7 +327,7 @@ def clone(
     ri = rdo.get_info()
     pkg = get_package(ri, package)
     if not pkg:
-        raise exception.InvalidRDOPackage(package=package)
+        raise exception.InvalidPackage(package=package)
     if use_master_distgit:
         try:
             distgit = pkg['master-distgit']

@@ -113,7 +113,7 @@ class InvalidQuery(RdopkgException):
     msg_fmt = "Invalid query: %(why)s"
 
 
-class InvalidRDOPackage(RdopkgException):
+class InvalidPackage(RdopkgException):
     msg_fmt = "Package not found in rdoinfo: %(package)s"
 
 
