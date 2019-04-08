@@ -12,7 +12,7 @@ from rdopkg.utils.specfile import spec_fn, Spec
 from rdopkg.utils.log import log
 from rdopkg import exception, guess
 
-from bunch import bunchify
+from rdopkg.utils.munch import munchify
 
 KOJI_AVAILABLE = False
 try:
@@ -57,7 +57,7 @@ def new_build(profile='cbs', scratch=True):
 
     kojiclient = setup_kojiclient(profile)
     # Note: required to make watch_tasks work
-    kojicli.options = opts = bunchify(kojiclient.opts)
+    kojicli.options = opts = munchify(kojiclient.opts)
     build_target = guess_build()
     if not build_target:
         log.warn("failed to identify build tag from branch")

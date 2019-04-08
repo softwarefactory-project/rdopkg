@@ -1,5 +1,4 @@
 blessings
-bunch
 # `rdopkg info` is slow with older distroinfo
 distroinfo>=0.3.0
 future
