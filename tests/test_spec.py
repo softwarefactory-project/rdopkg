@@ -342,3 +342,11 @@ def test_get_last_changelog_entry_multiple_sections():
         spec = specfile.Spec(txt=txt + '%changelog\n* 2017-01-01\n- foo1\n\n%changelog\nbar\n')  # noqa
         r = spec.get_last_changelog_entry()
         assert False, r
+
+
+def test_get_source_urls(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'empty')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        urls = spec.get_source_urls()
+    assert urls == ['http://pypi.python.org/packages/source/f/foo/foo-1.2.3.tar.gz']
