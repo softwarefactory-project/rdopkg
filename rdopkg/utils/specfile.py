@@ -638,12 +638,12 @@ class Spec(object):
 
     def get_source_urls(self):
         # arcane rpm constants, now in python!
-        sources = filter(lambda x: x[2] == 1, self.rpmspec.sources)
+        sources = list(filter(lambda x: x[2] == 1, self.rpmspec.sources))
         if len(sources) == 0:
             error = "No sources found"
             raise exception.SpecFileParseError(spec_fn=self.fn, error=error)
         # OpenStack packages seem to always use only one tarball
-        sources0 = filter(lambda x: x[1] == 0, sources)
+        sources0 = list(filter(lambda x: x[1] == 0, sources))
         if len(sources0) == 0:
             error = "Source0 not found"
             raise exception.SpecFileParseError(spec_fn=self.fn, error=error)
