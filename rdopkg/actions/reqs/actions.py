@@ -108,7 +108,7 @@ def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
 def query(filter, package, verbose=False):
     r = _query.query_rdo(filter, package, verbose=verbose)
     if not r:
-        log.warn('No distrepos information in rdoinfo for %s' % filter)
+        log.warn('No distrepos information in distroinfo for %s' % filter)
         return
     if verbose:
         print('')

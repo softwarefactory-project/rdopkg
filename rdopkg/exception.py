@@ -114,7 +114,7 @@ class InvalidQuery(RdopkgException):
 
 
 class InvalidPackage(RdopkgException):
-    msg_fmt = "Package not found in rdoinfo: %(package)s"
+    msg_fmt = "Package not found in distroinfo: %(package)s"
 
 
 class InvalidPackageFilter(RdopkgException):
