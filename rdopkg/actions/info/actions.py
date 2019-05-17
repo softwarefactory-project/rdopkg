@@ -56,7 +56,7 @@ def findpkg(query, strict=False, local_info=None, info_file=None,
     pkg = distroinfo.query.find_package(_info, query, strict=strict)
     if not pkg:
         raise exception.InvalidPackage(
-            msg="No package found in rdoinfo for query: %s" % query)
+            msg="No package found in distroinfo for query: %s" % query)
     rdoinfo.print_pkg(pkg)
 
 

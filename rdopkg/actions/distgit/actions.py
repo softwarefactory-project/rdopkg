@@ -335,7 +335,7 @@ def clone(
         except KeyError:
             raise exception.InvalidUsage(
                 msg="-m/--use-master-distgit used but 'master-distgit' "
-                    "missing in rdoinfo for package: %s" % package)
+                    "missing in distroinfo for package: %s" % package)
     else:
         distgit = pkg['distgit']
         distgit_str = 'distgit'
@@ -358,12 +358,14 @@ def clone(
                 log.info('Adding gerrit-patches remote...')
                 git('remote', 'add', 'gerrit-patches', patches)
         else:
-            log.warn("'patches' remote information not available in rdoinfo.")
+            log.warn("'patches' remote information not available"
+                     " in distroinfo.")
         if upstream:
             log.info('Adding upstream remote...')
             git('remote', 'add', 'upstream', upstream)
         else:
-            log.warn("'upstream' remote information not available in rdoinfo.")
+            log.warn("'upstream' remote information not available in"
+                     " distroinfo.")
         if patches or upstream:
             git('fetch', '--all')
 
@@ -381,7 +383,7 @@ def clone(
             git('remote', 'add', 'review-patches', r)
         else:
             log.warn("'review-patches' remote information not available"
-                     " in rdoinfo.")
+                     " in distroinfo.")
         if review_origin:
             log.info('Adding gerrit remote for reviews...')
             r = tidy_ssh_user(review_origin, review_user)
@@ -390,7 +392,7 @@ def clone(
             git('remote', 'add', 'review-origin', r)
         else:
             log.warn("'review-origin' remote information not available"
-                     " in rdoinfo.")
+                     " in distroinfo.")
         git('remote', '-v', direct=True)
 
 
