@@ -1,6 +1,8 @@
+# -*- encoding: utf-8 -*-
+from __future__ import unicode_literals
+
 import contextlib
 import os
-import re
 
 from rdopkg import exception
 from rdopkg.utils.cmd import run

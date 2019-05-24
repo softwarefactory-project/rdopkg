@@ -1,8 +1,11 @@
+from __future__ import unicode_literals
+
 import os
 import py
 import re
 import shutil
 
+from rdopkg.utils.cmd import encode
 from rdopkg.utils.git import git
 from rdopkg.utils.specfile import Spec
 from rdopkg import exception
@@ -67,6 +70,7 @@ def prep_patches_branch(tag='1.2.3'):
 
 def do_patch(fn, content, msg):
     f = open(fn, 'w')
+    content = encode(content)
     f.write(content)
     f.close()
     git('add', fn)
