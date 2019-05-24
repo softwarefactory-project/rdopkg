@@ -1,4 +1,6 @@
 # coding=utf-8
+from __future__ import unicode_literals
+
 from rdopkg import exception
 from rdopkg.utils import specfile
 import pytest
