@@ -1,5 +1,8 @@
+# -*- encoding: utf-8 -*-
+from __future__ import unicode_literals
+
 from rdopkg.cli import rdopkg
-from rdopkg.utils.git import git
+from rdopkg.utils.git import git, git_branch
 from rdopkg.utils import log
 
 import test_common as common
@@ -185,3 +188,22 @@ def test_patch_regen_plain(tmpdir):
 def test_patch_regen_no_bump(tmpdir):
     _test_patch_regen(tmpdir, 'patched', 'patched',
                       ['patch', '-l', '--no-bump'], norm_changelog=False)
+
+
+def test_patch_unicode(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'patched')
+    with dist_path.as_cwd():
+        git('config', 'user.name', 'Přikrášlený Žluťoučký Kůň')
+        common.prep_patches_branch()
+        common.add_patches()
+        commit_before = git('rev-parse', 'HEAD')
+        with git_branch('master-patches'):
+            common.do_patch('foofile', '#to chceš',
+                            "Přikrášlený Žluťoučký Kůň")
+            common.do_patch('foofile', '#to asi chceš', "Přikrášlení koně")
+            common.do_patch('foofile', '#to nechceš', "ěščřžýáí")
+        rdopkg('patch', '-l')
+        commit_after = git('rev-parse', 'HEAD')
+        git_clean = git.is_clean()
+    assert commit_before != commit_after, "New commit not created"
+    assert git_clean, "git not clean after action"

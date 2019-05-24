@@ -1,20 +1,30 @@
+# -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
-from builtins import str
 
 import json
+import six
 import subprocess
 
 from rdopkg import exception
 from rdopkg.utils import log
 
 
-class _CommandOutput(str):
+class _CommandOutput(six.text_type):
     """
     Just a string subclass with attribute access.
     """
     @property
     def success(self):
         return self.return_code == 0
+
+
+def encode(s, encoding='utf-8'):
+    """
+    Compat: encode PY2 unicode to str on PY2 only.
+    """
+    if six.PY2 and isinstance(s, unicode):
+        return s.encode(encoding=encoding)
+    return s
 
 
 def log_cmd_fail(cmd, cout, fail_log_fun=log.warn, out_log_fun=log.info):
@@ -56,7 +66,7 @@ def run(cmd, *params, **kwargs):
 
     if input:
         stdin = subprocess.PIPE
-        input = input.encode()
+        input = input.encode('utf-8')
     else:
         stdin = None
 
@@ -67,6 +77,7 @@ def run(cmd, *params, **kwargs):
         stdout = subprocess.PIPE
         stderr = subprocess.PIPE
 
+    cmd = list(map(encode, cmd))
     try:
         prc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout,
                                stderr=stderr, env=env)

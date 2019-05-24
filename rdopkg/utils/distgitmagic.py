@@ -83,6 +83,7 @@ git = SilentGit()
 
 def do_patch(fn, content, msg):
     f = open(fn, 'a')
+    content = rdopkg.utils.cmd.encode(content)
     f.write(content)
     f.close()
     git('add', fn)
