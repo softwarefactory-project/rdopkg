@@ -653,7 +653,7 @@ class Spec(object):
         return [source_url]
 
     def get_source_fns(self):
-        return map(os.path.basename, self.get_source_urls())
+        return list(map(os.path.basename, self.get_source_urls()))
 
     def get_last_changelog_entry(self, strip=False):
         changelog = ''
