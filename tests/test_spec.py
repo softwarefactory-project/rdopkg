@@ -350,3 +350,11 @@ def test_get_source_urls(tmpdir):
         spec = specfile.Spec()
         urls = spec.get_source_urls()
     assert urls == ['http://pypi.python.org/packages/source/f/foo/foo-1.2.3.tar.gz']  # noqa
+
+
+def test_get_source_fns(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'empty')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        fns = spec.get_source_fns()
+    assert fns == ['foo-1.2.3.tar.gz']  # noqa
