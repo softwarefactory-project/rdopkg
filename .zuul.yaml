@@ -51,6 +51,10 @@
     description: rdopkg integration tests on python2
     vars:
       tox_envlist: py2-integration
+    nodeset:
+      nodes:
+        - name: test-node
+          label: dib-centos-7
 
 - job:
     name: rdopkg-py3-integration
@@ -58,6 +62,10 @@
     description: rdopkg integration tests on python3
     vars:
       tox_envlist: py3-integration
+    nodeset:
+      nodes:
+        - name: testrunner
+          label: rdo-fedora-28
 
 - job:
     name: rdopkg-codestyle
