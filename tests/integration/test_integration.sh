@@ -3,6 +3,10 @@
 
 set -e
 
+if [ "${USER}" -eq "zuul-worker" ]; then
+    export WORKSPACE=/home/zuul-worker
+fi
+
 TESTS_PATH="`dirname \"$0\"`"
 TESTS_PATH="`( cd \"$TESTS_PATH\" && pwd )`"
 
