@@ -3,8 +3,12 @@
 
 set -e
 
+echo "Workspace is set to ${WORKSPACE}"
+
 GIT_BASE_URL="https://review.rdoproject.org/r/p"
 WORKSPACE="${WORKSPACE:-/tmp}"
+
+echo "Workspace is now set to ${WORKSPACE}"
 
 function test_rdopkg_findpkg(){
     PKG_NAME=$(rdopkg findpkg $1 -l ${WORKSPACE}/rdoinfo | awk '/^name/ {print $2}')
