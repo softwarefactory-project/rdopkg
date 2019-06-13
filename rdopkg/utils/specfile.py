@@ -539,6 +539,9 @@ class Spec(object):
         return self.set_tag('Release', release)
 
     def bump_release(self, milestone=None, index=None):
+        if index == '0':
+            # no bumping
+            return
         if not milestone:
             milestone = self.get_milestone()
         numbers, _milestone, postfix = self.get_release_parts()
@@ -562,7 +565,7 @@ class Spec(object):
                     n = int(index)
                 except ValueError:
                     raise exception.InvalidReleaseBumpIndex(what=index)
-                if n < 1:
+                if n < 0:
                     raise exception.InvalidReleaseBumpIndex(
                         what="%s (positive integer required)" % index)
             # index from 1

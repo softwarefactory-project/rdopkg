@@ -8,6 +8,8 @@ _SHARED_HELP = {
          "   to bump selected in MAJOR.MINOR.PATCH\n"
          "-R 1/-R 2/-R 3/-R 4/-R N\n"
          "   to bump 1./2./3./4./N. part (numeric index)\n"
+         "-R 0\n"
+         "   to disable bumping (no release bump)"
          "-R last-numeric\n"
          "   to bump last numeric only Release part (default)"),
 }

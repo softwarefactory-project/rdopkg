@@ -137,6 +137,7 @@ Feature: rdopkg fix
             | 2     | 10.20%{?dist} | 10.21%{?dist}     |
             | 3     | 1.2.3.4.5     | 1.2.4.4.5%{?dist} |
             | 5     | 1.2.3.4.5     | 1.2.3.4.6%{?dist} |
+            | 0     | 23.23.23      | 23.23.23%{?dist}  |
 
     Scenario Outline: rdopkg fix --release-bump-index <index> - invalid indexes
         Given a distgit at Version 10 and Release <release>
@@ -145,7 +146,6 @@ Feature: rdopkg fix
 
         Examples: invalid strategies
             | index | release | error |
-            | 0     | 1       | Invalid Release bump index: 0 \(positive integer required\) |
             | minor | 1.lul.1 | Invalid Release bump index: 2. part of Release '\S+' isn't numeric: lul |
             | PATCH | 1.2     | Invalid Release bump index: 3 |
             | 1337  | 1.2.3   | Invalid Release bump index: 1337 \(Release: 1.2.3\) |

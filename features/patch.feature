@@ -42,13 +42,22 @@ Feature: rdopkg patch
             Updated patches from master-patches
             """
 
-    Scenario: rdopkg patch --release-bump-index
+    Scenario: rdopkg patch --release-bump-index MINOR
         Given a distgit at Version 1.20.0 and Release 1.2.3.lul
         Given a patches branch with 1 patches
         When I run rdopkg patch -l --release-bump-index MINOR
         Then .spec file has 1 patches defined
         Then .spec file contains new changelog entry with 1 lines
         Then .spec file tag Release is 1.3.3.lul%{?dist}
+        Then new commit was created
+
+    Scenario: rdopkg patch --release-bump-index 0 (disable release bump)
+        Given a distgit at Version 1.20.0 and Release 1.2.3.lul
+        Given a patches branch with 1 patches
+        When I run rdopkg patch -l --release-bump-index 0
+        Then .spec file has 1 patches defined
+        Then .spec file contains new changelog entry with 1 lines
+        Then .spec file tag Release is 1.2.3.lul%{?dist}
         Then new commit was created
 
     Scenario: rdopkg patch without version git tag
