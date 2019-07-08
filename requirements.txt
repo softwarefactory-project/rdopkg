@@ -1,9 +1,7 @@
 blessings
 # `rdopkg info` is slow with older distroinfo
 distroinfo>=0.3.0
-future
 munch
-paramiko
 pbr>=0.5.6
 PyYAML
 # pyOpenSSL==0.15.1 results in

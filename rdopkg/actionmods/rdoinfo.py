@@ -1,5 +1,4 @@
 from __future__ import print_function
-from past.builtins import basestring
 import distroinfo
 import distroinfo.query
 from distroinfo.info import DistroInfo
