@@ -1,0 +1,8 @@
+Code-Review+2: Haïkel Guémar <hguemar@fedoraproject.org>
+Workflow+1: Haïkel Guémar <hguemar@fedoraproject.org>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Tue, 09 Jul 2019 08:06:04 +0000
+Reviewed-on: https://softwarefactory-project.io/r/15901
+Project: rdopkg
+Branch: refs/heads/master
