@@ -15,11 +15,11 @@ and patches management functionality and conventions provided by `rdopkg`
 proved to be efficient way of packaging fast-moving upstream projects with
 minimal human effort but without losing control over individual packages.
 
-`rdopkg` is **under constant development**, serving mainly the needs of the
-mighty [RDO](https://www.rdoproject.org/) packager-warriors and their
-weapons such as [DLRN](https://github.com/softwarefactory-project/DLRN),
-but it strives to help all RPM packagers. For example, see
-[how you can manage your RPMs with
+`rdopkg` is is now considered **stable**. It was originally developed to serve
+the needs of the mighty [RDO](https://www.rdoproject.org/) packager-warriors
+and their weapons such as
+[DLRN](https://github.com/softwarefactory-project/DLRN), but it can help with
+any RPM package. For example, see [how you can manage your RPMs with
 rdopkg](https://www.rdoproject.org//blog/2017/03/let-rdopkg-manage-your-RPM-package/).
 
 `rdopkg` uses [software factory](https://softwarefactory-project.io/)
@@ -28,18 +28,10 @@ testing as well as human reviews.
 
 See [open rdopkg reviews](https://softwarefactory-project.io/r/#/q/status:open+project:rdopkg).
 
-`rdopkg` is fully reusable but the goal of also serving as
-packaging CLI tool framework as described in
-[pwnpkg](https://github.com/yac/pwnpkg) proved to be out of scope. However,
-(not only `jruzicka`'s) rants ignited [rpkg2][] project
-which aims to provide exactly that. If you're interested in writing you own
-packaging tools such as new `fedpkg`/`copr-cli` we deserve, [rpkg2][] seems
-like a good place to start and influence with good ideas.
-
-[rpkg2]: https://pagure.io/rpkg2
-
 
 ## Installation
+
+`rdopkg` is currently compatible with both python 3 and python 2.
 
 
 ### from Fedora/EPEL repos (default)
