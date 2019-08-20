@@ -1027,3 +1027,9 @@ def tag_patches_branch(package, local_patches_branch, patches_branch,
         git('push', patches_remote, nvr_tag)
     else:
         print('Not pushing tag. Run "git push patches %s" by hand.' % nvr_tag)
+
+
+def set_magic(magic, value):
+    spec = specfile.Spec()
+    spec.set_magic_comment(magic, value)
+    spec.save()
