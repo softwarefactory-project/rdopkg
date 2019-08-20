@@ -211,4 +211,15 @@ ACTIONS = [
                Action('ensure_patches_branch'),
                Action('tag_patches_branch'),
            ]),
+    Action('set_magic_comment',
+           help='set magic comment in the spec file to a value',
+           required_args=[
+               Arg('magic', positional=True,
+                   help="Magic comment to insert"),
+               Arg('value', positional=True,
+                   help="Value to insert as magic comment"),
+           ],
+           steps=[
+               Action('set_magic'),
+           ]),
 ]
