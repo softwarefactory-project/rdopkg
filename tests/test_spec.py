@@ -360,3 +360,27 @@ def test_get_source_fns(tmpdir):
         spec = specfile.Spec()
         fns = spec.get_source_fns()
     assert fns == ['foo-1.2.3.tar.gz']  # noqa
+
+
+def test_set_magic_modify():
+    txt = 'Version: 1.2.3\n\nSource0: test.tar.gz\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n'  # noqa
+    spec = specfile.Spec(txt=txt + '%changelog\nfoo')
+    spec.set_magic_comment('patches_ignore', 'foo')
+    assert '# patches_ignore=foo\n' in spec.txt
+    assert '# patches_ignore=DROP-IN-RPM\n' not in spec.txt
+
+
+def test_set_magic_create():
+    txt = 'Version: 1.2.3\n\nSource0: test.tar.gz\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n'  # noqa
+    spec = specfile.Spec(txt=txt + '%changelog\nfoo')
+    spec.set_magic_comment('new_magic_comment', 'foo')
+    assert '# new_magic_comment=foo\n' in spec.txt
+
+
+def test_set_magic_modify_once():
+    txt = 'Version: 1.2.3\n\nSource0: test.tar.gz\n# my_comment=abc\n# my_comment=1.2.3\n'  # noqa
+    spec = specfile.Spec(txt=txt + '%changelog\nfoo')
+    spec.set_magic_comment('my_comment', 'foo')
+    assert '# my_comment=foo\n' in spec.txt
+    assert '# my_comment=abc\n' not in spec.txt
+    assert '# my_comment=1.2.3\n' in spec.txt
