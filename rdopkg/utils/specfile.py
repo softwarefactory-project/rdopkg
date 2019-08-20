@@ -284,6 +284,43 @@ class Spec(object):
             val = self.expand_macro(val)
         return val
 
+    def set_magic_comment(self, name, value, expand_macros=False):
+        """Set a magic comment like # name=value in the spec."""
+        present = self.get_magic_comment(name)
+        if not present:
+            # We need to insert it after Sources
+            line = "# %s=%s" % (name, value)
+            m = None
+            for m in re.finditer(self.RE_AFTER_SOURCES, self.txt):
+                pass
+            if not m:
+                raise exception.SpecFileParseError(
+                    spec_fn=self.fn,
+                    error="Failed to add comment %s" % name)
+            i = m.end()
+            startnl, endnl = '', ''
+            if self._txt[i - 2] != '\n':
+                startnl += '\n'
+            if self._txt[i] != '\n':
+                endnl += '\n'
+            self._txt = self._txt[:i] + startnl + line + endnl + self._txt[i:]
+        else:
+            # Just replace it
+            regex = r"^#\s*%s*" % name
+            lines = self.txt.split('\n')
+            regex = re.compile(r"(#\s*%s\s*=\s*)\w*" % name)
+            for idx, line in enumerate(lines):
+                match = regex.match(line)
+                if match is not None:
+                    out_str = "# %s=%s" % (name, value)
+                    lines[idx] = out_str
+                    break
+            else:
+                raise exception.SpecFileParseError(
+                    spec_fn=self.fn,
+                    error="Unable to set comment %s" % name)
+            self._txt = '\n'.join(lines)
+
     def get_patches_base(self, expand_macros=False):
         """Return a tuple (version, number_of_commits) that are parsed
         from the patches_base in the specfile.
