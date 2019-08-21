@@ -144,6 +144,7 @@ def test_patch_noop_plain(tmpdir):
     _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '-C', 'plain'])
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_noop_no_bump(tmpdir):
     _test_patch_noop(tmpdir, 'patched', ['patch', '-l', '--no-bump'])
 
@@ -166,20 +167,24 @@ def _test_patch_regen(tmpdir, distgit, distgit_after,
     assert git_clean, "git not clean after action"
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_regen(tmpdir):
     _test_patch_regen(tmpdir, 'patched', 'patched-regen', ['patch', '-l'])
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_regen_detect(tmpdir):
     _test_patch_regen(tmpdir, 'patched', 'patched-regen',
                       ['patch', '-l', '-C', 'detect'])
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_regen_count(tmpdir):
     _test_patch_regen(tmpdir, 'patched', 'patched-regen',
                       ['patch', '-l', '-C', 'count'])
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_regen_plain(tmpdir):
     _test_patch_regen(tmpdir, 'patched', 'patched-regen',
                       ['patch', '-l', '--changelog', 'plain'])
@@ -190,6 +195,7 @@ def test_patch_regen_no_bump(tmpdir):
                       ['patch', '-l', '--no-bump'], norm_changelog=False)
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patch_unicode(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'patched')
     with dist_path.as_cwd():

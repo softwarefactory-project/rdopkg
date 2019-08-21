@@ -7,6 +7,13 @@ import pytest
 
 import test_common as common
 
+RPM_AVAILABLE = False
+try:
+    import rpm  # NOQA
+    RPM_AVAILABLE = True
+except ImportError:
+    pass
+
 
 @pytest.mark.parametrize('version,numeric,rest', [
     ('', '', ''),
@@ -95,6 +102,7 @@ def test_patches_base_add_patched(tmpdir):
     common.assert_distgit(dist_path, 'patched-ex')
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_patches_base_add_empty(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty')
     with dist_path.as_cwd():
@@ -152,6 +160,7 @@ def test_new_version_patches_base_ignore_load(tmpdir):
         assert spec.get_patches_base() == ('1.2.3', 0)
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_new_version_patches_base_ignore_new_version(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'magic-comments')
     with dist_path.as_cwd():
@@ -346,6 +355,7 @@ def test_get_last_changelog_entry_multiple_sections():
         assert False, r
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_get_source_urls(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty')
     with dist_path.as_cwd():
@@ -354,6 +364,7 @@ def test_get_source_urls(tmpdir):
     assert urls == ['http://pypi.python.org/packages/source/f/foo/foo-1.2.3.tar.gz']  # noqa
 
 
+@pytest.mark.skipif('RPM_AVAILABLE == False')
 def test_get_source_fns(tmpdir):
     dist_path = common.prep_spec_test(tmpdir, 'empty')
     with dist_path.as_cwd():
