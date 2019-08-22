@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da483b71_a295896e",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-08-22T10:53:18Z",
+      "side": 1,
+      "message": "In my tests, I\u0027ve found an issue when removing a comment: the newline is also removed, so the next comment is appended to the previous line.",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 45
+      },
+      "revId": "beb8be59220777a16a2fe1f983936ff9ade3b1a3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
