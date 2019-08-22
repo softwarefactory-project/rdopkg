@@ -60,11 +60,11 @@
       tox_envlist: py3-integration
 
 - job:
-    name: rdopkg-codestyle
-    parent: rdopkg-base-py2
-    description: rdopkg code style checks
+    name: rdopkg-lint
+    parent: rdopkg-base-py3
+    description: rdopkg linting
     vars:
-      tox_envlist: pycodestyle
+      tox_envlist: lint
 
 - job:
     name: rdopkg-install-epel
@@ -88,7 +88,7 @@
         - rdopkg-py3-tests
         - rdopkg-py2-integration
         - rdopkg-py3-integration
-        - rdopkg-codestyle
+        - rdopkg-lint
         - rdopkg-dlrn-master
     gate:
       jobs:
@@ -96,7 +96,7 @@
         - rdopkg-py3-tests
         - rdopkg-py2-integration
         - rdopkg-py3-integration
-        - rdopkg-codestyle
+        - rdopkg-lint
         - rdopkg-dlrn-master
     periodic:
       jobs:
