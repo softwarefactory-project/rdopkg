@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a6585c8_c4839413",
+        "filename": ".zuul.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-08-22T14:05:37Z",
+      "side": 1,
+      "message": "here is the missing reference the syntax error was flagging",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 26
+      },
+      "revId": "236c9a8f5b1fbe3cc568e5a9ee5fb2b1df50b537",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "029c9852_4223b409",
+        "filename": ".zuul.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-08-22T14:05:37Z",
+      "side": 1,
+      "message": "here is the missing reference the syntax error was flagging",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 1
+      },
+      "revId": "236c9a8f5b1fbe3cc568e5a9ee5fb2b1df50b537",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
