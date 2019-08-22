@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b00c2cd_ba1bbaa6",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-08-22T18:18:14Z",
+      "side": 1,
+      "message": "small nit expand_macros is not used in this function currently",
+      "range": {
+        "startLine": 287,
+        "startChar": 44,
+        "endLine": 287,
+        "endChar": 64
+      },
+      "revId": "1ca0a0a42382423321a068201e9bd40814d3a066",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
