@@ -177,6 +177,12 @@ def step_impl(context):
     assert spec.get_patches_base() == (None, 0)
 
 
+@then('.spec file doesn\'t contain patches_ignore')
+def step_impl(context):
+    spec = specfile.Spec()
+    assert spec.get_patches_ignore_regex() is None
+
+
 @then('.spec file contains /{rex}/')
 def step_impl(context, rex):
     spec = specfile.Spec()
