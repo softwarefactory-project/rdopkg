@@ -22,6 +22,30 @@
       "revId": "86c08a5a4dbe57f8e6f8ec30588d672b630ad872",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e235d37a_e540d6eb",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-08-23T11:25:53Z",
+      "side": 1,
+      "message": "In this case it was a matter of consistency with previous patches, but I\u0027ll fix it.",
+      "parentUuid": "68f8b3d8_65bac2d4",
+      "range": {
+        "startLine": 377,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 133
+      },
+      "revId": "86c08a5a4dbe57f8e6f8ec30588d672b630ad872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
