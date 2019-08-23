@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68f8b3d8_65bac2d4",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 450
+      },
+      "writtenOn": "2019-08-23T10:54:46Z",
+      "side": 1,
+      "message": "why abusing noqa when you can easily write it multiline?",
+      "range": {
+        "startLine": 377,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 133
+      },
+      "revId": "86c08a5a4dbe57f8e6f8ec30588d672b630ad872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
