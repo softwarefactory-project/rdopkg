@@ -42,3 +42,10 @@ Feature: rdopkg actions
         Then .spec file doesn't contain patches_ignore
         When I run rdopkg set-magic-comment patches_ignore DROP-IN-RPM
         Then .spec file contains patches_ignore
+
+    Scenario: set magic_comment to empty string
+        Given a distgit at Version 1.1.1
+        Then .spec file doesn't contain patches_base
+        Then .spec file doesn't contain patches_ignore
+        When I run rdopkg set-magic-comment patches_ignore  ''
+        Then .spec file doesn't contain patches_ignore
