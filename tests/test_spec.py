@@ -327,21 +327,24 @@ def test_get_magic_comment_minimal_7():
 
 
 def test_get_last_changelog_entry_0():
-    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n'  # noqa
+    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n' + \
+          '# patches_base=1.2.3\n#\nPatch0=foo.patch\n'
     spec = specfile.Spec(txt=txt)
     r = spec.get_last_changelog_entry()
     assert ('', []) == r
 
 
 def test_get_last_changelog_entry_1():
-    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n'  # noqa
+    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n' + \
+          '# patches_base=1.2.3\n#\nPatch0=foo.patch\n'
     spec = specfile.Spec(txt=txt + '%changelog\nfoo')
     r = spec.get_last_changelog_entry()
     assert ('foo', []) == r
 
 
 def test_get_last_changelog_entry_1_case_insensitive():
-    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n# patches_base=1.2.3\n#\nPatch0=foo.patch\n'  # noqa
+    txt = 'Version: 1.2.3\n\n# patches_ignore=DROP-IN-RPM\n' + \
+          '# patches_base=1.2.3\n#\nPatch0=foo.patch\n'
     spec = specfile.Spec(txt=txt + '%ChangeLog\nfoo')
     r = spec.get_last_changelog_entry()
     assert ('foo', []) == r
@@ -350,7 +353,8 @@ def test_get_last_changelog_entry_1_case_insensitive():
 def test_get_last_changelog_entry_multiple_sections():
     with pytest.raises(exception.MultipleChangelog):
         txt = 'Version: 1.2.3\n\n'
-        spec = specfile.Spec(txt=txt + '%changelog\n* 2017-01-01\n- foo1\n\n%changelog\nbar\n')  # noqa
+        spec = specfile.Spec(txt=txt + '%changelog\n* 2017-01-01\n'
+                             + '- foo1\n\n%changelog\nbar\n')
         r = spec.get_last_changelog_entry()
         assert False, r
 
@@ -370,7 +374,7 @@ def test_get_source_fns(tmpdir):
     with dist_path.as_cwd():
         spec = specfile.Spec()
         fns = spec.get_source_fns()
-    assert fns == ['foo-1.2.3.tar.gz']  # noqa
+    assert fns == ['foo-1.2.3.tar.gz']
 
 
 def test_set_magic_modify():
@@ -394,7 +398,109 @@ def test_set_magic_modify_once():
     txt = ('Version: 1.2.3\n\nSource0: test.tar.gz\n# my_comment=abc\n'
            '# my_comment=1.2.3\n')
     spec = specfile.Spec(txt=txt + '%changelog\nfoo')
+    spec._fn = 'foo.spec'
     spec.set_magic_comment('my_comment', 'foo')
     assert '# my_comment=foo\n' in spec.txt
     assert '# my_comment=abc\n' not in spec.txt
-    assert '# my_comment=1.2.3\n' in spec.txt
+    assert '# my_comment=1.2.3\n' not in spec.txt
+
+
+def test_set_magic_comment_only_patches_base():
+    spec = specfile.Spec(txt='# patches_base=1.2.3\n')
+    spec.set_magic_comment('patches_ignore', 'DROP-IN-RPM')
+    assert 'DROP-IN-RPM' == spec.get_magic_comment('patches_ignore')
+
+
+def test_set_magic_comment_only_patches_ignore():
+    spec = specfile.Spec(txt='\n# patches_ignore=foo\n\n')
+    spec.set_magic_comment('patches_ignore', 'DROP-IN-RPM')
+    assert 'DROP-IN-RPM' == spec.get_magic_comment('patches_ignore')
+
+
+def test_create_new_magic_comment_foo():
+    spec = specfile.Spec(txt='\nSource0: foo.tgz\n')
+    spec._create_new_magic_comment('foo', 'bar')
+    assert 'bar' == spec.get_magic_comment('foo')
+
+
+def test_create_new_magic_comment_foo_existing_other_magic_comment():
+    spec = specfile.Spec(txt='\nSource0: foo.tgz\n#\n#patches_base=1.2.3\n#\n')
+    spec._create_new_magic_comment('foo', 'bar')
+    assert 'bar' == spec.get_magic_comment('foo')
+
+
+magic_comment_patches_base = '# patches_base=1.2.3'
+magic_comment_foo = '# foo=bar'
+source_leader = 'Source0: foo.tgz'
+patches_leader = 'Patch0: foo.patch'
+
+
+def test_create_new_mc_foo_existing_other_mc_with_ordering():
+    mock_file = '\n'.join(['', source_leader, '#', magic_comment_patches_base,
+                           '#', ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    assert magic_comment_patches_base in lines
+    # check ordering
+    assert magic_comment_patches_base in lines[lines.index(magic_comment_foo):]
+
+
+def test_create_new_mc_foo_existing_other_mc_and_patches_with_ordering():
+    mock_file = '\n'.join(['', source_leader, '#', magic_comment_patches_base,
+                           '#', patches_leader, ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    assert patches_leader in lines
+    # check ordering
+    assert patches_leader in lines[lines.index(magic_comment_foo):]
+
+
+def test_create_new_magic_comment_foo_source_and_patch():
+
+    mock_file = '\n'.join(['', source_leader, patches_leader, ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+    assert 'bar' == spec.get_magic_comment('foo')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    # check ordering
+    assert patches_leader in lines[lines.index(magic_comment_foo):]
+
+
+def test_create_new_magic_comment_foo_existing_magic_comment_no_extra_lines():
+    mock_file = '\n'.join(['', source_leader, '#', magic_comment_patches_base,
+                           '#', ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    assert magic_comment_patches_base in lines
+    # check no-extra lines between
+    index_mc_foo = lines.index(magic_comment_foo)
+    index_mc_patches_base = lines.index(magic_comment_patches_base)
+    assert len(lines[index_mc_foo + 1:index_mc_patches_base]) == 0
+
+
+def test_create_new_mc_foo_existing_magic_comment_and_patch_no_extra_lines():
+    mock_file = '\n'.join(['', source_leader, '#', magic_comment_patches_base,
+                           '#', patches_leader, ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    assert magic_comment_patches_base in lines
+    # check no-extra lines between
+
+    index_mc_foo = lines.index(magic_comment_foo)
+    index_mc_patches_base = lines.index(magic_comment_patches_base)
+    assert len(lines[index_mc_foo + 1:index_mc_patches_base]) == 0
+    assert len(lines[index_mc_patches_base + 1:index_mc_foo]) == 0
