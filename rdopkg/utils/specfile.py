@@ -183,9 +183,11 @@ class Spec(object):
 
     RE_PATCH = r'(?:^|\n)(Patch\d+:)'
     RE_AFTER_SOURCES = r'((?:^|\n)Source\d*:[^\n]*\n\n?)'
-    RE_AFTER_PATCHES_BASE = (
-        r'((?:^|\n)(?:#[ \t]*\n)*#\s*patches_base\s*=[^\n]*\n(?:#[ '
+    RE_AFTER_MAGIC_COMMENTS = (
+        r'((?:^|\n)(?:#[ \t]*\n)*#\s*[\D_]*\s*=[^\n]*\n(?:#[ '
         r'\t]*\n)*)\n*')
+    RE_IN_MAGIC_COMMENTS = (
+        r'((?:^|\n)(?:#[ \t]*\n)*)(#\s*[\D_]*\s*=[^\n]*\n)')
     RE_MACRO_BASE = r'%global\s+{0}\s+'
 
     def __init__(self, fn=None, txt=None):
@@ -284,42 +286,68 @@ class Spec(object):
             val = self.expand_macro(val)
         return val
 
-    def set_magic_comment(self, name, value, expand_macros=False):
+    def _create_new_magic_comment(self, name, value):
+        # check to see if we have any magic comments in right slot
+        # after SourceX and before Patch Y - if so insert at begining block
+        # otherwise insert a new block as before
+
+        if re.findall(self.RE_IN_MAGIC_COMMENTS, self._txt, flags=re.M):
+            self._txt = re.sub(
+                self.RE_IN_MAGIC_COMMENTS,
+                r'\g<1># %s=%s\n\g<2>' % (name, value),
+                self.txt, count=1, flags=re.M)
+            return
+
+        self._txt, n = re.subn(
+            self.RE_PATCH,
+            r'\n#\n# %s=%s\n#\n\g<1>' % (name, value),
+            self.txt, count=1, flags=re.M)
+        if n != 1:
+            self._txt, n = re.subn(
+                self.RE_AFTER_SOURCES,
+                r'\g<1>#\n# %s=%s\n#\n\n' % (name, value),
+                self.txt, count=1, flags=re.M)
+            if n != 1:
+                raise exception.SpecFileParseError(
+                    spec_fn=self.fn,
+                    error="Unable to create new #%s magic comment." % name)
+
+    def set_magic_comment(self, name, value):
         """Set a magic comment like # name=value in the spec."""
         present = self.get_magic_comment(name)
-        if not present:
-            # We need to insert it after Sources
-            line = "# %s=%s" % (name, value)
-            m = None
-            for m in re.finditer(self.RE_AFTER_SOURCES, self.txt):
-                pass
-            if not m:
-                raise exception.SpecFileParseError(
-                    spec_fn=self.fn,
-                    error="Failed to add comment %s" % name)
-            i = m.end()
-            startnl, endnl = '', ''
-            if self._txt[i - 2] != '\n':
-                startnl += '\n'
-            if self._txt[i] != '\n':
-                endnl += '\n'
-            self._txt = self._txt[:i] + startnl + line + endnl + self._txt[i:]
+
+        if value is None or value == '':
+            print("Dropping")
+            # Drop magic comment patches_base and following empty comments
+            self._txt = re.sub(
+                r'(?:^#)*\s*%s\s*=[^\n]*\n(?:#\n)*' % re.escape(name),
+                '', self.txt, flags=re.M)
+            return
+
+        if present is None:
+            return self._create_new_magic_comment(name, value)
         else:
             # Just replace it
-            regex = r"^#\s*%s*" % name
-            lines = self.txt.split('\n')
-            regex = re.compile(r"(#\s*%s\s*=\s*)\w*" % name)
-            for idx, line in enumerate(lines):
-                match = regex.match(line)
-                if match is not None:
-                    out_str = "# %s=%s" % (name, value)
-                    lines[idx] = out_str
-                    break
-            else:
+            self._txt, count = re.subn(
+                r'(?:#\n)*' +
+                r'(^#\s*\s*=[\t ]?)[^\n]*\n(?:#\n)*' % re.escape(name),
+                r'\g<1>%s\n' % value, self.txt, flags=re.M)
+
+            # if there are duplicates drop one of them
+            if count > 1:
+                self._txt, count = re.subn(
+                    r'(#\s?%s\s?=\s?)\S*' % re.escape(name),
+                    '', self.txt, count=count - 1, flags=re.M)
+                count = 1
+            # check to make sure we have only one
+            if count == 0:
                 raise exception.SpecFileParseError(
                     spec_fn=self.fn,
-                    error="Unable to set comment %s" % name)
-            self._txt = '\n'.join(lines)
+                    error="Unable to set #%s" % name)
+            elif count > 1:
+                raise exception.SpecFileParseError(
+                    spec_fn=self.fn,
+                    error="Multiple magic comments #{0}".format(name))
 
     def get_patches_base(self, expand_macros=False):
         """Return a tuple (version, number_of_commits) that are parsed
@@ -362,56 +390,16 @@ class Spec(object):
         except Exception:
             return None
 
-    def _create_new_patches_base(self, base):
-        self._txt, n = re.subn(
-            self.RE_PATCH,
-            r'\n#\n# patches_base=%s\n#\n\g<1>' % base,
-            self.txt, count=1, flags=re.M)
-        if n != 1:
-            self._txt, n = re.subn(
-                self.RE_AFTER_SOURCES,
-                r'\g<1>#\n# patches_base=%s\n#\n\n' % base,
-                self.txt, count=1, flags=re.M)
-        if n != 1:
-            raise exception.SpecFileParseError(
-                spec_fn=self.fn,
-                error="Unable to create new #patches_base entry.")
-
     def set_patches_base(self, base):
-        v, _ = self.get_patches_base()
-
-        if re.search(r'^#\s*patches_ignore\s*=\s*\S+', self.txt, flags=re.M):
+        if not base and re.search(r'^#\s*patches_ignore\s*=\s*\S+',
+                                  self.txt, flags=re.M):
             # This is a temporary hack as patches_ignore currently requires
             # explicit patches_base. This should be solved with a proper
             # magic comment parser and using Version in filtration logic
             # when no patches_base is defined.
-            if not base:
-                base = self.get_tag('Version', expand_macros=True)
-        if base:
-            regex = r'^#\s*patches_base*'
-            if v is None and re.search(regex, self.txt, flags=re.M) is None:
-                self._create_new_patches_base(base)
-            else:
-                lines = self.txt.split('\n')
-                patch_base_regex = re.compile(r'(#\s*patches_base\s*=\s*)\w*')
-                for idx, line in enumerate(lines):
-                    match = patch_base_regex.match(line)
-                    if match is not None:
-                        out_str = '{0}{1}'.format(match.group(1), base)
-                        lines[idx] = out_str
-                        break
-                else:
-                    raise exception.SpecFileParseError(
-                        spec_fn=self.fn,
-                        error="Unable to set new #patches_base")
-                self._txt = '\n'.join(lines)
+            base = self.get_tag('Version', expand_macros=True)
 
-        else:
-            if v is not None:
-                # Drop magic comment patches_base and following empty comments
-                self._txt = re.sub(
-                    r'(?:^#)+\s*patches_base\s*=[^\n]*\n(?:^#\n)*',
-                    '', self.txt, flags=re.M)
+        self.set_magic_comment('patches_base', base)
 
     def set_patches_base_version(self, version, ignore_macros=True):
         if not version:
@@ -474,7 +462,7 @@ class Spec(object):
                 pa += "%%patch%04d -p1\n" % i
         # PatchXXX: lines after Source0 / #patches_base=
         self._txt, n = re.subn(
-            self.RE_AFTER_PATCHES_BASE,
+            self.RE_AFTER_MAGIC_COMMENTS,
             r'\g<1>%s\n' % ps, self.txt, count=1)
 
         if n != 1:
