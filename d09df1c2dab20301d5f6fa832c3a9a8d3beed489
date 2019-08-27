@@ -1,0 +1,8 @@
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Workflow+1: Javier Peña <jpena@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Tue, 27 Aug 2019 16:03:43 +0000
+Reviewed-on: https://softwarefactory-project.io/r/16125
+Project: rdopkg
+Branch: refs/heads/master
