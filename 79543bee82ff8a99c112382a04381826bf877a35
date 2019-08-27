@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "58b3a656_894748ad",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-08-27T18:06:21Z",
+      "side": 1,
+      "message": "This unittest supports a model where you can have multiple magic comments of same name ... but different values, not sure how set_magic_comment would be able to correctly handle multiple so either need to collapse to one or fail if more than one found.  I picked the first option to collapse down to only one of them.",
+      "range": {
+        "startLine": 393,
+        "startChar": 0,
+        "endLine": 401,
+        "endChar": 49
+      },
+      "revId": "79543bee82ff8a99c112382a04381826bf877a35",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
