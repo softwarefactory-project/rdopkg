@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d2b89bbc_c36f6f54",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-08-27T18:14:24Z",
+      "side": 0,
+      "message": "expand_macros was not used in this method at all either before or after refactor, dropping extra parameter, and the review crossed the diff with a different method.",
+      "range": {
+        "startLine": 287,
+        "startChar": 43,
+        "endLine": 287,
+        "endChar": 65
+      },
+      "revId": "3c44fc3e6bc81b77c611078907d62070cdb0e873",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

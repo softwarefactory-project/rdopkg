@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "208863c5_8fed8901",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-08-27T18:14:24Z",
+      "side": 1,
+      "message": "Replaced the one regex with 2, one to detect after any magic comments, for inserting patches. Another to pick inside of magic comment block where we can insert more magic comments.",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 60
+      },
+      "revId": "31522f3cf86dbf7cfa828053c293f836e26ec276",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
