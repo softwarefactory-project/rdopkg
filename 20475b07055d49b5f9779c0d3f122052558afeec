@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd842b35_396ade40",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-08-29T10:43:38Z",
+      "side": 1,
+      "message": "Ack, I think it\u0027s a better approach. Initially I preferred to not touch extra comments, in case there was a purpose, but I think it\u0027s better this way.",
+      "range": {
+        "startLine": 405,
+        "startChar": 34,
+        "endLine": 405,
+        "endChar": 49
+      },
+      "revId": "20475b07055d49b5f9779c0d3f122052558afeec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
