@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5d82ef52_84f45da4",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-09-10T18:43:59Z",
+      "side": 1,
+      "message": "extra debugging",
+      "range": {
+        "startLine": 320,
+        "startChar": 17,
+        "endLine": 320,
+        "endChar": 19
+      },
+      "revId": "8f40bd1a17c364f32a62f4fc42d6790412e909fa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "42279fc9_6ea8e3eb",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-09-10T18:43:59Z",
+      "side": 1,
+      "message": "enhanced this regex to correctly handle the test cases",
+      "range": {
+        "startLine": 332,
+        "startChar": 0,
+        "endLine": 332,
+        "endChar": 81
+      },
+      "revId": "8f40bd1a17c364f32a62f4fc42d6790412e909fa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fda94f22_d9484f19",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-09-10T18:43:59Z",
+      "side": 1,
+      "message": "simplified logic here to remove some extra cases",
+      "range": {
+        "startLine": 319,
+        "startChar": 8,
+        "endLine": 349,
+        "endChar": 70
+      },
+      "revId": "8f40bd1a17c364f32a62f4fc42d6790412e909fa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e7f4f4bf_45cecfc9",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2019-09-10T18:43:59Z",
+      "side": 1,
+      "message": "removed duplicate code for set_patches_base with code implemented in set_magic_comment(\u0027patches_base\u0027...)",
+      "range": {
+        "startLine": 392,
+        "startChar": 2,
+        "endLine": 401,
+        "endChar": 52
+      },
+      "revId": "8f40bd1a17c364f32a62f4fc42d6790412e909fa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
