@@ -1,0 +1,9 @@
+Code-Review+1: Javier Peña <jpena@redhat.com>
+Code-Review+2: Haïkel Guémar <hguemar@fedoraproject.org>
+Workflow+1: Haïkel Guémar <hguemar@fedoraproject.org>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Mon, 30 Sep 2019 15:49:57 +0000
+Reviewed-on: https://softwarefactory-project.io/r/16112
+Project: rdopkg
+Branch: refs/heads/master
