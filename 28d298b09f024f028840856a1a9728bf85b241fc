@@ -16,6 +16,24 @@
       "revId": "28d298b09f024f028840856a1a9728bf85b241fc",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d2f40d24_87a9bc32",
+        "filename": "rdopkg/actionmods/rpmfactory.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 602
+      },
+      "writtenOn": "2019-10-04T14:57:35Z",
+      "side": 1,
+      "message": "That\u0027s definitely better, thanks.",
+      "parentUuid": "a9eeff1d_e53ffb65",
+      "revId": "28d298b09f024f028840856a1a9728bf85b241fc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
