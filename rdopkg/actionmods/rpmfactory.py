@@ -1,5 +1,6 @@
 """RPMFactory-related actions."""
 
+import six
 
 from rdopkg.utils import log
 from rdopkg.utils.cmd import GerritQuery
@@ -8,6 +9,8 @@ from rdopkg import guess, helpers, exception
 
 
 def _review_number(review_ref):
+    if not isinstance(review_ref, six.string_types):
+        return six.text_type(review_ref)
     parts = review_ref.split('/')
     if len(parts) == 1:
         return review_ref
