@@ -48,7 +48,7 @@ def fetch_patches_branch(local_patches_branch, gerrit_patches_chain,
     approvals = current_ps.get('approvals', [])
     jenkins = [a for a in approvals
                if a.get('type') == 'Verified'
-               and a.get('by', {}).get('username') == 'jenkins']
+               and a.get('by', {}).get('username') == ('jenkins', 'zuul')]
     code_reviews = [int(a.get('Value', 0)) for a in approvals
                     if a.get('type') == 'Code-Review']
     if not jenkins:
