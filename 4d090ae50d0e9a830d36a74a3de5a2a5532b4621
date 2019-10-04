@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c0de438_5c53af06",
+        "filename": "rdopkg/actionmods/rpmfactory.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-10-04T15:13:13Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be \u0027in\u0027 instead of \u0027\u003d\u003d\u0027? I can\u0027t see how this could ever be equal, but maybe I\u0027m missing something.",
+      "range": {
+        "startLine": 54,
+        "startChar": 51,
+        "endLine": 54,
+        "endChar": 53
+      },
+      "revId": "4d090ae50d0e9a830d36a74a3de5a2a5532b4621",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
