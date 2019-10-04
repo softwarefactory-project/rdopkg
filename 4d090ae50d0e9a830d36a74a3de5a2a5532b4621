@@ -22,6 +22,30 @@
       "revId": "4d090ae50d0e9a830d36a74a3de5a2a5532b4621",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a4f4443_ad96d480",
+        "filename": "rdopkg/actionmods/rpmfactory.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 602
+      },
+      "writtenOn": "2019-10-04T15:16:00Z",
+      "side": 1,
+      "message": "/me facepalms, yes it is I don\u0027t know how I copied it wrong from my system\u0027s code",
+      "parentUuid": "3c0de438_5c53af06",
+      "range": {
+        "startLine": 54,
+        "startChar": 51,
+        "endLine": 54,
+        "endChar": 53
+      },
+      "revId": "4d090ae50d0e9a830d36a74a3de5a2a5532b4621",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
