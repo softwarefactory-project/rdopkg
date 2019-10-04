@@ -54,7 +54,9 @@ def run(cmd, *params, **kwargs):
     print_output = kwargs.get('print_output', False)
     env = kwargs.get('env', None)
 
-    cmd = [cmd] + list(params)
+    cmd = [cmd]
+    cmd.extend(p if isinstance(p, six.string_types) else six.text_type(p)
+               for p in params)
     cmd_str = ' '.join(cmd)
 
     if log_cmd:
