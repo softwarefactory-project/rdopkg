@@ -477,7 +477,6 @@ def test_create_new_mc_foo_existing_other_mc_and_patches_with_ordering():
 
 
 def test_create_new_magic_comment_foo_source_and_patch():
-
     mock_file = '\n'.join(['', source_leader, patches_leader, ''])
     spec = specfile.Spec(txt=mock_file)
     spec._create_new_magic_comment('foo', 'bar')
@@ -519,3 +518,18 @@ def test_create_new_mc_foo_existing_magic_comment_and_patch_no_extra_lines():
     index_mc_patches_base = lines.index(magic_comment_patches_base)
     assert len(lines[index_mc_foo + 1:index_mc_patches_base]) == 0
     assert len(lines[index_mc_patches_base + 1:index_mc_foo]) == 0
+
+
+def test_create_new_mc_comment_with_ge():
+    mock_file = '\n'.join(['', source_leader, 'BuildRequires:    systemd',
+                           '# Required to build nova.conf.sample',
+                           'BuildRequires:    python%{pyver}-castellan '
+                           '>= 0.16.0', ''])
+    spec = specfile.Spec(txt=mock_file)
+    spec._create_new_magic_comment('foo', 'bar')
+
+    lines = spec.txt.split('\n')
+    assert magic_comment_foo in lines
+    # check ordering
+    assert magic_comment_foo not in\
+        lines[lines.index('BuildRequires:    systemd'):]
