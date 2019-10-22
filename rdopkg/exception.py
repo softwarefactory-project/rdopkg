@@ -16,6 +16,16 @@ class RdopkgException(Exception):
         super(RdopkgException, self).__init__(msg)
 
 
+class ReqCheckMissingDependencies(RdopkgException):
+    msg_fmt = "There are missing dependencies"
+    exit_code = 2
+
+
+class ReqCheckMismatchingDependencies(RdopkgException):
+    msg_fmt = "There are mismatching dependencies"
+    exit_code = 4
+
+
 class CommandFailed(RdopkgException):
     msg_fmt = "Command failed: %(cmd)s"
 
