@@ -111,6 +111,7 @@ def run(action_runner, cargs, prog='rdopkg', version=None):
             exception.RequiredActionArgumentNotAvailable,
             exception.RequirementNotMet,
             exception.RpmModuleNotAvailable,
+            exception.ReqCheckException,
             exception.SpecFileNotFound,
             exception.ToolNotFound,
             exception.UserAbort,
