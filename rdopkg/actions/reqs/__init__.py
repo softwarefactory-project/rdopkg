@@ -24,6 +24,8 @@ ACTIONS = [
            optional_args=[
                Arg('spec', shortcut='-s', action='store_true',
                    help="output .spec Requires: for easy pasting"),
+               Arg('strict', shortcut='-S', action='store_true',
+                   help=""),
            ]),
     Action('reqquery',
            help="query RDO repos for versions defined in requirements.txt",

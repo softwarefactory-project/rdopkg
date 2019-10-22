@@ -22,7 +22,7 @@ def reqdiff(version_tag_from, version_tag_to):
     _reqs.print_reqdiff(*rdiff)
 
 
-def reqcheck(version, spec=False):
+def reqcheck(version, spec=False, strict=False):
     if version.upper() == 'XXX':
         if 'upstream' in git.remotes():
             current_branch = git.current_branch()
@@ -45,6 +45,13 @@ def reqcheck(version, spec=False):
     if spec:
         format = 'spec'
     _reqs.print_reqcheck(*check, format=format)
+    if strict:
+        # missing
+        if len(check[-1]) > 0:
+            raise exception.ReqCheckMissingDependencies()
+        # mismatch
+        if len(check[-2]) > 0:
+            raise exception.ReqCheckMismatchingDependencies()
 
 
 def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
