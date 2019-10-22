@@ -16,6 +16,10 @@ class RdopkgException(Exception):
         super(RdopkgException, self).__init__(msg)
 
 
+class ReqCheckException(RdopkgException):
+    exit_code = 1
+
+
 class CommandFailed(RdopkgException):
     msg_fmt = "Command failed: %(cmd)s"
 
