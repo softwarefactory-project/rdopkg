@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f7372fe_9b557a58",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 201
+      },
+      "writtenOn": "2019-10-22T16:12:51Z",
+      "side": 1,
+      "message": "as a follow up we might need to allow exceptions, returning structured output (json?) with package version details",
+      "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
