@@ -16,6 +16,24 @@
       "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c9ea5d28_560c7c63",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 267
+      },
+      "writtenOn": "2019-10-22T17:44:06Z",
+      "side": 1,
+      "message": "We have mismatch versions in all packages because requirements.txt usually has banned versions as:\n\n  python-babel !\u003d 2.4.0,\u003e\u003d 2.3.4  (\u003e\u003d 2.3.4 in .spec)\n  python-oslo-serialization !\u003d 2.19.1,\u003e\u003d 2.18.0  (\u003e\u003d 2.18.0 in .spec)\n\nSo, i think using rc for mismatch will not be very useful. anyway, as it\u0027s using different rc code we can specifically look for exit code \u003d\u003d 2.",
+      "parentUuid": "9f7372fe_9b557a58",
+      "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
