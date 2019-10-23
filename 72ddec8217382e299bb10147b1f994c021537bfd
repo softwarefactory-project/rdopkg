@@ -34,6 +34,24 @@
       "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "631f2b4f_1937d0ee",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2019-10-23T15:03:17Z",
+      "side": 1,
+      "message": "Good point, maybe worth disabling by default unless we pass a switch to the CLI (maybe --strict ?)",
+      "parentUuid": "c9ea5d28_560c7c63",
+      "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
