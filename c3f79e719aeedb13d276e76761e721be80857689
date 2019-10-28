@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "22f49e4e_939d5f8d",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2019-10-28T14:12:26Z",
+      "side": 1,
+      "message": "Nice catch. I changed it by getting only the minimal requirement. Wdyt ?",
+      "parentUuid": "4d9aed65_ba72fc98",
+      "range": {
+        "startLine": 39,
+        "startChar": 3,
+        "endLine": 39,
+        "endChar": 38
+      },
+      "revId": "c3f79e719aeedb13d276e76761e721be80857689",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2471bd1a_c5643e4b",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-10-28T11:33:34Z",
       "side": 1,
       "message": "Maybe it would be better if we used a more descriptive variable name. What about \"sanitized_desired_vers\"? That would allow us to do further sanitizing in the future.",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 40
+      },
+      "revId": "c3f79e719aeedb13d276e76761e721be80857689",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6c511760_09eadc2e",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2019-10-28T14:12:26Z",
+      "side": 1,
+      "message": "I agree with that. \nAlso, in order to be consistent, do you think I should sanitize (remove duplicated vars) self.vers and self.desired_vers only in method \"met\" instead of during the __init__ ?",
+      "parentUuid": "2471bd1a_c5643e4b",
       "range": {
         "startLine": 55,
         "startChar": 8,
