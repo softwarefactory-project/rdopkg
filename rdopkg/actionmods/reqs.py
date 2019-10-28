@@ -32,15 +32,30 @@ class CheckReq(object):
 
     def __init__(self, name, desired_vers, vers):
         self.name = name
-        self.desired_vers = desired_vers
-        self.vers = vers
+        self.desired_vers = self.remove_duplicated_spaces(str(desired_vers))
+        self.vers = self.remove_duplicated_spaces(str(vers))
+
+    @staticmethod
+    def get_minimal_req_vers(vers):
+        minimal_req_vers = ''
+        l_vers = vers.split(',')
+        for ver in l_vers:
+            if ver[:2] == '>=':
+                minimal_req_vers = ver
+        return minimal_req_vers
+
+    @staticmethod
+    def remove_duplicated_spaces(vers):
+        return " ".join(vers.split())
 
     def met(self):
         if self.vers is None:
             return False
         # TODO: smarter version rage comparison
-        if self.desired_vers:
-            if self.desired_vers == self.vers:
+        sanitized_desired_vers = self.get_minimal_req_vers(
+            self.desired_vers)
+        if sanitized_desired_vers:
+            if sanitized_desired_vers == self.vers:
                 return True
             else:
                 return False
