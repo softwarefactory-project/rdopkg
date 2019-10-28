@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "4d9aed65_ba72fc98",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 267
+      },
+      "writtenOn": "2019-10-28T12:43:20Z",
+      "side": 1,
+      "message": "With this, we are only removing blacklisted packages but we can still find other cases. i.e. running reqcheck in python-novaclient, i still see:\n\nVERSION MISMATCH:\n  python-prettytable \u003c 0.8,\u003e\u003d 0.7.2  (\u003e\u003d 0.7.2 in .spec)\n\nI\u0027d say we sould fix this also.",
+      "range": {
+        "startLine": 39,
+        "startChar": 3,
+        "endLine": 39,
+        "endChar": 38
+      },
+      "revId": "c3f79e719aeedb13d276e76761e721be80857689",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2471bd1a_c5643e4b",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 1
