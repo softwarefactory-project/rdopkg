@@ -36,15 +36,17 @@ class CheckReq(object):
         self.vers = vers
 
     def met(self):
-        if self.vers is None:
+        for rv in self.desired_vers.split(','):
+            m = re.match('(>|>=) (\\d.*)$', rv)
+            if m:
+                if rv == self.vers:
+                    return True
+                else:
+                    return False
+        if not self.desired_vers and not self.vers:
+            return True
+        else:
             return False
-        # TODO: smarter version rage comparison
-        if self.desired_vers:
-            if self.desired_vers == self.vers:
-                return True
-            else:
-                return False
-        return True
 
     def __str__(self, format=None):
         s = self.name
@@ -149,7 +151,7 @@ def reqcheck(desired_reqs, reqs):
         r = CheckReq(dr.name, dr.vers, vers)
         if r.vers is None:
             missing.append(r)
-        elif r.vers is '':
+        elif not r.vers:
             if r.desired_vers:
                 any_version.append(r)
             else:
