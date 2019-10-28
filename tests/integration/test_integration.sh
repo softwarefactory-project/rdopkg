@@ -13,3 +13,4 @@ TESTS_PATH="`( cd \"$TESTS_PATH\" && pwd )`"
 $TESTS_PATH/test_findpkg.sh
 $TESTS_PATH/test_clone.sh
 $TESTS_PATH/test_info.sh
+$TESTS_PATH/test_reqcheck.sh
