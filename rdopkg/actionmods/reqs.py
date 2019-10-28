@@ -35,12 +35,30 @@ class CheckReq(object):
         self.desired_vers = desired_vers
         self.vers = vers
 
+    @staticmethod
+    def get_minimal_req_vers(vers):
+        minimal_req_vers = ''
+        l_vers = vers.split(',')
+        for ver in l_vers:
+            if ver[:2] == '>=':
+                minimal_req_vers = ver
+        return minimal_req_vers
+
+    @staticmethod
+    def remove_duplicated_spaces(vers):
+        return " ".join(vers.split())
+
     def met(self):
         if self.vers is None:
             return False
         # TODO: smarter version rage comparison
-        if self.desired_vers:
-            if self.desired_vers == self.vers:
+        sanitized_desired_vers = self.get_minimal_req_vers(self.desired_vers)
+        sanitized_desired_vers = self.remove_duplicated_spaces(
+            sanitized_desired_vers)
+        sanitized_vers = self.get_minimal_req_vers(self.vers)
+        sanitized_vers = self.remove_duplicated_spaces(sanitized_vers)
+        if sanitized_desired_vers:
+            if sanitized_desired_vers == sanitized_vers:
                 return True
             else:
                 return False
@@ -149,7 +167,7 @@ def reqcheck(desired_reqs, reqs):
         r = CheckReq(dr.name, dr.vers, vers)
         if r.vers is None:
             missing.append(r)
-        elif r.vers is '':
+        elif not r.vers:
             if r.desired_vers:
                 any_version.append(r)
             else:
