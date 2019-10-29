@@ -93,6 +93,30 @@
       "revId": "c3f79e719aeedb13d276e76761e721be80857689",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fdd295e2_9b951866",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-10-29T09:00:48Z",
+      "side": 1,
+      "message": "I think it is ok to remove spaces in __init__, I see we are using it in other methods.",
+      "parentUuid": "6c511760_09eadc2e",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 40
+      },
+      "revId": "c3f79e719aeedb13d276e76761e721be80857689",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
