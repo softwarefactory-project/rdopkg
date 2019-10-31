@@ -52,6 +52,42 @@
       "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8207be81_6ba6d0ed",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-10-31T11:13:18Z",
+      "side": 1,
+      "message": "\u003e We have mismatch versions in all packages because requirements.txt\n \u003e usually has banned versions as:\n \u003e \n \u003e python-babel !\u003d 2.4.0,\u003e\u003d 2.3.4  (\u003e\u003d 2.3.4 in .spec)\n \u003e python-oslo-serialization !\u003d 2.19.1,\u003e\u003d 2.18.0  (\u003e\u003d 2.18.0 in .spec)\n \u003e \n \u003e So, i think using rc for mismatch will not be very useful. anyway,\n \u003e as it\u0027s using different rc code we can specifically look for exit\n \u003e code \u003d\u003d 2.\n\nDo RPM specs support banning versions of dependencies at all? I couldn\u0027t find any mention of this anywhere. If it\u0027s not supported, should we have a warning, or add a specific output that lists unsupported dependency versions?",
+      "parentUuid": "c9ea5d28_560c7c63",
+      "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a63362ae_2f66b8cf",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-10-31T11:13:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "631f2b4f_1937d0ee",
+      "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
