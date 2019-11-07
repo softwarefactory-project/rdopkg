@@ -49,7 +49,7 @@ def prep_spec_test(tmpdir, distgit):
                     str(dist_path))
     with dist_path.as_cwd():
         git('init')
-        git('add', '.')
+        git('add', '-f', '.')
         git('commit', '-m', 'Initial import',
             isolated=True)
     return dist_path
@@ -60,7 +60,7 @@ def prep_patches_branch(tag='1.2.3'):
     f = open('foofile', 'w')
     f.write("#not really a patch\n")
     f.close()
-    git('add', 'foofile')
+    git('add', '-f', 'foofile')
     git('commit', '-m', 'Create this test branch',
         isolated=True)
     if tag:
@@ -73,7 +73,7 @@ def do_patch(fn, content, msg):
     content = encode(content)
     f.write(content)
     f.close()
-    git('add', fn)
+    git('add', '-f', fn)
     git('commit', '-m', msg,
         isolated=True)
 
