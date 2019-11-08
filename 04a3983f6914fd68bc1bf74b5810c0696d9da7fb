@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b7caf930_ca63a82f",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2019-11-08T11:12:33Z",
+      "side": 1,
+      "message": "If you rdopkg clone openstack-barbican and make a reqcheck, you will notice that python module castellan appears as MISMATCH due to a duplicate space in the requirements.txt\nThanks of your review, i noticed that the requires are well handled (sanitized) with the method get_requires of spec object.\nSo, to keep consistency, I\u0027m going to remove this remove_duplicated_spaces method here and will handle this during the parsing of requirements.txt file.\nI will do this in another review with a specific unit test.",
+      "parentUuid": "68735662_c7ab387f",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 35
+      },
+      "revId": "04a3983f6914fd68bc1bf74b5810c0696d9da7fb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dca84b9c_0e8a28ed",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 7
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "df35e77b_f8f17dfa",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2019-11-08T11:12:33Z",
+      "side": 1,
+      "message": "dito",
+      "parentUuid": "dca84b9c_0e8a28ed",
+      "range": {
+        "startLine": 58,
+        "startChar": 7,
+        "endLine": 59,
+        "endChar": 70
+      },
+      "revId": "04a3983f6914fd68bc1bf74b5810c0696d9da7fb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ae62c632_9616d49e",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 7
@@ -59,6 +107,30 @@
       "writtenOn": "2019-11-08T09:18:19Z",
       "side": 1,
       "message": "don\u0027t we need to handle blacklist versions for spec format print?",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 24
+      },
+      "revId": "04a3983f6914fd68bc1bf74b5810c0696d9da7fb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "20f26cbe_0ca1814b",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2019-11-08T11:12:33Z",
+      "side": 1,
+      "message": "It\u0027s a good point, I didn\u0027t notice that.\nThis change does not alter the output, but indeed we need to change it. I\u0027ll do it in another review to keep this change simple.",
+      "parentUuid": "ae62c632_9616d49e",
       "range": {
         "startLine": 191,
         "startChar": 4,
