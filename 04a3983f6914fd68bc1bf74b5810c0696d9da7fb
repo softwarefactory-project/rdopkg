@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68735662_c7ab387f",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 430
+      },
+      "writtenOn": "2019-11-08T09:18:19Z",
+      "side": 1,
+      "message": "which space u are targetting here(after getting minimal version) just for understanding any example? additional method for removing space seems not needed, it can be handled in other method only if there is a need.",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 35
+      },
+      "revId": "04a3983f6914fd68bc1bf74b5810c0696d9da7fb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dca84b9c_0e8a28ed",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 430
+      },
+      "writtenOn": "2019-11-08T09:18:19Z",
+      "side": 1,
+      "message": "this seems not necessary for spec versions. any specific reason?",
+      "range": {
+        "startLine": 58,
+        "startChar": 7,
+        "endLine": 59,
+        "endChar": 70
+      },
+      "revId": "04a3983f6914fd68bc1bf74b5810c0696d9da7fb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae62c632_9616d49e",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 430
+      },
+      "writtenOn": "2019-11-08T09:18:19Z",
+      "side": 1,
+      "message": "don\u0027t we need to handle blacklist versions for spec format print?",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 24
+      },
+      "revId": "04a3983f6914fd68bc1bf74b5810c0696d9da7fb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
