@@ -88,6 +88,29 @@
       "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8eaa248e_5aa2e373",
+        "filename": "rdopkg/exception.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-11-12T16:33:19Z",
+      "side": 1,
+      "message": "If I understood it correctly, this line will not do anything, because the constructor for RdopkgException will take the exit_code provided to the exception. Then why this?",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
