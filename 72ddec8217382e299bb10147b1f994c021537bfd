@@ -111,6 +111,30 @@
       "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6133cc7f_446c24d6",
+        "filename": "rdopkg/exception.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2019-11-12T16:54:13Z",
+      "side": 1,
+      "message": "Indeed, I put both the exit_code and msg_fmt in new classes to address mismatch and missing dependencies in change 3.",
+      "parentUuid": "8eaa248e_5aa2e373",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "72ddec8217382e299bb10147b1f994c021537bfd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
