@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ad9ca199_cc9ce817",
+        "filename": "tests/test_reqcheck.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-11-12T12:18:10Z",
+      "side": 1,
+      "message": "I\u0027ve seen it working in actual tests, but just to have it here as well: could we add a test where the req in requirements.txt is \"\u003e\u003dvalue,\u003c\u003dothervalue\"?",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "175d41df540c28850f0905148219f1fc2bc08080",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
