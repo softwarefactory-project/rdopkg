@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "f7f43319_0a08afa0",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 430
+      },
+      "writtenOn": "2019-11-13T11:22:32Z",
+      "side": 1,
+      "message": "okk for that i think we need to handle that at parsing time itself, https://github.com/softwarefactory-project/rdopkg/blob/master/rdopkg/actionmods/reqs.py#L19-L20",
+      "parentUuid": "b7caf930_ca63a82f",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 35
+      },
+      "revId": "04a3983f6914fd68bc1bf74b5810c0696d9da7fb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dca84b9c_0e8a28ed",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 7
@@ -131,6 +155,30 @@
       "side": 1,
       "message": "It\u0027s a good point, I didn\u0027t notice that.\nThis change does not alter the output, but indeed we need to change it. I\u0027ll do it in another review to keep this change simple.",
       "parentUuid": "ae62c632_9616d49e",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 24
+      },
+      "revId": "04a3983f6914fd68bc1bf74b5810c0696d9da7fb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4073a9dc_3ea2a375",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 430
+      },
+      "writtenOn": "2019-11-13T11:22:32Z",
+      "side": 1,
+      "message": "I can forsee it as it will totally revert the changes being done in this review, but ok for doing as seperate review.",
+      "parentUuid": "20f26cbe_0ca1814b",
       "range": {
         "startLine": 191,
         "startChar": 4,
