@@ -2,7 +2,7 @@ import pytest
 import subprocess
 
 from rdopkg.cli import rdopkg
-from rdopkg.actionmods.reqs import CheckReq
+from rdopkg.actionmods.reqs import CheckReq, DiffReq
 
 import test_common as common
 
@@ -60,4 +60,34 @@ def test_checkreq_version_not_capped():
     cr = CheckReq('mypackage', '', '')
     got = cr.met()
     expected = True
+    assert got == expected
+
+
+def test_diffreq():
+    dr = DiffReq('mypackage', '!=1.2.5,>=1.2.3')
+    got = dr.__str__()
+    expected = 'mypackage != 1.2.5,>= 1.2.3'
+    assert got == expected
+
+
+def test_diffreq_with_spaces():
+    dr = DiffReq('mypackage', '   !=  1.2.5,  >=  1.2.3  ')
+    got = dr.__str__()
+    expected = 'mypackage != 1.2.5,>= 1.2.3'
+    assert got == expected
+
+
+def test_diffreq_new_version():
+    dr = DiffReq('mypackage', '!=1.2.5,>=1.2.3')
+    dr.vers = '!= 1.2.5,>= 1.2.4'
+    got = dr.__str__()
+    expected = 'mypackage != 1.2.5,>= 1.2.4  (was != 1.2.5,>= 1.2.3)'
+    assert got == expected
+
+
+def test_diffreq_old_version_not_capped():
+    dr = DiffReq('mypackage', '')
+    dr.vers = '>= 1.2.4'
+    got = dr.__str__()
+    expected = 'mypackage >= 1.2.4  (was not capped)'
     assert got == expected
