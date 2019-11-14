@@ -2,7 +2,7 @@ import pytest
 import subprocess
 
 from rdopkg.cli import rdopkg
-from rdopkg.actionmods.reqs import CheckReq, DiffReq
+from rdopkg.actionmods.reqs import CheckReq, DiffReq, parse_reqs_txt
 
 import test_common as common
 
@@ -91,3 +91,53 @@ def test_diffreq_old_version_not_capped():
     got = dr.__str__()
     expected = 'mypackage >= 1.2.4  (was not capped)'
     assert got == expected
+
+
+def test_parse_reqs_txt_exact_output(caplog):
+    requirements_txt = '\n'.join(['# The order of packages is significant',
+                                  'argparse!=0.8.9,>=0.8.4 # MIT',
+                                  'oslo.utils>=3.33.0',
+                                  '',
+                                  'WebOb>1.7.1 # MIT'])
+    got = parse_reqs_txt(requirements_txt)
+    for record in caplog.records:
+        assert record.levelname != "WARNING"
+    assert len(got) == 3
+
+
+def test_parse_reqs_txt_with_spaces():
+    requirements_txt = '  argparse    >=    0.8   '
+    prt = parse_reqs_txt(requirements_txt)
+    got = prt[0]
+    assert got.name == 'argparse'
+    assert got.vers == '>= 0.8'
+
+
+def test_parse_reqs_txt_fail_to_parse_req_01(caplog):
+    requirements_txt = '\n'.join(['argparse>=0.8.10 # MIT',
+                                  'monotonic:0.6'])
+    got = parse_reqs_txt(requirements_txt)
+    for record in caplog.records:
+        assert record.levelname == "WARNING"
+    assert 'Failed to parse requirement' in caplog.text
+    assert len(got) == 1
+
+
+def test_parse_reqs_txt_fail_to_parse_req_02(caplog):
+    requirements_txt = '\n'.join(['$=#wrong',
+                                  'monotonic==0.6',
+                                  'argparse>=0.8.10'])
+    got = parse_reqs_txt(requirements_txt)
+    for record in caplog.records:
+        assert record.levelname == "WARNING"
+    assert 'Failed to parse requirement' in caplog.text
+    assert len(got) == 2
+
+
+def test_parse_reqs_txt_empty(caplog):
+    requirements_txt = ''
+    got = parse_reqs_txt(requirements_txt)
+    for record in caplog.records:
+        assert record.levelname == "WARNING"
+    assert 'The requirements.txt file is empty' in caplog.text
+    assert len(got) == 0
