@@ -61,15 +61,18 @@ def parse_reqs_txt(txt):
     reqs = []
     lines = sorted(txt.split('\n'), key=lambda l: l.lower())
     for line in lines:
-        if not line or re.match('\W', line):
+        if not line:
+            log.warn("The requirements.txt file is empty")
             continue
-        line = re.sub(r'\s*(?:#.*)$', '', line)
-        m = re.match(r'([^<>=!\s]+)\s*(.*)$', line)
-        if not m:
+        # removing comments and spaces
+        line = re.sub(r'\s*(?:#.*)$', '', line.replace(" ", ""))
+        m = re.match(r'(\w+)([<>=!]+)([\d\.]+)$', line)
+        if m:
+            version = '%s %s' % (m.group(2), m.group(3))
+            r = DiffReq(name=m.group(1), vers=version)
+            reqs.append(r)
+        else:
             log.warn("Failed to parse requirement: %s" % line)
-            continue
-        r = DiffReq(name=m.group(1), vers=m.group(2))
-        reqs.append(r)
     return reqs
 
 
