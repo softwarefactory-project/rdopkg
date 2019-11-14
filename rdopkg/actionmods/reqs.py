@@ -59,17 +59,21 @@ class CheckReq(object):
 
 def parse_reqs_txt(txt):
     reqs = []
+    if not txt:
+        log.warn("The requirements.txt file is empty")
+        return reqs
     lines = sorted(txt.split('\n'), key=lambda l: l.lower())
     for line in lines:
-        if not line or re.match('\W', line):
+        # removing comments and spaces
+        line = re.sub(r'\s*(?:#.*)$', '', line.replace(" ", ""))
+        if not line:
             continue
-        line = re.sub(r'\s*(?:#.*)$', '', line)
-        m = re.match(r'([^<>=!\s]+)\s*(.*)$', line)
-        if not m:
+        m = re.match(r'([\w\._-]+)([<>=!,.\d]*)$', line)
+        if m:
+            r = DiffReq(name=m.group(1), vers=m.group(2))
+            reqs.append(r)
+        else:
             log.warn("Failed to parse requirement: %s" % line)
-            continue
-        r = DiffReq(name=m.group(1), vers=m.group(2))
-        reqs.append(r)
     return reqs
 
 
