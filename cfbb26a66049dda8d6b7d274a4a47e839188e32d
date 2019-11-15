@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25b631c5_d24071f9",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 267
+      },
+      "writtenOn": "2019-11-15T12:30:09Z",
+      "side": 1,
+      "message": "IIUC, we are checking missing dependencies for return value only when using --script so by default, reqcheck will return 0 even if there are missing deps.\n\nIs this the expected behavior of --strict?",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 57
+      },
+      "revId": "cfbb26a66049dda8d6b7d274a4a47e839188e32d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
