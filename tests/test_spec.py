@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from rdopkg import exception
 from rdopkg.utils import specfile
+from collections import defaultdict
 import pytest
 
 import test_common as common
@@ -533,3 +534,83 @@ def test_create_new_mc_comment_with_ge():
     # check ordering
     assert magic_comment_foo not in\
         lines[lines.index('BuildRequires:    systemd'):]
+
+def test_get_requires_true(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'requires')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        got = spec.get_requires(True,True,True)
+        expected = defaultdict(set)
+        packages = [('python-argparse', '== 1.2.3'),
+                    ('python-iso8601', '== 1.2.3'),
+                    ('python-prettytable', '')]
+        for name, version in packages:
+            expected[name] = version
+        assert got == expected
+
+def test_get_requires_false(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'requires')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        got = spec.get_requires(False,False,False)
+        expected = defaultdict(set)
+        packages = [('python-argparse', '== 42:1.2.3'),
+                    ('python-iso8601', '== 1.2.3'),
+                    ('python3-prettytable', '')]
+        for name, version in packages:
+            if version:
+                 expected[name].add(version)
+            else:
+                 expected[name]
+        assert got == expected
+
+def test_get_provides_true(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'requires')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        got = spec.get_provides(True,True,True)
+        expected = defaultdict(set)
+        packages = [('foo', '== 1.2.3-0.3')]
+        for name, version in packages:
+            expected[name] = version
+        assert got == expected
+
+def test_get_provides_false(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'requires')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        got = spec.get_provides(False,False,False)
+        expected = defaultdict(set)
+        packages = [('foo', '== 1:1.2.3-0.3')]
+        for name, version in packages:
+            if version:
+                 expected[name].add(version)
+            else:
+                 expected[name]
+        assert got == expected
+
+def test_get_requires_not_provided_01(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'requires')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        got = spec.get_requires_not_provided(True,True,True)
+        expected = defaultdict(set)
+        packages = [('python-argparse', '== 1.2.3'),
+                    ('python-iso8601', '== 1.2.3'),
+                    ('python-prettytable', '')]
+        for name, version in packages:
+            expected[name] = version
+        assert got == expected
+
+def test_get_requires_not_provided_02(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'requires-not-provided')
+    with dist_path.as_cwd():
+        spec = specfile.Spec()
+        got = spec.get_requires_not_provided(True,True,True)
+        expected = defaultdict(set)
+        packages = [('python-argparse', '== 1.2.3'),
+                    ('python-iso8601', '== 1.2.3'),
+                    ('python-prettytable', '')]
+        for name, version in packages:
+            expected[name] = version
+        assert got == expected
