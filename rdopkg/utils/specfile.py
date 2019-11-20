@@ -694,13 +694,13 @@ class Spec(object):
             lines = list(map(lambda x: x.lstrip(" -*\t"), lines))
         return lines[0], lines[1:]
 
-    def get_requires(self, versions_as_string=False, remove_epoch=True,
-                     normalize_py23=False):
-        reqs = defaultdict(set)
+    def get_pkgs_from_rpmptag(self, rpmtag, versions_as_string=False,
+                              remove_epoch=True, normalize_py23=False):
+        rpmtag_pkgs = defaultdict(set)
         for pkg in self.rpmspec.packages:
-            pkg_reqs = pkg.header.dsFromHeader('requirename')
-            for req in pkg_reqs:
-                m = re.match(r'R (\S+)\s+([=<>!]+)\s*(\S+)', req.DNEVR())
+            packages = pkg.header.dsFromHeader(rpmtag)
+            for p in packages:
+                m = re.match(r'\w\s(\S+)\s+([=<>!]+)\s*(\S+)', p.DNEVR())
                 if m:
                     name, eq, ver = m.groups()
                     if eq == '=':
@@ -711,13 +711,36 @@ class Spec(object):
                             ver = rest
                     if normalize_py23:
                         name = re.sub(r'^python[23]-', 'python-', name)
-                    reqs[name].add(eq + ' ' + ver)
+                    rpmtag_pkgs[name].add(eq + ' ' + ver)
                 else:
-                    name = req.N()
+                    name = p.N()
                     if normalize_py23:
                         name = re.sub(r'^python[23]-', 'python-', name)
-                    reqs[name]
+                    rpmtag_pkgs[name]
         if versions_as_string:
-            for name in reqs:
-                reqs[name] = ','.join(reqs[name])
-        return reqs
+            for name in rpmtag_pkgs:
+                rpmtag_pkgs[name] = ','.join(rpmtag_pkgs[name])
+        return rpmtag_pkgs
+
+    def get_requires(self, versions_as_string=False, remove_epoch=True,
+                     normalize_py23=False):
+        return self.get_pkgs_from_rpmptag('requires', versions_as_string,
+                                          remove_epoch, normalize_py23)
+
+    def get_provides(self, versions_as_string=False, remove_epoch=True,
+                     normalize_py23=False):
+        return self.get_pkgs_from_rpmptag('provides', versions_as_string,
+                                          remove_epoch, normalize_py23)
+
+    def get_requires_not_provided(self, versions_as_string=False,
+                                  remove_epoch=True, normalize_py23=False):
+        requires = self.get_requires(versions_as_string, remove_epoch,
+                                     normalize_py23)
+        provides = self.get_provides(versions_as_string, remove_epoch,
+                                     normalize_py23)
+        for p in provides:
+            try:
+                requires.pop(p)
+            except KeyError:
+                pass
+        return requires

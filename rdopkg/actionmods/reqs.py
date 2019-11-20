@@ -21,10 +21,12 @@ class DiffReq(object):
         self.vers = vers
         self.old_vers = vers
 
-    def __str__(self):
+    def __str__(self, format=None):
         s = '%s %s' % (self.name, self.vers)
         if self.old_vers != self.vers:
             s += '  (was %s)' % (self.old_vers or 'not capped',)
+        if not format:
+            pass
         return s
 
 
@@ -89,8 +91,8 @@ def get_reqs_from_path(path):
 
 def get_reqs_from_spec(as_objects=False, normalize_py23=False):
     spec = specfile.Spec()
-    reqs = spec.get_requires(versions_as_string=True,
-                             normalize_py23=normalize_py23)
+    reqs = spec.get_requires_not_provided(versions_as_string=True,
+                                          normalize_py23=normalize_py23)
     if as_objects:
         creqs = []
         for name in sorted(reqs):
@@ -150,29 +152,43 @@ def print_reqdiff(added, changed, removed):
 
 def reqcheck(desired_reqs, reqs):
     met, any_version, wrong_version, missing = [], [], [], []
+    excess = reqs
     for dr in desired_reqs:
-        vers = reqs.get(dr.name)
-        r = CheckReq(dr.name, dr.vers, vers)
-        if r.vers is None:
-            missing.append(r)
-        elif not r.vers:
-            if r.desired_vers:
-                any_version.append(r)
+        for req in reqs:
+            if req.name == dr.name:
+                r = CheckReq(dr.name, dr.vers, req.vers)
+                try:
+                    excess.remove(req)
+                except Exception as ex:
+                    pass
+                break
+        try:
+            if r.vers is None:
+                missing.append(r)
+            elif not r.vers:
+                if r.desired_vers:
+                    any_version.append(r)
+                else:
+                    met.append(r)
             else:
-                met.append(r)
-        else:
-            if r.met():
-                met.append(r)
-            else:
-                wrong_version.append(r)
+                if r.met():
+                    met.append(r)
+                else:
+                    wrong_version.append(r)
+            del r
 
-    return met, any_version, wrong_version, missing
+        except Exception as ex:
+            pass
+
+    return met, any_version, wrong_version, missing, excess
 
 
-def print_reqcheck(met, any_version, wrong_version, missing, format=None):
+def print_reqcheck(met, any_version, wrong_version, missing, excess,
+                   format=None):
     cats = [
         ("{t.bold_green}MET{t.normal}:", met),
         ("{t.bold}VERSION NOT ENFORCED{t.normal}:", any_version),
+        ("{t.bold}ADDITIONAL REQUIRES{t.normal}:", excess),
         ("{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
         ("{t.bold_red}MISSING{t.normal}:", missing),
     ]
@@ -204,7 +220,7 @@ def reqcheck_spec(ref=None, reqs_txt=None):
     else:
         reqs_txt = get_reqs_from_path(reqs_txt)
     map_reqs2pkgs(reqs_txt, 'epel')
-    spec_reqs = get_reqs_from_spec(normalize_py23=True)
+    spec_reqs = get_reqs_from_spec(as_objects=True, normalize_py23=True)
     return reqcheck(reqs_txt, spec_reqs)
 
 
