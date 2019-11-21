@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04d96d18_320c6924",
+        "filename": "tests/test_reqcheck.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-11-21T11:37:47Z",
+      "side": 1,
+      "message": "The blank space here confused  me a bit. I understand it is added by DiffReq, right?",
+      "range": {
+        "startLine": 113,
+        "startChar": 24,
+        "endLine": 113,
+        "endChar": 31
+      },
+      "revId": "c5a578cf3c46c03e5edf06c281ba670301a963be",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
