@@ -22,6 +22,30 @@
       "revId": "c5a578cf3c46c03e5edf06c281ba670301a963be",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c89115b6_5d6003fc",
+        "filename": "tests/test_reqcheck.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2019-11-21T13:42:54Z",
+      "side": 1,
+      "message": "Yes exactly, this space comes from the DiffReq constructor.\nhttps://github.com/softwarefactory-project/rdopkg/blob/25f98e45d99eedb919bb460e1119aa8cf9603fae/rdopkg/actionmods/reqs.py#L20",
+      "parentUuid": "04d96d18_320c6924",
+      "range": {
+        "startLine": 113,
+        "startChar": 24,
+        "endLine": 113,
+        "endChar": 31
+      },
+      "revId": "c5a578cf3c46c03e5edf06c281ba670301a963be",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
