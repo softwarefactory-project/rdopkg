@@ -80,8 +80,36 @@ def parse_reqs_txt(txt):
 
 
 def get_reqs_from_ref(ref):
-    o = git('show', '%s:requirements.txt' % ref, log_cmd=False)
-    return parse_reqs_txt(o)
+    try:
+        o = git('show', '%s:requirements.txt' % ref, log_cmd=False)
+        return parse_reqs_txt(o)
+    except Exception:
+        return ''
+
+
+def get_upstream_refs():
+    upstream = list()
+    for branch in git.remote_branches():
+        if 'upstream' in branch:
+            upstream.append(branch)
+    return upstream
+
+
+def get_reqs_from_upstream_refs():
+    reqs = list()
+    for ref in get_upstream_refs():
+        reqs += get_reqs_from_ref(ref)
+    return reqs
+
+
+def get_pkgs_from_upstream_refs():
+    reqs = list()
+    reqs_txt = get_reqs_from_upstream_refs()
+    map_reqs2pkgs(reqs_txt, 'epel')
+    for _req in reqs_txt:
+        if _req.name not in reqs:
+            reqs.append(_req.name)
+    return reqs
 
 
 def get_reqs_from_path(path):
@@ -151,7 +179,7 @@ def print_reqdiff(added, changed, removed):
 
 
 def reqcheck(desired_reqs, reqs):
-    met, any_version, wrong_version, missing = [], [], [], []
+    met, any_version, wrong_version, missing, removed = [], [], [], [], []
     excess = reqs
     for dr in desired_reqs:
         for req in reqs:
@@ -180,10 +208,16 @@ def reqcheck(desired_reqs, reqs):
         except Exception as ex:
             pass
 
-    return met, any_version, wrong_version, missing, excess
+    pkgs_used_in_the_past = get_pkgs_from_upstream_refs()
+    for i, excess_pkg in enumerate(excess):
+        if excess_pkg.name in pkgs_used_in_the_past:
+            removed.append(excess_pkg)
+            del excess[i]
+
+    return met, any_version, wrong_version, missing, excess, removed
 
 
-def print_reqcheck(met, any_version, wrong_version, missing, excess,
+def print_reqcheck(met, any_version, wrong_version, missing, excess, removed,
                    format=None):
     cats = [
         ("{t.bold_green}MET{t.normal}:", met),
@@ -191,6 +225,7 @@ def print_reqcheck(met, any_version, wrong_version, missing, excess,
         ("{t.bold}ADDITIONAL REQUIRES{t.normal}:", excess),
         ("{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
         ("{t.bold_red}MISSING{t.normal}:", missing),
+        ("{t.bold_red}REMOVED{t.normal}:", removed),
     ]
     if format == 'spec':
         # get alignment from .spec file

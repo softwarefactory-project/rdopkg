@@ -44,7 +44,7 @@ def spec_path(dg):
 
 
 def prep_spec_test(tmpdir, distgit):
-    dist_path = tmpdir.join('dist')
+    dist_path = tmpdir.join(distgit)
     shutil.copytree(os.path.join(ASSETS_DIR, 'spec', distgit),
                     str(dist_path))
     with dist_path.as_cwd():
