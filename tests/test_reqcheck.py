@@ -151,3 +151,28 @@ def test_parse_reqs_txt_empty(caplog):
         assert record.levelname == "WARNING"
     assert 'The requirements.txt file is empty' in caplog.text
     assert len(got) == 0
+
+
+def test_get_reqs_from_ref_not_requirements_file(tmpdir):
+    # this spec dir does not contain requirements.txt
+    dist_path = common.prep_spec_test(tmpdir, 'some')
+    with dist_path.as_cwd():
+        txt = get_reqs_from_ref('master')
+    assert txt == ''
+
+
+def test_get_pkgs_from_upstream_refs(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck')
+    dist_path_remote = common.prep_spec_test(tmpdir, 'reqcheck-excess')
+    with dist_path.as_cwd():
+        git('checkout', '-b', 'test')
+        git('remote', 'add', 'upstream', dist_path_remote.__str__())
+        git('fetch', 'upstream')
+        got = get_pkgs_from_upstream_refs()
+    expected = ['python-argparse',
+                'python-IPy',
+                'python-iso8601',
+                'python-prettytable',
+                'python-pytz',
+                'python-yaml']
+    assert got == expected

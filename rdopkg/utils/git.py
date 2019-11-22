@@ -72,7 +72,7 @@ class Git(ShellCommand):
         return output
 
     def remote_branches(self, remote=""):
-        res = self("branch", "-r", "--no-color")
+        res = self("branch", "-r", "--no-color", log_cmd=False)
         branches = self._parse_branch_output(res)
         branches = [b.replace("remotes/", "")
                     for b in branches if b.startswith(remote)]
