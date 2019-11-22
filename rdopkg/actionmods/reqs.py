@@ -80,8 +80,42 @@ def parse_reqs_txt(txt):
 
 
 def get_reqs_from_ref(ref):
-    o = git('show', '%s:requirements.txt' % ref, log_cmd=False)
-    return parse_reqs_txt(o)
+    try:
+        o = git('show', '%s:requirements.txt' % ref, log_cmd=False)
+        return parse_reqs_txt(o)
+    except Exception:
+        return ''
+
+
+def get_upstream_first_ref_of_stable_releases_before(timestamp=None):
+    upstream = list()
+    for branch in git.remote_branches():
+        if 'upstream/stable' in branch:
+            commits = git.get_commits_of_branch(branch)
+            try:
+                if (git.get_timestamp_by_ref(commits[0]) < timestamp
+                   or timestamp is None):
+                    upstream.append(commits[0])
+            except IndexError:
+                pass
+    return upstream
+
+
+def get_reqs_present_in_upstream_before(timestamp=None):
+    reqs = list()
+    for ref in get_upstream_first_ref_of_stable_releases_before(timestamp):
+        reqs += get_reqs_from_ref(ref)
+    return reqs
+
+
+def get_pkgs_present_in_upstream_before(timestamp=None):
+    pkgs = list()
+    reqs_txt = get_reqs_present_in_upstream_before(timestamp)
+    map_reqs2pkgs(reqs_txt, 'epel')
+    for _pkg in reqs_txt:
+        if _pkg.name not in pkgs:
+            pkgs.append(_pkg.name)
+    return pkgs
 
 
 def get_reqs_from_path(path):
@@ -151,7 +185,7 @@ def print_reqdiff(added, changed, removed):
 
 
 def reqcheck(desired_reqs, reqs):
-    met, any_version, wrong_version, missing = [], [], [], []
+    met, any_version, wrong_version, missing, removed = [], [], [], [], []
     excess = reqs
     for dr in desired_reqs:
         for req in reqs:
@@ -180,10 +214,19 @@ def reqcheck(desired_reqs, reqs):
         except Exception as ex:
             pass
 
-    return met, any_version, wrong_version, missing, excess
+    current_commit = git.current_commit()
+    current_commit_timestamp = git.get_timestamp_by_ref(current_commit)
+    pkgs_used_in_the_past = get_pkgs_present_in_upstream_before(
+        current_commit_timestamp)
+    for i, excess_pkg in enumerate(excess):
+        if excess_pkg.name in pkgs_used_in_the_past:
+            removed.append(excess_pkg)
+            del excess[i]
+
+    return met, any_version, wrong_version, missing, excess, removed
 
 
-def print_reqcheck(met, any_version, wrong_version, missing, excess,
+def print_reqcheck(met, any_version, wrong_version, missing, excess, removed,
                    format=None):
     cats = [
         ("{t.bold_green}MET{t.normal}:", met),
@@ -191,6 +234,7 @@ def print_reqcheck(met, any_version, wrong_version, missing, excess,
         ("{t.bold}ADDITIONAL REQUIRES{t.normal}:", excess),
         ("{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
         ("{t.bold_red}MISSING{t.normal}:", missing),
+        ("{t.bold_red}REMOVED{t.normal}:", removed),
     ]
     if format == 'spec':
         # get alignment from .spec file
