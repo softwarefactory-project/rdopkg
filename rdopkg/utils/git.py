@@ -72,7 +72,7 @@ class Git(ShellCommand):
         return output
 
     def remote_branches(self, remote=""):
-        res = self("branch", "-r", "--no-color")
+        res = self("branch", "-r", "--no-color", log_cmd=False)
         branches = self._parse_branch_output(res)
         branches = [b.replace("remotes/", "")
                     for b in branches if b.startswith(remote)]
@@ -230,6 +230,19 @@ class Git(ShellCommand):
         out = self(*cmd, log_cmd=False, log_fail=False, fatal=False)
         return out
 
+    def get_commits_of_branch(self, branch=None,
+                              master='remotes/upstream/master'):
+        cmd = ['log', master + '..' + branch, '--oneline', '--reverse',
+              '--format="%H"']
+        if not branch:
+            return []
+        out = self(*cmd, log_cmd=False, log_fail=False, fatal=False)
+        out = out.replace('"', '')
+        if not out:
+            return []
+        else:
+            return out.split('\n')
+
     def get_latest_tag(self, branch=None):
         cmd = ['describe', '--abbrev=0', '--tags']
         if branch:
@@ -275,5 +288,9 @@ class Git(ShellCommand):
         self('rebase', '--onto', hash + '^', hash, '--preserve-merges',
              '--committer-date-is-author-date')
 
+    def get_timestamp_by_ref(self, ref):
+        timestamp = self('show', '-s', '--oneline', '--format="%ct"',
+                    ref, log_cmd=False)
+        return timestamp.replace('"', '')
 
 git = Git()

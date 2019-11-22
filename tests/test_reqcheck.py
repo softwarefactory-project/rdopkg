@@ -1,5 +1,6 @@
 import pytest
 import subprocess
+import time
 
 from rdopkg.cli import rdopkg
 from rdopkg.actionmods.reqs import *
@@ -151,3 +152,40 @@ def test_parse_reqs_txt_empty(caplog):
         assert record.levelname == "WARNING"
     assert 'The requirements.txt file is empty' in caplog.text
     assert len(got) == 0
+
+
+def test_get_reqs_from_ref_not_requirements_file(tmpdir):
+    # this spec dir does not contain requirements.txt
+    dist_path = common.prep_spec_test(tmpdir, 'some')
+    with dist_path.as_cwd():
+        txt = get_reqs_from_ref('master')
+    assert txt == ''
+
+
+def test_get_pkgs_from_upstream_refs(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck')
+    dist_path_remote = common.prep_spec_test(tmpdir, 'reqcheck-excess')
+    with dist_path_remote.as_cwd():
+        git('checkout', '-b', 'stable/rel-1')
+        common.do_patch('foofile', '# a change', 'Dummy patch')
+
+        git('checkout', 'master')
+        time.sleep(1)
+
+        git('checkout', '-b', 'stable/rel-2')
+        common.add_line('requirements.txt', 'pbr>=2.0.0')
+        git('add', '-f', 'requirements.txt')
+        git('commit', '-m', 'Add pbr')
+        rel2_branched = git.get_timestamp_by_ref('stable/rel-2')
+
+    with dist_path.as_cwd():
+        git('remote', 'add', 'upstream', dist_path_remote.__str__())
+        git('fetch', 'upstream')
+        got = get_pkgs_present_in_upstream_before(rel2_branched)
+
+    expected = ['python-argparse',
+                'python-iso8601',
+                'python-prettytable',
+                'python-sqlalchemy']
+    assert got == expected
+    assert 'python-pbr' not in got
