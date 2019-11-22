@@ -44,7 +44,7 @@ def spec_path(dg):
 
 
 def prep_spec_test(tmpdir, distgit):
-    dist_path = tmpdir.join('dist')
+    dist_path = tmpdir.join(distgit)
     shutil.copytree(os.path.join(ASSETS_DIR, 'spec', distgit),
                     str(dist_path))
     with dist_path.as_cwd():
@@ -143,3 +143,17 @@ def norm_changelog(count=1):
                      flags=re.M)
     spec._txt = txt + '%changelog\n' + chl
     spec.save()
+
+
+def remove_line(file_name, line_to_remove):
+    with open(file_name, "r") as f:
+        lines = f.readlines()
+    with open(file_name, "w") as f:
+        for line in lines:
+            if line.strip("\n") != line_to_remove:
+                f.write(line)
+
+
+def add_line(file_name, line):
+    with open(file_name, "a") as f:
+        f.write(line)
