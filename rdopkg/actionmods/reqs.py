@@ -59,7 +59,24 @@ class CheckReq(object):
         return s
 
 
-def parse_reqs_txt(txt):
+def is_dependency_should_be_checked(python_version, environment_markers):
+    env_markers = re.sub(r'[;\'"]', '', environment_markers.replace(" ", ""))
+    env_markers = env_markers.split('or')
+    should_be_checked = list()
+    for marker in env_markers:
+        if 'python_version' in marker:
+            marker_version = marker.replace('python_version', '')
+            mvr = match_version_rule(python_version, marker_version)
+            if mvr == VER_OK:
+                should_be_checked.append(True)
+            else:
+                should_be_checked.append(False)
+    if len(should_be_checked) != 0 and True not in should_be_checked:
+        return False
+    return True
+
+
+def parse_reqs_txt(txt, py_vers='3.6'):
     reqs = []
     if not txt:
         log.warn("The requirements.txt file is empty")
@@ -70,23 +87,29 @@ def parse_reqs_txt(txt):
         line = re.sub(r'\s*(?:#.*)$', '', line.replace(" ", ""))
         if not line:
             continue
-        m = re.match(r'([\w\._-]+)([<>=!,.\d]*)$', line)
+        m = re.match(r'([\w\._-]+)([<>=!,.\d]*)(;.*)?$', line)
         if m:
-            r = DiffReq(name=m.group(1), vers=m.group(2))
-            reqs.append(r)
+            dep_name, dep_version, env_markers = m.groups()
+            if env_markers is None:
+                r = DiffReq(name=dep_name, vers=dep_version)
+                reqs.append(r)
+            else:
+                if is_dependency_should_be_checked(py_vers, env_markers):
+                    r = DiffReq(name=dep_name, vers=dep_version)
+                    reqs.append(r)
         else:
             log.warn("Failed to parse requirement: %s" % line)
     return reqs
 
 
-def get_reqs_from_ref(ref):
+def get_reqs_from_ref(ref, py_version):
     o = git('show', '%s:requirements.txt' % ref, log_cmd=False)
-    return parse_reqs_txt(o)
+    return parse_reqs_txt(o, py_version)
 
 
-def get_reqs_from_path(path):
+def get_reqs_from_path(path, py_version):
     o = open(path).read()
-    return parse_reqs_txt(o)
+    return parse_reqs_txt(o, py_version)
 
 
 def get_reqs_from_spec(as_objects=False, normalize_py23=False):
@@ -129,9 +152,9 @@ def reqdiff(reqs1, reqs2):
     return added, changed, removed
 
 
-def reqdiff_from_refs(ref1, ref2):
-    r1 = get_reqs_from_ref(ref1)
-    r2 = get_reqs_from_ref(ref2)
+def reqdiff_from_refs(ref1, ref2, py_version):
+    r1 = get_reqs_from_ref(ref1, py_version)
+    r2 = get_reqs_from_ref(ref2, py_version)
     return reqdiff(r1, r2)
 
 
@@ -211,14 +234,14 @@ def print_reqcheck(met, any_version, wrong_version, missing, excess,
         helpers.print_list(reqs, pre=pre)
 
 
-def reqcheck_spec(ref=None, reqs_txt=None):
+def reqcheck_spec(py_version, ref=None, reqs_txt=None):
     if (ref and reqs_txt) or (not ref and not reqs_txt):
         raise exception.InvalidUsage(
             why="reqcheck_spec needs either ref (git ref) or reqs_txt (path)")
     if ref:
-        reqs_txt = get_reqs_from_ref(ref)
+        reqs_txt = get_reqs_from_ref(ref, py_version)
     else:
-        reqs_txt = get_reqs_from_path(reqs_txt)
+        reqs_txt = get_reqs_from_path(reqs_txt, py_version)
     map_reqs2pkgs(reqs_txt, 'epel')
     spec_reqs = get_reqs_from_spec(as_objects=True, normalize_py23=True)
     return reqcheck(reqs_txt, spec_reqs)

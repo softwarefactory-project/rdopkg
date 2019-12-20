@@ -28,6 +28,9 @@ ACTIONS = [
                    help="Fail if not strictly matching"),
                Arg('version', shortcut='-R', metavar='VERSION',
                    help="query requirements.txt from VERSION git ref"),
+               Arg('python_version', shortcut='-p',
+                   help="set the python version reference to evaluate if a "
+                        "dependency should be checked or not (default 3.6)"),
            ]),
     Action('reqquery',
            help="query RDO repos for versions defined in requirements.txt",

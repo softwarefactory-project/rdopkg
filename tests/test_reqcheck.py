@@ -3,6 +3,7 @@ import subprocess
 
 from rdopkg.cli import rdopkg
 from rdopkg.actionmods.reqs import *
+from rdopkg.exception import WrongPythonVersion
 
 import test_common as common
 
@@ -29,6 +30,12 @@ def test_reqcheck_excess(tmpdir, capsys):
     o = cap.out
     _assert_sanity_out(o)
     assert 'ADDITIONAL REQUIRES:' in o
+
+def test_reqcheck_wrong_python_version(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck')
+    with dist_path.as_cwd():
+        with pytest.raises(WrongPythonVersion):
+            rv = rdopkg('reqcheck', '-R', 'master', '-p', 'wrong')
 
 
 def test_checkreq_exclude_versions():
@@ -151,3 +158,75 @@ def test_parse_reqs_txt_empty(caplog):
         assert record.levelname == "WARNING"
     assert 'The requirements.txt file is empty' in caplog.text
     assert len(got) == 0
+
+
+def test_parse_reqs_txt_with_environment_marker_01(caplog):
+    requirements_txt = '\n'.join(["ipaddress==1.0.17;python_version=='3.5'\
+                                  or python_version=='3.6'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 1
+
+
+def test_parse_reqs_txt_with_environment_marker_02(caplog):
+    requirements_txt = '\n'.join(["ipaddress==1.0.17;python_version=='3.3'\
+                                  or python_version=='3.4'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 0
+
+
+def test_parse_reqs_txt_with_environment_marker_03(caplog):
+    requirements_txt = '\n'.join(["ipaddress==1.0.17;python_version>='3.4'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 1
+
+
+def test_parse_reqs_txt_with_environment_marker_04(caplog):
+    requirements_txt = '\n'.join(["ipaddress==1.0.17;python_version>'3.6'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 0
+
+
+def test_parse_reqs_txt_with_environment_marker_05(caplog):
+    requirements_txt = '\n'.join(["ipaddress==1.0.17;python_version<'3.7'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 1
+
+
+def test_parse_reqs_txt_with_environment_marker_06(caplog):
+    requirements_txt = '\n'.join(["ipaddress==1.0.17;python_version<'3.4'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 0
+
+
+def test_parse_reqs_txt_with_environment_marker_07(caplog):
+    requirements_txt = '\n'.join(["ipaddress==1.0.17;python_version<='3.6'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 1
+
+
+def test_parse_reqs_txt_with_environment_marker_08(caplog):
+    requirements_txt = '\n'.join(["ipaddress==1.0.17;python_version>='3.6'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 1
+
+
+def test_parse_reqs_txt_with_environment_marker_09(caplog):
+    requirements_txt = '\n'.join(["enum34==1.0.4;python_version=='2.7'\
+                                   or python_version=='2.6'\
+                                   or python_version=='3.6'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 1
+
+
+def test_parse_reqs_txt_with_environment_marker_10(caplog):
+    requirements_txt = '\n'.join(["enum34==1.0.4;python_version=='2.7'\
+                                   or python_version=='2.6'\
+                                   or python_version=='3.3'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 0
+
+
+def test_parse_reqs_txt_with_environment_marker_11(caplog):
+    requirements_txt = '\n'.join(["enum34==1.0.4;platform_system=='Linux'"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 1
