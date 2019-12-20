@@ -22,7 +22,10 @@ def reqdiff(version_tag_from, version_tag_to):
     _reqs.print_reqdiff(*rdiff)
 
 
-def reqcheck(version, spec=False, strict=False):
+def reqcheck(version, spec=False, strict=False, python_version='3.6'):
+    m = re.search(r'^[\d]\.[\d]$', python_version)
+    if not m:
+        raise exception.WrongPythonVersion()
     if version.upper() == 'XXX':
         if 'upstream' in git.remotes():
             current_branch = git.current_branch()
@@ -30,7 +33,7 @@ def reqcheck(version, spec=False, strict=False):
             if branch != 'master':
                 branch = 'stable/{}'.format(branch)
             version = 'upstream/{}'.format(branch)
-            check = _reqs.reqcheck_spec(ref=version)
+            check = _reqs.reqcheck_spec(python_version, ref=version)
         else:
             m = re.search(r'/([^/]+)_distro', os.getcwd())
             if not m:
@@ -38,9 +41,9 @@ def reqcheck(version, spec=False, strict=False):
                                           why="failed to parse current path")
             path = '../%s/requirements.txt' % m.group(1)
             log.info("Delorean detected. Using %s" % path)
-            check = _reqs.reqcheck_spec(reqs_txt=path)
+            check = _reqs.reqcheck_spec(python_version, reqs_txt=path)
     else:
-        check = _reqs.reqcheck_spec(ref=version)
+        check = _reqs.reqcheck_spec(python_version, ref=version)
     format = None
     if spec:
         format = 'spec'
