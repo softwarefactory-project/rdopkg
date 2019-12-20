@@ -225,3 +225,7 @@ class InvalidLintCheck(RdopkgException):
 class LintProblemsFound(RdopkgException):
     exit_code = 23
     msg_fmt = "Lint problems detected."
+
+
+class WrongPythonVersion(RdopkgException):
+    msg_fmt = "The python version specified is wrong (set '3.6' for python3.6)"
