@@ -26,7 +26,7 @@ PreReq:           is-deprecated
 
 %description
 This is foo! This is foo! This is foo! This is foo! This is foo! This is foo!
-This is foo! This is foo! This is foo! 
+This is foo! This is foo! This is foo!
 
 %setup -q
 
