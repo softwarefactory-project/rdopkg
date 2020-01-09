@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65f288b2_a8e10ac3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-01-09T17:57:21Z",
+      "side": 1,
+      "message": "If I understood the code correctly, it is checking in all the branches, not every commit, right? It that\u0027s the case, it might identify removed requirements from newer releases.\n\nLet\u0027s say we\u0027re checking stein-rdo, and we have a requirement on python2-foo that is not part of requirements.txt, but it is in train\u0027s requirements.txt. In that case, it would be listed as \"REMOVED\", wouldn\u0027t it?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "fdeaf861aae1c28356744b5090efc7f67db02155",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b812be3d_ac6c0c2d",
+        "filename": "tests/test_reqcheck.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-01-09T17:57:21Z",
+      "side": 1,
+      "message": "It would be great to add another unit test to have different branches, and see that we correctly identify removed requirements.",
+      "revId": "fdeaf861aae1c28356744b5090efc7f67db02155",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
