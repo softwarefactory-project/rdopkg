@@ -36,14 +36,14 @@
     parent: rdopkg-base-coverage-py2
     description: rdopkg unit and feature tests on python2
     vars:
-      tox_envlist: py2-unit,py2-feature
+      tox_envlist: py2-unit,py2-feature,py2-cover
 
 - job:
     name: rdopkg-py3-tests
     parent: rdopkg-base-coverage-py3
     description: rdopkg unit and features tests on python3
     vars:
-      tox_envlist: py3-unit,py3-feature
+      tox_envlist: py3-unit,py3-feature,py3-cover
 
 - job:
     name: rdopkg-py2-integration
