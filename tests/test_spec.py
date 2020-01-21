@@ -620,3 +620,111 @@ def test_get_requires_not_provided_02(tmpdir):
         for name, version in packages:
             expected[name] = version
         assert got == expected
+
+
+def test_remove_requires_by_name(tmpdir):
+    txt = '\n'.join(['Requires:     python-sqlalchemy',
+                     'Requires:     python-prettytable >= 1.0.10',
+                     'Requires:     python-iso8601'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.remove_requires_by_name('python-sqlalchemy')
+    got = spec.remove_requires_by_name('python-prettytable')
+    assert got is True
+    assert 'Requires:     python-sqlalchemy' not in spec.txt
+    assert 'Requires:     python-prettytable >= 1.0.10' not in spec.txt
+    assert 'Requires:     python-iso8601' in spec.txt
+
+
+def test_remove_requires_by_name_false(tmpdir):
+    txt = '\n'.join(['Requires:     python-sqlalchemy >= 1.0.10',
+                     'Requires:     python-prettytable',
+                     'Requires:     python-iso8601'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.remove_requires_by_name('python-argparse')
+    assert got is False
+
+
+def test_edit_requires_version_by_name_true(tmpdir):
+    txt = '\n'.join(['Requires:     python-sqlalchemy >= 1.0.10',
+                     'Requires:     python-prettytable',
+                     'Requires:     python-iso8601 >= 1.0.0',
+                     'Requires:     python-osc-lib >= 1.0.0'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.edit_requires_version_by_name('python-sqlalchemy', '>= 1.0.12')
+    assert got is True
+    assert 'Requires:     python-sqlalchemy >= 1.0.12\n' in spec.txt
+    got = spec.edit_requires_version_by_name('python-prettytable', '>= 1.0.1')
+    assert got is True
+    assert 'Requires:     python-prettytable >= 1.0.1\n' in spec.txt
+    got = spec.edit_requires_version_by_name('python-iso8601', '')
+    assert got is True
+    assert 'Requires:     python-iso8601\n' in spec.txt
+
+
+def test_edit_requires_version_by_name_false(tmpdir):
+    txt = '\n'.join(['Requires:     python-sqlalchemy >= 1.0.10',
+                     'Requires:     python-prettytable',
+                     'Requires:     python-iso8601',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.edit_requires_version_by_name('python-argparse')
+    assert got is False
+
+
+def test_add_requires(tmpdir):
+    txt = '\n'.join(['Requires:     python-sqlalchemy >= 1.0.10',
+                     'Requires:     python-prettytable',
+                     'Requires:     python-iso8601',
+                     '',
+                     'PreReq:     is-deprecated'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_requires('python%{pyver}-argparse\n')
+    assert got is True
+    assert 'Requires:     python%{pyver}-argparse\n' in spec.txt
+
+
+def test_add_requires_with_pyver_global_present(tmpdir):
+    txt = '\n'.join(['%global pyver %{python3_pkgversion}',
+                     'Requires:     python%{pyver}-sqlalchemy >= 1.0.10',
+                     'Requires:     python%{pyver}-prettytable',
+                     'Requires:     python%{pyver}-iso8601',
+                     '',
+                     'PreReq:     is-deprecated'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_requires('python-argparse >= 1.0.0;python_version>=3.5\n')
+    assert got is True
+    assert 'Requires:     python%{pyver}-argparse >= 1.0.0;python_version>=3.5\n' in spec.txt  # noqa
+
+
+def test_add_requires_no_requires_in_spec(tmpdir):
+    txt = '\n'.join(['BuildRequires:     python-setuptools',
+                     'PreReq:     is-deprecated'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_requires('python%{pyver}-argparse\n')
+    assert got is True
+    assert 'Requires:     python%{pyver}-argparse\n' in spec.txt
+
+
+def test_is_pyver_global_true():
+    txt = '\n'.join(['%global pyver %{python3_pkgversion}',
+                     '%else',
+                     '%global pyver 2',
+                     '%endif',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    assert spec.is_pyver_global is True
+
+
+def test_find_main_block_by_tag():
+    txt = '\n'.join(['Requires:     python-foo1',
+                     'Requires:     python-foo2',
+                     'Requires:     python-foo3',
+                     'Requires:     python-foo4',
+                     'PreReq:       is-deprecated',
+                     'Requires:     python-bar1',
+                     'Requires:     python-bar2',
+                     'Requires:     python-bar3',
+                     'BuildRequires:   python-baz1'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_main_block_by_tag('Requires') == \
+        'Requires:     python-foo4'
