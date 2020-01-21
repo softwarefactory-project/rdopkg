@@ -206,6 +206,7 @@ class Spec(object):
         self._fn = fn
         self._txt = txt
         self._rpmspec = None
+        self._is_pyver_global = None
 
     @property
     def fn(self):
@@ -238,6 +239,16 @@ class Spec(object):
         if not self._rpmspec:
             self.load_rpmspec()
         return self._rpmspec
+
+    def search_pyver_global(self):
+        m = re.search(r'^%global pyver\s+.*$', self.txt, re.M)
+        self._is_pyver_global = True if m else False
+
+    @property
+    def is_pyver_global(self):
+        if not self._is_pyver_global:
+            self.search_pyver_global()
+        return self._is_pyver_global
 
     def expand_macro(self, macro):
         if not self._rpmspec:
@@ -748,3 +759,40 @@ class Spec(object):
             except KeyError:
                 pass
         return requires
+
+    def edit_requires_version_by_name(self, name, version=''):
+        name = name.split('-', 1)[1]
+        repl = r'\g<1> {}' if version else r'\g<1>'
+        self._txt, n = re.subn(r'^(%s:\s+.*%s).*$' % (re.escape('Requires'),
+                                                      name),
+                               repl.format(version),
+                               self.txt,
+                               flags=re.M)
+        return n > 0
+
+    def remove_requires_by_name(self, name):
+        name = name.split('-', 1)[1]
+        repl = r''
+        self._txt, n = re.subn(r'^(%s:\s+.*%s).*\n' % (re.escape('Requires'),
+                                                      name),
+                               repl,
+                               self.txt,
+                               flags=re.M)
+        return n > 0
+
+    def add_requires(self, requires):
+        if self.is_pyver_global:
+            requires = re.sub(r'^python-(.*)$',
+                              r'python%{pyver}-\g<1>',
+                              requires)
+        repl = r'\g<1>\nRequires:{}{}'
+        for pattern in ['Requires', 'BuildRequires']:
+            align_ws = self.get_tag_align_ws(pattern)
+            self._txt, n = re.subn(r'^(%s:\s+.*)$' % (re.escape(pattern)),
+                                   repl.format(align_ws, requires),
+                                   self.txt,
+                                   1,
+                                   flags=re.M)
+            if n:
+                return n > 0
+        return False
