@@ -22,7 +22,8 @@ def reqdiff(version_tag_from, version_tag_to):
     _reqs.print_reqdiff(*rdiff)
 
 
-def reqcheck(version, spec=False, strict=False, python_version='3.6'):
+def reqcheck(version, spec=False, output=None, strict=False,
+             python_version='3.6'):
     m = re.search(r'^[\d]\.[\d]$', python_version)
     if not m:
         raise exception.WrongPythonVersion()
@@ -44,10 +45,11 @@ def reqcheck(version, spec=False, strict=False, python_version='3.6'):
             check = _reqs.reqcheck_spec(python_version, reqs_txt=path)
     else:
         check = _reqs.reqcheck_spec(python_version, ref=version)
-    format = None
+    if output not in ['spec', 'json', 'text']:
+        raise exception.WrongOutputFormat()
     if spec:
-        format = 'spec'
-    _reqs.print_reqcheck(*check, format=format)
+        output = 'spec'
+    _reqs.print_reqcheck(*check, format=output)
     if strict:
         # missing
         if len(check[-1]) > 0:

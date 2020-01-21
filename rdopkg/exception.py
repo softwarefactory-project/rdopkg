@@ -229,3 +229,8 @@ class LintProblemsFound(RdopkgException):
 
 class WrongPythonVersion(RdopkgException):
     msg_fmt = "The python version specified is wrong (set '3.6' for python3.6)"
+
+
+class WrongOutputFormat(RdopkgException):
+    msg_fmt = "The output format used is not supported, use rdopkg reqcheck -h"
+    exit_code = 1
