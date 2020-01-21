@@ -30,7 +30,7 @@ def test_reqcheck_excess(tmpdir, capsys):
     cap = capsys.readouterr()
     o = cap.out
     _assert_sanity_out(o)
-    assert 'ADDITIONAL REQUIRES:' in o
+    assert 'EXCESS:' in o
 
 
 def test_reqcheck_wrong_python_version(tmpdir, capsys):

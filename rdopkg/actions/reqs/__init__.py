@@ -23,11 +23,15 @@ ACTIONS = [
            ],
            optional_args=[
                Arg('spec', shortcut='-s', action='store_true',
-                   help="output .spec Requires: for easy pasting"),
+                   help="output .spec Requires: for easy pasting"
+                        "Deprecated: use output instead."),
                Arg('strict', shortcut='-S', action='store_true',
                    help="Fail if not strictly matching"),
                Arg('version', shortcut='-R', metavar='VERSION',
                    help="query requirements.txt from VERSION git ref"),
+               Arg('output', shortcut='-o', default='text',
+                   help="output format to be used "
+                        "(e.g: json, spec, text [default])"),
                Arg('python_version', shortcut='-p',
                    help="set the python version reference to evaluate if a "
                         "dependency should be checked or not (default 3.6)"),

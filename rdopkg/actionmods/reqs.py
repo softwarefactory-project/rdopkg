@@ -2,6 +2,7 @@ from __future__ import print_function
 from distroinfo.query import get_distrepos
 import re
 import pymod2pkg
+import json
 
 from rdopkg.actionmods import rdoinfo
 from rdopkg.actionmods import query
@@ -259,28 +260,40 @@ def reqcheck(desired_reqs, reqs):
 def print_reqcheck(met, any_version, wrong_version, missing, excess, removed,
                    format=None):
     cats = [
-        ("{t.bold_green}MET{t.normal}:", met),
-        ("{t.bold}VERSION NOT ENFORCED{t.normal}:", any_version),
-        ("{t.bold}ADDITIONAL REQUIRES{t.normal}:", excess),
-        ("{t.bold_yellow}VERSION MISMATCH{t.normal}:", wrong_version),
-        ("{t.bold_red}MISSING{t.normal}:", missing),
-        ("{t.bold_red}REMOVED{t.normal}:", removed),
+        ("{t.bold_green}{category}{t.normal}:", "met", met),
+        ("{t.bold}{category}{t.normal}:", "any", any_version),
+        ("{t.bold}{category}{t.normal}:", "excess", excess),
+        ("{t.bold_yellow}{category}{t.normal}:", "mismatch",
+         wrong_version),
+        ("{t.bold_red}{category}{t.normal}:", "missing", missing),
+        ("{t.bold_red}{category}{t.normal}:", "removed", removed),
     ]
-    if format == 'spec':
+    if format == 'json':
+        output = {}
+        for title, category, reqs in cats:
+            if category not in output:
+                output[category] = list()
+            for req in reqs:
+                output[category].append({'name': req.name, 'vers': req.vers})
+        json_output = json.JSONEncoder().encode(output)
+        print(json_output)
+        return
+    elif format == 'spec':
         # get alignment from .spec file
         spec = specfile.Spec()
         pre = 'Requires:' + (spec.get_tag_align_ws('Requires') or '        ')
-    else:
+    elif format == 'text':
         pre = '  '
+
     first = True
-    for title, reqs in cats:
+    for title, category, reqs in cats:
         if not reqs:
             continue
         if first:
             first = False
         else:
             print("")
-        print(title.format(t=log.term))
+        print(title.format(t=log.term, category=category.upper()))
         reqs = [x.__str__(format=format) for x in reqs]
         helpers.print_list(reqs, pre=pre)
 
