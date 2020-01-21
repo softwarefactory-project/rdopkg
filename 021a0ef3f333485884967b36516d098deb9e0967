@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e8940e48_f5a177f4",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-01-21T14:25:16Z",
+      "side": 1,
+      "message": "My only concern with this approach is the number of git calls we\u0027re making. First we do a git call to get all commits from the branch, and then 1 call per commit to get its timestamp. \n\nMaybe we could rework the get_commits_of_branch() call to return the timestamp as well (using ---format\u003d\"%H %ct\" and then post-processing it), what do you think?",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 20
+      },
+      "revId": "021a0ef3f333485884967b36516d098deb9e0967",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
