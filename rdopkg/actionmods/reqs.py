@@ -34,22 +34,26 @@ class DiffReq(object):
 class CheckReq(object):
 
     def __init__(self, name, desired_vers, vers, overridden=None,
-                 ignored=False):
+                 ignored=False, autosync=False):
         self.name = name
-        self.desired_vers = desired_vers
+        self.desired_vers = self.extract_vers(desired_vers)
         self.vers = vers
         self.overridden = overridden
         self.ignored = ignored
+        self.autosync = autosync
 
-    def met(self):
-        for rv in self.desired_vers.split(','):
+    @staticmethod
+    def extract_vers(vers):
+        for rv in vers.split(','):
             m = re.match('(>|>=) (\\d.*)$', rv)
             if m:
-                if rv == self.vers:
-                    return True
-                else:
-                    return False
-        if not self.desired_vers and not self.vers:
+                return rv
+        return vers
+
+    def met(self):
+        if self.desired_vers == self.vers:
+            return True
+        elif not self.desired_vers and not self.vers:
             return True
         else:
             return False
@@ -349,6 +353,17 @@ def print_reqcheck(met, any_version, wrong_version, missing, excess, removed,
         print(title.format(t=log.term, category=category.upper()))
         reqs = [x.__str__(format=format) for x in reqs]
         helpers.print_list(reqs, pre=pre)
+
+
+def print_reqcheck_autosync(met, any_version, wrong_version, missing, excess,
+                            removed, format=None):
+    if wrong_version or missing or removed:
+        print("The package below have been synchronised against the "
+              "requirements file:")
+        cats = [wrong_version, missing, removed]
+        for c in cats:
+            reqs = [req.__str__() for req in c if req.autosync]
+            helpers.print_list(reqs, pre='  ')
 
 
 def reqcheck_spec(py_version, ref=None, reqs_txt=None, override_pkgs=None):

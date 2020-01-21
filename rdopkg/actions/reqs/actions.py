@@ -11,6 +11,7 @@ from rdopkg import guess
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import reqs as _reqs
 from rdopkg.utils import log
+from rdopkg.utils import specfile
 from rdopkg.utils.git import git
 
 
@@ -65,7 +66,33 @@ def reqcheck(version, python_version='3.6', override=None):
     return {'check': check}
 
 
-def reqcheck_print(check=None, output=None, spec=False, strict=False):
+def reqcheck_autosync(check=None, autosync=False):
+    if not autosync:
+        return
+    spec = specfile.Spec()
+    met, any_version, wrong_version, missing, excess, removed = check
+    try:
+        for cr in missing:
+            if cr.desired_vers:
+                requires = "{} {}".format(cr.name, cr.desired_vers)
+            else:
+                requires = cr.name
+            is_autosync = spec.add_requires(requires)
+            cr.autosync = True if is_autosync else False
+        for cr in wrong_version:
+            is_autosync = spec.edit_requires_version_by_name(cr.name,
+                                                             cr.desired_vers)
+            cr.autosync = True if is_autosync else False
+        for cr in removed:
+            is_autosync = spec.remove_requires_by_name(cr.name)
+            cr.autosync = True if is_autosync else False
+    except Exception:
+        pass
+    spec.save()
+
+
+def reqcheck_print(check=None, output=None, spec=False, strict=False,
+                   autosync=False):
     if output not in ['spec', 'json', 'text']:
         raise exception.WrongOutputFormat()
     if spec:
