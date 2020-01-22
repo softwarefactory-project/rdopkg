@@ -22,6 +22,30 @@
       "revId": "021a0ef3f333485884967b36516d098deb9e0967",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "03ecaca2_d43c2cf1",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-01-22T11:53:20Z",
+      "side": 1,
+      "message": "It\u0027s a good idea to return the timestamp and the hash within the same git call. It\u0027s now implemented in patchset 8.\n\nRegarding the performance, we only do a git call against the first commit (commits[0]) ref of the stable branches upstream, which is roughly ~4 git calls.\n\nThank you Javier",
+      "parentUuid": "e8940e48_f5a177f4",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 20
+      },
+      "revId": "021a0ef3f333485884967b36516d098deb9e0967",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
