@@ -1,0 +1,7 @@
+packages:
+  all:
+    - name: "python-sqlalchemy"
+      version: ">= 1.0.0"
+  foo:
+    - name: "python-sqlalchemy"
+      version: ">= 1.2.0"
