@@ -29,10 +29,30 @@ function test_rdopkg_reqcheck_is_mismatch(){
     return 0
 }
 
+function test_rdopkg_reqcheck_is_overridden(){
+    pushd ${RDO_DISTGIT}
+    if [ ! -d ${RDO_DISTGIT}/$1 ]; then
+        rdopkg clone "$1"
+    fi
+    pushd ${RDO_DISTGIT}/$1
+    git checkout origin/$2-rdo
+    REQCHECK=$(rdopkg reqcheck -R upstream/stable/$2)
+    if [[ $REQCHECK =~ "overridden" ]]; then
+        echo "$REQCHECK"
+        echo "$0 FAILED EXPECTED: OVERRIDDEN PRESENT"
+        return 1
+    fi
+    popd
+    echo "...OK!"
+    popd
+    return 0
+}
+
 # Test: keep pkg in spec file in a lower version and do not output as MISMATCH
 #test_rdopkg_reqcheck_is_mismatch openstack-ceilometer train
 
 test_rdopkg_reqcheck_is_mismatch openstack-panko train
 test_rdopkg_reqcheck_is_mismatch openstack-senlin train
+test_rdopkg_reqcheck_is_mismatch openstack-neutron train
 
 rm -rf $RDO_DISTGIT
