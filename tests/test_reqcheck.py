@@ -33,6 +33,68 @@ def test_reqcheck_excess(tmpdir, capsys):
     assert 'EXCESS:' in o
 
 
+def test_reqcheck_overridden_1(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '-O', 'overrides-file-1.yml')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'has been overridden' in o
+
+
+def test_reqcheck_overridden_2(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '-O', 'overrides-file-3.yml')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'has been overridden' in o
+    assert 'python-sqlalchemy >= 1.1.0' in o
+
+
+def test_reqcheck_overridden_3(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '-O', 'overrides-file-6.yml')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'has been overridden' in o
+    assert 'python-sqlalchemy >= 1.2.0' in o
+
+
+def test_reqcheck_overridden_nothing(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '-O', 'overrides-file-4.yml')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'has been overridden' not in o
+
+
+def test_reqcheck_overridden_ignore(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '-O', 'overrides-file-2.yml')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'python-prettytable' not in o
+    assert 'python-argparse' not in o
+    assert 'python-iso8601' not in o
+
+
+def test_reqcheck_overridden_error_parsing_file(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
+    with dist_path.as_cwd():
+        with pytest.raises(SystemExit):
+            rv = rdopkg('reqcheck', '-R', 'master', '-O',
+                        'overrides-file-5.yml')
+
+
 def test_reqcheck_wrong_python_version(tmpdir, capsys):
     dist_path = common.prep_spec_test(tmpdir, 'reqcheck')
     with dist_path.as_cwd():

@@ -236,7 +236,7 @@ class Git(ShellCommand):
                '--format="%H %ct"']
         if not branch:
             return []
-        out = self(*cmd, log_cmd=True, log_fail=True, fatal=True)
+        out = self(*cmd, log_cmd=False, log_fail=False, fatal=False)
         out = out.replace('"', '')
         if not out:
             return []
