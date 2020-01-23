@@ -23,10 +23,19 @@ def reqdiff(version_tag_from, version_tag_to):
 
 
 def reqcheck(version, spec=False, output=None, strict=False,
-             python_version='3.6'):
+             python_version='3.6', override=None):
     m = re.search(r'^[\d]\.[\d]$', python_version)
     if not m:
         raise exception.WrongPythonVersion()
+
+    if override:
+        try:
+            with open(override, 'r') as override_file:
+                override = yaml.load(override_file, Loader=yaml.SafeLoader)
+        except Exception as e:
+            e.strerror = 'Unable to load the override file (%s)' % e.strerror
+            raise
+
     if version.upper() == 'XXX':
         if 'upstream' in git.remotes():
             current_branch = git.current_branch()
@@ -34,7 +43,9 @@ def reqcheck(version, spec=False, output=None, strict=False,
             if branch != 'master':
                 branch = 'stable/{}'.format(branch)
             version = 'upstream/{}'.format(branch)
-            check = _reqs.reqcheck_spec(python_version, ref=version)
+            check = _reqs.reqcheck_spec(python_version,
+                                        ref=version,
+                                        override_pkgs=override)
         else:
             m = re.search(r'/([^/]+)_distro', os.getcwd())
             if not m:
@@ -42,9 +53,14 @@ def reqcheck(version, spec=False, output=None, strict=False,
                                           why="failed to parse current path")
             path = '../%s/requirements.txt' % m.group(1)
             log.info("Delorean detected. Using %s" % path)
-            check = _reqs.reqcheck_spec(python_version, reqs_txt=path)
+            check = _reqs.reqcheck_spec(python_version,
+                                        reqs_txt=path,
+                                        ref=version,
+                                        override_pkgs=override)
     else:
-        check = _reqs.reqcheck_spec(python_version, ref=version)
+        check = _reqs.reqcheck_spec(python_version,
+                                    ref=version,
+                                    override_pkgs=override)
     if output not in ['spec', 'json', 'text']:
         raise exception.WrongOutputFormat()
     if spec:
