@@ -1,0 +1,7 @@
+packages:
+- name: python-jwt
+  version: ">= 1.0.1"
+- name: python-test
+  version: "1.0.1"
+- name: python-boto
+  version: ""
