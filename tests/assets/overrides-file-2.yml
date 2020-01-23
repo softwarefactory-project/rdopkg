@@ -1,0 +1,7 @@
+packages:
+  openstack-neutron:
+    - name: python-alembic
+      version: ">= 0.9.6"
+    - name: python-os-ken
+      version: ">= 0.3.1"
+    - name: python-tenacity
