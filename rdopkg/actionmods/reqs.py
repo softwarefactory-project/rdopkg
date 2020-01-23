@@ -33,10 +33,11 @@ class DiffReq(object):
 
 class CheckReq(object):
 
-    def __init__(self, name, desired_vers, vers):
+    def __init__(self, name, desired_vers, vers, overridden=None):
         self.name = name
         self.desired_vers = desired_vers
         self.vers = vers
+        self.overridden = overridden
 
     def met(self):
         for rv in self.desired_vers.split(','):
@@ -51,13 +52,33 @@ class CheckReq(object):
         else:
             return False
 
-    def __str__(self, format=None):
+    def __str__(self, format='text'):
         s = self.name
         if self.desired_vers:
             s += ' ' + self.desired_vers
-        if not format and self.vers:
-            s += '  (%s in .spec)' % self.vers
+        if format == 'text':
+            if self.vers:
+                s += '  (%s in .spec)' % self.vers
+            if self.overridden:
+                s = "{}, {t.bold}{t.warn}{} has been overridden in \
+                requirements file{t.normal})".format(s[:-1],
+                                                     self.overridden,
+                                                     t=log.term)
         return s
+
+
+def get_overridden_deps_of_pkg(overridden_deps, pkg_name):
+    overridden_deps_of_pkg = dict()
+    try:
+        for cat in ['all', pkg_name]:
+            if cat in overridden_deps['packages']:
+                for dep in overridden_deps['packages'][cat]:
+                    overridden_deps_of_pkg[dep['name']] = dep.get('version',
+                                                                  '')
+        return overridden_deps_of_pkg
+    except Exception:
+        log.error("The override file is not well formatted")
+        exit(1)
 
 
 def is_dependency_should_be_checked(python_version, environment_markers):
@@ -215,13 +236,31 @@ def print_reqdiff(added, changed, removed):
     print("")
 
 
-def reqcheck(desired_reqs, reqs):
+def reqcheck(desired_reqs, reqs, overridden_deps):
     met, any_version, wrong_version, missing, removed = [], [], [], [], []
     excess = reqs
+    pkg_name = specfile.Spec().get_name()
+
+    if overridden_deps:
+        overridden_deps = get_overridden_deps_of_pkg(overridden_deps, pkg_name)
+    else:
+        overridden_deps = {}
+
     for dr in desired_reqs:
         for req in reqs:
             if req.name == dr.name:
-                r = CheckReq(dr.name, dr.vers, req.vers)
+                overridden_vers = None
+                if req.name in overridden_deps:
+                    overridden_vers = dr.vers
+                    dr.vers = overridden_deps[req.name]
+                    # we ignore the dependency if the version specified in
+                    # the overridden file is empty.
+                    if dr.vers:
+                        r = CheckReq(dr.name, dr.vers, req.vers,
+                                     overridden_vers)
+                else:
+                    r = CheckReq(dr.name, dr.vers, req.vers, overridden_vers)
+
                 try:
                     excess.remove(req)
                 except Exception as ex:
@@ -298,7 +337,7 @@ def print_reqcheck(met, any_version, wrong_version, missing, excess, removed,
         helpers.print_list(reqs, pre=pre)
 
 
-def reqcheck_spec(py_version, ref=None, reqs_txt=None):
+def reqcheck_spec(py_version, ref=None, reqs_txt=None, override_pkgs=None):
     if (ref and reqs_txt) or (not ref and not reqs_txt):
         raise exception.InvalidUsage(
             why="reqcheck_spec needs either ref (git ref) or reqs_txt (path)")
@@ -308,7 +347,7 @@ def reqcheck_spec(py_version, ref=None, reqs_txt=None):
         reqs_txt = get_reqs_from_path(reqs_txt, py_version)
     map_reqs2pkgs(reqs_txt, 'epel')
     spec_reqs = get_reqs_from_spec(as_objects=True, normalize_py23=True)
-    return reqcheck(reqs_txt, spec_reqs)
+    return reqcheck(reqs_txt, spec_reqs, override_pkgs)
 
 
 VER_OK, VER_FAIL, VER_WTF = range(3)

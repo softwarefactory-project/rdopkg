@@ -640,6 +640,10 @@ class Spec(object):
         vr = self.get_vr(epoch=epoch)
         return '%s-%s' % (name, vr)
 
+    def get_name(self):
+        """get Name from .spec"""
+        return self.get_tag('Name', expand_macros=True)
+
     def new_changelog_entry(self, user, email, changes=[]):
         changes_str = "\n".join(map(lambda x: "- %s" % x, changes)) + "\n"
         date = time.strftime('%a %b %d %Y')
