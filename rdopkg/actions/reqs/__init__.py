@@ -35,6 +35,9 @@ ACTIONS = [
                Arg('python_version', shortcut='-p',
                    help="set the python version reference to evaluate if a "
                         "dependency should be checked or not (default 3.6)"),
+               Arg('override', shortcut='-O', default=None,
+                   help="overrides the behavior of reqcheck based on packages "
+                        "that are in the file provided"),
            ]),
     Action('reqquery',
            help="query RDO repos for versions defined in requirements.txt",

@@ -1,0 +1,4 @@
+packages:
+  bar:
+    - name: "python-sqlachemy"
+      version: "1.2.0"

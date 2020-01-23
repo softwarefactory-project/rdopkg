@@ -1,0 +1,9 @@
+packages:
+  all:
+    - name: "python-argparse"
+      version: ""
+    - name: "python-iso8601"
+  foo:
+    - name: "python-sqlachemy"
+      version: "1.2.0"
+    - name: "python-prettytable"
