@@ -33,10 +33,11 @@ class DiffReq(object):
 
 class CheckReq(object):
 
-    def __init__(self, name, desired_vers, vers):
+    def __init__(self, name, desired_vers, vers, overridden=None):
         self.name = name
         self.desired_vers = desired_vers
         self.vers = vers
+        self.overridden = overridden
 
     def met(self):
         for rv in self.desired_vers.split(','):
@@ -57,6 +58,9 @@ class CheckReq(object):
             s += ' ' + self.desired_vers
         if not format and self.vers:
             s += '  (%s in .spec)' % self.vers
+        if self.overridden:
+            s = "{}, {t.bold}{t.warn}{} has been overridden in requirements \
+file{t.normal})".format(s[:-1], self.overridden, t=log.term)
         return s
 
 
@@ -215,13 +219,43 @@ def print_reqdiff(added, changed, removed):
     print("")
 
 
-def reqcheck(desired_reqs, reqs):
+def reqcheck(desired_reqs, reqs, override_pkgs):
     met, any_version, wrong_version, missing, removed = [], [], [], [], []
     excess = reqs
+    pkg_name = specfile.Spec().get_name()
+
+    override_pkg_names = list()
+    if override_pkgs:
+        try:
+            for cat in ['all', pkg_name]:
+                if cat in override_pkgs['packages'].keys():
+                    for dep in override_pkgs['packages'][cat]:
+                        override_pkg_names.append(dep['name'])
+        except Exception:
+            log.error("The override file is not well formatted")
+            exit(1)
+
     for dr in desired_reqs:
         for req in reqs:
             if req.name == dr.name:
-                r = CheckReq(dr.name, dr.vers, req.vers)
+                overridden_vers = None
+                if req.name in override_pkg_names:
+                    try:
+                        overridden_vers = dr.vers
+                        for cat in ['all', pkg_name]:
+                            if cat in override_pkgs['packages'].keys():
+                                for d in override_pkgs['packages'][cat]:
+                                    if req.name == d['name']:
+                                        dr.vers = d['version']
+                                        print(dr.vers)
+                    except Exception:
+                        dr.vers = ''
+                    if dr.vers:
+                        r = CheckReq(dr.name, dr.vers, req.vers,
+                                     overridden_vers)
+                else:
+                    r = CheckReq(dr.name, dr.vers, req.vers, overridden_vers)
+
                 try:
                     excess.remove(req)
                 except Exception as ex:
@@ -299,7 +333,7 @@ def print_reqcheck(met, any_version, wrong_version, missing, excess, removed,
             helpers.print_list(reqs, pre=pre)
 
 
-def reqcheck_spec(py_version, ref=None, reqs_txt=None):
+def reqcheck_spec(py_version, ref=None, reqs_txt=None, override_pkgs=None):
     if (ref and reqs_txt) or (not ref and not reqs_txt):
         raise exception.InvalidUsage(
             why="reqcheck_spec needs either ref (git ref) or reqs_txt (path)")
@@ -309,7 +343,7 @@ def reqcheck_spec(py_version, ref=None, reqs_txt=None):
         reqs_txt = get_reqs_from_path(reqs_txt, py_version)
     map_reqs2pkgs(reqs_txt, 'epel')
     spec_reqs = get_reqs_from_spec(as_objects=True, normalize_py23=True)
-    return reqcheck(reqs_txt, spec_reqs)
+    return reqcheck(reqs_txt, spec_reqs, override_pkgs)
 
 
 VER_OK, VER_FAIL, VER_WTF = range(3)
