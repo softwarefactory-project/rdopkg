@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "510c16ec_b9cfcf51",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-01-28T12:18:46Z",
+      "side": 1,
+      "message": "do we really need exit(0) here?",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 15
+      },
+      "revId": "b76a6522cdb44414ae073b892361a1c00704c6d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
