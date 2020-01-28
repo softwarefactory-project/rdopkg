@@ -46,6 +46,30 @@
       "revId": "b76a6522cdb44414ae073b892361a1c00704c6d2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "300f94ca_247b83a1",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-01-28T14:29:58Z",
+      "side": 1,
+      "message": "Now I get it.\nIn that case, maybe just \"return\" will be better choice. It is just suggestion",
+      "parentUuid": "bf5f40d9_04c5291e",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 15
+      },
+      "revId": "b76a6522cdb44414ae073b892361a1c00704c6d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
