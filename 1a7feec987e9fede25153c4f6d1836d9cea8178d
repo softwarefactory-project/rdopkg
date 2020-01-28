@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c844dd8_50001685",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-01-28T12:57:16Z",
+      "side": 1,
+      "message": "why not one try?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 17
+      },
+      "revId": "1a7feec987e9fede25153c4f6d1836d9cea8178d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
