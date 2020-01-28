@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d0094ce3_02cfe520",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-01-28T14:24:58Z",
+      "side": 1,
+      "message": "I was thinking like double Exceptions without double try\nBut still unknown error can be there. So it can be like you did",
+      "range": {
+        "startLine": 35,
+        "startChar": 7,
+        "endLine": 35,
+        "endChar": 30
+      },
+      "revId": "52e5e989d6b94ec9a7fa538c71c539a501bd5d08",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
