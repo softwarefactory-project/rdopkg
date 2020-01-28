@@ -22,6 +22,30 @@
       "revId": "b76a6522cdb44414ae073b892361a1c00704c6d2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bf5f40d9_04c5291e",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-01-28T13:07:43Z",
+      "side": 1,
+      "message": "If we remove the exit(0) here, the command will output both the JSON and \u0027normal\u0027 format(l.283 \u0026 l.295).\nBut I can remove it by splitting the if-else condition, wdyt ?\nIs it a bad practice to use an exit(0) here ?",
+      "parentUuid": "510c16ec_b9cfcf51",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 15
+      },
+      "revId": "b76a6522cdb44414ae073b892361a1c00704c6d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
