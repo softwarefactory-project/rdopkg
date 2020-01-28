@@ -70,6 +70,30 @@
       "revId": "b76a6522cdb44414ae073b892361a1c00704c6d2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "378e31c0_6a64b447",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-01-28T14:59:29Z",
+      "side": 1,
+      "message": "I\u0027ll keep in mind to use \u0027return\u0027 instead of \u0027exit\u0027 to end only the function and let the program keep running.\nIn that case, I will split the if-else condition to make the code more readable.\nThank you Daniel",
+      "parentUuid": "300f94ca_247b83a1",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 15
+      },
+      "revId": "b76a6522cdb44414ae073b892361a1c00704c6d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
