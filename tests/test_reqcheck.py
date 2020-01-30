@@ -4,6 +4,8 @@ import time
 
 from rdopkg.cli import rdopkg
 from rdopkg.actionmods.reqs import *
+from rdopkg.actions.reqs.actions import *
+from rdopkg.utils.specfile import Spec
 from rdopkg.exception import WrongPythonVersion
 
 import test_common as common
@@ -362,3 +364,43 @@ def test_parse_reqs_txt_with_environment_marker_11(caplog):
     requirements_txt = '\n'.join(["enum34==1.0.4;platform_system=='Linux'"])
     got = parse_reqs_txt(requirements_txt, '3.6')
     assert len(got) == 1
+
+
+def test_reqcheck_autosync(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '--autosync')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'python-sqlalchemy >= 1.0.12' in o
+
+
+def test_reqcheck_autosync_remove_requires(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    r1 = CheckReq('python-argparse', '', '')
+    check = [], [], [], [], [], [r1]
+    with dist_path.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    assert 'Requires:         python-argparse\n' not in _file
+    assert 'Requires:         python-iso8601 >= 2.0.1\n' in _file
+    assert 'Requires:         python-prettytable\n' in _file
+
+
+def test_reqcheck_autosync_edit_requires(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    r1 = CheckReq('python-argparse', '>= 1.0.0', '')
+    r2 = CheckReq('python-iso8601', '', '2.0.1')
+    r3 = CheckReq('python-sqlalchemy', '>= 1.0.12', '>= 1.0.10')
+    check = [], [], [r1, r2, r3], [], [], []
+    with dist_path.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    assert 'Requires:         python-argparse >= 1.0.0\n' in _file
+    assert 'Requires:         python-iso8601\n' in _file
+    assert 'Requires:         python%{pyver}-sqlalchemy >= 1.0.12\n' in _file

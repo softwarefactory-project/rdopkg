@@ -748,3 +748,21 @@ class Spec(object):
             except KeyError:
                 pass
         return requires
+
+    def edit_requires_version_by_name(self, name, version=''):
+        name = name.split('-')[1]
+        if version:
+            repl = r'\g<1> {}'
+        else:
+            repl = r'\g<1>'
+        self._txt, n = re.subn(r'^(%s:\s+.*%s).*$' % (re.escape('Requires'),
+                                                      name),
+                               repl.format(version),
+                               self.txt, flags=re.M)
+        return n > 0
+
+    def remove_requires_by_name(self, name):
+        name = name.split('-')[1]
+        self._txt, n = re.subn(r'^(%s:\s+.*%s).*$' % (re.escape('Requires'),
+                            name), r'', self.txt, flags=re.M)
+        return n > 0

@@ -11,6 +11,7 @@ from rdopkg import guess
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import reqs as _reqs
 from rdopkg.utils import log
+from rdopkg.utils import specfile
 from rdopkg.utils.git import git
 
 
@@ -22,8 +23,7 @@ def reqdiff(version_tag_from, version_tag_to):
     _reqs.print_reqdiff(*rdiff)
 
 
-def reqcheck(version, spec=False, output=None, strict=False,
-             python_version='3.6', override=None):
+def reqcheck(version, python_version='3.6', override=None):
     m = re.search(r'^[\d]\.[\d]$', python_version)
     if not m:
         raise exception.WrongPythonVersion()
@@ -61,18 +61,45 @@ def reqcheck(version, spec=False, output=None, strict=False,
         check = _reqs.reqcheck_spec(python_version,
                                     ref=version,
                                     override_pkgs=override)
+    args = {'check': check}
+    return args
+
+
+def reqcheck_autosync(check=None, autosync=False):
+    if not autosync:
+        return
+    spec = specfile.Spec()
+    met, any_version, wrong_version, missing, excess, removed  = check
+    try:
+        for cr in wrong_version:
+            is_autosync = spec.edit_requires_version_by_name(cr.name,
+                                                             cr.desired_vers)
+            cr.autosync = True if is_autosync else False
+        for cr in removed:
+            is_autosync = spec.remove_requires_by_name(cr.name)
+            cr.autosync = True if is_autosync else False
+    except Exception:
+        pass
+    spec.save()
+
+
+def reqcheck_print(check=None, output=None, spec=False, strict=False,
+                   autosync=False):
     if output not in ['spec', 'json', None]:
         raise exception.WrongOutputFormat()
     if spec:
         output = 'spec'
-    _reqs.print_reqcheck(*check, format=output)
-    if strict:
-        # missing
-        if len(check[-1]) > 0:
-            raise exception.ReqCheckMissingDependencies()
-        # mismatch
-        if len(check[-2]) > 0:
-            raise exception.ReqCheckMismatchingDependencies()
+    if autosync:
+        _reqs.print_reqcheck_autosync(*check, format=output)
+    else:
+        _reqs.print_reqcheck(*check, format=output)
+        if strict:
+            # missing
+            if len(check[-1]) > 0:
+                raise exception.ReqCheckMissingDependencies()
+            # mismatch
+            if len(check[-2]) > 0:
+                raise exception.ReqCheckMismatchingDependencies()
 
 
 def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
