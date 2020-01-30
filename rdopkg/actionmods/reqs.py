@@ -33,16 +33,19 @@ class DiffReq(object):
 
 class CheckReq(object):
 
-    def __init__(self, name, desired_vers, vers, overridden=None):
+    def __init__(self, name, desired_vers, vers, overridden=None,
+                 autosync=False):
         self.name = name
         self.desired_vers = desired_vers
         self.vers = vers
         self.overridden = overridden
+        self.autosync = autosync
 
     def met(self):
         for rv in self.desired_vers.split(','):
             m = re.match('(>|>=) (\\d.*)$', rv)
             if m:
+                self.desired_vers = rv
                 if rv == self.vers:
                     return True
                 else:
@@ -247,7 +250,6 @@ def reqcheck(desired_reqs, reqs, override_pkgs):
                                 for d in override_pkgs['packages'][cat]:
                                     if req.name == d['name']:
                                         dr.vers = d['version']
-                                        print(dr.vers)
                     except Exception:
                         dr.vers = ''
                     if dr.vers:
@@ -331,6 +333,23 @@ def print_reqcheck(met, any_version, wrong_version, missing, excess, removed,
             print(title.format(t=log.term, category=category.upper()))
             reqs = [x.__str__(format=format) for x in reqs]
             helpers.print_list(reqs, pre=pre)
+
+
+def print_reqcheck_autosync(met, any_version, wrong_version, missing, excess,
+                            removed, format=None):
+    cats = [
+        ("{t.bold_yellow}{category}{t.normal}", "mismatch", wrong_version),
+        ("{t.bold_red}{category}{t.normal}", "missing", missing),
+        ("{t.bold_red}{category}{t.normal}", "removed", removed),
+    ]
+    if format == 'json':
+        pass
+    else:
+        print("The package below have been synchronised against the "
+              "requirements file:")
+        for title, cat, reqs in cats:
+            reqs = [x.__str__() for x in reqs if x.autosync]
+            helpers.print_list(reqs, pre='  ')
 
 
 def reqcheck_spec(py_version, ref=None, reqs_txt=None, override_pkgs=None):
