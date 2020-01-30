@@ -332,6 +332,13 @@ def print_reqcheck(met, any_version, wrong_version, missing, excess, removed,
             reqs = [x.__str__(format=format) for x in reqs]
             helpers.print_list(reqs, pre=pre)
 
+def sync(met, any_version, wrong_version, missing, excess, removed):
+    for cr in wrong_version:
+        pass
+
+    for cr in removed:
+        pass
+
 
 def reqcheck_spec(py_version, ref=None, reqs_txt=None, override_pkgs=None):
     if (ref and reqs_txt) or (not ref and not reqs_txt):

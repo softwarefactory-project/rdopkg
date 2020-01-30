@@ -4,6 +4,7 @@ import time
 
 from rdopkg.cli import rdopkg
 from rdopkg.actionmods.reqs import *
+from rdopkg.utils.specfile import Spec
 from rdopkg.exception import WrongPythonVersion
 
 import test_common as common
@@ -362,3 +363,12 @@ def test_parse_reqs_txt_with_environment_marker_11(caplog):
     requirements_txt = '\n'.join(["enum34==1.0.4;platform_system=='Linux'"])
     got = parse_reqs_txt(requirements_txt, '3.6')
     assert len(got) == 1
+
+
+def test_sync(tmpdir):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-sync')
+    with dist_path.as_cwd():
+        spec_file = Spec('foo.spec', 'text')
+
+    assert 'MISSING:' not in o
+    assert 'REMOVED:' not in o

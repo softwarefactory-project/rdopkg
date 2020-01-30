@@ -23,7 +23,7 @@ def reqdiff(version_tag_from, version_tag_to):
 
 
 def reqcheck(version, spec=False, output=None, strict=False,
-             python_version='3.6', override=None):
+             python_version='3.6', override=None, sync=False):
     m = re.search(r'^[\d]\.[\d]$', python_version)
     if not m:
         raise exception.WrongPythonVersion()
