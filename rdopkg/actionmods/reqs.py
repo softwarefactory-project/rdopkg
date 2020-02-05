@@ -33,11 +33,13 @@ class DiffReq(object):
 
 class CheckReq(object):
 
-    def __init__(self, name, desired_vers, vers, overridden=None):
+    def __init__(self, name, desired_vers, vers, overridden=None,
+                 ignored=False):
         self.name = name
         self.desired_vers = desired_vers
         self.vers = vers
         self.overridden = overridden
+        self.ignored = ignored
 
     def met(self):
         for rv in self.desired_vers.split(','):
@@ -247,6 +249,7 @@ def reqcheck(desired_reqs, reqs, overridden_deps):
         overridden_deps = {}
 
     for dr in desired_reqs:
+        overridden_vers, r, ignored = None, None, False
         for req in reqs:
             if req.name == dr.name:
                 overridden_vers = None
@@ -266,8 +269,13 @@ def reqcheck(desired_reqs, reqs, overridden_deps):
                 except Exception as ex:
                     pass
                 break
+        if not r:
+            r = CheckReq(dr.name, dr.vers, None)
+
         try:
-            if r.vers is None:
+            if r.ignored is True:
+                pass
+            elif r.vers is None:
                 missing.append(r)
             elif not r.vers:
                 if r.desired_vers:
