@@ -23,6 +23,16 @@ def test_reqcheck(tmpdir, capsys):
     assert 'MISSING:' not in o
 
 
+def test_reqcheck_missing(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-missing')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'MISSING:' in o
+
+
 def test_reqcheck_excess(tmpdir, capsys):
     dist_path = common.prep_spec_test(tmpdir, 'reqcheck-excess')
     with dist_path.as_cwd():
