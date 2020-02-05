@@ -1,16 +1,3 @@
-# Macros for py2/py3 compatibility
-%if 0%{?fedora} || 0%{?rhel} > 7
-%global pyver 3
-%else
-%global pyver 2
-%endif
-
-%global pyver_bin python%{pyver}
-%global pyver_sitelib %{expand:%{python%{pyver}_sitelib}}
-%global pyver_install %py%{pyver}_install
-%global pyver_build %py%{pyver}_build
-# End of macros for py2/py3 compatibility
-
 Name:             foo
 Epoch:            2077
 Version:          1.2.3
@@ -30,21 +17,12 @@ Patch0002: 0002-something-else.patch
 
 BuildRequires:    python-setuptools
 BuildRequires:    python2-devel
-%if %{pyver} == 2
-BuildRequires: PyYAML
-BuildRequires: pytz
-%else
-BuildRequires: python%{pyver}-PyYAML
-BuildRequires: python%{pyver}-pytz
-%endif
-
 
 Requires:         python-argparse
 Requires:         python-iso8601
-Requires:         python-prettytable >= 1.0
-Requires:         python-sqlalchemy >=  1.2.0
+Requires:         python-sqlalchemy >=  1.0.10
 
-Requires(pre):    shadow-utils
+PreReq:           is-deprecated
 
 %description
 This is foo! This is foo! This is foo! This is foo! This is foo! This is foo!
