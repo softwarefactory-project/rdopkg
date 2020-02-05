@@ -208,8 +208,8 @@ class Git(ShellCommand):
         GIT_COMMIT_FIELDS = ['id', 'subject', 'body']
         GIT_LOG_FORMAT = ['%h', '%s', '%b']
         GIT_LOG_FORMAT = '%x1f'.join(GIT_LOG_FORMAT) + '%x1e'
-        log_out = self('log', '--format=%s' % GIT_LOG_FORMAT, rng,
-                       log_cmd=False, fatal=False)
+        log_out = self('log', '--format=%s' % GIT_LOG_FORMAT, '--no-merges',
+                       rng, log_cmd=False, fatal=False)
         if not log_out:
             return []
 
