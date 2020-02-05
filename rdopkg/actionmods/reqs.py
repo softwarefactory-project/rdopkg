@@ -33,11 +33,13 @@ class DiffReq(object):
 
 class CheckReq(object):
 
-    def __init__(self, name, desired_vers, vers, overridden=None):
+    def __init__(self, name, desired_vers, vers, overridden=None,
+                 ignored=False):
         self.name = name
         self.desired_vers = desired_vers
         self.vers = vers
         self.overridden = overridden
+        self.ignored = ignored
 
     def met(self):
         for rv in self.desired_vers.split(','):
@@ -60,10 +62,10 @@ class CheckReq(object):
             if self.vers:
                 s += '  (%s in .spec)' % self.vers
             if self.overridden:
-                s = "{}, {t.bold}{t.warn}{} has been overridden in \
-                requirements file{t.normal})".format(s[:-1],
-                                                     self.overridden,
-                                                     t=log.term)
+                s = ("{}, {t.bold}{t.warn}{} has been overridden in "
+                     "requirements file{t.normal})".format(s[:-1],
+                                                           self.overridden,
+                                                           t=log.term))
         return s
 
 
@@ -247,6 +249,7 @@ def reqcheck(desired_reqs, reqs, overridden_deps):
         overridden_deps = {}
 
     for dr in desired_reqs:
+        overridden_vers, r, ignored = None, None, False
         for req in reqs:
             if req.name == dr.name:
                 overridden_vers = None
@@ -255,19 +258,23 @@ def reqcheck(desired_reqs, reqs, overridden_deps):
                     dr.vers = overridden_deps[req.name]
                     # we ignore the dependency if the version specified in
                     # the overridden file is empty.
-                    if dr.vers:
-                        r = CheckReq(dr.name, dr.vers, req.vers,
-                                     overridden_vers)
-                else:
-                    r = CheckReq(dr.name, dr.vers, req.vers, overridden_vers)
+                    if not dr.vers:
+                        ignored = True
+                r = CheckReq(dr.name, dr.vers, req.vers, overridden_vers,
+                             ignored)
 
                 try:
                     excess.remove(req)
                 except Exception as ex:
                     pass
                 break
+        if not r:
+            r = CheckReq(dr.name, dr.vers, None)
+
         try:
-            if r.vers is None:
+            if r.ignored:
+                pass
+            elif r.vers is None:
                 missing.append(r)
             elif not r.vers:
                 if r.desired_vers:
