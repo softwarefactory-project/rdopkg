@@ -20,6 +20,7 @@ ACTIONS = [
            steps=[
                Action('get_package_env', module='distgit'),
                Action('reqcheck'),
+               Action('reqcheck_print'),
            ],
            optional_args=[
                Arg('spec', shortcut='-s', action='store_true',
