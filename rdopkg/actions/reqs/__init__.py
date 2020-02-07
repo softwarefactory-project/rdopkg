@@ -20,6 +20,7 @@ ACTIONS = [
            steps=[
                Action('get_package_env', module='distgit'),
                Action('reqcheck'),
+               Action('reqcheck_autosync'),
                Action('reqcheck_print'),
            ],
            optional_args=[
@@ -39,6 +40,8 @@ ACTIONS = [
                Arg('override', shortcut='-O', default=None,
                    help="overrides the behavior of reqcheck based on packages "
                         "that are in the file provided"),
+               Arg('autosync', shortcut='-a', action='store_true',
+                   help="synchronize spec and requirements files"),
            ]),
     Action('reqquery',
            help="query RDO repos for versions defined in requirements.txt",
