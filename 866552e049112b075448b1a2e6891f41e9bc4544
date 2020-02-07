@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8f66c6e2_299b336f",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-02-07T08:23:03Z",
+      "side": 1,
+      "message": "are you sure that you want to set that any exception should set ignored to true?",
+      "range": {
+        "startLine": 252,
+        "startChar": 20,
+        "endLine": 252,
+        "endChar": 36
+      },
+      "revId": "866552e049112b075448b1a2e6891f41e9bc4544",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c65322ad_a08f26cd",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-02-07T08:23:03Z",
+      "side": 1,
+      "message": "if r.ignored is pass, do we really need to check it here?",
+      "range": {
+        "startLine": 267,
+        "startChar": 12,
+        "endLine": 267,
+        "endChar": 32
+      },
+      "revId": "866552e049112b075448b1a2e6891f41e9bc4544",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
