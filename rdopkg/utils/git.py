@@ -64,11 +64,11 @@ class Git(ShellCommand):
         self.create_branch(branch, remote_branch)
 
     def _parse_output(self, out):
-        output = [l.strip() for l in out.split("\n") if l]
+        output = [o.strip() for o in out.split("\n") if o]
         return output
 
     def _parse_branch_output(self, out):
-        output = [l for l in self._parse_output(out) if l.find('HEAD') < 0]
+        output = [o for o in self._parse_output(out) if o.find('HEAD') < 0]
         return output
 
     def remote_branches(self, remote=""):

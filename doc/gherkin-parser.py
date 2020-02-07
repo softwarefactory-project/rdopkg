@@ -17,14 +17,14 @@ def parse(file):
     is_comment = False
     current_scenario = {'title': None,
                         'steps': []}
-    for l in file.readlines():
-        if l.startswith('Feature'):
+    for line in file.readlines():
+        if line.startswith('Feature'):
             cursor = 'Feature'
-            feature['title'] = l.strip()[len('Feature: '):]
+            feature['title'] = line.strip()[len('Feature: '):]
             continue
-        elif l.strip().startswith('Scenario: '):
+        elif line.strip().startswith('Scenario: '):
             cursor = 'Scenario'
-            current_scenario['title'] = l.strip()[len('Scenario: '):]
+            current_scenario['title'] = line.strip()[len('Scenario: '):]
             continue
         elif GWT.match(l):
             clause, content = GWT.match(l).groups()
@@ -33,7 +33,7 @@ def parse(file):
             current_scenario['steps'].append(step)
             continue
         else:
-            if l.strip() in ['', '\n'] and is_comment is False:
+            if line.strip() in ['', '\n'] and is_comment is False:
                 if cursor == 'Scenario':
                     # archive scenario
                     feature['scenarios'].append(current_scenario)
@@ -42,7 +42,7 @@ def parse(file):
                 # reset cursor
                 cursor = None
             else:
-                line = l.strip()
+                line = line.strip()
                 if len(line) < 1:
                     line = '\n'
                 if cursor == 'Feature':

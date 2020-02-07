@@ -83,10 +83,10 @@ def find_files(path, ext=None):
     return paths
 
 
-def print_list(l, pre='- ', nl_before=False, nl_after=False):
+def print_list(list, pre='- ', nl_before=False, nl_after=False):
     if nl_before:
         print("")
-    for e in l:
+    for e in list:
         print('%s%s' % (pre, e))
     if nl_after:
         print("")
