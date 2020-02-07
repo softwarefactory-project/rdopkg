@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "cedcacd6_2ebc3fcc",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-02-07T14:07:10Z",
+      "side": 1,
+      "message": "You\u0027re right let\u0027s be explicit with \u0027KeyError\u0027 instead.",
+      "parentUuid": "8f66c6e2_299b336f",
+      "range": {
+        "startLine": 252,
+        "startChar": 20,
+        "endLine": 252,
+        "endChar": 36
+      },
+      "revId": "866552e049112b075448b1a2e6891f41e9bc4544",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c65322ad_a08f26cd",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-02-07T08:23:03Z",
       "side": 1,
       "message": "if r.ignored is pass, do we really need to check it here?",
+      "range": {
+        "startLine": 267,
+        "startChar": 12,
+        "endLine": 267,
+        "endChar": 32
+      },
+      "revId": "866552e049112b075448b1a2e6891f41e9bc4544",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a322d14_b7f24bcf",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-02-07T14:07:10Z",
+      "side": 1,
+      "message": "Indeed, I could add the condition \u0027r.ignored is False\u0027 at the beginning of each elif statement after. In term of performance, it\u0027s the same thanks to short-circuit evaluation.\n\nI could also put an if statement at the top containing the overall if-elif-else block.\n\nBut, I prefer to put it at the top with \u0027pass\u0027 for better readability, and avoid a nested if-else statement.\nDoes it make sense ?",
+      "parentUuid": "c65322ad_a08f26cd",
       "range": {
         "startLine": 267,
         "startChar": 12,
