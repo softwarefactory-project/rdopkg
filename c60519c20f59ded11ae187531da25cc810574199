@@ -22,6 +22,30 @@
       "revId": "c60519c20f59ded11ae187531da25cc810574199",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "200f02dd_ad0d57d5",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-02-10T08:49:42Z",
+      "side": 1,
+      "message": "Yes, it\u0027s better with one line here",
+      "parentUuid": "507b58f4_ea9e5817",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 15
+      },
+      "revId": "c60519c20f59ded11ae187531da25cc810574199",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
