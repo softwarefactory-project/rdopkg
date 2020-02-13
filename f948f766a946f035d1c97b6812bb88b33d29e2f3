@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4a99e83b_9008b0ed",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-02-13T10:22:22Z",
+      "side": 1,
+      "message": "Isn\u0027t the linter complaining about the import not being in alphabetical order?",
+      "range": {
+        "startLine": 5,
+        "startChar": 11,
+        "endLine": 5,
+        "endChar": 11
+      },
+      "revId": "f948f766a946f035d1c97b6812bb88b33d29e2f3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b514ac2_13a1c00f",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-02-13T10:22:22Z",
+      "side": 1,
+      "message": "elif format \u003d\u003d \u0027spec\u0027:",
+      "range": {
+        "startLine": 280,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 28
+      },
+      "revId": "f948f766a946f035d1c97b6812bb88b33d29e2f3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae6a9cc8_d39672b5",
+        "filename": "rdopkg/actions/reqs/__init__.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-02-13T10:22:22Z",
+      "side": 1,
+      "message": "Could you add a note about the default being None and what it means?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 45
+      },
+      "revId": "f948f766a946f035d1c97b6812bb88b33d29e2f3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
