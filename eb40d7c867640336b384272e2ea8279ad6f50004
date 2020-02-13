@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3de27320_44f587a3",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-02-13T11:03:49Z",
+      "side": 1,
+      "message": "I think it might be easier if we create a simple hash here with the dependencies and their versions from override_pkgs, instead of storing just the names",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 19
+      },
+      "revId": "eb40d7c867640336b384272e2ea8279ad6f50004",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f76c055_e2ba754e",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-02-13T11:03:49Z",
+      "side": 1,
+      "message": "If we do so, here we could do something like:\n\nif req.name in override_pkg_hash:\n  dr.vers \u003d override_pkg_hash.get(\u0027version\u0027, \u0027\u0027)\n\nInstead of iterating over override_pkgs again",
+      "range": {
+        "startLine": 242,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 54
+      },
+      "revId": "eb40d7c867640336b384272e2ea8279ad6f50004",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
