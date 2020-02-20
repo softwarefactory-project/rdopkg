@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3224cf42_840e337e",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-02-20T11:48:53Z",
+      "side": 1,
+      "message": "it looks ugly.\nTry:\n\ns \u003d (\"{}, {t.bold}{t.warn}{} has been overridden in\"\n     \"requirements file{t.normal})\".format(s[:-1], \n     self.overridden, t\u003dlog.term))",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 73
+      },
+      "revId": "8780ec75f8cad992dc0341707d32b25af35c7796",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1e199ac4_472f8037",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-02-20T11:48:53Z",
+      "side": 1,
+      "message": "can not be just:\n if r.ignored:",
+      "range": {
+        "startLine": 274,
+        "startChar": 11,
+        "endLine": 274,
+        "endChar": 32
+      },
+      "revId": "8780ec75f8cad992dc0341707d32b25af35c7796",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
