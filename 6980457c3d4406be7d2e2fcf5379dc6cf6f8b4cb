@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e650c28_c85b4f5e",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-03-04T10:13:37Z",
+      "side": 1,
+      "message": "This shows the error, in my opinion. With the previous code, any comment with an \u003d in a spec would be identified as a magic comment. With the updated code, we are expecting an initial empty comment line.\n\nIs that what we expect?",
+      "range": {
+        "startLine": 425,
+        "startChar": 30,
+        "endLine": 425,
+        "endChar": 33
+      },
+      "revId": "6980457c3d4406be7d2e2fcf5379dc6cf6f8b4cb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
