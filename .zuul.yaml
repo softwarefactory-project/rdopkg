@@ -85,11 +85,11 @@
     check:
       jobs:
         - rdopkg-py2-tests
-        - rdopkg-py3-tests
-        - rdopkg-py2-integration
-        - rdopkg-py3-integration
-        - rdopkg-lint
-        - rdopkg-dlrn-master
+#        - rdopkg-py3-tests
+#        - rdopkg-py2-integration
+#        - rdopkg-py3-integration
+#        - rdopkg-lint
+#        - rdopkg-dlrn-master
     gate:
       jobs:
         - rdopkg-py2-tests
