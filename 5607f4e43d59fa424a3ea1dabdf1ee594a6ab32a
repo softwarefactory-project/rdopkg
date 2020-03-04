@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1e954ec_74950508",
+        "filename": "tests/assets/spec/reqcheck-excess/foo.spec",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-03-04T11:36:17Z",
+      "side": 1,
+      "message": "Hm, this is really weird. Why?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "5607f4e43d59fa424a3ea1dabdf1ee594a6ab32a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
