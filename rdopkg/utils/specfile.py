@@ -187,7 +187,7 @@ class Spec(object):
         r'((?:^|\n)(?:#[ \t]*\n)*#\s*[\D_]*\s*=[^\n]*\n(?:#[ '
         r'\t]*\n)*)\n*')
     RE_IN_MAGIC_COMMENTS = (
-        r'((?:^|\n)(?:#[ \t]*\n)*)(#\s*[^0-9\n]*\s*=[^\n]*\n)')
+        r'((?:^|\n)(?:#[ \t]*\n)+)(#\s*[^0-9\n]*\s*=[^\n]*\n)')
     RE_MACRO_BASE = r'%global\s+{0}\s+'
 
     def __init__(self, fn=None, txt=None):
@@ -290,7 +290,6 @@ class Spec(object):
         # check to see if we have any magic comments in right slot
         # after SourceX and before Patch Y - if so insert at begining block
         # otherwise insert a new block as before
-
         if re.findall(self.RE_IN_MAGIC_COMMENTS, self._txt, flags=re.M):
             self._txt = re.sub(
                 self.RE_IN_MAGIC_COMMENTS,
