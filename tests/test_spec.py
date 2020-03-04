@@ -422,7 +422,7 @@ def test_set_magic_modify_once():
 
 
 def test_set_magic_comment_only_patches_base():
-    spec = specfile.Spec(txt='# patches_base=1.2.3\n')
+    spec = specfile.Spec(txt='#\n# patches_base=1.2.3\n')
     spec.set_magic_comment('patches_ignore', 'DROP-IN-RPM')
     assert 'DROP-IN-RPM' == spec.get_magic_comment('patches_ignore')
 
