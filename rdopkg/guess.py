@@ -288,6 +288,16 @@ def builds(release):
 
 
 def osdist(branch=None):
+    """Guess the OS distribution from a Git branch name.
+
+    If the OS value starts with "RH", this branch corresponds to a downstream
+    Red Hat product. If OS value is "RDO", this branch is an upstream (Fedora)
+    branch.
+
+    :param str branch: The name of the branch to analyze. If None, analyze the
+                       name of the current Git branch.
+    :returns: an OS name value, liks "RHOS", "RHCEPH", or "RDO".
+    """
     # which package distribution?
     if branch is None:
         branch = current_branch(default='')
