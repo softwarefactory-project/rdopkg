@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "13f1e139_765cf1c1",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-03-09T17:06:42Z",
+      "side": 1,
+      "message": "Thank you Daniel for the tip",
+      "parentUuid": "3224cf42_840e337e",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 73
+      },
+      "revId": "8780ec75f8cad992dc0341707d32b25af35c7796",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1e199ac4_472f8037",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 5
