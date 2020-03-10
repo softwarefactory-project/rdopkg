@@ -1,8 +1,25 @@
 ---
 - hosts: all
+  vars:
+    zuul_output_dir: "{{ ansible_user_dir }}/zuul-output"
+    zuul_use_fetch_output: true
   tasks:
+    - name: Ensure zuul-output coverage dir
+      file:
+        path: "{{ zuul_output_dir }}/logs/coverage/"
+        state: directory
+      when: zuul_use_fetch_output
+
+    - name: Fetch coverage report if any
+      copy:
+        src: "{{ zuul.project.src_dir }}/htmlcov/"
+        dest: "{{ zuul_output_dir }}/logs/coverage/"
+        remote_src: true
+      when: zuul_use_fetch_output
+
     - name: Fetch coverage report if any
       synchronize:
-        src: "{{ zuul.project.src_dir }}/htmlcov/"
         mode: pull
+        src: "{{ zuul.project.src_dir }}/htmlcov/"
         dest: "{{ zuul.executor.log_root }}/coverage/"
+      when: not zuul_use_fetch_output
