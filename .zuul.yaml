@@ -11,7 +11,7 @@
     name: rdopkg-base-py2
     parent: rdopkg-base
     abstract: true
-    nodeset: centos-latest-runc
+    nodeset: pod-centos-8
 
 - job:
     name: rdopkg-base-coverage-py2
@@ -23,7 +23,7 @@
     name: rdopkg-base-py3
     parent: rdopkg-base
     abstract: true
-    nodeset: fedora-latest-runc
+    nodeset: pod-fedora-31
 
 - job:
     name: rdopkg-base-coverage-py3
