@@ -1,0 +1,8 @@
+Code-Review+2: Alan Pevec <alan.pevec@redhat.com>
+Workflow+1: Alan Pevec <alan.pevec@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Tue, 10 Mar 2020 20:02:49 +0000
+Reviewed-on: https://softwarefactory-project.io/r/17751
+Project: rdopkg
+Branch: refs/heads/master
