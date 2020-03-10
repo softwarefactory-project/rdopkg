@@ -11,7 +11,7 @@
     - name: Inject rdopkg into DLRN master virtualenv
       shell:
         cmd: |
-          . ../DLRN/.tox/py27/bin/activate
+          .  ../DLRN/.tox/py27/bin/activate
           python setup.py install
         chdir: "{{ working_dir }}/rdopkg"
     - name: Run DLRN master tests with rdopkg
