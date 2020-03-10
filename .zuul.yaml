@@ -23,7 +23,7 @@
     name: rdopkg-base-py3
     parent: rdopkg-base
     abstract: true
-    nodeset: fedora-latest-runc
+    nodeset: fedora-latest-pod
 
 - job:
     name: rdopkg-base-coverage-py3
