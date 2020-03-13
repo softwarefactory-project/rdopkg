@@ -11,7 +11,7 @@
     name: rdopkg-base-py2
     parent: rdopkg-base
     abstract: true
-    nodeset: centos-latest-runc
+    nodeset: centos-latest-pod
 
 - job:
     name: rdopkg-base-coverage-py2
