@@ -76,7 +76,7 @@ class ActionModule(object):
 
 
 class ActionManager(object):
-    """This class manages action modules and contained actions."""
+    """This class manages action modules and contained actions"""
     def __init__(self):
         self.actions = []
         self.modules = []
