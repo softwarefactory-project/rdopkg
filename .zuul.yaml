@@ -7,11 +7,12 @@
     required-projects:
       - distroinfo
 
+# NOTE: this test should be running on Centos 7.
 - job:
     name: rdopkg-base-py2
     parent: rdopkg-base
     abstract: true
-    nodeset: centos-latest-runc
+    nodeset: centos-7-pod
 
 - job:
     name: rdopkg-base-coverage-py2
