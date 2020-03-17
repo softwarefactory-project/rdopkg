@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0c4198_9bc04818",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2020-03-17T11:42:59Z",
+      "side": 1,
+      "message": "I am seeing this warning when running unittests\n\n  /home/jschluet/projects/rdopkg/rdopkg/actions/reqs/actions.py:34: YAMLLoadWarning: calling yaml.load() without Loader\u003d... is deprecated, as the default Loader is unsafe. Please read https://msg.pyyaml.org/load for full details.         \n    override \u003d yaml.load(override_file)",
+      "range": {
+        "startLine": 34,
+        "startChar": 36,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "ed8f8cf8839f28e2e940fb5089d0a7d71c69b453",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
