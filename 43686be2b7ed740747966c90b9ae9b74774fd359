@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "09d14224_d2a0b9e8",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-03-18T17:51:42Z",
+      "side": 1,
+      "message": "Actually... Looking at the rest of the code, this should be None instead of []. Sorry!",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 22
+      },
+      "revId": "43686be2b7ed740747966c90b9ae9b74774fd359",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
