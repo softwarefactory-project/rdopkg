@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f664a1a_c0ac5a38",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-03-18T16:02:13Z",
+      "side": 1,
+      "message": "This override var mutation looks weird to me, but... I won\u0027t complain too much about it.",
+      "range": {
+        "startLine": 34,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 24
+      },
+      "revId": "c10ac596d73dac6b2dcf49ed3754aa6839d87e07",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f40b8af_208796e6",
+        "filename": "tests/assets/spec/reqcheck-overridden/foo.spec",
+        "patchSetId": 15
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-03-18T16:02:13Z",
+      "side": 1,
+      "message": "Can you fix the spec just like I did with https://softwarefactory-project.io/r/17718 ? Otherwise it will create trouble with Fedora 31+",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 37
+      },
+      "revId": "c10ac596d73dac6b2dcf49ed3754aa6839d87e07",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
