@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c5592c66_f7f0c214",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-03-18T16:19:05Z",
+      "side": 1,
+      "message": "That\u0027s why I didn\u0027t complain much :). If you set it here, you need to initialize override_pkgs to [] outside the \"if\", otherwise we can break it later.",
+      "revId": "4be31a3199f9d590fe3b82550098bf32dbbc5582",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "725320c6_3b709b7e",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-03-18T16:19:05Z",
+      "side": 1,
+      "message": "override_pkgs",
+      "range": {
+        "startLine": 60,
+        "startChar": 54,
+        "endLine": 60,
+        "endChar": 62
+      },
+      "revId": "4be31a3199f9d590fe3b82550098bf32dbbc5582",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ec83746c_a07b9fd1",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-03-18T16:19:05Z",
+      "side": 1,
+      "message": "override_pkgs",
+      "range": {
+        "startLine": 64,
+        "startChar": 50,
+        "endLine": 64,
+        "endChar": 58
+      },
+      "revId": "4be31a3199f9d590fe3b82550098bf32dbbc5582",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
