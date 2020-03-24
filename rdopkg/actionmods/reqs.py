@@ -274,9 +274,16 @@ def reqcheck(desired_reqs, reqs, overridden_deps):
         try:
             if r.ignored:
                 pass
+            # If the module is not present as Require in the spec file
             elif r.vers is None:
-                missing.append(r)
+                # If the module is ignored in an override file
+                if r.name in overridden_deps and not overridden_deps[r.name]:
+                    pass
+                else:
+                    missing.append(r)
+            # If the module is not capped as Require in the spec file
             elif not r.vers:
+                # If the module is capped in requirement file
                 if r.desired_vers:
                     any_version.append(r)
                 else:
