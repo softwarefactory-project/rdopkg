@@ -5,3 +5,4 @@ argparse>=0.8.10 # MIT
 iso8601>=1.7.0 # MIT
 prettytable>=2.1 # BSD/Apache-2.0
 SQLAlchemy!=1.1.8,>=1.0.10 # MIT
+tooz>=1.28.0 # Apache-2.0

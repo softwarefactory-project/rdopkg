@@ -1,0 +1,4 @@
+packages:
+  foo:
+    - name: "python-tooz"
+      version: ">= 1.58.0"
