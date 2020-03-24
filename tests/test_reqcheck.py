@@ -75,6 +75,26 @@ def test_reqcheck_overridden_3(tmpdir, capsys):
     assert 'python-sqlalchemy >= 1.2.0' in o
 
 
+def test_reqcheck_overridden_ignore_missing_true(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '-O', 'overrides-file-7.yml')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'python-tooz' not in o
+
+
+def test_reqcheck_overridden_ignore_missing_false(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '-O', 'overrides-file-8.yml')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'python-tooz' in o
+
+
 def test_reqcheck_overridden_nothing(tmpdir, capsys):
     dist_path = common.prep_spec_test(tmpdir, 'reqcheck-overridden')
     with dist_path.as_cwd():
