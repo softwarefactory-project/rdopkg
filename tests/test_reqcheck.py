@@ -372,3 +372,9 @@ def test_parse_reqs_txt_with_environment_marker_11(caplog):
     requirements_txt = '\n'.join(["enum34==1.0.4;platform_system=='Linux'"])
     got = parse_reqs_txt(requirements_txt, '3.6')
     assert len(got) == 1
+
+
+def test_parse_reqs_txt_with_prerelease_version(caplog):
+    requirements_txt = '\n'.join(["enum34==1.0.4.0rc1"])
+    got = parse_reqs_txt(requirements_txt, '3.6')
+    assert len(got) == 1
