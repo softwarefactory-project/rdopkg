@@ -111,7 +111,7 @@ def parse_reqs_txt(txt, py_vers='3.6'):
         line = re.sub(r'\s*(?:#.*)$', '', line.replace(" ", ""))
         if not line:
             continue
-        m = re.match(r'([\w\._-]+)([<>=!,.\d]*)(;.*)?$', line)
+        m = re.match(r'([\w\._-]+)([<>=!,.\d\w]*)(;.*)?$', line)
         if m:
             dep_name, dep_version, env_markers = m.groups()
             if env_markers is None:
