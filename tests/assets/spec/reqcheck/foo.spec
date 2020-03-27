@@ -23,8 +23,6 @@ Requires:         python-iso8601
 Requires:         python-prettytable
 Requires:         python-sqlalchemy >=  1.0.10
 
-PreReq:           is-deprecated
-
 %description
 This is foo! This is foo! This is foo! This is foo! This is foo! This is foo!
 This is foo! This is foo! This is foo!

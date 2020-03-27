@@ -70,10 +70,10 @@ def reqcheck(version, spec=False, output=None, strict=False,
     _reqs.print_reqcheck(*check, format=output)
     if strict:
         # missing
-        if len(check[-1]) > 0:
+        if len(check[3]) > 0:
             raise exception.ReqCheckMissingDependencies()
         # mismatch
-        if len(check[-2]) > 0:
+        if len(check[2]) > 0:
             raise exception.ReqCheckMismatchingDependencies()
 
 
