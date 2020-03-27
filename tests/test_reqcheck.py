@@ -16,31 +16,47 @@ def _assert_sanity_out(o):
 def test_reqcheck(tmpdir, capsys):
     dist_path = common.prep_spec_test(tmpdir, 'reqcheck')
     with dist_path.as_cwd():
-        rv = rdopkg('reqcheck', '-R', 'master')
+        rv = rdopkg('reqcheck', '-S', '-R', 'master')
     cap = capsys.readouterr()
     o = cap.out
     _assert_sanity_out(o)
+    assert 'EXCESS:' in o
+    assert 'MISMATCH:' not in o
     assert 'MISSING:' not in o
+    assert rv == 0
 
 
 def test_reqcheck_missing(tmpdir, capsys):
     dist_path = common.prep_spec_test(tmpdir, 'reqcheck-missing')
     with dist_path.as_cwd():
-        rv = rdopkg('reqcheck', '-R', 'master')
+        rv = rdopkg('reqcheck', '-S', '-R', 'master')
     cap = capsys.readouterr()
     o = cap.out
     _assert_sanity_out(o)
     assert 'MISSING:' in o
+    assert rv == 2
+
+
+def test_reqcheck_mismatch(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-mismatch')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-S', '-R', 'master')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'MISMATCH:' in o
+    assert rv == 4
 
 
 def test_reqcheck_excess(tmpdir, capsys):
     dist_path = common.prep_spec_test(tmpdir, 'reqcheck-excess')
     with dist_path.as_cwd():
-        rv = rdopkg('reqcheck', '-R', 'master')
+        rv = rdopkg('reqcheck', '-S', '-R', 'master')
     cap = capsys.readouterr()
     o = cap.out
     _assert_sanity_out(o)
     assert 'EXCESS:' in o
+    assert rv == 0
 
 
 def test_reqcheck_overridden_1(tmpdir, capsys):
