@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "09b6dd5e_e6d6c543",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-23T09:03:19Z",
+      "side": 1,
+      "message": "is not better to remove \"not\" and then \"pass\" and \"else\" is not required?",
+      "range": {
+        "startLine": 280,
+        "startChar": 49,
+        "endLine": 280,
+        "endChar": 52
+      },
+      "revId": "12185c4af590483ee6eac13b91a8b241c5b1dd8c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
