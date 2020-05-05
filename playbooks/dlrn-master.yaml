@@ -6,19 +6,22 @@
     - name: Prepare virtualenv to test DLRN master
       shell:
         cmd: |
-          tox -e py27 --notest
+          tox -e py36 --notest
         chdir: "{{ working_dir }}/DLRN"
+
     - name: Inject rdopkg into DLRN master virtualenv
       shell:
         cmd: |
-          . ../DLRN/.tox/py27/bin/activate
+          . ../DLRN/.tox/py36/bin/activate
           python setup.py install
         chdir: "{{ working_dir }}/rdopkg"
+
     - name: Run DLRN master tests with rdopkg
       shell:
         cmd: |
-          timeout --signal=SIGKILL 3600 ./scripts/run_tests.sh http://review.rdoproject.org/r/p/rdoinfo.git
+          timeout --signal=SIGKILL 3600 ./scripts/run_tests.sh http://review.rdoproject.org/r/p/rdoinfo.git centos8 https://trunk.rdoproject.org/centos8-master/
         chdir: "{{ working_dir }}/DLRN"
+
     - name: Copy DLRN logs for collection
       shell:
         cmd: |
