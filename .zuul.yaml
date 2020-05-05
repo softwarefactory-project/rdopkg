@@ -78,6 +78,10 @@
     parent: dlrn-base
     description: rdopkg integration tests with DLRN master
     run: playbooks/dlrn-master.yaml
+    nodeset:
+      nodes:
+        - name: rdo-centos-8
+          label: rdo-centos-8
     required-projects:
       - DLRN
 
