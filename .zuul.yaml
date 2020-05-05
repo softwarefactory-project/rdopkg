@@ -12,7 +12,10 @@
     name: rdopkg-base-py2
     parent: rdopkg-base
     abstract: true
-    nodeset: centos-7-pod
+    nodeset:
+      nodes:
+        - name: rdo-centos-7
+          label: rdo-centos-7
 
 - job:
     name: rdopkg-base-coverage-py2
@@ -78,6 +81,10 @@
     parent: dlrn-base
     description: rdopkg integration tests with DLRN master
     run: playbooks/dlrn-master.yaml
+    nodeset:
+      nodes:
+        - name: rdo-centos-8
+          label: rdo-centos-8
     required-projects:
       - DLRN
 
