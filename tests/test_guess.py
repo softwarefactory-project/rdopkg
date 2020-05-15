@@ -36,12 +36,12 @@ def test_ugly_tag2version(input_data):
 
 
 def test_version2tag_simple():
-    assert '1.2.3' == guess.version2tag('1.2.3')
+    assert guess.version2tag('1.2.3') == '1.2.3'
 
 
 def test_version2tag_type1():
-    assert 'v1.2.3' == guess.version2tag('1.2.3', 'vX.Y.Z')
+    assert guess.version2tag('1.2.3', 'vX.Y.Z') == 'v1.2.3'
 
 
 def test_version2tag_type2():
-    assert 'V1.2.3' == guess.version2tag('1.2.3', 'VX.Y.Z')
+    assert guess.version2tag('1.2.3', 'VX.Y.Z') == 'V1.2.3'
