@@ -44,3 +44,27 @@ def test_version2tag_type1():
 
 def test_version2tag_type2():
     assert guess.version2tag('1.2.3', 'VX.Y.Z') == 'V1.2.3'
+
+
+def test_osdist_current_branch(monkeypatch):
+    monkeypatch.setattr(guess, 'current_branch', lambda **kw: 'master')
+    assert guess.osdist() == 'RDO'
+
+
+@pytest.mark.parametrize('branch,expected', [
+    ('master', 'RDO'),
+    ('f33', 'RDO'),
+    ('epel7', 'RDO'),
+    ('epel8', 'RDO'),
+    ('rh-1-rhel-8', 'RHOS'),
+    ('rhos-17.0-rhel-8', 'RHOS'),
+    ('ceph-4.0-rhel-7', 'RHCEPH'),
+    ('ceph-5.0-rhel-8', 'RHCEPH'),
+    ('rhscon-2-rhel-7', 'RHSCON'),
+    ('eng-rhel-6', 'RHENG'),
+    ('eng-rhel-7', 'RHENG'),
+    ('eng-rhel-8', 'RHENG'),
+    ('unknown', 'RDO'),
+])
+def test_osdist_branches(branch, expected):
+    assert guess.osdist(branch=branch) == expected
