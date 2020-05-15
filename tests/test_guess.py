@@ -1,49 +1,38 @@
 from rdopkg import guess
-from collections import namedtuple
 import pytest
 
-VersionTestCase = namedtuple('VersionTestCase', ('expected', 'input_data'))
+
+@pytest.mark.parametrize('input_data,expected', [
+    ('1.2.3', ('1.2.3', None)),
+    ('v1.2.3', ('1.2.3', 'vX.Y.Z')),
+    ('V1.2.3', ('1.2.3', 'VX.Y.Z')),
+    ('banana', ('banana', None)),
+])
+def test_good_tag2version(input_data, expected):
+    assert guess.tag2version(input_data) == expected
 
 
-data_table_good = [
-    VersionTestCase(('1.2.3', None), '1.2.3'),
-    VersionTestCase(('1.2.3', 'vX.Y.Z'), 'v1.2.3'),
-    VersionTestCase(('1.2.3', 'VX.Y.Z'), 'V1.2.3'),
-    VersionTestCase(('banana', None), 'banana'),
-]
-
-data_table_bad = [
-    VersionTestCase((None, None), None),
-    VersionTestCase((None, None), []),
-    VersionTestCase((None, None), ()),
-    VersionTestCase((None, None), ''),
-    VersionTestCase((None, None), {}),
-]
-
-data_table_ugly = [
-    VersionTestCase((None, None), ('foo', 'bar', 'bah')),
-    VersionTestCase((None, None), ['foo', 'bar', 'bah']),
-    VersionTestCase((None, None), {'foo': 'bar'}),
-]
+@pytest.mark.parametrize('input_data', [
+    None,
+    [],
+    (),
+    '',
+    {},
+])
+def test_bad_tag2version(input_data):
+    # Input Validation should probably return to us (None, None)
+    assert guess.tag2version(input_data) == (input_data, None)
 
 
-def test_table_data_good_tag2version():
-    for entry in data_table_good:
-        assert entry.expected == guess.tag2version(entry.input_data)
-
-
-def test_table_data_bad_tag2version():
-    for entry in data_table_bad:
-        # Input Validation should probably return to us (None, None)
-        # assert entry.expected == guess.tag2version(entry.input_data)
-        assert (entry.input_data, None) == guess.tag2version(entry.input_data)
-
-
-def test_table_data_ugly_tag2version():
-    for entry in data_table_ugly:
-        # TODO: probably should be a more specific exception
-        with pytest.raises(Exception):
-            guess.tag2version(entry.input_data)
+@pytest.mark.parametrize('input_data', [
+    ('foo', 'bar', 'bah'),
+    ['foo', 'bar', 'bah'],
+    {'foo': 'bar'},
+])
+def test_ugly_tag2version(input_data):
+    # TODO: probably should be a more specific exception
+    with pytest.raises(Exception):
+        guess.tag2version(input_data)
 
 
 def test_version2tag_simple():
