@@ -33,15 +33,3 @@ def test_ugly_tag2version(input_data):
     # TODO: probably should be a more specific exception
     with pytest.raises(Exception):
         guess.tag2version(input_data)
-
-
-def test_version2tag_simple():
-    assert '1.2.3' == guess.version2tag('1.2.3')
-
-
-def test_version2tag_type1():
-    assert 'v1.2.3' == guess.version2tag('1.2.3', 'vX.Y.Z')
-
-
-def test_version2tag_type2():
-    assert 'V1.2.3' == guess.version2tag('1.2.3', 'VX.Y.Z')
