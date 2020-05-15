@@ -30,8 +30,7 @@ def test_bad_tag2version(input_data):
     {'foo': 'bar'},
 ])
 def test_ugly_tag2version(input_data):
-    # TODO: probably should be a more specific exception
-    with pytest.raises(Exception):
+    with pytest.raises(TypeError):
         guess.tag2version(input_data)
 
 
