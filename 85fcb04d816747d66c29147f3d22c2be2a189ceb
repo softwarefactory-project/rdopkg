@@ -22,6 +22,30 @@
       "revId": "85fcb04d816747d66c29147f3d22c2be2a189ceb",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "32bee233_d8131282",
+        "filename": "rdopkg/helpers.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-05-18T16:12:20Z",
+      "side": 1,
+      "message": "Yeah i had a doubt on it, but linter doesn\u0027t complain. But better to take your suggestion i agree",
+      "parentUuid": "c7d67c12_a3894287",
+      "range": {
+        "startLine": 86,
+        "startChar": 15,
+        "endLine": 86,
+        "endChar": 19
+      },
+      "revId": "85fcb04d816747d66c29147f3d22c2be2a189ceb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
