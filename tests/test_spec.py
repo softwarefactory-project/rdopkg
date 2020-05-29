@@ -820,3 +820,53 @@ def test_insert_dependency_after_3(tmpdir):
     txt = '\n'.join(['BuildArch:    noarch'])
     spec = specfile.Spec(txt=txt)
     assert spec.insert_dependency_after('python-bar2', 1) is False
+
+
+def test_add_python_requires_1(tmpdir):
+    txt = '\n'.join(['Requires:     python3-sqlalchemy >= 1.0.10',
+                     'Requires:     python3-prettytable',
+                     'Requires:     python3-iso8601',
+                     '',
+                     'PreReq:     is-deprecated'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_python_requires('python-argparse\n')
+    assert got is True
+    assert 'Requires:     python3-argparse\n' in spec.txt
+
+
+def test_add_python_requires_2(tmpdir):
+    txt = '\n'.join(['%package -n        python-foo',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python3-devel',
+                     'Requires:          python3-futurist',
+                     '%description -n    python3-foo',
+                     '%{common_desc}',
+                     '',
+                     '%package -n        python3-foo-tests',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python3-devel',
+                     'Requires:          python3-futurist',
+                     '%description -n    python3-foo',
+                     '%{common_desc}'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_python_requires('python-argparse')
+    assert got is True
+    assert ("Requires:          python3-futurist\n"
+            "Requires:          python3-argparse\n"
+            "%description -n    python3-foo") in spec.txt
+
+
+def test_add_python_requires_3(tmpdir):
+    txt = '\n'.join(['BuildArch:         noarch'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_python_requires('python-argparse')
+    assert got is True
+    assert ("BuildArch:         noarch\n"
+            "Requires:         python3-argparse") in spec.txt
+
+
+def test_add_python_requires_4(tmpdir):
+    txt = '\n'.join(['Summary:       This is foo summary.'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_python_requires('python-argparse')
+    assert got is False

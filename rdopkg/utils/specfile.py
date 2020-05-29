@@ -206,6 +206,7 @@ class Spec(object):
         self._fn = fn
         self._txt = txt
         self._rpmspec = None
+        self._contains_python_subpkg = None
 
     @property
     def fn(self):
@@ -238,6 +239,16 @@ class Spec(object):
         if not self._rpmspec:
             self.load_rpmspec()
         return self._rpmspec
+
+    def search_python_subpkg(self):
+        m = re.search(r'^%package.*python.*-\%?{?\w*}?$', self.txt, re.M)
+        self._contains_python_subpkg = True if m else False
+
+    @property
+    def contains_python_subpkg(self):
+        if not self._contains_python_subpkg:
+            search_python_subpkg()
+        return self._contains_python_subpkg
 
     def expand_macro(self, macro):
         if not self._rpmspec:
@@ -856,3 +867,29 @@ class Spec(object):
                                                             dep))
         self._txt = '\n'.join(txt_list)
         return True
+
+    def add_python_requires(self, requires):
+        """
+        Add Requires after the last found Requires found in the
+        base python subpackage (if present).
+        If no Requires found, it will add it after the last found
+        BR. If no BR found, it will add it after the BuildArch tag.
+        The method returns True if the Requires has been added, else
+        False.
+        """
+        if not self._contains_python_subpkg:
+            self.search_python_subpkg()
+        if self._contains_python_subpkg:
+            starting_index, ending_index = self.find_python_subpkg_by_name('')
+        else:
+            starting_index, ending_index = '', ''
+        # Add new Requires after last Requires, or BR or BuildArch.
+        for dep_type in ['Requires', 'BuildRequires', 'BuildArch']:
+            last_dep = self.find_last_dependency(dep_type,
+                                                 starting_index,
+                                                 ending_index)
+            if last_dep is not None:
+                return self.insert_dependency_after(requires,
+                                                    last_dep,
+                                                    'Requires')
+        return False
