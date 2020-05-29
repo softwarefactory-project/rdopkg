@@ -800,3 +800,35 @@ class Spec(object):
                 end_of_subpkg = txt_list.index(line, beginning_of_subpkg)
                 return beginning_of_subpkg, end_of_subpkg
         return None
+
+    def find_last_dependency(self, dep_type, starting_index='',
+                             ending_index=''):
+        """
+        Find last dependency (Requires, BuildRequires, Suggests, etc) within
+        the .spec file. We can search in a specific range by specifying the
+        starting and ending indexes.
+        Dependencies which are within a conditional block are ignored.
+        Return the index position of the last found dependency, else None.
+        """
+        last_line = ''
+        excluded = False
+        txt_list = self.txt.split('\n')
+
+        if starting_index != '' and ending_index != '':
+            txt_range = txt_list[starting_index:ending_index]
+        else:
+            txt_range = txt_list
+
+        nested_if_statement = 0
+        for line in txt_range:
+            if line.startswith('{}:'.format(dep_type)) and not excluded:
+                last_line = line
+            elif line.startswith('%if'):
+                excluded = True
+                nested_if_statement += 1
+            elif line.startswith('%endif'):
+                nested_if_statement -= 1
+                excluded = False if nested_if_statement == 0 else True
+
+        if last_line:
+            return txt_list.index(last_line)

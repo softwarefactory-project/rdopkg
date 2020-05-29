@@ -677,6 +677,47 @@ def test_edit_python_requires_version_by_name_false(tmpdir):
     assert got is False
 
 
+def test_find_last_dependency_1(tmpdir):
+    txt = '\n'.join(['Requires:      python-foo1',
+                     'Requires:      python-foo2',
+                     'BuildRequires: python-bar1',
+                     'PreReq:        is-deprecated',
+                     'Requires:      python-foo3'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_last_dependency('Requires') == 4
+
+
+def test_find_last_dependency_2(tmpdir):
+    txt = '\n'.join(['BuildRequires: python-setuptools',
+                     'PreReq:        is-deprecated'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_last_dependency('Requires') is None
+
+
+def test_find_last_dependency_3(tmpdir):
+    txt = '\n'.join(['Requires:      python-foo1',
+                     'Requires:      python-foo2',
+                     'PreReq:        is-deprecated',
+                     'Requires:      python-bar1',
+                     'BuildRequires: python-baz1'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_last_dependency('Requires', 0, 2) == 1
+
+
+def test_find_last_dependency_4(tmpdir):
+    txt = '\n'.join(['Requires:      python-foo1',
+                     'Requires:      python-foo2',
+                     '%if 0%{?fedora}',
+                     'Requires: qemu-kvm-core >= 2.8.0',
+                     '%if 0%{?with_doc}',
+                     'Requires:      python-foo3',
+                     '%endif',
+                     'Requires:      python-foo4',
+                     '%endif'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_last_dependency('Requires') == 1
+
+
 def test_find_subpkg_by_name_1(tmpdir):
     txt = '\n'.join(['%package -n        python-foo',
                      'Summary:           foo summary',
