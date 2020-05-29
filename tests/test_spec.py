@@ -675,3 +675,32 @@ def test_edit_python_requires_version_by_name_false(tmpdir):
     spec = specfile.Spec(txt=txt)
     got = spec.edit_python_requires_version_by_name('python-argparse')
     assert got is False
+
+
+def test_get_subpackages_1(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     '%package -n        python3-foo',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}',
+                     '',
+                     '%package           doc',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}'])
+    spec = specfile.Spec(txt=txt)
+    subpkgs = spec.get_subpackages()
+    assert subpkgs['python3-foo'] == (1, 5)
+    assert subpkgs['openstack-foo-doc'] == (8, 12)
+
+
+def test_get_subpackages_2(tmpdir):
+    txt = '\n'.join(['Name:            openstack-foo',
+                     'Requires:        python3-foo1',
+                     'BuildRequires:   python-baz1'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.get_subpackages() is None
