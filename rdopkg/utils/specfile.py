@@ -781,7 +781,7 @@ class Spec(object):
         as value.
         """
         beginning_of_subpkg, end_of_subpkg, subpackages = '', '', {}
-        txt_list = self._txt.split('\n')
+        txt_list = self.txt.split('\n')
         main_package_name = self.get_name()
 
         all_subpkgs = re.findall(r'^%package.*$', self.txt, re.M)
@@ -797,7 +797,7 @@ class Spec(object):
 
             # If there is no '-n' option to the %package directive, we prepend
             # the main package name to the subpackage one.
-            m = re.search(r'^%package\s+(-n)?\s+(.*)', subpkg)
+            m = re.search(r'^%package\s+(-n)?\s*(.*)', subpkg)
             if not m.group(1):
                 subpkg = '{}-{}'.format(main_package_name, m.group(2))
             else:

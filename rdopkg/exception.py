@@ -237,5 +237,5 @@ class WrongOutputFormat(RdopkgException):
 
 
 class CouldNotAddPythonRequires(RdopkgException):
-    msg_fmt = ("Unable to add the python Requires (no Requires, BR or "
+    msg_fmt = ("Unabled to add the python Requires (no Requires, BR or "
                "BuildArch found in the spec file)")
