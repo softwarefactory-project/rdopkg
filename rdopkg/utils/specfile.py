@@ -831,3 +831,28 @@ class Spec(object):
             return txt_list.index(last_line)
         else:
             return None
+
+    def insert_dependency_after(self, dep, line_position, dep_type='Requires',
+                                py_version='3.6'):
+        """
+        Take the dependency type (Requires, BuildRequires, Suggests, etc),
+        the dependency name and the line position.
+        It insert the dependency after the line position in the .spec file, and
+        returns True if successful, else False.
+        """
+        txt_list = self.txt.split('\n')
+        try:
+            last_dep = txt_list[line_position]
+        except IndexError:
+            return False
+        major_py_version = py_version.split('.')[0]
+        dep = re.sub(r'^python-(.*)$',
+                     r'python{}-\g<1>'.format(major_py_version),
+                     dep)
+        m = re.search(r'^(.*):(\s*)(.*)', last_dep)
+        nbr_of_spaces = m.group(2) if m else ' '
+        txt_list.insert(line_position + 1, '{}:{}{}'.format(dep_type,
+                                                            nbr_of_spaces,
+                                                            dep))
+        self._txt = '\n'.join(txt_list)
+        return True
