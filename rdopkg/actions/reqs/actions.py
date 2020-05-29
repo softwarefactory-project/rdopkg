@@ -11,6 +11,7 @@ from rdopkg import guess
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import reqs as _reqs
 from rdopkg.utils import log
+from rdopkg.utils import specfile
 from rdopkg.utils.git import git
 
 
@@ -65,19 +66,46 @@ def reqcheck(version, python_version='3.6', override=None):
     return {'check': check}
 
 
-def reqcheck_print(check=None, output=None, spec=False, strict=False):
+def reqcheck_autosync(check=None, autosync=False):
+    if not autosync:
+        return
+    spec = specfile.Spec()
+    met, any_version, wrong_version, missing, excess, removed = check
+    for cr in missing:
+        if cr.desired_vers:
+            requires = "{} {}".format(cr.name, cr.desired_vers)
+        else:
+            requires = cr.name
+        cr.autosync = True if spec.add_python_requires(requires) else False
+    for cr in wrong_version:
+        is_edited = spec.edit_python_requires_version_by_name(
+            cr.name,
+            cr.desired_vers)
+        cr.autosync = True if is_edited else False
+    for cr in removed:
+        is_removed = spec.remove_python_requires_by_name(cr.name)
+        cr.autosync = True if is_removed else False
+    spec.save()
+
+
+def reqcheck_print(check=None, output=None, spec=False, strict=False,
+                   autosync=False):
     if output not in ['spec', 'json', 'text']:
         raise exception.WrongOutputFormat()
     if spec:
         output = 'spec'
-    _reqs.print_reqcheck(*check, format=output)
-    if strict:
+    if autosync:
+        _reqs.print_reqcheck_autosync(*check, format=output)
+    elif strict:
+        _reqs.print_reqcheck(*check, format=output)
         # missing
         if len(check[3]) > 0:
             raise exception.ReqCheckMissingDependencies()
         # mismatch
         if len(check[2]) > 0:
             raise exception.ReqCheckMismatchingDependencies()
+    else:
+        _reqs.print_reqcheck(*check, format=output)
 
 
 def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
