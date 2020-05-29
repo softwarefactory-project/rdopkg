@@ -771,3 +771,32 @@ class Spec(object):
         if n:
             return n > 0
         return False
+
+    def find_python_subpkg_by_name(self, subpkg_name=''):
+        """
+        Take the textual content of the .spec file, and the
+        name of the subpackage (base one as default).
+        Return list indexes of the first and last line of the
+        python subpackage within the .spec file.
+        """
+        beginning_of_subpkg = ''
+        txt_list = self._txt.split('\n')
+        all_subpkgs = re.findall(r'^%package.*python.*-\%?{?\w*}?$',
+                                 self.txt,
+                                 re.M)
+        if not all_subpkgs:
+            return None
+        if subpkg_name:
+            for subpkg in all_subpkgs:
+                if subpkg.endswith('-{}'.format(subpkg_name)):
+                    beginning_of_subpkg = txt_list.index(subpkg)
+            if not beginning_of_subpkg:
+                return None
+        else:
+            beginning_of_subpkg = txt_list.index(all_subpkgs[0])
+
+        for line in txt_list[beginning_of_subpkg:]:
+            if re.match('%description', line):
+                end_of_subpkg = txt_list.index(line, beginning_of_subpkg)
+                return beginning_of_subpkg, end_of_subpkg
+        return None

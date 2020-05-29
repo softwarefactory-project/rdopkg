@@ -674,3 +674,84 @@ def test_edit_python_requires_version_by_name_false(tmpdir):
     spec = specfile.Spec(txt=txt)
     got = spec.edit_python_requires_version_by_name('python-argparse')
     assert got is False
+
+
+def test_find_python_subpkg_by_name_1(tmpdir):
+    txt = '\n'.join(['%package -n        python-foo',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}',
+                     '',
+                     '%package -n        python-foo-tests',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_python_subpkg_by_name() == (0, 4)
+
+
+def test_find_python_subpkg_by_name_2(tmpdir):
+    txt = '\n'.join(['',
+                     '%package -n        python-%{srcname}',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_python_subpkg_by_name() == (1, 5)
+
+
+def test_find_python_subpkg_by_name_3(tmpdir):
+    txt = '\n'.join(['Requires:     python3-foo1',
+                     'Requires:     python3-foo2',
+                     'PreReq:       is-deprecated',
+                     'Requires:     python3-bar1',
+                     'BuildRequires:   python-baz1'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_python_subpkg_by_name() is None
+
+
+def test_find_python_subpkg_by_name_4(tmpdir):
+    txt = '\n'.join(['%package -n        python-foo',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}',
+                     '',
+                     '%package -n        python-foo-tests',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_python_subpkg_by_name('tests') == (7, 11)
+
+
+def test_find_python_subpkg_by_name_5(tmpdir):
+    txt = '\n'.join(['%package -n        python-foo',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}',
+                     '',
+                     '%package -n        python-foo-tests',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python-devel',
+                     'Requires:          python-futurist',
+                     '%description -n    python-foo',
+                     '%{common_desc}'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.find_python_subpkg_by_name('doc') is None
+
+
+def test_find_python_subpkg_by_name_6(tmpdir):
+    spec = specfile.Spec(txt='Summary:           foo summary')
+    assert spec.find_python_subpkg_by_name('tests') is None
