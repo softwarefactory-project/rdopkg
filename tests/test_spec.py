@@ -796,3 +796,31 @@ def test_find_subpkg_by_name_5(tmpdir):
 def test_find_subpkg_by_name_6(tmpdir):
     spec = specfile.Spec(txt='Summary:           foo summary')
     assert spec.find_subpkg_by_name('tests') is None
+
+
+def test_insert_dependency_after_1(tmpdir):
+    txt = '\n'.join(['Requires:     python3-foo1',
+                     'Requires:     python3-foo2',
+                     'PreReq:       is-deprecated',
+                     'Requires:     python3-bar1',
+                     'BuildRequires:   python-baz1'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.insert_dependency_after('python-bar2', 3) is True
+    assert ("Requires:     python3-bar1\n"
+            "Requires:     python3-bar2\n") in spec.txt
+
+
+def test_insert_dependency_after_2(tmpdir):
+    txt = '\n'.join(['BuildArch:    noarch',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    assert spec.insert_dependency_after('python-bar2', 1) is True
+    assert ("BuildArch:    noarch\n"
+            "\n"
+            "Requires: python3-bar2") in spec.txt
+
+
+def test_insert_dependency_after_3(tmpdir):
+    txt = '\n'.join(['BuildArch:    noarch'])
+    spec = specfile.Spec(txt=txt)
+    assert spec.insert_dependency_after('python-bar2', 1) is False
