@@ -620,3 +620,35 @@ def test_get_requires_not_provided_02(tmpdir):
         for name, version in packages:
             expected[name] = version
         assert got == expected
+
+
+def test_edit_python_requires_version_by_name_true(tmpdir):
+    txt = '\n'.join(['Requires:     python-sqlalchemy >= 1.0.10',
+                     '',
+                     'BuildRequires:     python-sqlalchemy',
+                     'Requires:     python-prettytable',
+                     'Requires:     python-iso8601 >= 1.0.0',
+                     'Requires:     python-osc-lib >= 1.0.0'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.edit_python_requires_version_by_name('python-sqlalchemy',
+                                                    '>= 1.0.12')
+    assert got is True
+    assert 'Requires:     python-sqlalchemy >= 1.0.12\n\n' in spec.txt
+    assert 'BuildRequires:     python-sqlalchemy\n' in spec.txt
+    got = spec.edit_python_requires_version_by_name('python-prettytable',
+                                                    '>= 1.0.1')
+    assert got is True
+    assert 'Requires:     python-prettytable >= 1.0.1\n' in spec.txt
+    got = spec.edit_python_requires_version_by_name('python-iso8601', '')
+    assert got is True
+    assert 'Requires:     python-iso8601\n' in spec.txt
+
+
+def test_edit_python_requires_version_by_name_false(tmpdir):
+    txt = '\n'.join(['Requires:     python-sqlalchemy >= 1.0.10',
+                     'Requires:     python-prettytable',
+                     'Requires:     python-iso8601',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.edit_python_requires_version_by_name('python-argparse')
+    assert got is False
