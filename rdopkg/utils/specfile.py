@@ -206,6 +206,7 @@ class Spec(object):
         self._fn = fn
         self._txt = txt
         self._rpmspec = None
+        self._contains_subpkg = None
 
     @property
     def fn(self):
@@ -779,7 +780,7 @@ class Spec(object):
         the begining and ending indexes of the subpkg in the .spec file
         as value.
         """
-        beginning_of_subpkg, ending_of_subpkg, subpackages = '', '', {}
+        beginning_of_subpkg, end_of_subpkg, subpackages = '', '', {}
         txt_list = self._txt.split('\n')
         main_package_name = self.get_name()
 
@@ -792,6 +793,7 @@ class Spec(object):
             for line in txt_list[beginning_of_subpkg:]:
                 if re.match('%description', line):
                     end_of_subpkg = txt_list.index(line, beginning_of_subpkg)
+                    break
 
             # If there is no '-n' option to the %package directive, we prepend
             # the main package name to the subpackage one.
@@ -802,6 +804,24 @@ class Spec(object):
                 subpkg = m.group(2)
             subpackages[subpkg] = (beginning_of_subpkg, end_of_subpkg)
         return subpackages
+
+    def get_main_python_subpackage(self):
+        python_subpackages, counter, main_py_subpkg = [], 0, None
+        try:
+            for _subpkg in self.get_subpackages():
+                if _subpkg.startswith('python'):
+                    python_subpackages.append(_subpkg)
+        except TypeError:
+            return
+
+        for _py_subpkg in python_subpackages:
+            if counter == 0:
+                counter = _py_subpkg.count('-')
+                main_py_subpkg = _py_subpkg
+            elif _py_subpkg.count('-') < counter:
+                counter = _py_subpkg.count('-')
+                main_py_subpkg = _py_subpkg
+        return main_py_subpkg
 
     def find_last_dependency(self, dep_type, starting_index=None,
                              ending_index=None):
@@ -861,3 +881,41 @@ class Spec(object):
                                                             dep))
         self._txt = '\n'.join(txt_list)
         return True
+
+    def add_python_requires(self, requires, subpkg_name=None):
+        """
+        Add Requires after the last found Requires found in the main package.
+        If a python subpackage is provided as argument, the method will add the
+        Requires into the subpackage-specific section.
+        If no Requires found, the method will add it after the last found BR.
+        If no BR found, it will add it after the BuildArch tag.
+        The method returns True if the Requires has been added, else False.
+        """
+        if not self._contains_subpkg:
+            self._contains_subpkg = self.get_subpackages()
+
+        try:
+            starting_index, ending_index = self._contains_subpkg[
+                subpkg_name]
+        except KeyError:
+            # The provided subpackage is not found, we limit the spec file
+            # from its beginning to the first subpackage found. That way, we
+            # ignore subpackages when looking for the last found Requires (or
+            # BuildRequires), and inserting the new one.
+            starting_index = 0
+            first_subpkg = list(self._contains_subpkg.keys())[0]
+            ending_index = self._contains_subpkg[first_subpkg][0]
+        except TypeError:
+            # There is no subpackages, the working area is the whole .spec file
+            starting_index, ending_index = '', ''
+
+        # Add new Requires after last Requires, or BR or BuildArch.
+        for dep_type in ['Requires', 'BuildRequires', 'BuildArch']:
+            last_dep = self.find_last_dependency(dep_type,
+                                                 starting_index,
+                                                 ending_index)
+            if last_dep:
+                return self.insert_dependency_after(requires,
+                                                    last_dep,
+                                                    'Requires')
+        raise exception.CouldNotAddPythonRequires()
