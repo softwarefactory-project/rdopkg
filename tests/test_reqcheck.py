@@ -4,6 +4,7 @@ import time
 
 from rdopkg.cli import rdopkg
 from rdopkg.actionmods.reqs import *
+from rdopkg.actions.reqs.actions import *
 from rdopkg.exception import WrongPythonVersion
 
 import test_common as common
@@ -166,21 +167,21 @@ def test_checkreq_max_capped_version():
 def test_checkreq_version_not_capped_strictly_identical():
     cr = CheckReq('mypackage', '>= 1.2.3', '> 1.2.3')
     got = cr.met()
-    expected = False
+    expected = None
     assert got == expected
 
 
 def test_checkreq_at_least_one_version_not_capped_01():
     cr = CheckReq('mypackage', '>= 1.2.3', '')
     got = cr.met()
-    expected = False
+    expected = None
     assert got == expected
 
 
 def test_checkreq_at_least_one_version_not_capped_02():
     cr = CheckReq('mypackage', '', '>= 1.2.3')
     got = cr.met()
-    expected = False
+    expected = None
     assert got == expected
 
 
@@ -189,6 +190,16 @@ def test_checkreq_version_not_capped():
     got = cr.met()
     expected = True
     assert got == expected
+
+
+def test_checkreq_extract():
+    cr = CheckReq('mypackage', '!= 1.2.5,>= 1.2.3', '')
+    assert cr.desired_vers == '>= 1.2.3'
+
+
+def test_checkreq_extract_no_match():
+    cr = CheckReq('mypackage', '!= 1.2.5,!= 1.2.3', '')
+    assert cr.desired_vers == '!= 1.2.5,!= 1.2.3'
 
 
 def test_diffreq():
@@ -415,3 +426,98 @@ def test_parse_reqs_txt_with_prerelease_version(caplog):
     requirements_txt = '\n'.join(["enum34==1.0.4.0rc1"])
     got = parse_reqs_txt(requirements_txt, '3.6')
     assert len(got) == 1
+
+
+def test_reqcheck_autosync(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '--autosync')
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert 'python-sqlalchemy >= 1.0.12' in o
+    assert 'python-osc-lib >= 1.0.0' in o
+    assert 'Requires:         python3-osc-lib >= 1.0.0\n' in _file
+    assert 'Requires:         python3-osc-lib-tests\n' in _file
+    assert 'Requires:         python3-sqlalchemy >= 1.0.12\n' in _file
+
+
+def test_reqcheck_autosync_do_nothing(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck')
+    with dist_path.as_cwd():
+        rv = rdopkg('reqcheck', '-R', 'master', '--autosync')
+    cap = capsys.readouterr()
+    o = cap.out
+    _assert_sanity_out(o)
+    assert o == ''
+
+
+def test_reqcheck_autosync_remove_python_requires(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    r1 = CheckReq('python-osc-lib', '', '')
+    check = [], [], [], [], [], [r1]
+    with dist_path.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    assert 'Requires:         python3-osc-lib\n' not in _file
+    assert 'Requires:         python3-osc-lib-tests\n' in _file
+    assert 'Requires:         python3-iso8601 >= 2.0.1\n' in _file
+    assert 'Requires:         python3-prettytable\n' in _file
+
+
+def test_reqcheck_autosync_edit_python_requires(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    r1 = CheckReq('python-argparse', '>= 1.0.0', '')
+    r2 = CheckReq('python-iso8601', '', '2.0.1')
+    r3 = CheckReq('python-prettytable', '>= 1.0.12', '>= 1.0.10')
+    r4 = CheckReq('python-oslo-db', '>= 4.27.0', '')
+    check = [], [], [r1, r2, r3, r4], [], [], []
+    with dist_path.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    assert 'Requires:         python3-argparse >= 1.0.0\n' in _file
+    assert 'Requires:         python3-iso8601\n' in _file
+    assert 'Requires:         python3-prettytable >= 1.0.12\n' in _file
+    assert 'Requires:         python3-oslo-db >= 4.27.0\n' in _file
+
+
+def test_reqcheck_autosync_add_python_requires_1(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    r1 = CheckReq('python-ldap3', '>= 1.0.0', '')
+    r2 = CheckReq('python-ipaddress', '', '')
+    r3 = CheckReq('python-oslo-db', '>= 4.27.0', '')
+    check = [], [], [], [r1, r2, r3], [], []
+    with dist_path.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    assert ("Requires:         python3-after-pkg1\n"
+            "Requires:         python3-ldap3 >= 1.0.0\n"
+            "Requires:         python3-ipaddress\n"
+            "Requires:         python3-oslo-db >= 4.27.0\n") in ''.join(_file)
+
+
+def test_reqcheck_autosync_add_python_requires_2(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir,
+                                      'reqcheck-autosync-handle-subpkg')
+    r1 = CheckReq('python-ldap3', '>= 1.0.0', '')
+    r2 = CheckReq('python-ipaddress', '', '')
+    r3 = CheckReq('python-oslo-db', '>= 4.27.0', '')
+    check = [], [], [], [r1, r2, r3], [], []
+    with dist_path.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    assert ("Requires:         python3-after-pkg1\n"
+            "Requires:         python3-ldap3 >= 1.0.0\n"
+            "Requires:         python3-ipaddress\n"
+            "Requires:         python3-oslo-db >= 4.27.0\n") in ''.join(_file)
