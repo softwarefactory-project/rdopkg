@@ -759,3 +759,15 @@ class Spec(object):
             self.txt,
             flags=re.M)
         return n > 0
+
+    def remove_python_requires_by_name(self, name):
+        name = name.split('-', 1)[1]
+        repl = r''
+        self._txt, n = re.subn(r'^%s:\s+python.*-%s(\s+[<>=!]*\s[,.\d\w]*)?\n'
+                               % (re.escape('Requires'), name),
+                               repl,
+                               self.txt,
+                               flags=re.M)
+        if n:
+            return n > 0
+        return False
