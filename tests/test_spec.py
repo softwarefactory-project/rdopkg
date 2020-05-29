@@ -777,3 +777,147 @@ def test_insert_dependency_after_3(tmpdir):
     txt = '\n'.join(['BuildArch:    noarch'])
     spec = specfile.Spec(txt=txt)
     assert spec.insert_dependency_after('python-bar2', 1) is False
+
+
+def test_add_python_requires_1_in_subpkg_after_last_found_requires(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     '%package -n        python3-foo',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python3-bar1',
+                     'Requires:          python3-bar2',
+                     '%description -n    python3-foo',
+                     '%{common_desc}',
+                     '',
+                     '%package -n        python3-foo-tests',
+                     'Summary:           foo summary',
+                     'BuildRequires:     python3-bar3',
+                     'Requires:          python3-bar4',
+                     '%description -n    python3-foo-tests',
+                     '%{common_desc}'])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_python_requires('python-argparse', 'python3-foo')
+    assert got is True
+    assert ("Requires:          python3-bar2\n"
+            "Requires:          python3-argparse\n"
+            "%description -n    python3-foo") in spec.txt
+
+
+def test_add_python_requires_2_in_main_package_with_subpkgs_present(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     'BuildArch:         noarch',
+                     '%package -n        python3-foo',
+                     'BuildRequires:     python3-bar1',
+                     'Requires:          python3-bar2',
+                     '%description -n    python3-foo',
+                     '%{common_desc}',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_python_requires('python-argparse')
+    assert got is True
+    assert ("BuildArch:         noarch\n"
+            "Requires:         python3-argparse") in spec.txt
+
+
+def test_add_python_requires_3_in_main_package_without_subpkgs_present(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     'BuildArch:         noarch',
+                     'BuildRequires:     python3-bar1',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.add_python_requires('python-argparse', '')
+    assert got is True
+    assert ("BuildRequires:     python3-bar1\n"
+            "Requires:     python3-argparse") in spec.txt
+
+
+def test_add_python_requires_4_raising_could_not_add_message(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     'Summary:       This is foo summary.'])
+    with pytest.raises(exception.CouldNotAddPythonRequires):
+        spec = specfile.Spec(txt=txt)
+        got = spec.add_python_requires('python-argparse', '')
+
+
+def test_guess_main_python_subpackage_1(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     'BuildArch:         noarch',
+                     '%package -n        python3-foo',
+                     'Requires:          python3-bar1',
+                     '%description -n    python3-foo',
+                     '%{common_desc}',
+                     '%package -n        python3-foo-test',
+                     'Requires:          python3-bar2',
+                     '%description -n    python3-foo-test',
+                     '%{common_desc}',
+                     '%package -n        python3-foo-doc',
+                     'Requires:          python3-bar3',
+                     '%description -n    python3-foo-doc',
+                     '%{common_desc}',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.guess_main_python_subpackage()
+    assert got == 'python3-foo'
+
+
+def test_guess_main_python_subpackage_2_no_subpkgs_starting_w_python(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     'BuildArch:         noarch',
+                     '%package -n        openstack-foo',
+                     'Requires:          python3-bar1',
+                     '%description -n    openstack-foo',
+                     '%{common_desc}',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.guess_main_python_subpackage()
+    assert got == "openstack-foo"
+
+
+def test_guess_main_python_subpackage_3_no_subpackages(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     'BuildArch:         noarch',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.guess_main_python_subpackage()
+    assert got is None
+
+
+def test_guess_main_python_subpackage_4_do_not_start_with_python(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     'BuildArch:         noarch',
+                     '%package           common',
+                     'Requires:          python3-bar1',
+                     '%description       common',
+                     '%{common_desc}',
+                     '%package -n        python3-foo-test',
+                     'Requires: %{name}-common = %{version}-%{release}',
+                     '%description -n    python3-foo-test',
+                     '%{common_desc}',
+                     '%package -n        python3-foo-doc',
+                     'Requires: %{name}-common = %{version}-%{release}',
+                     '%description -n    python3-foo-doc',
+                     '%{common_desc}',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.guess_main_python_subpackage()
+    assert got == 'openstack-foo-common'
+
+
+def test_guess_main_python_subpackage_5_at_the_end(tmpdir):
+    txt = '\n'.join(['Name:              openstack-foo',
+                     'BuildArch:         noarch',
+                     '%package -n        openstack-foo-test',
+                     'Requires: %{name}-common = %{version}-%{release}',
+                     '%description -n    openstack-foo-test',
+                     '%{common_desc}',
+                     '%package -n        openstack-foo-doc',
+                     'Requires: %{name}-common = %{version}-%{release}',
+                     '%description -n    openstack-foo-doc',
+                     '%{common_desc}',
+                     '%package           common',
+                     'Requires:          python3-bar1',
+                     '%description       common',
+                     '%{common_desc}',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.guess_main_python_subpackage()
+    assert got == 'openstack-foo-common'
