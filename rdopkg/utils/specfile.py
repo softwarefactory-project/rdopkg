@@ -771,3 +771,35 @@ class Spec(object):
         if n:
             return n > 0
         return False
+
+    def get_subpackages(self):
+        """
+        Retrieve all the subpackages present in the .spec file.
+        Return a dictionary which contains subpackage name as key, and
+        the begining and ending indexes of the subpkg in the .spec file
+        as value.
+        """
+        beginning_of_subpkg, end_of_subpkg, subpackages = '', '', {}
+        txt_list = self.txt.split('\n')
+        main_package_name = self.get_name()
+
+        all_subpkgs = re.findall(r'^%package.*$', self.txt, re.M)
+        if not all_subpkgs:
+            return None
+
+        for subpkg in all_subpkgs:
+            beginning_of_subpkg = txt_list.index(subpkg)
+            for line in txt_list[beginning_of_subpkg:]:
+                if re.match('%description', line):
+                    end_of_subpkg = txt_list.index(line, beginning_of_subpkg)
+                    break
+
+            # If there is no '-n' option to the %package directive, we prepend
+            # the main package name to the subpackage one.
+            m = re.search(r'^%package\s+(-n\s+)?(.*)', subpkg)
+            if not m.group(1):
+                subpkg = '{}-{}'.format(main_package_name, m.group(2))
+            else:
+                subpkg = m.group(2)
+            subpackages[subpkg] = (beginning_of_subpkg, end_of_subpkg)
+        return subpackages
