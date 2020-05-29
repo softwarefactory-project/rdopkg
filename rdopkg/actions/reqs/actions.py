@@ -11,6 +11,7 @@ from rdopkg import guess
 from rdopkg.actionmods import query as _query
 from rdopkg.actionmods import reqs as _reqs
 from rdopkg.utils import log
+from rdopkg.utils import specfile
 from rdopkg.utils.git import git
 
 
@@ -65,19 +66,62 @@ def reqcheck(version, python_version='3.6', override=None):
     return {'check': check}
 
 
+def reqcheck_autosync(check=None, autosync=False):
+    if not autosync:
+        return
+    spec = specfile.Spec()
+    met, any_version, wrong_version, missing, excess, removed = check
+    main_py_subpkg = spec.guess_main_python_subpackage()
+    for cr in reversed(missing):
+        if cr.desired_vers:
+            requires = "{} {}".format(cr.name, cr.desired_vers)
+        else:
+            requires = cr.name
+        try:
+            spec.add_python_requires(requires, main_py_subpkg)
+            cr.autosync = "added"
+            cr.vers = cr.desired_vers
+            met.append(cr)
+            missing.remove(cr)
+        except exception.CouldNotAddPythonRequires as e:
+            cr.autosync_error_msg = e.msg_fmt
+    for cr in reversed(wrong_version):
+        is_edited = spec.edit_python_requires_version_by_name(
+            cr.name,
+            cr.desired_vers)
+        if is_edited:
+            cr.autosync = "edited"
+            cr.vers = cr.desired_vers
+            met.append(cr)
+            wrong_version.remove(cr)
+        else:
+            cr.autosync_error_msg = "Unabled to edit the module"
+    for cr in reversed(removed):
+        is_removed = spec.remove_python_requires_by_name(cr.name)
+        if is_removed:
+            cr.autosync = "removed"
+            met.append(cr)
+            removed.remove(cr)
+        else:
+            cr.autosync_error_msg = "Unabled to remove the module"
+    spec.save()
+
+
 def reqcheck_print(check=None, output=None, spec=False, strict=False):
     if output not in ['spec', 'json', 'text']:
         raise exception.WrongOutputFormat()
     if spec:
         output = 'spec'
-    _reqs.print_reqcheck(*check, format=output)
-    if strict:
+    elif strict:
+        _reqs.print_reqcheck(*check, format=output)
         # missing
         if len(check[3]) > 0:
             raise exception.ReqCheckMissingDependencies()
         # mismatch
         if len(check[2]) > 0:
             raise exception.ReqCheckMismatchingDependencies()
+    else:
+        _reqs.print_reqcheck(*check, format=output)
 
 
 def reqquery(reqs_file=None, reqs_ref=None, spec=False, filter=None,
