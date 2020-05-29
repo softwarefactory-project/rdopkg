@@ -34,25 +34,27 @@ class DiffReq(object):
 class CheckReq(object):
 
     def __init__(self, name, desired_vers, vers, overridden=None,
-                 ignored=False):
+                 ignored=False, autosync=None, autosync_error_msg=None):
         self.name = name
-        self.desired_vers = desired_vers
+        self.desired_vers = self.extract_vers(desired_vers)
         self.vers = vers
         self.overridden = overridden
         self.ignored = ignored
+        self.autosync = autosync
+        self.autosync_error_msg = autosync_error_msg
 
-    def met(self):
-        for rv in self.desired_vers.split(','):
+    @staticmethod
+    def extract_vers(vers):
+        for rv in vers.split(','):
             m = re.match('(>|>=) (\\d.*)$', rv)
             if m:
-                if rv == self.vers:
-                    return True
-                else:
-                    return False
-        if not self.desired_vers and not self.vers:
+                return rv
+        return vers
+
+    def met(self):
+        if (self.desired_vers == self.vers) or (not self.desired_vers
+                                                and not self.vers):
             return True
-        else:
-            return False
 
     def __str__(self, format='text'):
         s = self.name
@@ -66,6 +68,14 @@ class CheckReq(object):
                      "requirements file{t.normal})".format(s[:-1],
                                                            self.overridden,
                                                            t=log.term))
+            if self.autosync == "added":
+                s = '{t.green}+ {}{t.normal}'.format(s, t=log.term)
+            elif self.autosync == "edited":
+                s = '{t.yellow}~ {}{t.normal}'.format(s, t=log.term)
+            elif self.autosync == "removed":
+                s = '{t.red}- {}{t.normal}'.format(s, t=log.term)
+            elif self.autosync_error_msg:
+                s = '{} {}'.format(s, self.autosync_error_msg)
         return s
 
 
@@ -304,7 +314,7 @@ def reqcheck(desired_reqs, reqs, overridden_deps):
         current_commit_timestamp)
     for i, excess_pkg in enumerate(excess):
         if excess_pkg.name in pkgs_used_in_the_past:
-            removed.append(excess_pkg)
+            removed.append(CheckReq(excess_pkg.name, excess_pkg.vers, None))
             del excess[i]
 
     return met, any_version, wrong_version, missing, excess, removed
