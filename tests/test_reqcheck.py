@@ -426,3 +426,84 @@ def test_parse_reqs_txt_with_prerelease_version(caplog):
     requirements_txt = '\n'.join(["enum34==1.0.4.0rc1"])
     got = parse_reqs_txt(requirements_txt, '3.6')
     assert len(got) == 1
+
+
+def test_reqcheck_autosync(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    check = ([],
+             [],
+             [CheckReq('python-to-be-edited-3', '>= 1.0.0', ''),
+              CheckReq('python-to-be-edited4', '', '2.0.1'),
+              CheckReq('python-to-be-edited5', '>= 1.0.12', '>= 1.0.10')],
+             [CheckReq('python-to-be-added6', '>= 1.0.0', ''),
+              CheckReq('python-to-be-added-7', '>= 4.27.0', ''),
+              CheckReq('python-to-be-added8', '', '')],
+             [],
+             [CheckReq('python-to-be-removed1', '', ''),
+              CheckReq('python-to-be-removed-2', '', '')])
+    with dist_path.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        spec_file = open('foo.spec', 'r')
+        rp = reqcheck_print(check, 'text')
+        _file = spec_file.readlines()
+        spec_file.close()
+    cap = capsys.readouterr()
+    o = cap.out
+    assert 'Requires:         python3-to-be-removed1\n' not in _file
+    assert "- python-to-be-removed1" in o
+    assert 'Requires:         python3-to-be-removed-2\n' not in _file
+    assert "- python-to-be-removed-2" in o
+    assert 'Requires:         python3-to-be-edited-3 >= 1.0.0\n' in _file
+    assert "~ python-to-be-edited-3" in o
+    assert 'Requires:         python3-to-be-edited4\n' in _file
+    assert "~ python-to-be-edited4" in o
+    assert 'Requires:         python3-to-be-edited5 >= 1.0.12\n' in _file
+    assert "~ python-to-be-edited5 >= 1.0.12" in o
+    assert 'Requires:         python3-to-be-added6 >= 1.0.0\n' in _file
+    assert "+ python-to-be-added6 >= 1.0.0" in o
+    assert 'Requires:         python3-to-be-added-7 >= 4.27.0\n' in _file
+    assert "+ python-to-be-added-7 >= 4.27.0" in o
+
+
+def test_reqcheck_autosync_error(tmpdir, capsys):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-autosync')
+    check = ([],
+             [],
+             [CheckReq('python-to-be-edited9', '>= 1.0.0', '')],
+             [CheckReq('python-to-be-added10', '>= 1.0.0', '')],
+             [],
+             [CheckReq('python-to-be-removed11', '', '')])
+    with dist_path.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        rp = reqcheck_print(check, 'text')
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    cap = capsys.readouterr()
+    o = cap.out
+    assert check[2][0].autosync_error_msg == "Unabled to edit the module"
+    assert "Unabled to edit the module" in o
+    assert 'Requires:         python3-to-be-edited9 #fail\n' in _file
+    assert check[5][0].autosync_error_msg == "Unabled to remove the module"
+    assert "Unabled to remove the module" in o
+    assert 'Requires:         python3-to-be-removed11 #fail\n' in _file
+
+    check = ([], [], [],
+             [CheckReq('python-to-be-added10', '>= 1.0.0', '')], [], [])
+    dist_path_2 = common.prep_spec_test(
+        tmpdir,
+        'reqcheck-autosync-fails-adding-requires')
+    with dist_path_2.as_cwd():
+        ra = reqcheck_autosync(check, True)
+        rp = reqcheck_print(check, 'text')
+        spec_file = open('foo.spec', 'r')
+        _file = spec_file.readlines()
+        spec_file.close()
+    cap = capsys.readouterr()
+    o = cap.out
+    assert check[3][0].autosync_error_msg == ("Unabled to add the python "
+                                              "Requires (no Requires, BR or "
+                                              "BuildArch found in the spec "
+                                              "file)")
+    assert "Unabled to add the python Requires" in o
+    assert 'Requires:         python3-to-be-added10\n' not in _file
