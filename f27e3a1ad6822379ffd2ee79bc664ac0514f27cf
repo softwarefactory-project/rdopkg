@@ -177,6 +177,29 @@
       "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cf6a0813_fdd14d1a",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:02:44Z",
+      "side": 1,
+      "message": "why not:\n    elif strict:\n        _reqs.print_reqcheck(*check, format\u003doutput)\n...",
+      "range": {
+        "startLine": 103,
+        "startChar": 4,
+        "endLine": 103,
+        "endChar": 8
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
