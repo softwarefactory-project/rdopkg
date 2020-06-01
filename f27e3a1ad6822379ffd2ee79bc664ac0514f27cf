@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3f86f378_81a4300e",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:01:20Z",
+      "side": 1,
+      "message": "why not:\n        if (self.desired_vers \u003d\u003d self.vers) or (not self.desired_vers and not self.vers):\n            return True\n \nalso without return False",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 53
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1b122d32_28eb02df",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:01:20Z",
+      "side": 1,
+      "message": "beautiful variable name :)",
+      "range": {
+        "startLine": 363,
+        "startChar": 8,
+        "endLine": 363,
+        "endChar": 12
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3bf5bf21_4d8d3a14",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:01:20Z",
+      "side": 1,
+      "message": "is it used somewhere?",
+      "range": {
+        "startLine": 77,
+        "startChar": 16,
+        "endLine": 77,
+        "endChar": 24
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cfa9ff77_62e16fac",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:01:20Z",
+      "side": 1,
+      "message": "why not:\n    cr.autosync \u003d True if spec.add_python_requires(requires) else False",
+      "range": {
+        "startLine": 81,
+        "startChar": 26,
+        "endLine": 81,
+        "endChar": 56
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a062d6b6_1ccbbb69",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:01:20Z",
+      "side": 1,
+      "message": "why not:\n    cr.autosync \u003d True if spec.edit_python_requires_version_by_name(cr.name, cr.desired_vers) else False",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 56
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1da8a3a5_afbc578c",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:01:20Z",
+      "side": 1,
+      "message": "Why not:\n    cr.autosync \u003d True if spec.remove_python_requires_by_name(cr.name) else False",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 56
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ee5f3781_80275e95",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:01:20Z",
+      "side": 1,
+      "message": "maybe unpack \"predicted\" exception and others print as e ?",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 21
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b7e06ea5_5b9e291d",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-01T12:01:20Z",
+      "side": 1,
+      "message": "I assume, that add_python_requires, edit_python_requires_version_by_name, remove_python_requires_by_name returns other value than bool, right? Because if its bool, condition is useless.",
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
