@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b069c24d_f16529a0",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "When you say \"w/o return False\" you mean to let the method to return \"None\" as default ?",
+      "parentUuid": "3f86f378_81a4300e",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 53
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1b122d32_28eb02df",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-06-01T12:01:20Z",
       "side": 1,
       "message": "beautiful variable name :)",
+      "range": {
+        "startLine": 363,
+        "startChar": 8,
+        "endLine": 363,
+        "endChar": 12
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9f9b09bb_e7dcfdbf",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "I knew you\u0027d like it ! :D",
+      "parentUuid": "1b122d32_28eb02df",
       "range": {
         "startLine": 363,
         "startChar": 8,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "cb76753b_1cfb5831",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s used l80. I\u0027ve splitted in two steps for better readability. Perhaps i should change the variable name -\u003e requires_to_add ?",
+      "parentUuid": "3bf5bf21_4d8d3a14",
+      "range": {
+        "startLine": 77,
+        "startChar": 16,
+        "endLine": 77,
+        "endChar": 24
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cfa9ff77_62e16fac",
         "filename": "rdopkg/actions/reqs/actions.py",
         "patchSetId": 1
@@ -82,6 +154,30 @@
       "writtenOn": "2020-06-01T12:01:20Z",
       "side": 1,
       "message": "why not:\n    cr.autosync \u003d True if spec.add_python_requires(requires) else False",
+      "range": {
+        "startLine": 81,
+        "startChar": 26,
+        "endLine": 81,
+        "endChar": 56
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cf6c6822_09099cd6",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "I like it",
+      "parentUuid": "cfa9ff77_62e16fac",
       "range": {
         "startLine": 81,
         "startChar": 26,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "5c0a999b_49b1e301",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "In that case, we push the line past 79 chars, and loose the readability the ternary operator brings when it\u0027s all on one line.\nI prefer to break into 2 lines and change the variable name (is_autosync -\u003e is_edited).",
+      "parentUuid": "a062d6b6_1ccbbb69",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 56
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1da8a3a5_afbc578c",
         "filename": "rdopkg/actions/reqs/actions.py",
         "patchSetId": 1
@@ -128,6 +248,30 @@
       "writtenOn": "2020-06-01T12:01:20Z",
       "side": 1,
       "message": "Why not:\n    cr.autosync \u003d True if spec.remove_python_requires_by_name(cr.name) else False",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 56
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "40a50682_a1a92765",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "In that case, we push the line past 79 chars, and loose the readability the ternary operator brings when it\u0027s all on one line.\nI prefer to break into 2 lines and change the variable name (is_autosync -\u003e is_removed).",
+      "parentUuid": "1da8a3a5_afbc578c",
       "range": {
         "startLine": 88,
         "startChar": 0,
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "9e8d4938_31d781d2",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "Mmh, i think i can remove the try-else statement here.",
+      "parentUuid": "ee5f3781_80275e95",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 21
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b7e06ea5_5b9e291d",
         "filename": "rdopkg/actions/reqs/actions.py",
         "patchSetId": 1
@@ -180,6 +348,24 @@
     },
     {
       "key": {
+        "uuid": "1eeb791c_81f9f61e",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "It\u0027s only boolean. If ones of this method returns False, the requirement won\u0027t appear in the output after the autosync [1], meaning that it didn\u0027t manage to synchronize. Perhaps, i should explicitly output that it didn\u0027t manage to sync it, wdyt ?\n\n[1] https://softwarefactory-project.io/r/#/c/18480/1/rdopkg/actionmods/reqs.py@365",
+      "parentUuid": "b7e06ea5_5b9e291d",
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cf6a0813_fdd14d1a",
         "filename": "rdopkg/actions/reqs/actions.py",
         "patchSetId": 1
@@ -191,6 +377,30 @@
       "writtenOn": "2020-06-01T12:02:44Z",
       "side": 1,
       "message": "why not:\n    elif strict:\n        _reqs.print_reqcheck(*check, format\u003doutput)\n...",
+      "range": {
+        "startLine": 103,
+        "startChar": 4,
+        "endLine": 103,
+        "endChar": 8
+      },
+      "revId": "f27e3a1ad6822379ffd2ee79bc664ac0514f27cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ed2497b5_815343b6",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-04T08:43:56Z",
+      "side": 1,
+      "message": "We save an indent with that.",
+      "parentUuid": "cf6a0813_fdd14d1a",
       "range": {
         "startLine": 103,
         "startChar": 4,
