@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8896e2fb_52f0f01b",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-06-10T13:52:38Z",
+      "side": 1,
+      "message": "maybe add another \"assert got is True\" here? We\u0027re only checking the second one.",
+      "revId": "187e9835b3020dec64bdbd3b6d7b37bcffd15dcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
