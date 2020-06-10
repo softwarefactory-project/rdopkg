@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "97d40db8_21f44a52",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 828,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-06-10T15:22:05Z",
+      "side": 1,
+      "message": "This is going to fail if we have more than one layer of %if...%endif, for example https://github.com/rdo-common/python-sphinx/blob/common-rdo/python-sphinx.spec#L282-L339",
+      "range": {
+        "startLine": 825,
+        "startChar": 0,
+        "endLine": 828,
+        "endChar": 32
+      },
+      "revId": "d6a8d949df677fff3b7a529123cf5635bd16f6d1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
