@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dedee703_77017d43",
+        "filename": "tests/test_spec.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-06-10T13:49:41Z",
+      "side": 1,
+      "message": "It would be nice if some of the Requires: tested includes a python3- prefixed name, btw.",
+      "range": {
+        "startLine": 626,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 62
+      },
+      "revId": "3479dc6b56f79d6d977f2633620ec3db9df27bf7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
