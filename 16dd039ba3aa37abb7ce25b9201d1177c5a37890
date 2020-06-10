@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "181d8eca_e28d84a0",
+        "filename": "rdopkg/actions/reqs/actions.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2020-06-10T12:09:29Z",
+      "side": 1,
+      "message": "output is not directly helpful to read\n\nremoved entries are printed the same as other entries.\n\ndidn\u0027t find where it was printed at.\n\nfrom python-oslo-messaging\n\n[python-oslo-messaging]$ rdopkg reqcheck                                                  \nMET:                                          \n  python-amqp \u003e\u003d 2.5.2  (\u003e\u003d 2.5.2 in .spec)              \n  python-debtcollector \u003e\u003d 1.2.0  (\u003e\u003d 1.2.0 in .spec)                                                                   \n  python-futurist \u003e\u003d 1.2.0  (\u003e\u003d 1.2.0 in .spec)                                                                        \n  python-kombu \u003e\u003d 4.6.6  (\u003e\u003d 4.6.6 in .spec)                                                                           \n  python-oslo-config \u003e\u003d 5.2.0  (\u003e\u003d 5.2.0 in .spec)                                                                     \n  python-oslo-log \u003e\u003d 3.36.0  (\u003e\u003d 3.36.0 in .spec)                                                                      \n  python-oslo-middleware \u003e\u003d 3.31.0  (\u003e\u003d 3.31.0 in .spec)                                                               \n  python-oslo-serialization \u003e\u003d 2.18.0  (\u003e\u003d 2.18.0 in .spec)                                                            \n  python-oslo-service \u003e\u003d 1.24.0  (\u003e\u003d 1.24.0 in .spec)                                                                  \n  python-oslo-utils \u003e\u003d 3.37.0  (\u003e\u003d 3.37.0 in .spec)                                                                    \n  python-stevedore \u003e\u003d 1.20.0  (\u003e\u003d 1.20.0 in .spec)                                                                     \n  python-webob \u003e\u003d 1.7.1  (\u003e\u003d 1.7.1 in .spec)                                                                           \n                                                                                                                       \nANY:                                                                                                                   \n  python-cachetools \u003e\u003d 2.0.0                                                                                           \n  python-pbr \u003e\u003d 2.0.0                                                                                                  \n                                                                                                                       \nEXCESS:                                                                                                                \n  python-PyYAML                                                                                                        \n  python-eventlet                                          \n  python-oslotest                                                                                                      \n  python-pyngus                                                                                                        \n  python-stestr                                                                                                        \n  python-testscenarios                                                                                                 \n  python-testtools                                                                                                     \n                                                                                                                       \nMISSING:                                                   \n  python-yaml \u003e\u003d 3.12                                 \n\nREMOVED:\n  python-six \u003e\u003d 1.10.0\n\n----------\nThis makes sense\n\n\n[python-oslo-messaging]$ rdopkg reqcheck -a             \nThe package below have been synchronised against the requirements file:                                                \n  python-yaml \u003e\u003d 3.12                                                                                                  \n  python-six \u003e\u003d 1.10.0   \n\n------------\nThis is the confusing one",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 60
+      },
+      "revId": "16dd039ba3aa37abb7ce25b9201d1177c5a37890",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
