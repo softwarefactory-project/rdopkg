@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0943ba91_ef6368e7",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 850,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-06-11T14:23:44Z",
+      "side": 1,
+      "message": "neat, but it certainly deserves a comment to understand what\u0027s going on :).",
+      "range": {
+        "startLine": 850,
+        "startChar": 7,
+        "endLine": 850,
+        "endChar": 51
+      },
+      "revId": "0b6dd891e103c75883b5a56dbdfdf8553cc3c6f2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
