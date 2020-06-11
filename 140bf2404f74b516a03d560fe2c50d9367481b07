@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c48d1049_291f3d0f",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 883,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2020-06-11T14:43:44Z",
+      "side": 1,
+      "message": "I\u0027m not sure I understand how this will work when a package has more than one python subpackage. Would it always try to add the requirement to the first found python-* subpackage?",
+      "range": {
+        "startLine": 880,
+        "startChar": 0,
+        "endLine": 883,
+        "endChar": 49
+      },
+      "revId": "140bf2404f74b516a03d560fe2c50d9367481b07",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
