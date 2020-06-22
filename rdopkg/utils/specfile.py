@@ -288,7 +288,7 @@ class Spec(object):
 
     def _create_new_magic_comment(self, name, value):
         # check to see if we have any magic comments in right slot
-        # after SourceX and before Patch Y - if so insert at begining block
+        # after SourceX and before Patch Y - if so insert at beginning block
         # otherwise insert a new block as before
 
         if re.findall(self.RE_IN_MAGIC_COMMENTS, self._txt, flags=re.M):
