@@ -15,7 +15,7 @@ and patches management functionality and conventions provided by `rdopkg`
 proved to be efficient way of packaging fast-moving upstream projects with
 minimal human effort but without losing control over individual packages.
 
-`rdopkg` is is now considered **stable**. It was originally developed to serve
+`rdopkg` is now considered **stable**. It was originally developed to serve
 the needs of the mighty [RDO](https://www.rdoproject.org/) packager-warriors
 and their weapons such as
 [DLRN](https://github.com/softwarefactory-project/DLRN), but it can help with
