@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2f9d3983_1a6c9f2d",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-22T08:28:36Z",
+      "side": 1,
+      "message": "Yeah, let\u0027s be consistent",
+      "parentUuid": "6e4b4cdd_f6838e4e",
+      "range": {
+        "startLine": 806,
+        "startChar": 45,
+        "endLine": 807,
+        "endChar": 44
+      },
+      "revId": "042861fc7fccc9be45a52dda7ae7601e6ae5a310",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e6675f89_fbc1ae81",
         "filename": "rdopkg/utils/specfile.py",
         "patchSetId": 6
@@ -36,6 +60,30 @@
       "writtenOn": "2020-06-18T10:53:42Z",
       "side": 1,
       "message": "I found an interesting corner case in my tests.\n\nIf we have two subpackages with the same dependency (e.g. Requires: python-foo), and do not limit the search to the subpackage range, this method will return the index of the first occurrence, instead of the last one.\n\nI think this won\u0027t be an issue in general, but maybe we should not trust txt_list.index, and instead we should be keeping the index as part of the loop.",
+      "range": {
+        "startLine": 834,
+        "startChar": 18,
+        "endLine": 834,
+        "endChar": 44
+      },
+      "revId": "042861fc7fccc9be45a52dda7ae7601e6ae5a310",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "001d754e_6f64e8de",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-06-22T08:28:36Z",
+      "side": 1,
+      "message": "Indeed, i didn\u0027t think of this case, i\u0027ll propose a solution in new PS.",
+      "parentUuid": "e6675f89_fbc1ae81",
       "range": {
         "startLine": 834,
         "startChar": 18,
