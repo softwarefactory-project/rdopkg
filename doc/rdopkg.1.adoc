@@ -357,10 +357,99 @@ using `rdopkg.actionmods.pymod2pkg` module.
 Use `--spec`/`-s` option to output Requires: suitable for pasting into .spec
 files. Version comparisons are hidden, whitespace is detected from .spec.
 
+Use `--strict`/`-S` option to ask rdopkg to return an exit status. By default,
+0 is returned.
+
 *Example:*
 
     rdopkg reqcheck
     rdopkg reqcheck -s
+
+*Override file*
+
+There are instances when you need to ignore some python modules from being
+`reqcheck`'ed, or you might need to change the module version that is in the
+`requirements.txt` file in order to successfully pass the `reqcheck` operation.
+Some examples of these are:
+  - a python module which has been added in the requirements file but
+    not yet packaged in RDO. This module should be ignored during the packaging
+    time period.
+  - a python module which has been updated in the requirements file but
+    not yet packaged in RDO. This module version should be replaced with the
+    one that is specified in the .spec file.
+  - an obsolete python module which still lives in the requirement file, and
+    not in .spec file, is tagged as `MISSING` in reqcheck output. It's a false
+    positive. The module should be removed upstream, in the meantime, we should
+    ignore it.
+  - when a module RPM has several `Provide` for the same subpackage.
+    As `pymod2pkg` currently only suports one py3pkg name for the
+    translation, this can bring you to have a missing module message displayed,
+    even though the module is present with another name (e.g PyYAML module)
+
+So, there are only two operations:
+  1. replacing a version of a python module;
+  2. ignoring (i.e deleting) a python module;
+
+The `adding` operation is not handled. The packages that are in .spec file and
+not in `requirements` file are tagged as `EXCESS` during reqcheck, which does
+not make the `reqcheck` operation fail. That's why adding python module in the
+`requirements` file before `reqcheck` is not relevant.
+
+To ignore python module or overwrite version during `reqcheck` you need to use
+`--override`/`-O` option, and provides a YAML file, see below the format:
+
+    ---
+    packages:
+      all:
+        - name: "python-yaml"
+        - name: "python-pbr"
+          version: ""
+      openstack-murano:
+        - name: "python-alembic"
+          version: ">= 0.9.6"
+        - name: "python-pbr"
+          version: ">= 2.0.0"
+
+The first level describes the package name we want to override
+(e.g openstack-murano).
+The second level includes the configuration of python modules we want to
+replace or ignore.
+
+The keyword `all` is reserved in first level. The configuration (list of
+python modules) associated to `all` is applied on all packages. This can be
+interesting when a rule is spotted several times (e.g PyYAML), there is a high
+chance that this rule might be applied everytime. You declare it globally in
+`all` and there is no need anymore to explicitly specify it in a package
+configuration. However, if a rule with the same python module name is found in
+specific `package` (e.g openstack-murano) and `all` configuration, then the
+rule in the specific `package` configuration is picked up.
+Note: `all` configuration should be used carefully as the associated rules
+are applied globally.
+
+
+In this example, for the package named `openstack-murano`:
+  - rdopkg will replace `alembic` with `alembic>=0.9.6` in the `requirements`
+    file before comparing to the alembic `Requires` version in the `.spec`
+    file.
+  - there is no `version` attribute for `python-yaml` which is in `all`
+    configuration, so it will be ignored during the reqcheck. The behavior is
+    the same when `version` attribute has an empty value.
+  - `python-pbr` with empty version in  `all` configuration means it is
+    ignored during reqcheck. But, as it exists a rule with the same python
+    module name which lives in `openstack-murano`, `python-pbr>=2.0.0` is
+    picked up during `reqcheck`.
+
+Note: This option does not actually write to disk when replacing or ignoring
+python modules in the `requirements` file. `reqcheck` loads this file on memory
+stream, then the option `--override` replaces or ignores the modules provided
+in the YAML file in the stream. Then, this stream is compared against
+the .spec file.
+
+
+
+*Example:*
+
+    rdopkg reqcheck --override override-file.yml
 
 
 ACTION: reqdiff
