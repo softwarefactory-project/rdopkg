@@ -357,10 +357,49 @@ using `rdopkg.actionmods.pymod2pkg` module.
 Use `--spec`/`-s` option to output Requires: suitable for pasting into .spec
 files. Version comparisons are hidden, whitespace is detected from .spec.
 
+Use `--strict`/`-S` option to ask rdopkg to return an exit status. By default,
+0 is returned.
+
 *Example:*
 
     rdopkg reqcheck
     rdopkg reqcheck -s
+
+*Override file*
+
+For some reason, you might want to ignore some python modules to be
+`reqcheck`'ed, or change the module version in `requirements.txt` file in order
+to pass successfully the `reqcheck` operation.
+The reasons could be:
+  - a python module which has been added/updated in requirements.txt file but
+    not yet packaged in RDO.
+  - an obosolete python module which still lives in the requirements.txt but
+    not used anymore.
+  - when a module RPM has several `Provide` for the same subpackage.
+    As `pymod2pkg` currently only suports one py3pkg name for the
+    translation, this can bring you to have a missing module message displayed,
+    even though the module is present with another name (e.g PyYAML module)
+
+To ignore python module or overwrite version during `reqcheck` you need to use
+`--override`/`-O` option, and provides a YAML file, see below the format:
+
+    ---
+    packages:
+      openstack-murano:
+        - name: "python-alembic"
+          version: ">= 0.9.6"
+        - name: "python-yaml"
+
+In this example:
+  - rdopkg will overwrite alembic with `alembic>=0.9.6` in `requirements.txt`
+    before comparing to the alembic `Requires` version in the `.spec` file.
+  - there is no `version` attribute for `python-yaml`, so it will be
+    ignored during the reqcheck. The behavior is the same when `version`
+    attribute has an empty value.
+
+*Example:*
+
+    rdopkg reqcheck --override override-file.yml
 
 
 ACTION: reqdiff
