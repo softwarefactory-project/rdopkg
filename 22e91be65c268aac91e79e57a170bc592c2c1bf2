@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "096739c3_8df3deb5",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2020-06-29T14:26:50Z",
+      "side": 1,
+      "message": "This abstraction for extract_vers() might be nice to split off and just get merged for improved readability as it should not change the behavior but reduces the complexity of the met method.  We can then also show this is not changing the behavior with the unittests not changing as well.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 19
+      },
+      "revId": "22e91be65c268aac91e79e57a170bc592c2c1bf2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "53a72e23_82d0a715",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2020-06-29T14:26:50Z",
+      "side": 1,
+      "message": "Is it intentional that CheckReq::met() no longer returns False? and if so what does it mean?",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 57,
+        "endChar": 23
+      },
+      "revId": "22e91be65c268aac91e79e57a170bc592c2c1bf2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "931ae08d_d4b572dd",
+        "filename": "tests/test_reqcheck.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2020-06-29T14:26:50Z",
+      "side": 1,
+      "message": "Why the return code change?  Is it necessary to change the behavior of existing functions?",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 19
+      },
+      "revId": "22e91be65c268aac91e79e57a170bc592c2c1bf2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
