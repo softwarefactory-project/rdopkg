@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9e3cf2fd_2c7bf6bf",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 430
+      },
+      "writtenOn": "2020-06-30T14:36:38Z",
+      "side": 1,
+      "message": "obsolete",
+      "range": {
+        "startLine": 376,
+        "startChar": 7,
+        "endLine": 376,
+        "endChar": 16
+      },
+      "revId": "c5a5c9dce0482066bb75d331306c9fde48cf188b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
