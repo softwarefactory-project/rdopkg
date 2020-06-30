@@ -4,6 +4,7 @@ import time
 
 from rdopkg.cli import rdopkg
 from rdopkg.actionmods.reqs import *
+from rdopkg.actions.reqs.actions import *
 from rdopkg.exception import WrongPythonVersion
 
 import test_common as common
@@ -189,6 +190,16 @@ def test_checkreq_version_not_capped():
     got = cr.met()
     expected = True
     assert got == expected
+
+
+def test_checkreq_extract():
+    cr = CheckReq('mypackage', '!= 1.2.5,>= 1.2.3', '')
+    assert cr.desired_vers == '>= 1.2.3'
+
+
+def test_checkreq_extract_no_match():
+    cr = CheckReq('mypackage', '!= 1.2.5,!= 1.2.3', '')
+    assert cr.desired_vers == '!= 1.2.5,!= 1.2.3'
 
 
 def test_diffreq():
