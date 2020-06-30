@@ -36,20 +36,22 @@ class CheckReq(object):
     def __init__(self, name, desired_vers, vers, overridden=None,
                  ignored=False):
         self.name = name
-        self.desired_vers = desired_vers
+        self.desired_vers = self.extract_vers(desired_vers)
         self.vers = vers
         self.overridden = overridden
         self.ignored = ignored
 
-    def met(self):
-        for rv in self.desired_vers.split(','):
+    @staticmethod
+    def extract_vers(vers):
+        for rv in vers.split(','):
             m = re.match('(>|>=) (\\d.*)$', rv)
             if m:
-                if rv == self.vers:
-                    return True
-                else:
-                    return False
-        if not self.desired_vers and not self.vers:
+                return rv
+        return vers
+
+    def met(self):
+        if (self.desired_vers == self.vers) or (not self.desired_vers
+                                                and not self.vers):
             return True
         else:
             return False
