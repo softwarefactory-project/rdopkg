@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "5ed04307_2655c6b7",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 651
+      },
+      "writtenOn": "2020-07-01T14:42:43Z",
+      "side": 1,
+      "message": "There are instances when you need to keep some python modules from being `reqcheck`\u0027ed, or you might need to change the module version that is in the `requirements.txt` file in order\nto successfully pass the `reqcheck` operation.\nSome examples of these are:",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 373,
+        "endChar": 21
+      },
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "abe00eb4_35be8ed6",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 651
+      },
+      "writtenOn": "2020-07-01T14:42:43Z",
+      "side": 1,
+      "message": "the requirements",
+      "range": {
+        "startLine": 374,
+        "startChar": 52,
+        "endLine": 374,
+        "endChar": 64
+      },
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1eefaa37_1fd0c340",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 651
+      },
+      "writtenOn": "2020-07-01T14:42:43Z",
+      "side": 1,
+      "message": "I would question why they are still in the requirements.txt file:) But rewording:\n- testing whether a python module that is still included in the requirements.txt file can be safely removed.",
+      "range": {
+        "startLine": 376,
+        "startChar": 4,
+        "endLine": 377,
+        "endChar": 21
+      },
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab84ff1_920858e5",
         "filename": "doc/rdopkg.1.adoc",
         "patchSetId": 2
