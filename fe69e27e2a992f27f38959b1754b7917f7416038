@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab84ff1_920858e5",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 267
+      },
+      "writtenOn": "2020-07-01T14:15:18Z",
+      "side": 1,
+      "message": "This means that it replace existing alembic or also it will add it if it\u0027s not in requirement.txt?",
+      "range": {
+        "startLine": 394,
+        "startChar": 4,
+        "endLine": 395,
+        "endChar": 75
+      },
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1accb176_80778cb5",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 267
+      },
+      "writtenOn": "2020-07-01T14:15:18Z",
+      "side": 1,
+      "message": "In the referred review i see that *all* can be used as package name, could you explain it?, i.e. something like:\n\npackages:\n  all:\n    - name: \"python-foo\"\n      version: \"\u003e\u003d 1.0.0\"\n\nWould this add a new dependency to *all* packages or just replace the version in the packages that already had foo as requirement?",
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
