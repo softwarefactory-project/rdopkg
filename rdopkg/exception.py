@@ -234,3 +234,8 @@ class WrongPythonVersion(RdopkgException):
 class WrongOutputFormat(RdopkgException):
     msg_fmt = "The output format used is not supported, use rdopkg reqcheck -h"
     exit_code = 1
+
+
+class CouldNotAddPythonRequires(RdopkgException):
+    msg_fmt = ("Unabled to add the python Requires (no Requires, BR or "
+               "BuildArch found in the spec file)")
