@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c7b1e4e2_a2731e99",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-07-02T15:42:49Z",
+      "side": 1,
+      "message": "This is better",
+      "parentUuid": "5ed04307_2655c6b7",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 373,
+        "endChar": 21
+      },
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "abe00eb4_35be8ed6",
         "filename": "doc/rdopkg.1.adoc",
         "patchSetId": 2
@@ -71,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "74773366_ec795549",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-07-02T15:42:49Z",
+      "side": 1,
+      "message": "Obsolete modules which still live in the requirements file and not in spec file, are tagged as MISSING in reqcheck output. That\u0027s a false positive. You\u0027re right it should be removed upstream :) But it\u0027s not a test as the python module is already not present in the .spec file.",
+      "parentUuid": "1eefaa37_1fd0c340",
+      "range": {
+        "startLine": 376,
+        "startChar": 4,
+        "endLine": 377,
+        "endChar": 21
+      },
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab84ff1_920858e5",
         "filename": "doc/rdopkg.1.adoc",
         "patchSetId": 2
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "c631d10b_1834aaeb",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-07-02T15:42:49Z",
+      "side": 1,
+      "message": "It only operates(edit or delete) existing modules in requirements.txt. I added a section developing why the \"add\" operation is not handled in PS3.",
+      "parentUuid": "bab84ff1_920858e5",
+      "range": {
+        "startLine": 394,
+        "startChar": 4,
+        "endLine": 395,
+        "endChar": 75
+      },
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1accb176_80778cb5",
         "filename": "doc/rdopkg.1.adoc",
         "patchSetId": 2
@@ -105,6 +177,24 @@
       "writtenOn": "2020-07-01T14:15:18Z",
       "side": 1,
       "message": "In the referred review i see that *all* can be used as package name, could you explain it?, i.e. something like:\n\npackages:\n  all:\n    - name: \"python-foo\"\n      version: \"\u003e\u003d 1.0.0\"\n\nWould this add a new dependency to *all* packages or just replace the version in the packages that already had foo as requirement?",
+      "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6599892c_99d66c65",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-07-02T15:42:49Z",
+      "side": 1,
+      "message": "You\u0027re right, I added a section in PS3. Let me know if it\u0027s clear or not.",
+      "parentUuid": "1accb176_80778cb5",
       "revId": "fe69e27e2a992f27f38959b1754b7917f7416038",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
