@@ -206,6 +206,7 @@ class Spec(object):
         self._fn = fn
         self._txt = txt
         self._rpmspec = None
+        self._contains_subpkg = None
 
     @property
     def fn(self):
@@ -803,6 +804,56 @@ class Spec(object):
                 subpkg = m.group(2)
             subpackages[subpkg] = (beginning_of_subpkg, end_of_subpkg)
         return subpackages
+
+    def guess_main_python_subpackage(self, main_py_subpkg=None):
+        # To guess which is the main python subpackage, we can only rely on RPM
+        # guidelines and mechanisms.
+        # Below the ordered search criterias:
+        # 1. Subpackage name starting with python and having the less dashes
+        #    (most cases e.g: python3-foo, python3-foo-doc, python3-foo-tests)
+        # 2. If 1. returns nothing, we take the first subpackage found (most
+        #    likely to be the main one).
+        # 3. Finally, we ensure it does not require another subpackage (meaning
+        #    it's not the main one). If it's not, we iterate recursively with
+        #    the subpackage required, until finding the first one which does
+        #    not require a subpackage.
+        python_subpackages, counter = [], 0
+
+        if not self._contains_subpkg:
+            self._contains_subpkg = self.get_subpackages()
+
+        if main_py_subpkg is None:
+            try:
+                python_subpackages = [x for x in self._contains_subpkg if
+                                      x.startswith('python')]
+            except TypeError:
+                return None
+
+            for _py_subpkg in python_subpackages:
+                if counter == 0:
+                    counter = _py_subpkg.count('-')
+                    main_py_subpkg = _py_subpkg
+                elif _py_subpkg.count('-') < counter:
+                    counter = _py_subpkg.count('-')
+                    main_py_subpkg = _py_subpkg
+
+        try:
+            start_index, end_index = self._contains_subpkg[main_py_subpkg]
+        except KeyError:
+            main_py_subpkg = list(self._contains_subpkg.keys())[0]
+            start_index, end_index = self._contains_subpkg[main_py_subpkg]
+
+        txt_list = self.txt.split('\n')
+        for line in txt_list[start_index:end_index + 1]:
+            if not re.search(r'^Requires:\s+(.*)\s+=\s+(.*)', line):
+                continue
+            line = re.sub(r'%{name}', self.get_name(), line)
+            m = re.search(r'^Requires:\s+(.*)\s+=\s+(.*)', line)
+            if m:
+                for subpkg_name in self._contains_subpkg.keys():
+                    if subpkg_name == m.group(1):
+                        return self.guess_main_python_subpackage(subpkg_name)
+        return main_py_subpkg
 
     def find_last_dependency(self, dep_type, starting_index=None,
                              ending_index=None):
