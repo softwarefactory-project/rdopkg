@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "438e0e7b_230568e0",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-07-02T16:59:18Z",
+      "side": 1,
+      "message": "Indeed, I put this chuck of code in another review https://softwarefactory-project.io/r/#/c/18758/4",
+      "parentUuid": "096739c3_8df3deb5",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 19
+      },
+      "revId": "22e91be65c268aac91e79e57a170bc592c2c1bf2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "53a72e23_82d0a715",
         "filename": "rdopkg/actionmods/reqs.py",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2020-06-29T14:26:50Z",
       "side": 1,
       "message": "Is it intentional that CheckReq::met() no longer returns False? and if so what does it mean?",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 57,
+        "endChar": 23
+      },
+      "revId": "22e91be65c268aac91e79e57a170bc592c2c1bf2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9df155a3_7b6c94cf",
+        "filename": "rdopkg/actionmods/reqs.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2020-07-02T16:59:18Z",
+      "side": 1,
+      "message": "I would like to take advantage of the implicit return value, but we can keep as is for readability",
+      "parentUuid": "53a72e23_82d0a715",
       "range": {
         "startLine": 54,
         "startChar": 4,
