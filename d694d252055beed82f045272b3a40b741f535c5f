@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d12209de_6b77382e",
+        "filename": "rdopkg/utils/specfile.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2020-07-29T20:58:54Z",
+      "side": 1,
+      "message": "spelling \"beginning\"",
+      "range": {
+        "startLine": 779,
+        "startChar": 12,
+        "endLine": 779,
+        "endChar": 20
+      },
+      "revId": "d694d252055beed82f045272b3a40b741f535c5f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
