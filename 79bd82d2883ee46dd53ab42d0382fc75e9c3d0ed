@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3f4efd3e_5b90dd9b",
+        "filename": "rdopkg/exception.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 180
+      },
+      "writtenOn": "2020-07-29T21:19:50Z",
+      "side": 1,
+      "message": "spelling \"Unable\"",
+      "range": {
+        "startLine": 240,
+        "startChar": 16,
+        "endLine": 240,
+        "endChar": 23
+      },
+      "revId": "79bd82d2883ee46dd53ab42d0382fc75e9c3d0ed",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
