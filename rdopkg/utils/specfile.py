@@ -845,14 +845,16 @@ class Spec(object):
 
         txt_list = self.txt.split('\n')
         for line in txt_list[start_index:end_index + 1]:
-            if not re.search(r'^Requires:\s+(.*)\s+=\s+(.*)', line):
-                continue
             line = re.sub(r'%{name}', self.get_name(), line)
             m = re.search(r'^Requires:\s+(.*)\s+=\s+(.*)', line)
-            if m:
-                for subpkg_name in self._contains_subpkg.keys():
-                    if subpkg_name == m.group(1):
-                        return self.guess_main_python_subpackage(subpkg_name)
+            if not m:
+                continue
+            main_subpkg_candidate = m.group(1)
+            for subpkg_available in self._contains_subpkg.keys():
+                if main_subpkg_candidate == subpkg_available and \
+                        not main_subpkg_candidate.startswith('python-') and \
+                        not main_subpkg_candidate.startswith(main_py_subpkg):
+                    return self.guess_main_python_subpackage(subpkg_available)
         return main_py_subpkg
 
     def find_last_dependency(self, dep_type, starting_index=None,
