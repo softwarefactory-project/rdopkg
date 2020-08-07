@@ -13,7 +13,7 @@ def clean_tempdir(context, scenario):
     tempdir = getattr(context, 'tempdir', None)
     if tempdir and scenario.status == 'passed':
         shutil.rmtree(tempdir)
-        del(context.tempdir)
+        del context.tempdir
 
 
 def restore_cwd(context):

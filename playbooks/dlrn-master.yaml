@@ -3,6 +3,11 @@
   vars:
     working_dir: '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/..'
   tasks:
+    - name: Install tox
+      pip:
+        name: tox
+        state: present
+
     - name: Prepare virtualenv to test DLRN master
       shell:
         cmd: |

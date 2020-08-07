@@ -921,3 +921,37 @@ def test_guess_main_python_subpackage_5_at_the_end(tmpdir):
     spec = specfile.Spec(txt=txt)
     got = spec.guess_main_python_subpackage()
     assert got == 'openstack-foo-common'
+
+
+def test_guess_main_python_subpackage_6(tmpdir):
+    txt = '\n'.join(['Name:              python-foo',
+                     'BuildArch:         noarch',
+                     '%package -n        python3-foo',
+                     'Requires: python-%{name}-lang = %{version}-%{release}',
+                     '%description -n    python3-foo',
+                     '%{common_desc}',
+                     '%package -n        python-foo-lang',
+                     'Summary: Translation files',
+                     '%description -n    python-foo-lang',
+                     '%{common_desc}',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.guess_main_python_subpackage()
+    assert got == 'python3-foo'
+
+
+def test_guess_main_python_subpackage_7(tmpdir):
+    txt = '\n'.join(['Name:              python-foo',
+                     'BuildArch:         noarch',
+                     '%package -n        python3-foo',
+                     'Requires: python3-%{name}-test = %{version}-%{release}',
+                     '%description -n    python3-foo',
+                     '%{common_desc}',
+                     '%package -n        python3-foo-test',
+                     'Summary: Translation files',
+                     '%description -n    python3-foo-test',
+                     '%{common_desc}',
+                     ''])
+    spec = specfile.Spec(txt=txt)
+    got = spec.guess_main_python_subpackage()
+    assert got == 'python3-foo'
