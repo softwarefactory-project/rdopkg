@@ -27,6 +27,18 @@ ACTIONS = [
                Arg('buildsys_tags', shortcut='-b', action='store_true',
                    help="process buildsys-tags instead of regular tags"),
            ]),
+    Action('info_attr_diff',
+           help=("find which package attributes have changed between "
+                 "HEAD~..HEAD in distroinfo"),
+           optional_args=[
+               Arg('local_info', positional=True, metavar='INFO_REPO',
+                   help="use local distroinfo repo found in INFO_REPO"),
+               Arg('attr_name', positional=True, metavar='ATTR_NAME',
+                   help="package attribute to check for"),
+               Arg('info_file', positional=True, metavar='INFO_FILE',
+                   nargs='?',
+                   help="use specified distroinfo INFO_FILE"),
+           ]),
     Action('findpkg',
            help="find and show single best matching package in distroinfo",
            optional_args=[
