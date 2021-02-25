@@ -78,3 +78,19 @@ def info_tags_diff(local_info, info_file=None, buildsys_tags=False):
     else:
         for pkg, changes in tdiff:
             print("%s %s" % (pkg, changes))
+
+
+def info_attr_diff(local_info, attr_name, info_file=None):
+    if not info_file:
+        info_file = rdoinfo.info_file()
+    di = DistroInfo(info_file, local_info=local_info)
+    info2 = di.get_info()
+    with helpers.cdir(di.fetcher.source):
+        with git.git_revision('HEAD~'):
+            info1 = di.get_info()
+    tdiff = distroinfo.query.attr_diff(info1, info2, attr_name)
+    if not tdiff:
+        sys.stderr.write("No attribute changes detected.\n")
+    else:
+        for pkg, changes in tdiff:
+            print("%s %s" % (pkg, changes))
