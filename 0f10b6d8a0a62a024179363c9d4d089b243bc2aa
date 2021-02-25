@@ -94,6 +94,46 @@
       "revId": "0f10b6d8a0a62a024179363c9d4d089b243bc2aa",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1564b845_eb7f47d1",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 267
+      },
+      "writtenOn": "2021-02-25T16:59:04Z",
+      "side": 1,
+      "message": "should we add optional parameter [INFOFILE]?",
+      "revId": "0f10b6d8a0a62a024179363c9d4d089b243bc2aa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "adb3a1cc_55b2511f",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 267
+      },
+      "writtenOn": "2021-02-25T16:59:04Z",
+      "side": 1,
+      "message": "In my test output is slightly different:\n\n$ rdopkg info-attr-diff /tmp/rdoinfo upstream\nansible-tripleo-powerflex https://github.com/dell/tripleo-powerflexno\n\nNote it\u0027s not in list format. Is this what you expect?",
+      "range": {
+        "startLine": 595,
+        "startChar": 4,
+        "endLine": 595,
+        "endChar": 62
+      },
+      "revId": "0f10b6d8a0a62a024179363c9d4d089b243bc2aa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
