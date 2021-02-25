@@ -70,6 +70,30 @@
       "revId": "0f10b6d8a0a62a024179363c9d4d089b243bc2aa",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8c797007_182d15b0",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2021-02-25T16:51:32Z",
+      "side": 1,
+      "message": "Yes I agree with you (I was not clear in my last comment), this just needs to be explicitly noted in doc.",
+      "parentUuid": "f2796307_c75a2239",
+      "range": {
+        "startLine": 580,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 22
+      },
+      "revId": "0f10b6d8a0a62a024179363c9d4d089b243bc2aa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
