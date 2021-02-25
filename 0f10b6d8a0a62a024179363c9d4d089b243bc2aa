@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c4a7f4c_96f9b675",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2021-02-25T16:09:04Z",
+      "side": 1,
+      "message": "In the doc, we can add the fact that if the ATTRNAME does not exist, the command will return nothing and exit successfully (rc\u003d0)",
+      "range": {
+        "startLine": 580,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 22
+      },
+      "revId": "0f10b6d8a0a62a024179363c9d4d089b243bc2aa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
