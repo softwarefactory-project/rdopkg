@@ -22,6 +22,30 @@
       "revId": "0f10b6d8a0a62a024179363c9d4d089b243bc2aa",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "36c61d11_3bfdce81",
+        "filename": "doc/rdopkg.1.adoc",
+        "patchSetId": 2
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 609
+      },
+      "writtenOn": "2021-02-25T16:13:34Z",
+      "side": 1,
+      "message": "erratum: the command will return \"No attribute changes detected.\" but doesn\u0027t tell whether the ATTRNAME does exist or not.",
+      "parentUuid": "7c4a7f4c_96f9b675",
+      "range": {
+        "startLine": 580,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 22
+      },
+      "revId": "0f10b6d8a0a62a024179363c9d4d089b243bc2aa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
