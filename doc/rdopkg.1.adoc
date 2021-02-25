@@ -577,6 +577,30 @@ Example:
 This is an interface to rdopkg.actionmods.rdoinfo:tags_diff().
 
 
+ACTION: attr-tags-diff
+~~~~~~~~~~~~~~~~~~~~~~
+
+Show rdoinfo attribute changes.
+
+    rdopkg info-attr-diff RDOINFODIR ATTRNAME
+
+will show per-package new/changed attributes in rdoinfo between `HEAD~..HEAD`.
+
+For an existing or new package, a list of changes in the attribute is returned
+
+Example:
+
+    $ rdopkg info-attr-diff ~/.rdopkg/rdoinfo upstream
+    openstack-changed ['https://github.com/openstack-changed-repo']
+    openstack-new-pkg ['https://github.com/openstack-new-pkg']
+
+If ATTRNAME is not used anywhere in the distroinfo repository, or there are no
+changes in the attributes, the command will return "No attribute changes
+detected." and exit with RC=0.
+
+This is an interface to rdopkg.actionmods.rdoinfo:attr_diff().
+
+
 ACTION: findpkg
 ~~~~~~~~~~~~~~~
 
