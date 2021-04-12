@@ -303,6 +303,8 @@ def osdist(branch=None):
         branch = current_branch(default='')
     # strip "private-foo-" prefixes
     branch = re.sub(r'^private-[^-]+-', '', branch)
+    # strip "hotfix-" prefixes
+    branch = re.sub(r'^hotfix-', '', branch)
     if branch.startswith('rhos-') or branch.startswith('rh-'):
         return 'RHOS'
     if branch.startswith('ceph-'):

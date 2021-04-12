@@ -66,6 +66,7 @@ def test_osdist_current_branch(monkeypatch):
     ('eng-rhel-8', 'RHENG'),
     ('unknown', 'RDO'),
     ('private-kdreyer-ceph-5.0-rhel-8', 'RHCEPH'),
+    ('hotfix-ceph-5.0-rhel-8-bz1234', 'RHCEPH'),
 ])
 def test_osdist_branches(branch, expected):
     assert guess.osdist(branch=branch) == expected
