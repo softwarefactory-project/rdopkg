@@ -3,7 +3,7 @@
 
 set -e
 
-GIT_BASE_URL="https://review.rdoproject.org/r/p"
+GIT_BASE_URL="https://review.rdoproject.org/r"
 WORKSPACE="${WORKSPACE:-/tmp}"
 
 function test_rdopkg_findpkg(){

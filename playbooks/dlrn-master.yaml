@@ -19,7 +19,7 @@
     - name: Run DLRN master tests with rdopkg
       shell:
         cmd: |
-          timeout --signal=SIGKILL 3600 ./scripts/run_tests.sh http://review.rdoproject.org/r/p/rdoinfo.git centos8 https://trunk.rdoproject.org/centos8-master/
+          timeout --signal=SIGKILL 3600 ./scripts/run_tests.sh http://review.rdoproject.org/r/rdoinfo.git centos8 https://trunk.rdoproject.org/centos8-master/
         chdir: "{{ working_dir }}/DLRN"
 
     - name: Copy DLRN logs for collection
