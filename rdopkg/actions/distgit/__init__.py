@@ -32,6 +32,8 @@ ACTIONS = [
                    help="gerrit username for reviews"),
                Arg('distro', shortcut='-d', metavar='DISTRO',
                    help="distroinfo configuration"),
+               Arg('extra_repo', shortcut='-e', metavar='EXTRA_REPO',
+                   help="Clone the repo specified in this key"),
            ]),
     Action('pkgenv', help="show detected package environment",
            steps=[

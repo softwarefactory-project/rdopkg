@@ -322,7 +322,8 @@ def clone(
         use_master_distgit=False,
         gerrit_remotes=False,
         review_user=None,
-        distro='rdo'):
+        distro='rdo',
+        extra_repo=None):
     rdo = rdoinfo.get_distroinfo(distro=distro)
     ri = rdo.get_info()
     pkg = get_package(ri, package)
@@ -339,6 +340,13 @@ def clone(
     else:
         distgit = pkg['distgit']
         distgit_str = 'distgit'
+    if extra_repo:
+        try:
+            extra_url = pkg[extra_repo]
+        except KeyError:
+            raise exception.InvalidUsage(
+                msg="-e/--extra-repo used but the specified key "
+                    "is missing in distroinfo for package: %s" % package)
     log.info("Cloning {dg} into ./{t.bold}{pkg}{t.normal}/".format(
         t=log.term, dg=distgit_str, pkg=package))
     patches = pkg.get('patches')
@@ -366,7 +374,11 @@ def clone(
         else:
             log.warn("'upstream' remote information not available in"
                      " distroinfo.")
-        if patches or upstream:
+        if extra_repo:
+            log.info("Adding remote {extra_repo} in {extra_dg}".format(
+                     extra_repo=extra_repo, extra_dg=extra_url))
+            git('remote', 'add', extra_repo, extra_url)
+        if patches or upstream or extra_repo:
             git('fetch', '--all')
 
         if not review_user:
@@ -393,6 +405,7 @@ def clone(
         else:
             log.warn("'review-origin' remote information not available"
                      " in distroinfo.")
+
         git('remote', '-v', direct=True)
 
 
