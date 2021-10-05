@@ -37,10 +37,10 @@ It's pretty good stuff for a testing package that doesn't even exist.
 %setup -q
 
 %build
-%{{__python}} setup.py build
+%{{__python2}} setup.py build
 
 %install
-%{{__python}} setup.py install -O1 --skip-build --root %{{buildroot}}
+%{{__python2}} setup.py install -O1 --skip-build --root %{{buildroot}}
 
 %files
 %doc README.rst

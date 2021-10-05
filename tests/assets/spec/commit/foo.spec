@@ -30,10 +30,10 @@ This is foo! This is foo! This is foo!
 echo "version = '%{commit}'" >> version.py
 
 %build
-%{__python} setup.py build
+%{__python3} setup.py build
 
 %install
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
 
 %files

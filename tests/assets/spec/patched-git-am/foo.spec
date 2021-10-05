@@ -41,10 +41,10 @@ git am %{patches}
 sed -i s/REDHATNOVACLIENTVERSION/%{version}/ novaclient/__init__.py
 
 %build
-%{__python} setup.py build
+%{__python3} setup.py build
 
 %install
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
 
 %files
