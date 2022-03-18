@@ -68,7 +68,7 @@ class ModuleNotAvailable(RdopkgException):
 
 class RpmModuleNotAvailable(ModuleNotAvailable):
     msg_fmt = ("Module rpm is not available. It is required to parse .spec "
-               "files. Pro tip: `dnf install rpm-python`")
+               "files. Pro tip: `dnf install python3-rpm`")
 
 
 class InvalidAction(RdopkgException):
