@@ -11,6 +11,10 @@ from rdopkg.utils.cmd import run
 from rdopkg import helpers
 
 
+class StopLookingForRELine(Exception):
+    pass
+
+
 class LintHint(object):
     def __init__(self, location, level, msg):
         self.location = location
@@ -39,8 +43,13 @@ class LintHint(object):
 
 
 RE_RPMLINT_HINT = r'(.*):\s+([EW]):\s+(.+)$'
-RE_RPMLINT_SUMMARY = (r'\d+ packages and \d+ specfiles checked; '
-                      r'\d+ errors?, \d+ warnings?.')
+RE_RPMLINT_TO_BE_IGNORED = [r'\=* rpmlint session starts \=*',
+                            r'rpmlint: [\d+\.]*',
+                            r'configuration:',
+                            r'    /usr/lib/.*',
+                            r'    /etc/xdg/.*',
+                            r'checks: \d+, packages: \d+',
+                            r'\=* \d+ packages and \d+ specfiles .*']
 
 
 def rpmlint_check(*args):
@@ -55,15 +64,21 @@ def rpmlint_check(*args):
         raise exception.CommandNotFound(
             msg="Unable to run rpmlint checks because rpmlint is missing.")
     for line in out.splitlines():
+        if line == '':
+            continue
         m = re.match(RE_RPMLINT_HINT, line)
         if m:
             hints.append(LintHint(location=m.group(1),
                                   level=m.group(2),
                                   msg=m.group(3)))
             continue
-        m = re.match(RE_RPMLINT_SUMMARY, line)
-        if m:
-            # ignore final rpmlint summary
+        try:
+            for rule in RE_RPMLINT_TO_BE_IGNORED:
+                m = re.match(rule, line)
+                if m:
+                    # ignore rpmlint header
+                    raise StopLookingForRELine()
+        except StopLookingForRELine:
             continue
         hints.append(LintHint(location='rpmlint', level='W', msg=(
             'Failed to parse rpmlint output: %s' % line)))

@@ -10,4 +10,5 @@ pyOpenSSL>=16.2.0
 pymod2pkg
 requests
 six
+rpmlint
 # asciidoc for docs/sdist

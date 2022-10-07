@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install epel
+      command: dnf config-manager --set-enabled powertools
+
+    - name: Install epel
+      command: dnf install -y epel-release
+
+    - name: Update system
+      command: dnf update -y
+
+    - name: Install rdopkg
+      command: dnf install -y rdopkg
+
+    - name: Check
+      command: rdopkg --help

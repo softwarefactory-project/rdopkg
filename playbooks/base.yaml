@@ -15,3 +15,8 @@
       when:
         - ansible_distribution == "CentOS"
         - ansible_distribution_major_version | int == 7
+
+    - name: Ensure rpmlint and python3-rpm are installed
+      shell: |
+        dnf install -y rpmlint python3-rpm
+      become: true

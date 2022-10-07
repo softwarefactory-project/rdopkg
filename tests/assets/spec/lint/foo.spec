@@ -10,7 +10,7 @@ URL:              http://notreallyavaliddomain.name/foo
 
 BuildArch:        noarch
 
-Source0:          %{name}/%{name}-%{version}.tar.gz
+Source0:          https://%{name}/%{name}-%{version}.tar.gz
 
 Patch0001: 0001-something.patch
 Patch0002: 0002-something-else.patch
@@ -54,7 +54,7 @@ sed -i s/REDHATNOVACLIENTVERSION/%{version}/ novaclient/__init__.py
 /usr/lib/share/foo
 
 %changelog
-* Mon Apr 07 2014 Jakub Ruzicka <jruzicka@redhat.com> 1.2.3-42
+* Môn Apr 07 2014 Jakub Ruzicka <jruzicka@redhat.com> 1.2.3-42
 - Update to upstream 1.2.3
 - Oh no, there's a %macro in changelog
 

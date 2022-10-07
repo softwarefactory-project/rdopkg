@@ -7,71 +7,117 @@
     required-projects:
       - distroinfo
 
-# NOTE: this test should be running on Centos 7.
 - job:
-    name: rdopkg-base-py2
+    name: rdopkg-base-py36
     parent: rdopkg-base
     abstract: true
-    nodeset: centos-7-pod
+    nodeset:
+      nodes:
+        - name: cloud-centos-8-stream
+          label: cloud-centos-8-stream
 
 - job:
-    name: rdopkg-base-coverage-py2
-    parent: rdopkg-base-py2
+    name: rdopkg-base-py39
+    parent: rdopkg-base
+    abstract: true
+    nodeset:
+      nodes:
+        - name: cloud-centos-9-stream
+          label: cloud-centos-9-stream
+
+- job:
+    name: rdopkg-base-py310
+    parent: rdopkg-base
+    abstract: true
+    nodeset:
+      nodes:
+        - name: cloud-fedora-36
+          label: cloud-fedora-36
+
+- job:
+    name: rdopkg-base-coverage-py36
+    parent: rdopkg-base-py36
     post-run: playbooks/fetch-coverage.yaml
     success-url: coverage/index.html
 
 - job:
-    name: rdopkg-base-py3
-    parent: rdopkg-base
-    abstract: true
-    nodeset: fedora-latest-pod
-
-- job:
-    name: rdopkg-base-coverage-py3
-    parent: rdopkg-base-py3
+    name: rdopkg-base-coverage-py39
+    parent: rdopkg-base-py39
     post-run: playbooks/fetch-coverage.yaml
     success-url: coverage/index.html
 
 - job:
-    name: rdopkg-py2-tests
-    parent: rdopkg-base-coverage-py2
-    description: rdopkg unit and feature tests on python2
-    vars:
-      tox_envlist: py2-unit,py2-feature,py2-cover
+    name: rdopkg-base-coverage-py310
+    parent: rdopkg-base-py310
+    post-run: playbooks/fetch-coverage.yaml
+    success-url: coverage/index.html
 
 - job:
-    name: rdopkg-py3-tests
-    parent: rdopkg-base-coverage-py3
-    description: rdopkg unit and features tests on python3
+    name: rdopkg-py36-tests
+    parent: rdopkg-base-coverage-py36
+    description: rdopkg unit and feature tests on python3.6
     vars:
-      tox_envlist: py3-unit,py3-feature,py3-cover
+      tox_envlist: py36-unit,py36-feature,py36-cover
 
 - job:
-    name: rdopkg-py2-integration
-    parent: rdopkg-base-py2
-    description: rdopkg integration tests on python2
+    name: rdopkg-py39-tests
+    parent: rdopkg-base-coverage-py39
+    description: rdopkg unit and feature tests on python3.9
     vars:
-      tox_envlist: py2-integration
+      tox_envlist: py39-unit,py39-feature,py39-cover
 
 - job:
-    name: rdopkg-py3-integration
-    parent: rdopkg-base-py3
-    description: rdopkg integration tests on python3
+    name: rdopkg-py310-tests
+    parent: rdopkg-base-coverage-py310
+    description: rdopkg unit and feature tests on python3.10
     vars:
-      tox_envlist: py3-integration
+      tox_envlist: py310-unit,py310-feature,py310-cover
+
+- job:
+    name: rdopkg-py36-integration
+    parent: rdopkg-base-py36
+    description: rdopkg unit and feature tests on python3.6
+    vars:
+      tox_envlist: py36-integration
+
+- job:
+    name: rdopkg-py39-integration
+    parent: rdopkg-base-py39
+    description: rdopkg unit and feature tests on python3.9
+    vars:
+      tox_envlist: py39-integration
+
+- job:
+    name: rdopkg-py310-integration
+    parent: rdopkg-base-py310
+    description: rdopkg unit and feature tests on python3.10
+    vars:
+      tox_envlist: py310-integration
 
 - job:
     name: rdopkg-lint
-    parent: rdopkg-base-py3
+    parent: rdopkg-base-py310
     description: rdopkg linting
     vars:
       tox_envlist: lint
 
 - job:
-    name: rdopkg-install-epel
+    name: rdopkg-install-epel-8
     description: install rdopkg with epel
-    run: playbooks/install-test-epel-7.yaml
-    nodeset: centos-latest-cloud
+    run: playbooks/install-test-epel-8.yaml
+    nodeset:
+      nodes:
+        - name: cloud-centos-8-stream
+          label: cloud-centos-8-stream
+
+- job:
+    name: rdopkg-install-epel-9
+    description: install rdopkg with epel
+    run: playbooks/install-test-epel-9.yaml
+    nodeset:
+      nodes:
+        - name: cloud-centos-9-stream
+          label: cloud-centos-9-stream
 
 - job:
     name: rdopkg-dlrn-master
@@ -89,23 +135,28 @@
     name: rdopkg
     check:
       jobs:
-        - rdopkg-py2-tests
-        - rdopkg-py3-tests
-        - rdopkg-py2-integration
-        - rdopkg-py3-integration
+        - rdopkg-py36-tests
+        - rdopkg-py39-tests
+        - rdopkg-py310-tests
+        - rdopkg-py36-integration
+        - rdopkg-py39-integration
+        - rdopkg-py310-integration
         - rdopkg-lint
         - rdopkg-dlrn-master
     gate:
       jobs:
-        - rdopkg-py2-tests
-        - rdopkg-py3-tests
-        - rdopkg-py2-integration
-        - rdopkg-py3-integration
+        - rdopkg-py36-tests
+        - rdopkg-py39-tests
+        - rdopkg-py310-tests
+        - rdopkg-py36-integration
+        - rdopkg-py39-integration
+        - rdopkg-py310-integration
         - rdopkg-lint
         - rdopkg-dlrn-master
     periodic:
       jobs:
-        - rdopkg-install-epel
+        - rdopkg-install-epel-8
+        - rdopkg-install-epel-9
     release:
       jobs:
         - upload-pypi
