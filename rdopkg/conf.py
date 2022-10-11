@@ -2,7 +2,7 @@
 
 import errno
 import glob
-import imp
+import importlib
 import os.path
 
 
@@ -12,7 +12,7 @@ class Config(dict):
         dict.__init__(self, defaults or {})
 
     def from_pyfile(self, filename, silent=False):
-        d = imp.new_module('extconfig')
+        d = importlib.new_module('extconfig')
         d.__file__ = filename
         try:
             with open(filename) as config_file:
