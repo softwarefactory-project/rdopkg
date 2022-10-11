@@ -11,7 +11,14 @@ from rdopkg.conf import cfg
 def print_releases(info):
     print("{t.bold}releases & repos:{t.normal}".format(t=log.term))
     for rls in info['releases']:
-        s = "  {t.bold}{rls}{t.normal}".format(t=log.term, rls=rls['name'])
+        if 'status' in rls:
+            s = ("  {t.bold}{rls} in {status} "
+                 "phase {t.normal}").format(t=log.term,
+                                            rls=rls['name'],
+                                            status=rls['status'])
+        else:
+            s = ("  {t.bold}{rls}{t.normal}").format(t=log.term,
+                                                     rls=rls['name'])
         if 'fedora' in rls:
             s += '   (Fedora %s)' % rls['fedora']
         print(s)
