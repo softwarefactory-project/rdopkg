@@ -117,7 +117,7 @@ def parse_reqs_txt(txt, py_vers='3.6'):
     if not txt:
         log.warn("The requirements.txt file is empty")
         return reqs
-    lines = sorted(txt.split('\n'), key=lambda l: l.lower())
+    lines = sorted(txt.split('\n'), key=lambda li: li.lower())
     for line in lines:
         # removing comments and spaces
         line = re.sub(r'\s*(?:#.*)$', '', line.replace(" ", ""))

@@ -556,6 +556,9 @@ This command is a human interface to <<rdoinfo,rdoinfo>>.
 
     rdopkg info maintainers:jruzicka
 
+*Reverse filtering packages by not containing tag:*
+
+    rdopkg info tags:~newton
 
 ACTION: info-tags-diff
 ~~~~~~~~~~~~~~~~~~~~~~
