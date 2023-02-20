@@ -26,13 +26,13 @@
           label: cloud-centos-9-stream
 
 - job:
-    name: rdopkg-base-py310
+    name: rdopkg-base-py311
     parent: rdopkg-base
     abstract: true
     nodeset:
       nodes:
-        - name: cloud-fedora-36
-          label: cloud-fedora-36
+        - name: cloud-fedora-37
+          label: cloud-fedora-37
 
 - job:
     name: rdopkg-base-coverage-py36
@@ -47,8 +47,8 @@
     success-url: coverage/index.html
 
 - job:
-    name: rdopkg-base-coverage-py310
-    parent: rdopkg-base-py310
+    name: rdopkg-base-coverage-py311
+    parent: rdopkg-base-py311
     post-run: playbooks/fetch-coverage.yaml
     success-url: coverage/index.html
 
@@ -67,11 +67,11 @@
       tox_envlist: py39-unit,py39-feature,py39-cover
 
 - job:
-    name: rdopkg-py310-tests
-    parent: rdopkg-base-coverage-py310
-    description: rdopkg unit and feature tests on python3.10
+    name: rdopkg-py311-tests
+    parent: rdopkg-base-coverage-py311
+    description: rdopkg unit and feature tests on python3.11
     vars:
-      tox_envlist: py310-unit,py310-feature,py310-cover
+      tox_envlist: py311-unit,py311-feature,py311-cover
 
 - job:
     name: rdopkg-py36-integration
@@ -88,15 +88,15 @@
       tox_envlist: py39-integration
 
 - job:
-    name: rdopkg-py310-integration
-    parent: rdopkg-base-py310
-    description: rdopkg unit and feature tests on python3.10
+    name: rdopkg-py311-integration
+    parent: rdopkg-base-py311
+    description: rdopkg unit and feature tests on python3.11
     vars:
-      tox_envlist: py310-integration
+      tox_envlist: py311-integration
 
 - job:
     name: rdopkg-lint
-    parent: rdopkg-base-py310
+    parent: rdopkg-base-py311
     description: rdopkg linting
     vars:
       tox_envlist: lint
@@ -137,20 +137,20 @@
       jobs:
         - rdopkg-py36-tests
         - rdopkg-py39-tests
-        - rdopkg-py310-tests
+        - rdopkg-py311-tests
         - rdopkg-py36-integration
         - rdopkg-py39-integration
-        - rdopkg-py310-integration
+        - rdopkg-py311-integration
         - rdopkg-lint
         - rdopkg-dlrn-master
     gate:
       jobs:
         - rdopkg-py36-tests
         - rdopkg-py39-tests
-        - rdopkg-py310-tests
+        - rdopkg-py311-tests
         - rdopkg-py36-integration
         - rdopkg-py39-integration
-        - rdopkg-py310-integration
+        - rdopkg-py311-integration
         - rdopkg-lint
         - rdopkg-dlrn-master
     periodic:
