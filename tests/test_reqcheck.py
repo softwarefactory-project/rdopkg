@@ -6,8 +6,11 @@ from rdopkg.cli import rdopkg
 from rdopkg.actionmods.reqs import *
 from rdopkg.actions.reqs.actions import *
 from rdopkg.exception import WrongPythonVersion
+from rdopkg.conf import cfg
 
 import test_common as common
+
+PYTHON_VERSION = python_version = cfg['REQCHECK_PY_VERSION']
 
 
 def _assert_sanity_out(o):
@@ -238,7 +241,7 @@ def test_parse_reqs_txt_exact_output(caplog):
                                   'oslo.utils>=3.33.0',
                                   '',
                                   'WebOb>1.7.1 # MIT'])
-    got = parse_reqs_txt(requirements_txt)
+    got = parse_reqs_txt(requirements_txt, PYTHON_VERSION)
     for record in caplog.records:
         assert record.levelname != "WARNING"
     assert len(got) == 3
@@ -246,7 +249,7 @@ def test_parse_reqs_txt_exact_output(caplog):
 
 def test_parse_reqs_txt_with_spaces():
     requirements_txt = '  argparse    >=    0.8   '
-    prt = parse_reqs_txt(requirements_txt)
+    prt = parse_reqs_txt(requirements_txt, PYTHON_VERSION)
     got = prt[0]
     assert got.name == 'argparse'
     assert got.vers == '>= 0.8'
@@ -255,7 +258,7 @@ def test_parse_reqs_txt_with_spaces():
 def test_parse_reqs_txt_fail_to_parse_req_01(caplog):
     requirements_txt = '\n'.join(['argparse>=0.8.10 # MIT',
                                   'monotonic:0.6'])
-    got = parse_reqs_txt(requirements_txt)
+    got = parse_reqs_txt(requirements_txt, PYTHON_VERSION)
     for record in caplog.records:
         assert record.levelname == "WARNING"
     assert 'Failed to parse requirement' in caplog.text
@@ -266,7 +269,7 @@ def test_parse_reqs_txt_fail_to_parse_req_02(caplog):
     requirements_txt = '\n'.join(['$=#wrong',
                                   'monotonic==0.6',
                                   'argparse>=0.8.10'])
-    got = parse_reqs_txt(requirements_txt)
+    got = parse_reqs_txt(requirements_txt, PYTHON_VERSION)
     for record in caplog.records:
         assert record.levelname == "WARNING"
     assert 'Failed to parse requirement' in caplog.text
@@ -275,7 +278,7 @@ def test_parse_reqs_txt_fail_to_parse_req_02(caplog):
 
 def test_parse_reqs_txt_empty(caplog):
     requirements_txt = ''
-    got = parse_reqs_txt(requirements_txt)
+    got = parse_reqs_txt(requirements_txt, PYTHON_VERSION)
     for record in caplog.records:
         assert record.levelname == "WARNING"
     assert 'The requirements.txt file is empty' in caplog.text
@@ -286,7 +289,7 @@ def test_get_reqs_from_ref_not_requirements_file(tmpdir):
     # this spec dir does not contain requirements.txt
     dist_path = common.prep_spec_test(tmpdir, 'some')
     with dist_path.as_cwd():
-        txt = get_reqs_from_ref('master', '3.6')
+        txt = get_reqs_from_ref('master', PYTHON_VERSION)
     assert txt == []
 
 
@@ -310,7 +313,7 @@ def test_get_pkgs_from_upstream_refs_1(tmpdir):
         git('fetch', 'upstream')
         rel2_branched = git.get_commits_of_branch('upstream/stable/rel-2')
         got = get_pkgs_present_in_upstream_before(
-            rel2_branched[0]['timestamp'])
+            rel2_branched[0]['timestamp'], PYTHON_VERSION)
 
     expected = ['python-argparse',
                 'python-iso8601',
@@ -339,7 +342,7 @@ def test_get_pkgs_from_upstream_refs_2(tmpdir):
         git('fetch', 'upstream')
         rel2_branched = git.get_commits_of_branch('upstream/stable/rel-2')
         got = get_pkgs_present_in_upstream_before(
-            rel2_branched[0]['timestamp'] + str(1))
+            rel2_branched[0]['timestamp'] + str(1), PYTHON_VERSION)
 
     expected = ['python-argparse',
                 'python-iso8601',
@@ -418,13 +421,13 @@ def test_parse_reqs_txt_with_environment_marker_10(caplog):
 
 def test_parse_reqs_txt_with_environment_marker_11(caplog):
     requirements_txt = '\n'.join(["enum34==1.0.4;platform_system=='Linux'"])
-    got = parse_reqs_txt(requirements_txt, '3.6')
+    got = parse_reqs_txt(requirements_txt, PYTHON_VERSION)
     assert len(got) == 1
 
 
 def test_parse_reqs_txt_with_prerelease_version(caplog):
     requirements_txt = '\n'.join(["enum34==1.0.4.0rc1"])
-    got = parse_reqs_txt(requirements_txt, '3.6')
+    got = parse_reqs_txt(requirements_txt, PYTHON_VERSION)
     assert len(got) == 1
 
 

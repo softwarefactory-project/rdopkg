@@ -13,6 +13,7 @@ from rdopkg.actionmods import reqs as _reqs
 from rdopkg.utils import log
 from rdopkg.utils import specfile
 from rdopkg.utils.git import git
+from rdopkg.conf import cfg
 
 
 def reqdiff(version_tag_from, version_tag_to):
@@ -23,7 +24,9 @@ def reqdiff(version_tag_from, version_tag_to):
     _reqs.print_reqdiff(*rdiff)
 
 
-def reqcheck(version, python_version='3.6', override=None):
+def reqcheck(version, python_version=None, override=None):
+    if python_version is None:
+        python_version = cfg['REQCHECK_PY_VERSION']
     m = re.search(r'^[\d]\.[\d]$', python_version)
     if not m:
         raise exception.WrongPythonVersion()

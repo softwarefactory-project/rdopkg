@@ -42,6 +42,7 @@ cfg = Config({
     'RDOINFO_RAW_URL': ('https://raw.githubusercontent.com/'
                         'redhat-openstack/rdoinfo/master/'),
     'FETCH_PERIOD': 600,
+    'REQCHECK_PY_VERSION': '3.9',
 })
 cfg_files = []
 

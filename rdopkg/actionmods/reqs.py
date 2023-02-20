@@ -112,7 +112,7 @@ def is_dependency_should_be_checked(python_version, environment_markers):
     return True
 
 
-def parse_reqs_txt(txt, py_vers='3.6'):
+def parse_reqs_txt(txt, py_vers):
     reqs = []
     if not txt:
         log.warn("The requirements.txt file is empty")
@@ -159,14 +159,14 @@ def get_upstream_first_ref_of_stable_releases_before(timestamp=None):
     return upstream
 
 
-def get_reqs_present_in_upstream_before(timestamp, py_version='3.6'):
+def get_reqs_present_in_upstream_before(timestamp, py_version):
     reqs = list()
     for ref in get_upstream_first_ref_of_stable_releases_before(timestamp):
         reqs += get_reqs_from_ref(ref, py_version)
     return reqs
 
 
-def get_pkgs_present_in_upstream_before(timestamp, py_version='3.6'):
+def get_pkgs_present_in_upstream_before(timestamp, py_version):
     pkgs = list()
     reqs_txt = get_reqs_present_in_upstream_before(timestamp, py_version)
     map_reqs2pkgs(reqs_txt, 'epel')
@@ -176,7 +176,7 @@ def get_pkgs_present_in_upstream_before(timestamp, py_version='3.6'):
     return pkgs
 
 
-def get_reqs_from_ref(ref, py_version='3.6'):
+def get_reqs_from_ref(ref, py_version):
     try:
         o = git('show', '%s:requirements.txt' % ref, log_cmd=False)
     except Exception:
@@ -184,7 +184,7 @@ def get_reqs_from_ref(ref, py_version='3.6'):
     return parse_reqs_txt(o, py_version)
 
 
-def get_reqs_from_path(path, py_version='3.6'):
+def get_reqs_from_path(path, py_version):
     o = open(path).read()
     return parse_reqs_txt(o, py_version)
 
@@ -250,7 +250,7 @@ def print_reqdiff(added, changed, removed):
     print("")
 
 
-def reqcheck(desired_reqs, reqs, overridden_deps):
+def reqcheck(desired_reqs, reqs, overridden_deps, py_version):
     met, any_version, wrong_version, missing, removed = [], [], [], [], []
     excess = reqs
     pkg_name = specfile.Spec().get_name()
@@ -313,7 +313,7 @@ def reqcheck(desired_reqs, reqs, overridden_deps):
     current_commit = git.current_commit()
     current_commit_timestamp = git.get_timestamp_by_ref(current_commit)
     pkgs_used_in_the_past = get_pkgs_present_in_upstream_before(
-        current_commit_timestamp)
+        current_commit_timestamp, py_version)
     for i, excess_pkg in enumerate(excess):
         if excess_pkg.name in pkgs_used_in_the_past:
             removed.append(CheckReq(excess_pkg.name, excess_pkg.vers, None))
@@ -373,7 +373,7 @@ def reqcheck_spec(py_version, ref=None, reqs_txt=None, override_pkgs=None):
         reqs_txt = get_reqs_from_path(reqs_txt, py_version)
     map_reqs2pkgs(reqs_txt, 'epel')
     spec_reqs = get_reqs_from_spec(as_objects=True, normalize_py23=True)
-    return reqcheck(reqs_txt, spec_reqs, override_pkgs)
+    return reqcheck(reqs_txt, spec_reqs, override_pkgs, py_version)
 
 
 VER_OK, VER_FAIL, VER_WTF = range(3)

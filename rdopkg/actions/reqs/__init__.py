@@ -34,9 +34,10 @@ ACTIONS = [
                Arg('output', shortcut='-o', default='text',
                    help="output format to be used "
                         "(e.g: json, spec, text [default])"),
-               Arg('python_version', shortcut='-p',
+               Arg('python_version', shortcut='-p', default=None,
                    help="set the python version reference to evaluate if a "
-                        "dependency should be checked or not (default 3.6)"),
+                        "dependency should be checked or not. (set '3.9' for "
+                        "python3.9)"),
                Arg('override', shortcut='-O', default=None,
                    help="overrides the behavior of reqcheck based on packages "
                         "that are in the file provided"),
