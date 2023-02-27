@@ -138,14 +138,6 @@ def parse_reqs_txt(txt, py_vers):
     return reqs
 
 
-def get_reqs_from_ref(ref):
-    try:
-        o = git('show', '%s:requirements.txt' % ref, log_cmd=False)
-        return parse_reqs_txt(o)
-    except Exception:
-        return ''
-
-
 def get_upstream_first_ref_of_stable_releases_before(timestamp=None):
     upstream = list()
     for branch in git.remote_branches():

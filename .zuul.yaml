@@ -122,6 +122,7 @@
 - job:
     name: rdopkg-dlrn-master
     parent: dlrn-base
+    timeout: 3600
     description: rdopkg integration tests with DLRN master
     run: playbooks/dlrn-master.yaml
     nodeset:

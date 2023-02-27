@@ -43,9 +43,18 @@ def get_package_env(version=None, release=None, dist=None, branch=None,
         else:
             raise exception.InvalidUsage(
                 why="This action must be run on a distgit branch.")
+    package = guess.package()
+    rdo = rdoinfo.get_distroinfo(distro='rdo')
+    ri = rdo.get_info()
+    pkg = get_package(ri, package)
+    try:
+        pkg_tags = pkg['tags']
+    except TypeError:
+        pkg_tags = None
     args = {
-        'package': guess.package(),
+        'package': package,
         'branch': branch,
+        'package_tags': pkg_tags
     }
     osdist = guess.osdist()
     if osdist.startswith('RH'):

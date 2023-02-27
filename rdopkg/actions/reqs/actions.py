@@ -24,7 +24,8 @@ def reqdiff(version_tag_from, version_tag_to):
     _reqs.print_reqdiff(*rdiff)
 
 
-def reqcheck(version, python_version=None, override=None):
+def reqcheck(version, python_version=None, override=None,
+             package_tags=None):
     if python_version is None:
         python_version = cfg['REQCHECK_PY_VERSION']
     m = re.search(r'^[\d]\.[\d]$', python_version)
@@ -46,10 +47,19 @@ def reqcheck(version, python_version=None, override=None):
             current_branch = git.current_branch()
             branch = current_branch.replace('rpm-', '')
             if branch != 'master':
-                branch = 'stable/{}'.format(branch)
-            version = 'upstream/{}'.format(branch)
+                ref = 'upstream/stable/{}'.format(branch)
+            else:
+                ref = 'upstream/master'
+                if package_tags is not None:
+                    for tag, value in package_tags.items():
+                        if tag.endswith('-uc'):
+                            try:
+                                version = value['source-branch']
+                                ref = git.guess_ref(version)
+                            except TypeError:
+                                ref = 'upstream/master'
             check = _reqs.reqcheck_spec(python_version,
-                                        ref=version,
+                                        ref=ref,
                                         override_pkgs=override_pkgs)
         else:
             m = re.search(r'/([^/]+)_distro', os.getcwd())
@@ -60,7 +70,6 @@ def reqcheck(version, python_version=None, override=None):
             log.info("Delorean detected. Using %s" % path)
             check = _reqs.reqcheck_spec(python_version,
                                         reqs_txt=path,
-                                        ref=version,
                                         override_pkgs=override_pkgs)
     else:
         check = _reqs.reqcheck_spec(python_version,

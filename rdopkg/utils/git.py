@@ -96,6 +96,14 @@ class Git(ShellCommand):
         commit_msg = self('log', '-n1', '--pretty=%B', log_cmd=False)
         return commit_msg
 
+    def guess_ref(self, ref):
+        proposal = ["refs/tags/{}".format(ref),
+                    "refs/remotes/upstream/{}".format(ref)]
+        for prop in proposal:
+            if self.ref_exists(prop):
+                return prop
+        return ref
+
     def ref_exists(self, ref):
         o = self('show-ref', '--verify', '--quiet', ref,
                  fatal=False, log_cmd=False, log_fail=False)

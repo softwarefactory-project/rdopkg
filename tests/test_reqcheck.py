@@ -510,3 +510,92 @@ def test_reqcheck_autosync_error(tmpdir, capsys):
                                               "file)")
     assert "Unabled to add the python Requires" in o
     assert 'Requires:         python3-to-be-added10\n' not in _file
+
+
+def reqcheck_scenario001(tmpdir, package_tags, from_tag='', from_branch='',
+                         from_commit=False):
+    dist_path = common.prep_spec_test(tmpdir, 'reqcheck-source-branch')
+    dist_path_remote = common.prep_spec_test(tmpdir,
+                                             'reqcheck-source-branch-remote')
+    current_commit = ''
+    with dist_path_remote.as_cwd():
+        if from_tag:
+            git('tag', from_tag)
+        if from_branch:
+            git('checkout', '-b', from_branch)
+        # We set the current commit as the source-branch
+        if from_commit:
+            current_commit = git.current_commit()
+            package_tags = {'master-uc': {'source-branch': current_commit}}
+        # We add a requirement after the tag in master branch
+        git('checkout', 'master')
+        common.add_line('requirements.txt', 'pbr>=2.0.0')
+        git('add', '-f', 'requirements.txt')
+        git('commit', '-m', 'Add pbr')
+
+    with dist_path.as_cwd():
+        git('remote', 'add', 'upstream', dist_path_remote.__str__())
+        git('fetch', 'upstream')
+        _r = reqcheck('XXX', package_tags=package_tags)
+    return _r['check'] + (current_commit,)
+
+
+def test_reqcheck_scenario001_from_tag_as_source_branch(tmpdir):
+    # we set a tag as source-branch rdoinfo
+    tag = '1.2.3'
+    pkg_tags = {'master-uc': {'source-branch': tag}}
+    met, any_version, wrong_version, missing, excess, \
+        removed, current_commit = reqcheck_scenario001(tmpdir,
+                                                       pkg_tags,
+                                                       from_tag=tag)
+
+    assert len(met) == 1
+    assert len(missing) == 0
+    assert len(any_version) == 0
+    assert len(wrong_version) == 0
+    assert len(excess) == 0
+
+
+def test_reqcheck_scenario001_from_branch_as_source_branch(tmpdir):
+    # we set a branch as source-branch rdoinfo
+    branch = 'stable/rel-1'
+    pkg_tags = {'master-uc': {'source-branch': branch}}
+    met, any_version, wrong_version, missing, excess, \
+        removed, current_commit = reqcheck_scenario001(tmpdir,
+                                                       pkg_tags,
+                                                       from_branch=branch)
+
+    assert len(met) == 1
+    assert len(missing) == 0
+    assert len(any_version) == 0
+    assert len(wrong_version) == 0
+    assert len(excess) == 0
+
+
+def test_reqcheck_scenario001_from_commit_as_source_branch(tmpdir):
+    # we set a commit as source-branch rdoinfo. We get the commit
+    # hash directly from reqcheck_scenario001.
+    met, any_version, wrong_version, missing, excess, \
+        removed, current_commit = reqcheck_scenario001(tmpdir,
+                                                       '',
+                                                       from_commit=True)
+
+    assert len(met) == 1
+    assert len(missing) == 0
+    assert len(any_version) == 0
+    assert len(wrong_version) == 0
+    assert len(excess) == 0
+
+
+def test_reqcheck_scenario001_from_master_by_default(tmpdir):
+    # we set nothing in source-branch rdoinfo
+    pkg_tags = None
+    met, any_version, wrong_version, missing, excess, \
+        removed, current_commit = reqcheck_scenario001(tmpdir,
+                                                       pkg_tags)
+
+    assert len(met) == 1
+    assert len(missing) == 1
+    assert len(any_version) == 0
+    assert len(wrong_version) == 0
+    assert len(excess) == 0
