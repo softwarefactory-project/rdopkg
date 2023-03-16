@@ -14,3 +14,4 @@ $TESTS_PATH/test_findpkg.sh
 $TESTS_PATH/test_clone.sh
 $TESTS_PATH/test_info.sh
 $TESTS_PATH/test_reqcheck.sh
+$TESTS_PATH/test_release.sh

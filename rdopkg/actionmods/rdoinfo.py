@@ -39,6 +39,31 @@ def print_releases(info):
                           branch=repo['branch']))
 
 
+def print_release_info(release):
+    repo_names = []
+    output = {}
+
+    output['name'] = release["name"]
+    output['status'] = release["status"]
+    output['branch'] = release["branch"]
+
+    if "identifier" in release:
+        output['identifier'] = release["identifier"]
+        output['source_branch'] = "stable/" + release["identifier"]
+    else:
+        output['source_branch'] = "stable/" + release["name"]
+
+    for repo in release["repos"]:
+        repo_names.append(repo['name'])
+    output['repos'] = ', '.join(repo_names)
+
+    dict_print = helpers.DictPrinter(header='name',
+                                     first=['status', 'branch',
+                                            'identifier', 'source_branch'],
+                                     last=['repos'])
+    dict_print(output)
+
+
 def print_pkg_summary(info):
     pkgs = info['packages']
     n = len(pkgs)

@@ -560,6 +560,29 @@ This command is a human interface to <<rdoinfo,rdoinfo>>.
 
     rdopkg info tags:~newton
 
+
+
+ACTION: release
+~~~~~~~~~~~~
+
+Show information about RDO releases.
+
+This command can be used to find out about:
+
+* display list of all currently developed releases
+* see their status, branch, repos, source branch
+* filter information about single release
+
+
+*To display info about all releases:
+
+    rdopkg release
+
+*Show only specific release:
+
+    rdopkg release -r zed
+
+
 ACTION: info-tags-diff
 ~~~~~~~~~~~~~~~~~~~~~~
 
