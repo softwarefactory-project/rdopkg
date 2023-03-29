@@ -2,11 +2,16 @@ from __future__ import print_function
 from distroinfo.info import DistroInfo
 
 from rdopkg.actionmods import rdoinfo
+from rdopkg.utils import log
 from rdopkg import helpers
+from rdopkg import exception
 
 
-def release(release_specified=None, phase_specified=None,
+def release(release_specified=None, repo=None, phase_specified=None,
             local_info=None, info_file=None):
+    if release_specified and repo:
+        log.info("The option -r and -R cannot be used at the same time")
+        raise exception.UserAbort(exit_code=1)
     if not info_file:
         info_file = rdoinfo.info_file()
     if local_info:
@@ -18,6 +23,8 @@ def release(release_specified=None, phase_specified=None,
     releases = info['releases']
     if not release_specified and not phase_specified:
         for release in releases:
+            if repo and repo not in [r.get('name') for r in release['repos']]:
+                continue
             rdoinfo.print_release_info(release)
             print()
     elif release_specified:

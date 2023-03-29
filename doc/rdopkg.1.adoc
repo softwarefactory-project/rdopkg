@@ -588,6 +588,10 @@ This command can be used to find out about:
 
 Currently used statuses are: development, maintained, extended_maintenance.
 
+*Show releases that have repos for CentOS Stream 9:
+
+    rdopkg release -R el9s
+
 
 ACTION: info-tags-diff
 ~~~~~~~~~~~~~~~~~~~~~~

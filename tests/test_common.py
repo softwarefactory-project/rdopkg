@@ -157,3 +157,15 @@ def remove_line(file_name, line_to_remove):
 def add_line(file_name, line):
     with open(file_name, "a") as f:
         f.write(line)
+
+
+def prep_rdoinfo_test(tmpdir, distgit):
+    dist_path = tmpdir.join(distgit)
+    shutil.copytree(os.path.join(ASSETS_DIR, 'rdoinfo', distgit),
+                    str(dist_path))
+    with dist_path.as_cwd():
+        git('init')
+        git('add', '-f', '.')
+        git('commit', '-m', 'Initial import',
+            isolated=True)
+    return dist_path

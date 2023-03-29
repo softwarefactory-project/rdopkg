@@ -1,0 +1,543 @@
+releases:
+- name: bobcat
+  status: development
+  branch: rpm-master
+  identifier: "2023.2"
+  tags_map: separated_buildreqs
+  repos:
+  - name: el9s
+    buildsys: cbs/cloud9s-openstack-bobcat-el9s
+    buildsys-tags:
+    - cloud9s-openstack-bobcat-el9s-build
+    - cloud9s-openstack-bobcat-candidate
+    - cloud9s-openstack-bobcat-testing
+    distrepos:
+    - name: RDO Bobcat el9s
+      url: http://mirror.stream.centos.org/SIGs/9-stream/cloud/x86_64/openstack-bobcat/
+    - name: CentOS Stream 9 BaseOS
+      url: http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 9 AppStream
+      url: http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 9 HighAvailability
+      url: http://mirror.stream.centos.org/9-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 9 CRB
+- name: antelope
+  status: maintained
+  branch: rpm-master
+  identifier: "2023.1"
+  tags_map: separated_buildreqs
+  repos:
+  - name: el9s
+    buildsys: cbs/cloud9s-openstack-antelope-el9s
+    buildsys-tags:
+    - cloud9s-openstack-antelope-el9s-build
+    - cloud9s-openstack-antelope-candidate
+    - cloud9s-openstack-antelope-testing
+    distrepos:
+    - name: RDO Zed el9s
+      url: http://mirror.stream.centos.org/SIGs/9-stream/cloud/x86_64/openstack-antelope/
+    - name: CentOS Stream 9 BaseOS
+      url: http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 9 AppStream
+      url: http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 9 HighAvailability
+      url: http://mirror.stream.centos.org/9-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 9 CRB
+- name: zed
+  status: maintained
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el9s
+    buildsys: cbs/cloud9s-openstack-zed-el9s
+    buildsys-tags:
+    - cloud9s-openstack-zed-el9s-build
+    - cloud9s-openstack-zed-candidate
+    - cloud9s-openstack-zed-testing
+    - cloud9s-openstack-zed-release
+    distrepos:
+    - name: RDO Zed el9s
+      url: http://mirror.stream.centos.org/SIGs/9-stream/cloud/x86_64/openstack-zed/
+    - name: CentOS Stream 9 BaseOS
+      url: http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 9 AppStream
+      url: http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 9 HighAvailability
+      url: http://mirror.stream.centos.org/9-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 9 CRB
+      url: http://mirror.stream.centos.org/9-stream/CRB/x86_64/os/
+- name: yoga
+  status: maintained
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el8s
+    buildsys: cbs/cloud8s-openstack-yoga-el8
+    buildsys-tags:
+    - cloud8s-openstack-yoga-el8-build
+    - cloud8s-openstack-yoga-candidate
+    - cloud8s-openstack-yoga-testing
+    - cloud8s-openstack-yoga-release
+    distrepos:
+    - name: RDO Yoga el8s
+      url: http://mirror.centos.org/centos/8-stream/cloud/x86_64/openstack-yoga/
+    - name: CentOS Stream 8 BaseOS
+      url: http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 8 AppStream
+      url: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 8 HighAvailability
+      url: http://mirror.centos.org/centos/8-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 8 PowerTools
+      url: http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/
+  - name: el9s
+    buildsys: cbs/cloud9s-openstack-yoga-el9s
+    buildsys-tags:
+    - cloud9s-openstack-yoga-el9s-build
+    - cloud9s-openstack-yoga-candidate
+    - cloud9s-openstack-yoga-testing
+    - cloud9s-openstack-yoga-release
+    distrepos:
+    - name: RDO Yoga el9s
+      url: http://mirror.stream.centos.org/SIGs/9-stream/cloud/x86_64/openstack-yoga/
+    - name: CentOS Stream 9 BaseOS
+      url: http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 9 AppStream
+      url: http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 9 HighAvailability
+      url: http://mirror.stream.centos.org/9-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 9 CRB
+      url: http://mirror.stream.centos.org/9-stream/CRB/x86_64/os/
+- name: xena
+  status: maintained
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el8s
+    buildsys: cbs/cloud8s-openstack-xena-el8
+    buildsys-tags:
+    - cloud8s-openstack-xena-el8-build
+    - cloud8s-openstack-xena-candidate
+    - cloud8s-openstack-xena-testing
+    - cloud8s-openstack-xena-release
+    distrepos:
+    - name: RDO Xena el8s
+      url: http://mirror.centos.org/centos/8-stream/cloud/x86_64/openstack-xena/
+    - name: CentOS Stream 8 BaseOS
+      url: http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 8 AppStream
+      url: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 8 HighAvailability
+      url: http://mirror.centos.org/centos/8-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 8 PowerTools
+      url: http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/
+  - name: el9s
+    buildsys: cbs/cloud9s-openstack-xena-el9s
+    buildsys-tags:
+    - cloud9s-openstack-xena-el9s-build
+    - cloud9s-openstack-xena-candidate
+    - cloud9s-openstack-xena-testing
+    distrepos:
+    - name: RDO Xena el9s
+      url: http://mirror.stream.centos.org/SIGs/9-stream/cloud/x86_64/openstack-xena/
+    - name: CentOS Stream 9 BaseOS
+      url: http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 9 AppStream
+      url: http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 9 HighAvailability
+      url: http://mirror.stream.centos.org/9-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 9 CRB
+      url: http://mirror.stream.centos.org/9-stream/CRB/x86_64/os/
+- name: wallaby
+  status: extended_maintenance
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el8
+    buildsys: cbs/cloud8-openstack-wallaby-el8
+    buildsys-tags:
+    - cloud8-openstack-wallaby-el8-build
+    - cloud8-openstack-wallaby-candidate
+    - cloud8-openstack-wallaby-testing
+    distrepos:
+    - name: RDO Wallaby el8
+      url: http://mirror.centos.org/centos/8/cloud/x86_64/openstack-wallaby/
+    - name: CentOS 8 BaseOS
+      url: http://mirror.centos.org/centos/8/BaseOS/x86_64/os/
+    - name: CentOS 8 AppStreams
+      url: http://mirror.centos.org/centos/8/AppStream/x86_64/os/
+    - name: CentOS 8 HighAvailability
+      url: http://mirror.centos.org/centos/8/HighAvailability/x86_64/os/
+    - name: CentOS 8 PowerTools
+      url: http://mirror.centos.org/centos/8/PowerTools/x86_64/os/
+  - name: el8s
+    buildsys: cbs/cloud8s-openstack-wallaby-el8
+    buildsys-tags:
+    - cloud8s-openstack-wallaby-el8-build
+    - cloud8s-openstack-wallaby-candidate
+    - cloud8s-openstack-wallaby-testing
+    - cloud8s-openstack-wallaby-release
+    distrepos:
+    - name: RDO Wallaby el8s
+      url: http://mirror.centos.org/centos/8-stream/cloud/x86_64/openstack-wallaby/
+    - name: CentOS Stream 8 BaseOS
+      url: http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 8 AppStream
+      url: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 8 HighAvailability
+      url: http://mirror.centos.org/centos/8-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 8 PowerTools
+      url: http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/
+  - name: el9s
+    buildsys: cbs/cloud9s-openstack-wallaby
+    buildsys-tags:
+    - cloud9s-openstack-wallaby-el9s-build
+    - cloud9s-openstack-wallaby-candidate
+    - cloud9s-openstack-wallaby-testing
+    distrepos:
+    - name: RDO Wallaby el9s
+      url: http://mirror.stream.centos.org/SIGs/9-stream/cloud/x86_64/openstack-xena/
+    - name: CentOS Stream 9 BaseOS
+      url: http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 9 AppStream
+      url: http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 9 HighAvailability
+      url: http://mirror.stream.centos.org/9-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 9 CRB
+      url: http://mirror.stream.centos.org/9-stream/CRB/x86_64/os/
+- name: victoria
+  status: extended_maintenance
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el8
+    buildsys: cbs/cloud8-openstack-victoria-el8
+    buildsys-tags:
+    - cloud8-openstack-victoria-el8-build
+    - cloud8s-openstack-victoria-candidate
+    - cloud8-openstack-victoria-testing
+    - cloud8-openstack-victoria-release
+    - cloud8-openstack-victoria-candidate
+    distrepos:
+    - name: RDO Victoria el8
+      url: http://mirror.centos.org/centos/8/cloud/x86_64/openstack-victoria/
+    - name: CentOS 8 BaseOS
+      url: http://mirror.centos.org/centos/8/BaseOS/x86_64/os/
+    - name: CentOS 8 AppStreams
+      url: http://mirror.centos.org/centos/8/AppStream/x86_64/os/
+    - name: CentOS 8 HighAvailability
+      url: http://mirror.centos.org/centos/8/HighAvailability/x86_64/os/
+    - name: CentOS 8 PowerTools
+      url: http://mirror.centos.org/centos/8/PowerTools/x86_64/os/
+  - name: el8s
+    buildsys: cbs/cloud8s-openstack-victoria-el8
+    buildsys-tags:
+    - cloud8s-openstack-victoria-el8-build
+    - cloud8s-openstack-victoria-candidate
+    - cloud8s-openstack-victoria-testing
+    - cloud8s-openstack-victoria-release
+    distrepos:
+    - name: RDO Victoria el8s
+      url: http://mirror.centos.org/centos/8-stream/cloud/x86_64/openstack-victoria/
+    - name: CentOS Stream 8 BaseOS
+      url: http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 8 AppStream
+      url: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 8 HighAvailability
+      url: http://mirror.centos.org/centos/8-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 8 PowerTools
+      url: http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/
+- name: ussuri
+  status: extended_maintenance
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el8
+    buildsys: cbs/cloud8-openstack-ussuri-el8
+    buildsys-tags:
+    - cloud8-openstack-ussuri-el8-build
+    - cloud8s-openstack-ussuri-candidate
+    - cloud8-openstack-ussuri-testing
+    - cloud8-openstack-ussuri-release
+    - cloud8-openstack-ussuri-candidate
+    distrepos:
+    - name: RDO Ussuri el8
+      url: http://mirror.centos.org/centos/8/cloud/x86_64/openstack-ussuri/
+    - name: CentOS 8 BaseOS
+      url: http://mirror.centos.org/centos/8/BaseOS/x86_64/os/
+    - name: CentOS 8 AppStreams
+      url: http://mirror.centos.org/centos/8/AppStream/x86_64/os/
+    - name: CentOS 8 HighAvailability
+      url: http://mirror.centos.org/centos/8/HighAvailability/x86_64/os/
+    - name: CentOS 8 PowerTools
+      url: http://mirror.centos.org/centos/8/PowerTools/x86_64/os/
+  - name: el8s
+    buildsys: cbs/cloud8s-openstack-ussuri-el8
+    buildsys-tags:
+    - cloud8s-openstack-ussuri-el8-build
+    - cloud8s-openstack-ussuri-candidate
+    - cloud8s-openstack-ussuri-testing
+    - cloud8s-openstack-ussuri-release
+    distrepos:
+    - name: RDO Ussuri el8s
+      url: http://mirror.centos.org/centos/8-stream/cloud/x86_64/openstack-ussuri/
+    - name: CentOS Stream 8 BaseOS
+      url: http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 8 AppStream
+      url: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 8 HighAvailability
+      url: http://mirror.centos.org/centos/8-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 8 PowerTools
+      url: http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/
+
+- name: train
+  status: extended_maintenance
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el7
+    buildsys: cbs/cloud7-openstack-train-el7
+    buildsys-tags:
+    - cloud7-openstack-train-el7-build
+    - cloud7-openstack-train-candidate
+    - cloud7-openstack-train-testing
+    - cloud7-openstack-train-release
+    distrepos:
+    - name: RDO Train el7
+      url: http://mirror.centos.org/centos/7/cloud/x86_64/openstack-train/
+    - name: CentOS 7 Base
+      url: http://mirror.centos.org/centos/7/os/x86_64/
+    - name: CentOS 7 Updates
+      url: http://mirror.centos.org/centos/7/updates/x86_64/
+    - name: CentOS 7 Extras
+  - name: el8
+    buildsys: cbs/cloud8-openstack-train-el8
+    buildsys-tags:
+    - cloud8-openstack-train-el8-build
+    - cloud8s-openstack-train-candidate
+    - cloud8-openstack-train-testing
+    - cloud8-openstack-train-release
+    - cloud8-openstack-train-candidate
+    distrepos:
+    - name: RDO Train el8
+      url: http://mirror.centos.org/centos/8/cloud/x86_64/openstack-train/
+    - name: CentOS 8 BaseOS
+      url: http://mirror.centos.org/centos/8/BaseOS/x86_64/os/
+    - name: CentOS 8 AppStreams
+      url: http://mirror.centos.org/centos/8/AppStream/x86_64/os/
+    - name: CentOS 8 HighAvailability
+      url: http://mirror.centos.org/centos/8/HighAvailability/x86_64/os/
+    - name: CentOS 8 PowerTools
+      url: http://mirror.centos.org/centos/8/PowerTools/x86_64/
+  - name: el8s
+    buildsys: cbs/cloud8s-openstack-train-el8
+    buildsys-tags:
+    - cloud8s-openstack-train-el8-build
+    - cloud8s-openstack-train-candidate
+    - cloud8s-openstack-train-testing
+    distrepos:
+    - name: RDO Train el8s
+      url: http://mirror.centos.org/centos/8-stream/cloud/x86_64/openstack-train/
+    - name: CentOS Stream 8 BaseOS
+      url: http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+    - name: CentOS Stream 8 AppStream
+      url: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+    - name: CentOS Stream 8 HighAvailability
+      url: http://mirror.centos.org/centos/8-stream/HighAvailability/x86_64/os/
+    - name: CentOS Stream 8 PowerTools
+      url: http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/
+
+- name: stein
+  status: extended_maintenance
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el7
+    buildsys: cbs/cloud7-openstack-stein-el7
+    buildsys-tags:
+    - cloud7-openstack-stein-el7-build
+    - cloud7-openstack-stein-candidate
+    - cloud7-openstack-stein-testing
+    - cloud7-openstack-stein-release
+    distrepos:
+    - name: RDO Stein el7
+      url: http://mirror.centos.org/centos/7/cloud/x86_64/openstack-stein/
+    - name: CentOS 7 Base
+      url: http://mirror.centos.org/centos/7/os/x86_64/
+    - name: CentOS 7 Updates
+      url: http://mirror.centos.org/centos/7/updates/x86_64/
+    - name: CentOS 7 Extras
+      url: http://mirror.centos.org/centos/7/extras/x86_64/
+- name: rocky
+  status: extended_maintenance
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el7
+    buildsys: cbs/cloud7-openstack-rocky-el7
+    buildsys-tags:
+    - cloud7-openstack-rocky-el7-build
+    - cloud7-openstack-rocky-candidate
+    - cloud7-openstack-rocky-testing
+    - cloud7-openstack-rocky-release
+    distrepos:
+    - name: RDO Rocky el7
+      url: http://mirror.centos.org/centos/7/cloud/x86_64/openstack-rocky/
+    - name: CentOS 7 Base
+      url: http://mirror.centos.org/centos/7/os/x86_64/
+    - name: CentOS 7 Updates
+      url: http://mirror.centos.org/centos/7/updates/x86_64/
+    - name: CentOS 7 Extras
+      url: http://mirror.centos.org/centos/7/extras/x86_64/
+- name: not-well-formatted
+  status: extended_maintenance
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos: []
+
+# default template for 'packages' infromation below
+package-default:
+  name: python-%(project)s
+  distgit: ssh://pkgs.fedoraproject.org/python-%(project)s.git
+  patches: http://review.rdoproject.org/r/openstack/%(project)s.git
+  # master-distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+  master-distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+  tags:
+    ussuri-uc:
+    ussuri:
+    train:
+    stein:
+    rocky:
+# custom templates for 'packages' information below, reducing
+# redundant information in this file; inherits package-default
+package-configs:
+  xstatic:
+    maintainers:
+    - github@sheep.art.pl
+  # templates using rpmfactory's repositories
+  rpmfactory-core:
+    name: openstack-%(project)s
+    upstream: https://opendev.org/openstack/%(project)s
+    # distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+    distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    patches: http://review.rdoproject.org/r/openstack/%(project)s.git
+    # master-distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+    master-distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    review-patches: ssh://review.rdoproject.org:29418/openstack/%(project)s.git
+    review-origin: ssh://review.rdoproject.org:29418/openstack/%(project)s-distgit.git
+    component: common
+    maintainers:
+    - jruzicka@redhat.com
+    - hguemar@fedoraproject.org
+  rpmfactory-client:
+    name: python-%(project)s
+    upstream: https://opendev.org/openstack/python-%(project)s
+    # distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+    distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    patches: http://review.rdoproject.org/r/openstack/%(project)s.git
+    # master-distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+    master-distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    review-patches: ssh://review.rdoproject.org:29418/openstack/%(project)s.git
+    review-origin: ssh://review.rdoproject.org:29418/openstack/%(project)s-distgit.git
+    component: clients
+    maintainers:
+    - jruzicka@redhat.com
+    - hguemar@fedoraproject.org
+  rpmfactory-lib:
+    name: python-%(project)s
+    upstream: https://opendev.org/openstack/%(project)s
+    # distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+    distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    patches: http://review.rdoproject.org/r/openstack/%(project)s.git
+    # master-distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+    master-distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    review-patches: ssh://review.rdoproject.org:29418/openstack/%(project)s.git
+    review-origin: ssh://review.rdoproject.org:29418/openstack/%(project)s-distgit.git
+    component: common
+    maintainers:
+    - apevec@redhat.com
+    - hguemar@fedoraproject.org
+    - lbezdick@redhat.com
+  rpmfactory-puppet:
+    name: '%(project)s'
+    upstream: https://opendev.org/openstack/%(project)s
+    # distgit: http://review.rdoproject.org/r/puppet/%(project)s-distgit.git
+    distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    patches: http://review.rdoproject.org/r/puppet/%(project)s.git
+    # master-distgit: http://review.rdoproject.org/r/puppet/%(project)s-distgit.git
+    master-distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    review-patches: ssh://review.rdoproject.org:29418/puppet/%(project)s.git
+    review-origin: ssh://review.rdoproject.org:29418/puppet/%(project)s-distgit.git
+    component: tripleo
+    maintainers:
+    - lbezdick@redhat.com
+    - jguiditt@redhat.com
+    - gchamoul@redhat.com
+    # Only building puppet modules on newton and later
+    tags:
+      ussuri-uc:
+      ussuri:
+      train:
+      stein:
+      rocky:
+  rpmfactory-tempest-plugin:
+    # Name and Project will be defined.
+    name: '%(project)s'
+    upstream: https://opendev.org/openstack/%(project)s
+    # distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+    distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    patches: http://review.rdoproject.org/r/openstack/%(project)s.git
+    # master-distgit: http://review.rdoproject.org/r/openstack/%(project)s-distgit.git
+    master-distgit: https://github.com/rdo-packages/%(project)s-distgit.git
+    review-patches: ssh://review.rdoproject.org:29418/openstack/%(project)s.git
+    review-origin: ssh://review.rdoproject.org:29418/openstack/%(project)s-distgit.git
+    component: tempest
+    maintainers:
+    - chkumar@redhat.com
+    - ltoscano@redhat.com
+    tags:
+      ussuri-uc:
+      ussuri:
+      train:
+      stein:
+      rocky:
+  rpm-packaging:
+    name: '%(project)s'
+    upstream: https://opendev.org/openstack/%(project)s
+    distgit: https://opendev.org/openstack/rpm-packaging
+    distgit-path: /openstack/%(project)s
+    master-distgit: https://opendev.org/openstack/rpm-packaging
+    patches: http://review.rdoproject.org/r/openstack/%(project)s.git
+    review-patches: ssh://review.rdoproject.org:29418/openstack/%(project)s.git
+    review-origin: ssh://review.rdoproject.org:29418/openstack/%(project)s-distgit.git
+    component: common
+    distro-branch: master
+    maintainers:
+    - jpena@redhat.com
+    tags:
+      ussuri-uc:
+        distro-branch: master
+      ussuri:
+        distro-branch: master
+      train:
+        distro-branch: master
+      stein:
+        distro-branch: master
+      rocky:
+        distro-branch: master
+packages:
+# OpenStack Puppet Modules
+- project: puppet-aodh
+  conf: rpmfactory-puppet
+  component: tripleo
+# core openstack projects
+- project: nova
+  conf: rpmfactory-core
+  maintainers:
+  - kchamart@redhat.com
+  - smooney@redhat.com
+  component: compute
+- project: keystone
+  conf: rpmfactory-core
+  component: security
+  maintainers:
+  - apevec@redhat.com

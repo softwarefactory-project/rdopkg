@@ -61,3 +61,25 @@ command=$(rdopkg release -l ${WORKSPACE}/rdoinfo -s development)
 echo "$command" | grep -q "nobody"
 popd
 echo "...OK!"
+
+
+echo "testing \"rdopkg release\" with --repo option"
+
+pushd ${WORKSPACE}
+rm -rf rdoinfo
+git clone --quiet "$RDOINFO_URL" rdoinfo
+cat <<EOF > rdoinfo/rdo-extra.yml
+releases:
+- name: nobody
+  status: development
+  branch: rpm-master
+  tags_map: separated_buildreqs
+  repos:
+  - name: el-1
+EOF
+echo "- rdo-extra.yml" >> rdoinfo/rdo-full.yml
+command=$(rdopkg release -l ${WORKSPACE}/rdoinfo --repo el-1)
+echo "$command" | grep -q -e "repos: el-1"
+echo "$command" | grep -c -e "name:" | grep -q 1
+popd
+echo "...OK!"
