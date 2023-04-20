@@ -6,7 +6,8 @@ set -e
 WORKSPACE="${WORKSPACE:-/tmp}"
 RDOINFO_URL="https://github.com/redhat-openstack/rdoinfo"
 
-echo "testing \"rdopkg release\""
+
+echo "Preparing mocked rdoinfo file"
 
 pushd ${WORKSPACE}
 rm -rf rdoinfo
@@ -21,6 +22,12 @@ releases:
   - name: el9s
 EOF
 echo "- rdo-extra.yml" >> rdoinfo/rdo-full.yml
+popd
+
+
+echo "testing \"rdopkg release\""
+
+pushd ${WORKSPACE}
 command=$(rdopkg release -l ${WORKSPACE}/rdoinfo -r nobody)
 echo "$command" | grep -q "name: nobody"
 echo "$command" | grep -q "repos: el9s"
@@ -29,11 +36,28 @@ popd
 echo "...OK!"
 
 
-
 echo "testing \"rdopkg release\" for non-existsing release"
 
 pushd ${WORKSPACE}
 command2=$(rdopkg release -r foo)
 echo "$command2" | grep "No release match your filter."
+popd
+echo "...OK!"
+
+
+echo "testing \"rdopkg release -s\" for non-existsing phase"
+
+pushd ${WORKSPACE}
+command2=$(rdopkg release -s foo)
+echo "$command2" | grep "No release match your phase filter."
+popd
+echo "...OK!"
+
+
+echo "testing \"rdopkg release -s\" for existsing phase"
+
+pushd ${WORKSPACE}
+command=$(rdopkg release -l ${WORKSPACE}/rdoinfo -s development)
+echo "$command" | grep -q "nobody"
 popd
 echo "...OK!"

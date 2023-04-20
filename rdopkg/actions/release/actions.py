@@ -5,7 +5,8 @@ from rdopkg.actionmods import rdoinfo
 from rdopkg import helpers
 
 
-def release(release_specified=None, local_info=None, info_file=None):
+def release(release_specified=None, phase_specified=None,
+            local_info=None, info_file=None):
     if not info_file:
         info_file = rdoinfo.info_file()
     if local_info:
@@ -15,14 +16,23 @@ def release(release_specified=None, local_info=None, info_file=None):
         di = rdoinfo.get_distroinfo()
     info = di.get_info()
     releases = info['releases']
-    if not release_specified:
+    if not release_specified and not phase_specified:
         for release in releases:
             rdoinfo.print_release_info(release)
             print()
-    else:
+    elif release_specified:
         for release in releases:
             if release["name"] == release_specified:
                 rdoinfo.print_release_info(release)
                 break
         else:
             print("No release match your filter.")
+    elif phase_specified:
+        output = []
+        for release in releases:
+            if release["status"] == phase_specified:
+                output.append(release["name"])
+        if len(output) == 0:
+            print("No release match your phase filter.")
+        else:
+            print(*output, sep="\n")

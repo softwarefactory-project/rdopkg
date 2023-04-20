@@ -572,7 +572,7 @@ This command can be used to find out about:
 * display list of all currently developed releases
 * see their status, branch, repos, source branch
 * filter information about single release
-
+* print releases in specified phase
 
 *To display info about all releases:
 
@@ -581,6 +581,12 @@ This command can be used to find out about:
 *Show only specific release:
 
     rdopkg release -r zed
+
+*Print releases in development:
+
+    rdopkg release -s development
+
+Currently used statuses are: development, maintained, extended_maintenance.
 
 
 ACTION: info-tags-diff
