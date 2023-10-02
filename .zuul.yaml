@@ -127,8 +127,8 @@
     run: playbooks/dlrn-master.yaml
     nodeset:
       nodes:
-        - name: cloud-centos-8-stream
-          label: cloud-centos-8-stream
+        - name: cloud-centos-9-stream
+          label: cloud-centos-9-stream
     required-projects:
       - DLRN
 
