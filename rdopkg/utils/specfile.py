@@ -703,7 +703,7 @@ class Spec(object):
                               remove_epoch=True, normalize_py23=False):
         rpmtag_pkgs = defaultdict(set)
         for pkg in self.rpmspec.packages:
-            packages = pkg.header.dsFromHeader(rpmtag)
+            packages = rpm.ds(pkg.header, rpmtag)
             for p in packages:
                 m = re.match(r'\w\s(\S+)\s+([=<>!]+)\s*(\S+)', p.DNEVR())
                 if m:
