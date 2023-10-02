@@ -131,7 +131,8 @@ class ActionManager(object):
             if not ispkg:
                 continue
             try:
-                mod = importer.find_module(modname).load_module(modname)
+                spec = importer.find_spec(modname)
+                mod = spec.loader.load_module(modname)
             except ImportError:
                 log.warn("Failed to import module: %s" % modpath)
                 continue
