@@ -31,27 +31,29 @@ See [open rdopkg reviews](https://softwarefactory-project.io/r/#/q/status:open+p
 
 ## Installation
 
-`rdopkg` is currently compatible with both python 3 and python 2.
+`rdopkg` is currently compatible with both python 3 only.
 
 
 ### from Fedora/EPEL repos (default)
 
-`rdopkg` is available on **Fedora 25** and newer:
+`rdopkg` is available on **Fedora 37** and newer:
 
     dnf install rdopkg
 
-On CentOS/RHEL 7, `rdopkg` is available from
-[EPEL](https://fedoraproject.org/wiki/EPEL).
+On CentOS Stream/RHEL 8/9, `rdopkg` is available from
+[EPEL](https://docs.fedoraproject.org/en-US/epel/).
 
-On **CentOS 7**:
+On **CentOS Stream 8**:
 
-    yum install epel-release
-    yum install rdopkg
+    dnf config-manager --set-enabled powertools
+    dnf install epel-release
+    dnf install rdopkg
 
-On **RHEL 7**:
+On **CentOS Stream 9**:
 
-    yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-    yum install rdopkg
+    dnf config-manager --set-enabled crb
+    dnf install epel-release
+    dnf install rdopkg
 
 
 ### from source
@@ -60,8 +62,7 @@ If you want to hack `rdopkg` or just have the latest fixes without waiting for
 next release, I suggest using the git repo directly:
 
     git clone https://github.com/softwarefactory-project/rdopkg
-    cd rdopkg
-    python setup.py develop --user
+    pip install -e rdopkg
 
 You may set the preference over `rdopkg` RPM by correctly positioning
 `~/.local/bin/rdopkg` in your `$PATH`.
@@ -72,7 +73,7 @@ Or you can use virtualenv to avoid conflicts with RPM:
     cd rdopkg
     virtualenv --system-site-packages ~/rdopkg-venv
     source ~/rdopkg-venv/bin/activate
-    python setup.py develop
+    pip install -e .
     ln `which rdopkg` ~/bin/rdopkg-dev
 
     rdopkg-dev --version
@@ -91,8 +92,8 @@ a module.
 
     pip install rdopkg
 
-Note that you need to have python2-rpm(resp. python3-rpm) package installed in
-order for RPM macro related featuers to work as it isn't available from
+Note that you need to have python3-rpm package installed in
+order for RPM macro related features to work as it isn't available from
 PyPI.
 
 
