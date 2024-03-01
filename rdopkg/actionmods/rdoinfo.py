@@ -53,13 +53,19 @@ def print_release_info(release):
     else:
         output['source_branch'] = "stable/" + release["name"]
 
+    if "upstream_branch" in release:
+        output['upstream_branch'] = release["upstream_branch"]
+    else:
+        output['upstream_branch'] = "stable/" + release["name"]
+
     for repo in release["repos"]:
         repo_names.append(repo['name'])
     output['repos'] = ', '.join(repo_names)
 
     dict_print = helpers.DictPrinter(header='name',
                                      first=['status', 'branch',
-                                            'identifier', 'source_branch'],
+                                            'identifier', 'upstream_branch',
+                                            'source_branch'],
                                      last=['repos'])
     dict_print(output)
 
