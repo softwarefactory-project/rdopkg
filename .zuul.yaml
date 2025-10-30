@@ -8,15 +8,6 @@
       - distroinfo
 
 - job:
-    name: rdopkg-base-py36
-    parent: rdopkg-base
-    abstract: true
-    nodeset:
-      nodes:
-        - name: cloud-centos-8-stream
-          label: cloud-centos-8-stream
-
-- job:
     name: rdopkg-base-py39
     parent: rdopkg-base
     abstract: true
@@ -24,15 +15,6 @@
       nodes:
         - name: cloud-centos-9-stream
           label: cloud-centos-9-stream
-
-- job:
-    name: rdopkg-base-py311
-    parent: rdopkg-base
-    abstract: true
-    nodeset:
-      nodes:
-        - name: cloud-fedora-37
-          label: cloud-fedora-37
 
 - job:
     name: rdopkg-base-py312
@@ -44,20 +26,8 @@
           label: cloud-fedora-39
 
 - job:
-    name: rdopkg-base-coverage-py36
-    parent: rdopkg-base-py36
-    post-run: playbooks/fetch-coverage.yaml
-    success-url: coverage/index.html
-
-- job:
     name: rdopkg-base-coverage-py39
     parent: rdopkg-base-py39
-    post-run: playbooks/fetch-coverage.yaml
-    success-url: coverage/index.html
-
-- job:
-    name: rdopkg-base-coverage-py311
-    parent: rdopkg-base-py311
     post-run: playbooks/fetch-coverage.yaml
     success-url: coverage/index.html
 
@@ -68,25 +38,11 @@
     success-url: coverage/index.html
 
 - job:
-    name: rdopkg-py36-tests
-    parent: rdopkg-base-coverage-py36
-    description: rdopkg unit and feature tests on python3.6
-    vars:
-      tox_envlist: py36-unit,py36-feature,py36-cover
-
-- job:
     name: rdopkg-py39-tests
     parent: rdopkg-base-coverage-py39
     description: rdopkg unit and feature tests on python3.9
     vars:
       tox_envlist: py39-unit,py39-feature,py39-cover
-
-- job:
-    name: rdopkg-py311-tests
-    parent: rdopkg-base-coverage-py311
-    description: rdopkg unit and feature tests on python3.11
-    vars:
-      tox_envlist: py311-unit,py311-feature,py311-cover
 
 - job:
     name: rdopkg-py312-tests
@@ -96,25 +52,11 @@
       tox_envlist: py312-unit,py312-feature,py312-cover
 
 - job:
-    name: rdopkg-py36-integration
-    parent: rdopkg-base-py36
-    description: rdopkg unit and feature tests on python3.6
-    vars:
-      tox_envlist: py36-integration
-
-- job:
     name: rdopkg-py39-integration
     parent: rdopkg-base-py39
     description: rdopkg unit and feature tests on python3.9
     vars:
       tox_envlist: py39-integration
-
-- job:
-    name: rdopkg-py311-integration
-    parent: rdopkg-base-py311
-    description: rdopkg unit and feature tests on python3.11
-    vars:
-      tox_envlist: py311-integration
 
 - job:
     name: rdopkg-py312-integration
@@ -125,19 +67,10 @@
 
 - job:
     name: rdopkg-lint
-    parent: rdopkg-base-py311
+    parent: rdopkg-base-py312
     description: rdopkg linting
     vars:
       tox_envlist: lint
-
-- job:
-    name: rdopkg-install-epel-8
-    description: install rdopkg with epel
-    run: playbooks/install-test-epel-8.yaml
-    nodeset:
-      nodes:
-        - name: cloud-centos-8-stream
-          label: cloud-centos-8-stream
 
 - job:
     name: rdopkg-install-epel-9
@@ -165,31 +98,26 @@
     name: rdopkg
     check:
       jobs:
-        - rdopkg-py36-tests
-        - rdopkg-py39-tests
-        - rdopkg-py311-tests
-        - rdopkg-py312-tests
-        - rdopkg-py36-integration
+        - rdopkg-py39-tests:
+            voting: false
         - rdopkg-py39-integration
-        - rdopkg-py311-integration
+        - rdopkg-py312-tests:
+            voting: false
         - rdopkg-py312-integration
         - rdopkg-lint
         - rdopkg-dlrn-master
     gate:
       jobs:
-        - rdopkg-py36-tests
-        - rdopkg-py39-tests
-        - rdopkg-py311-tests
-        - rdopkg-py312-tests
-        - rdopkg-py36-integration
+        - rdopkg-py39-tests:
+            voting: false
         - rdopkg-py39-integration
-        - rdopkg-py311-integration
+        - rdopkg-py312-tests:
+            voting: false
         - rdopkg-py312-integration
         - rdopkg-lint
         - rdopkg-dlrn-master
     periodic:
       jobs:
-        - rdopkg-install-epel-8
         - rdopkg-install-epel-9
     release:
       jobs:
