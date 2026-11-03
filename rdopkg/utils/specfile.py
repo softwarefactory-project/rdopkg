@@ -460,7 +460,7 @@ class Spec(object):
         for i, pfn in enumerate(fns, start=1):
             ps += "Patch%04d: %s\n" % (i, pfn)
             if apply_method == 'rpm':
-                pa += "%%patch%04d -p1\n" % i
+                pa += "%%patch -P%04d -p1\n" % i
         # PatchXXX: lines after Source0 / #patches_base=
         self._txt, n = re.subn(
             self.RE_AFTER_MAGIC_COMMENTS,
