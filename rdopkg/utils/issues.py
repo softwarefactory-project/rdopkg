@@ -7,4 +7,4 @@ def search_bug_references(text_blob):
     if text_blob is None:
         return []
 
-    return re.findall(r'rhbz#(\d+)', text_blob)
+    return re.findall(r'Resolves:(.+)', text_blob)
